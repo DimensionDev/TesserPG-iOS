@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  TesserCube
+
+  Created by jk234ert on 2019/3/18.
+  Copyright © 2019 Sujitech. All rights reserved.
+*/
+
+"NSContactsUsageDescription" = "需要通讯录权限，用 来将联系人添加位作为消息收件人";
+"NSPhotoLibraryAddUsageDescription" = "需要相册的写权限，用来将图片保存到本地";

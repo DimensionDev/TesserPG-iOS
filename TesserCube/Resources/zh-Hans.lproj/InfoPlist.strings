@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  TesserCube
+
+  Created by jk234ert on 2019/3/18.
+  Copyright © 2019 Sujitech. All rights reserved.
+*/
+"NSContactsUsageDescription" = "We need to read your contact records as the recipients of your encrypted messages";
+"NSPhotoLibraryAddUsageDescription" = "We need to access your photo library to save the image";

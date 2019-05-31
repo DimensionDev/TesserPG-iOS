@@ -1,0 +1,151 @@
+PODS:
+  - AlignedCollectionViewFlowLayout (1.1.2)
+  - AppCenter (1.14.0):
+    - AppCenter/Analytics (= 1.14.0)
+    - AppCenter/Crashes (= 1.14.0)
+  - AppCenter/Analytics (1.14.0):
+    - AppCenter/Core
+  - AppCenter/Core (1.14.0)
+  - AppCenter/Crashes (1.14.0):
+    - AppCenter/Core
+  - BouncyCastle-ObjC (0.1.0)
+  - ConsolePrint (0.1.0)
+  - DateToolsSwift (4.0.0)
+  - DeepDiff (2.0.1)
+  - DeviceKit (1.11.0)
+  - DMSOpenPGP (0.1.1):
+    - BouncyCastle-ObjC (~> 0.1.0)
+    - OpenSSL-Universal (~> 1.0.2.17)
+  - Eureka (4.3.1)
+  - FLEX (2.4.0)
+  - GRDB.swift (3.7.0)
+  - GRDBCipher (3.7.0):
+    - SQLCipher (~> 3.4.1)
+  - IQKeyboardManagerSwift (6.2.1)
+  - KeychainAccess (3.1.2)
+  - MMWormhole (2.0.0):
+    - MMWormhole/Core (= 2.0.0)
+  - MMWormhole/Core (2.0.0)
+  - OpenSSL-Universal (1.0.2.17)
+  - RxAtomic (4.4.2)
+  - RxBlocking (4.5.0):
+    - RxSwift (>= 4.4.2, ~> 4.4)
+  - RxCocoa (4.4.2):
+    - RxSwift (>= 4.4.2, ~> 4.4)
+  - RxSwift (4.4.2):
+    - RxAtomic (>= 4.4.2, ~> 4.4)
+  - SnapKit (4.2.0)
+  - SQLCipher (3.4.2):
+    - SQLCipher/standard (= 3.4.2)
+  - SQLCipher/common (3.4.2)
+  - SQLCipher/standard (3.4.2):
+    - SQLCipher/common
+  - SVProgressHUD (2.2.5)
+  - SwifterSwift (4.6.0):
+    - SwifterSwift/AppKit (= 4.6.0)
+    - SwifterSwift/CoreGraphics (= 4.6.0)
+    - SwifterSwift/CoreLocation (= 4.6.0)
+    - SwifterSwift/Foundation (= 4.6.0)
+    - SwifterSwift/MapKit (= 4.6.0)
+    - SwifterSwift/SpriteKit (= 4.6.0)
+    - SwifterSwift/SwiftStdlib (= 4.6.0)
+    - SwifterSwift/UIKit (= 4.6.0)
+  - SwifterSwift/AppKit (4.6.0)
+  - SwifterSwift/CoreGraphics (4.6.0)
+  - SwifterSwift/CoreLocation (4.6.0)
+  - SwifterSwift/Foundation (4.6.0)
+  - SwifterSwift/MapKit (4.6.0)
+  - SwifterSwift/SpriteKit (4.6.0)
+  - SwifterSwift/SwiftStdlib (4.6.0)
+  - SwifterSwift/UIKit (4.6.0)
+  - SwiftGen (6.1.0)
+  - SwiftLint (0.30.1)
+  - "UITextView+Placeholder (1.2.1)"
+
+DEPENDENCIES:
+  - AlignedCollectionViewFlowLayout (~> 1.1.2)
+  - AppCenter (~> 1.14.0)
+  - ConsolePrint (~> 0.1.0)
+  - DateToolsSwift (~> 4.0.0)
+  - DeepDiff (~> 2.0.1)
+  - DeviceKit (~> 1.11.0)
+  - DMSOpenPGP (~> 0.1.1)
+  - Eureka (~> 4.3.1)
+  - FLEX (~> 2.4.0)
+  - GRDB.swift (~> 3.7.0)
+  - GRDBCipher (~> 3.7.0)
+  - IQKeyboardManagerSwift (~> 6.2.0)
+  - KeychainAccess (~> 3.1.2)
+  - MMWormhole (~> 2.0.0)
+  - RxBlocking (~> 4.0)
+  - RxCocoa (~> 4.4.2)
+  - RxSwift (~> 4.4.2)
+  - SnapKit (~> 4.2.0)
+  - SVProgressHUD (~> 2.2.5)
+  - SwifterSwift (~> 4.6.0)
+  - SwiftGen (~> 6.1.0)
+  - SwiftLint (~> 0.30.1)
+  - "UITextView+Placeholder (~> 1.2.1)"
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AlignedCollectionViewFlowLayout
+    - AppCenter
+    - BouncyCastle-ObjC
+    - ConsolePrint
+    - DateToolsSwift
+    - DeepDiff
+    - DeviceKit
+    - DMSOpenPGP
+    - Eureka
+    - FLEX
+    - GRDB.swift
+    - GRDBCipher
+    - IQKeyboardManagerSwift
+    - KeychainAccess
+    - MMWormhole
+    - OpenSSL-Universal
+    - RxAtomic
+    - RxBlocking
+    - RxCocoa
+    - RxSwift
+    - SnapKit
+    - SQLCipher
+    - SVProgressHUD
+    - SwifterSwift
+    - SwiftGen
+    - SwiftLint
+    - "UITextView+Placeholder"
+
+SPEC CHECKSUMS:
+  AlignedCollectionViewFlowLayout: ee2ef451e741ec08f8e0967d828001e2f051c20a
+  AppCenter: 02c5efe08d3bbab5421ae41d5f7aa7238906b817
+  BouncyCastle-ObjC: e9e35f6cf5b1333f6ce4cc6bb5ab19cbf5dfc7aa
+  ConsolePrint: 695d494f0a2595d1792ec19483f2aa16e4501c19
+  DateToolsSwift: 875d97ff9e3a5d54abdd67a269b3f51c757b71ab
+  DeepDiff: 1944bb2c841ab238a66b31de1faa7627f3ca84bd
+  DeviceKit: a3a86f8dddbe1317a9a243cdf9646858bf135dce
+  DMSOpenPGP: 9474f607bb8f7d685aca65364226c560b9bdcbca
+  Eureka: 28ea296f06710f6745266b71f17862048941a32d
+  FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
+  GRDB.swift: 51cc9e57ae8ff7083a9d674c97925aa1de06aac5
+  GRDBCipher: a3066d2953508039ea8fb423a1ba14c7b6d888be
+  IQKeyboardManagerSwift: 0f0ae8935360b4003e6ea1ac7c19898f01e2f7c7
+  KeychainAccess: b3816fddcf28aa29d94b10ec305cd52be14c472b
+  MMWormhole: 0cd3fd35a9118b2e2d762b499f54eeaace0be791
+  OpenSSL-Universal: ff04c2e6befc3f1247ae039e60c93f76345b3b5a
+  RxAtomic: d00e97c10db88c6f08540e0bf2752fc5a2404167
+  RxBlocking: 79413e4d916f44bb3e113c5b2cc059e36fe58910
+  RxCocoa: 477990dc3b4c3ff55fb0ac77e1cc06244e0aaec8
+  RxSwift: 74c29b693c8e42b0f64400e8b06564575742d649
+  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
+  SQLCipher: f9fcf29b2e59ced7defc2a2bdd0ebe79b40d4990
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  SwifterSwift: 812ffec6f301922f5430e75be3f2939ea3a80024
+  SwiftGen: f872ca75cbd17bf7103c17f13dcfa0d9a15667b0
+  SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
+  "UITextView+Placeholder": 0c3efd97f37ea64bde7f34cc6e90fe02e87b3909
+
+PODFILE CHECKSUM: 29b0ae6d1f3b9988f35ce4bb32f1917641c3c2c7
+
+COCOAPODS: 1.7.0

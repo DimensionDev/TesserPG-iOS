@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="SF-Pro-Display-Medium.otf">
+            <string>SFProDisplay-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="165" id="KGk-i7-Jjw" customClass="KeyCardCell" customModule="TesserCube" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="338" height="140"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="338" height="139.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D0j-Kd-TPr" customClass="TCCardView" customModule="TesserCube" customModuleProvider="target">
+                        <rect key="frame" x="16" y="33.5" width="306" height="106"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="****@*****.***" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q0l-Wl-U7L">
+                                <rect key="frame" x="16" y="12" width="274" height="24"/>
+                                <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qDH-QI-7ah">
+                                <rect key="frame" x="16" y="44" width="141" height="28"/>
+                                <attributedString key="attributedText">
+                                    <fragment>
+                                        <string key="content">**** **** **** **** ****
+**** **** **** **** ****</string>
+                                        <attributes>
+                                            <color key="NSColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <font key="NSFont" metaFont="system" size="14"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" maximumLineHeight="14" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" alpha="0.80000000000000004" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Key Yet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V70-l3-1Kx">
+                                <rect key="frame" x="16" y="80" width="65.5" height="17"/>
+                                <fontDescription key="fontDescription" name="SFProDisplay-Medium" family="SF Pro Display" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="V70-l3-1Kx" firstAttribute="top" secondItem="qDH-QI-7ah" secondAttribute="bottom" constant="8" id="BQp-AF-ajz"/>
+                            <constraint firstItem="V70-l3-1Kx" firstAttribute="leading" secondItem="qDH-QI-7ah" secondAttribute="leading" id="E4N-k2-p1R"/>
+                            <constraint firstItem="qDH-QI-7ah" firstAttribute="leading" secondItem="q0l-Wl-U7L" secondAttribute="leading" id="Izj-WW-7hN"/>
+                            <constraint firstItem="q0l-Wl-U7L" firstAttribute="leading" secondItem="D0j-Kd-TPr" secondAttribute="leading" constant="16" id="bGH-4h-jTp"/>
+                            <constraint firstItem="q0l-Wl-U7L" firstAttribute="top" secondItem="D0j-Kd-TPr" secondAttribute="top" constant="12" id="bsz-aY-ugX"/>
+                            <constraint firstItem="qDH-QI-7ah" firstAttribute="top" secondItem="q0l-Wl-U7L" secondAttribute="bottom" constant="8" id="lYo-IZ-2R6"/>
+                            <constraint firstAttribute="trailing" secondItem="q0l-Wl-U7L" secondAttribute="trailing" constant="16" id="rha-AP-kvS"/>
+                            <constraint firstAttribute="height" constant="106" id="rwp-7Z-KSl"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="cardBackgroundColor">
+                                <color key="value" red="0.10980392156862745" green="0.55686274509803924" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="D0j-Kd-TPr" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="HFe-yn-AxK"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="D0j-Kd-TPr" secondAttribute="trailing" id="oND-Zw-dj8"/>
+                    <constraint firstAttribute="bottom" secondItem="D0j-Kd-TPr" secondAttribute="bottom" id="pCX-6a-gYY"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="addressLabel" destination="q0l-Wl-U7L" id="HVa-AG-UVJ"/>
+                <outlet property="codeLabel" destination="qDH-QI-7ah" id="iJa-vq-spL"/>
+                <outlet property="statusLabel" destination="V70-l3-1Kx" id="Uav-JC-476"/>
+            </connections>
+            <point key="canvasLocation" x="152" y="180.35982008995504"/>
+        </tableViewCell>
+    </objects>
+</document>
