@@ -1,0 +1,14 @@
+disabled_rules:
+  - identifier_name
+  - trailing_whitespace
+  - line_length
+  - type_body_length
+  - file_length
+included:
+  - TesserCube
+excluded:
+  - Carthage
+  - Pods
+  - TesserCube/Resources
+  - TesserCube/Generated
+  - TesserCube/Vendor

@@ -1,0 +1,2436 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8304E995221BF10000122637 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8304E994221BF10000122637 /* AppDelegate.swift */; };
+		8304E99A221BF10000122637 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8304E998221BF10000122637 /* Main.storyboard */; };
+		8304E99C221BF10100122637 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8304E99B221BF10100122637 /* Assets.xcassets */; };
+		8304E99F221BF10100122637 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8304E99D221BF10100122637 /* LaunchScreen.storyboard */; };
+		8304E9AA221BF10200122637 /* TesserCubeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8304E9A9221BF10200122637 /* TesserCubeTests.swift */; };
+		8304E9B5221BF10200122637 /* TesserCubeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8304E9B4221BF10200122637 /* TesserCubeUITests.swift */; };
+		8304E9C7221BF1DD00122637 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8304E9C6221BF1DD00122637 /* AuthenticationServices.framework */; };
+		8310B34522325E0C00C35AEC /* String+Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8310B34422325E0C00C35AEC /* String+Compare.swift */; };
+		8313F6912247164000C09C2D /* FloatingAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F6902247164000C09C2D /* FloatingAction.swift */; };
+		8313F6932247165F00C09C2D /* FloatingActionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F6922247165F00C09C2D /* FloatingActionGroup.swift */; };
+		8313F69622475AC600C09C2D /* SharePublicKeyActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F69522475AC600C09C2D /* SharePublicKeyActivity.swift */; };
+		8313F69822476ADD00C09C2D /* ShareUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F69722476ADD00C09C2D /* ShareUtil.swift */; };
+		8313F69B22476F5500C09C2D /* SharePosterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F69A22476F5500C09C2D /* SharePosterViewController.swift */; };
+		8313F69D22477CA000C09C2D /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F69C22477CA000C09C2D /* UIViewController+Alert.swift */; };
+		8313F6A62247ACC800C09C2D /* TCErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F6A52247ACC800C09C2D /* TCErrors.swift */; };
+		83214684223F3BEE008ECC22 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83214683223F3BEE008ECC22 /* Coordinator.swift */; };
+		83214688223F40BC008ECC22 /* MainTabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83214687223F40BC008ECC22 /* MainTabbarViewController.swift */; };
+		83214695223F4CA0008ECC22 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83214694223F4CA0008ECC22 /* Assets.swift */; };
+		83214696223F4E31008ECC22 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 83214698223F4E31008ECC22 /* Localizable.strings */; };
+		8321469C223F5113008ECC22 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8321469E223F5113008ECC22 /* InfoPlist.strings */; };
+		832146A2223F5FCE008ECC22 /* ContactsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146A1223F5FCE008ECC22 /* ContactsListViewController.swift */; };
+		832146A5223F604F008ECC22 /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146A4223F604F008ECC22 /* BaseNavigationController.swift */; };
+		832146AA223F6756008ECC22 /* UIViewController+EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146A9223F6756008ECC22 /* UIViewController+EmptyView.swift */; };
+		832146AE223F7CD3008ECC22 /* MeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146AD223F7CD3008ECC22 /* MeViewController.swift */; };
+		832146B1223F7D98008ECC22 /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146B0223F7D98008ECC22 /* ProfileService.swift */; };
+		832146B3223F8725008ECC22 /* TCCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146B2223F8725008ECC22 /* TCCardView.swift */; };
+		832146B6223F89A8008ECC22 /* CALayer+Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146B5223F89A8008ECC22 /* CALayer+Shadow.swift */; };
+		832146BA223F8AA1008ECC22 /* KeyCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146B8223F8AA1008ECC22 /* KeyCardCell.swift */; };
+		832146BB223F8AA1008ECC22 /* KeyCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 832146B9223F8AA1008ECC22 /* KeyCardCell.xib */; };
+		832146BE223F957B008ECC22 /* MeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146BD223F957B008ECC22 /* MeViewModel.swift */; };
+		832146C5223FC9E4008ECC22 /* TCActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146C4223FC9E4008ECC22 /* TCActionButton.swift */; };
+		832146CB2240AEC0008ECC22 /* ImageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146CA2240AEC0008ECC22 /* ImageUtil.swift */; };
+		832146CD2240B135008ECC22 /* TCBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146CC2240B135008ECC22 /* TCBaseViewController.swift */; };
+		832146D82241D980008ECC22 /* ImportKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146D72241D980008ECC22 /* ImportKeyViewController.swift */; };
+		832146DA2241FAC6008ECC22 /* PasteKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146D92241FAC6008ECC22 /* PasteKeyViewController.swift */; };
+		832146E222422024008ECC22 /* TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146E122422024008ECC22 /* TCKey.swift */; };
+		832146E7224339EB008ECC22 /* CreateNewKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146E6224339EB008ECC22 /* CreateNewKeyViewController.swift */; };
+		832146F022437467008ECC22 /* SwitchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 832146EE22437467008ECC22 /* SwitchCell.xib */; };
+		832146F42243ACCE008ECC22 /* KeyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146F32243ACCE008ECC22 /* KeyFactory.swift */; };
+		832146FA2244CCF4008ECC22 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146F92244CCF4008ECC22 /* MessagesViewController.swift */; };
+		832146FC2244CD43008ECC22 /* MessagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146FB2244CD43008ECC22 /* MessagesViewModel.swift */; };
+		8325E46D222CBFBC00EE9B83 /* KeyboardLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E46C222CBFBC00EE9B83 /* KeyboardLayoutManager.swift */; };
+		8325E470222CC11800EE9B83 /* OptionFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E46F222CC11800EE9B83 /* OptionFieldView.swift */; };
+		8325E472222CCD4F00EE9B83 /* SuggestionStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E471222CCD4F00EE9B83 /* SuggestionStackView.swift */; };
+		8325E474222CCEB600EE9B83 /* ActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E473222CCEB600EE9B83 /* ActionsView.swift */; };
+		8325E477222CD0E700EE9B83 /* SeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E476222CD0E700EE9B83 /* SeparatorView.swift */; };
+		8325E479222CD48200EE9B83 /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E478222CD48200EE9B83 /* ActionButton.swift */; };
+		8325E47A222D001C00EE9B83 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8304E99B221BF10100122637 /* Assets.xcassets */; };
+		8325E47C222D10A500EE9B83 /* SuggestionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E47B222D10A500EE9B83 /* SuggestionButton.swift */; };
+		8325E47E222D254200EE9B83 /* UIImage+RoundCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E47D222D254200EE9B83 /* UIImage+RoundCorners.swift */; };
+		8325E486222E768500EE9B83 /* Debounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E485222E768500EE9B83 /* Debounce.swift */; };
+		8325E487222E768500EE9B83 /* Debounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E485222E768500EE9B83 /* Debounce.swift */; };
+		8325E48B222F6D4500EE9B83 /* RecipientCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E489222F6D4500EE9B83 /* RecipientCellTableViewCell.swift */; };
+		8325E48C222F6D4500EE9B83 /* RecipientCellTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8325E48A222F6D4500EE9B83 /* RecipientCellTableViewCell.xib */; };
+		8325E495222F8FBD00EE9B83 /* SF-Pro-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8325E48E222F8FBC00EE9B83 /* SF-Pro-Text-Regular.otf */; };
+		8325E496222F8FBD00EE9B83 /* SF-Pro-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8325E48E222F8FBC00EE9B83 /* SF-Pro-Text-Regular.otf */; };
+		8325E497222F8FBD00EE9B83 /* SF-Pro-Display-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8325E48F222F8FBC00EE9B83 /* SF-Pro-Display-Light.otf */; };
+		8325E498222F8FBD00EE9B83 /* SF-Pro-Display-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8325E48F222F8FBC00EE9B83 /* SF-Pro-Display-Light.otf */; };
+		8325E499222F8FBD00EE9B83 /* SF-Pro-Display-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8325E490222F8FBC00EE9B83 /* SF-Pro-Display-Regular.otf */; };
+		8325E49A222F8FBD00EE9B83 /* SF-Pro-Display-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8325E490222F8FBC00EE9B83 /* SF-Pro-Display-Regular.otf */; };
+		8325E49B222F8FBD00EE9B83 /* SF-Pro-Display-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8325E491222F8FBD00EE9B83 /* SF-Pro-Display-Bold.otf */; };
+		8325E49C222F8FBD00EE9B83 /* SF-Pro-Display-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8325E491222F8FBD00EE9B83 /* SF-Pro-Display-Bold.otf */; };
+		8325E49D222F8FBD00EE9B83 /* SF-Pro-Text-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8325E492222F8FBD00EE9B83 /* SF-Pro-Text-Semibold.otf */; };
+		8325E49E222F8FBD00EE9B83 /* SF-Pro-Text-Semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8325E492222F8FBD00EE9B83 /* SF-Pro-Text-Semibold.otf */; };
+		8325E49F222F8FBD00EE9B83 /* SF-Pro-Display-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8325E493222F8FBD00EE9B83 /* SF-Pro-Display-Medium.otf */; };
+		8325E4A0222F8FBD00EE9B83 /* SF-Pro-Display-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8325E493222F8FBD00EE9B83 /* SF-Pro-Display-Medium.otf */; };
+		8325E4A1222F8FBD00EE9B83 /* SourceCodePro-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8325E494222F8FBD00EE9B83 /* SourceCodePro-Medium.ttf */; };
+		8325E4A2222F8FBD00EE9B83 /* SourceCodePro-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8325E494222F8FBD00EE9B83 /* SourceCodePro-Medium.ttf */; };
+		8325E4A4222F8FDA00EE9B83 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E4A3222F8FDA00EE9B83 /* Fonts.swift */; };
+		8325E4A5222F8FDA00EE9B83 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E4A3222F8FDA00EE9B83 /* Fonts.swift */; };
+		8325E4A82230FEC500EE9B83 /* UIInputViewController+TextProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E4A72230FEC500EE9B83 /* UIInputViewController+TextProxy.swift */; };
+		8325E4AA22310B1900EE9B83 /* SuggestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E4A922310B1900EE9B83 /* SuggestHelper.swift */; };
+		833FF389224E3CBC00EFE0A9 /* ToastAlerter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FF388224E3CBC00EFE0A9 /* ToastAlerter.swift */; };
+		833FF38D224F97BD00EFE0A9 /* ProfileService+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FF38C224F97BD00EFE0A9 /* ProfileService+Message.swift */; };
+		833FF38E224F97BD00EFE0A9 /* ProfileService+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FF38C224F97BD00EFE0A9 /* ProfileService+Message.swift */; };
+		833FF391224F97D900EFE0A9 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FF390224F97D900EFE0A9 /* Message.swift */; };
+		833FF392224F97D900EFE0A9 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FF390224F97D900EFE0A9 /* Message.swift */; };
+		833FF394224F9D8100EFE0A9 /* KeyboardInterpretor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FF393224F9D8100EFE0A9 /* KeyboardInterpretor.swift */; };
+		833FF395224F9D8100EFE0A9 /* KeyboardInterpretor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FF393224F9D8100EFE0A9 /* KeyboardInterpretor.swift */; };
+		834CA61922659EE900AC8355 /* FullAccessHintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834CA61822659EE900AC8355 /* FullAccessHintView.swift */; };
+		837833552248840600F2C0BF /* TCTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837833542248840600F2C0BF /* TCTypes.swift */; };
+		837833562248840600F2C0BF /* TCTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837833542248840600F2C0BF /* TCTypes.swift */; };
+		837833582248897C00F2C0BF /* KeyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146F32243ACCE008ECC22 /* KeyFactory.swift */; };
+		837833592248898A00F2C0BF /* TCErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F6A52247ACC800C09C2D /* TCErrors.swift */; };
+		8378335A224889B100F2C0BF /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146B0223F7D98008ECC22 /* ProfileService.swift */; };
+		8378335E2248F1DE00F2C0BF /* HUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8378335D2248F1DE00F2C0BF /* HUD.swift */; };
+		837833632249C33B00F2C0BF /* TCDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837833622249C33B00F2C0BF /* TCDBManager.swift */; };
+		837833652249C34400F2C0BF /* TCDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837833622249C33B00F2C0BF /* TCDBManager.swift */; };
+		83783367224B232000F2C0BF /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146DF22421F93008ECC22 /* Contact.swift */; };
+		83783369224B32AC00F2C0BF /* PGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0758A1224493DB0046FBFD /* PGPUserIDTranslator.swift */; };
+		8378336B224B352500F2C0BF /* ContactListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8378336A224B352500F2C0BF /* ContactListViewModel.swift */; };
+		8378336D224B36A400F2C0BF /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8378336C224B36A400F2C0BF /* String+Localization.swift */; };
+		83783371224B384000F2C0BF /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8378336F224B384000F2C0BF /* ContactCell.swift */; };
+		83783372224B384000F2C0BF /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83783370224B384000F2C0BF /* ContactCell.xib */; };
+		83783375224B544100F2C0BF /* ListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83783374224B544100F2C0BF /* ListEmptyView.swift */; };
+		83783377224B9B9B00F2C0BF /* ContactDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83783376224B9B9B00F2C0BF /* ContactDetailViewController.swift */; };
+		83783379224BA43700F2C0BF /* ContactDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83783378224BA43700F2C0BF /* ContactDBAction.swift */; };
+		8378337A224BA43700F2C0BF /* ContactDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83783378224BA43700F2C0BF /* ContactDBAction.swift */; };
+		8378337C224C990100F2C0BF /* SourceCodePro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8378337B224C990100F2C0BF /* SourceCodePro-Regular.otf */; };
+		8378337D224C990100F2C0BF /* SourceCodePro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8378337B224C990100F2C0BF /* SourceCodePro-Regular.otf */; };
+		8378337F224CB06B00F2C0BF /* ContactEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8378337E224CB06B00F2C0BF /* ContactEditViewController.swift */; };
+		83783383224CB7F500F2C0BF /* strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83783382224CB7F400F2C0BF /* strings.swift */; };
+		83783384224CB7F700F2C0BF /* strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83783382224CB7F400F2C0BF /* strings.swift */; };
+		83783387224CC23400F2C0BF /* ContactEditTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83783385224CC23400F2C0BF /* ContactEditTextCell.swift */; };
+		83783388224CC23400F2C0BF /* ContactEditTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83783386224CC23400F2C0BF /* ContactEditTextCell.xib */; };
+		8378338C224DFED100F2C0BF /* SubKeyCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8378338A224DFED100F2C0BF /* SubKeyCardCell.swift */; };
+		8378338D224DFED100F2C0BF /* SubKeyCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8378338B224DFED100F2C0BF /* SubKeyCardCell.xib */; };
+		83B93D1F221CE06100F556C0 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D1E221CE06100F556C0 /* Application.swift */; };
+		83B93D22221CEB9800F556C0 /* UserDefaults+AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D21221CEB9800F556C0 /* UserDefaults+AppGroup.swift */; };
+		83B93D2D221D22FA00F556C0 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D2C221D22FA00F556C0 /* KeyboardViewController.swift */; };
+		83B93D31221D22FA00F556C0 /* TesserCubeKeyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 83B93D2A221D22FA00F556C0 /* TesserCubeKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		83B93D37221D2D0000F556C0 /* UserDefaults+AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D21221CEB9800F556C0 /* UserDefaults+AppGroup.swift */; };
+		83B93D3A221D486600F556C0 /* KeyboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D39221D486600F556C0 /* KeyboardModel.swift */; };
+		83B93D3C221D4AC900F556C0 /* DefaultKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D3B221D4AC900F556C0 /* DefaultKeyboard.swift */; };
+		83B93D3E221D4AED00F556C0 /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D3D221D4AED00F556C0 /* Direction.swift */; };
+		83B93D43221D7E4400F556C0 /* KeyboardKeyBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D42221D7E4400F556C0 /* KeyboardKeyBackground.swift */; };
+		83B93D45221D7E5700F556C0 /* KeyboardConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D44221D7E5700F556C0 /* KeyboardConnector.swift */; };
+		83B93D47221D7E7200F556C0 /* KeyboardKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D46221D7E7200F556C0 /* KeyboardKey.swift */; };
+		83B93D49221D7E8900F556C0 /* ImageKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D48221D7E8900F556C0 /* ImageKey.swift */; };
+		83B93D4B221D7EB000F556C0 /* Shapes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D4A221D7EB000F556C0 /* Shapes.swift */; };
+		83B93D4D221D844900F556C0 /* LayoutMetrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D4C221D844900F556C0 /* LayoutMetrics.swift */; };
+		83B93D4F221D89FD00F556C0 /* KeyboardLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D4E221D89FD00F556C0 /* KeyboardLayout.swift */; };
+		83B93D51221E2DCA00F556C0 /* KeyboardInputTraits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D50221E2DCA00F556C0 /* KeyboardInputTraits.swift */; };
+		83B93D53221E33C600F556C0 /* ForwardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D52221E33C600F556C0 /* ForwardingView.swift */; };
+		83B93D55221E546C00F556C0 /* KeyboardModeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D54221E546C00F556C0 /* KeyboardModeManager.swift */; };
+		83B93D58221E570200F556C0 /* RecipientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D57221E570200F556C0 /* RecipientButton.swift */; };
+		83B93D5B221E575500F556C0 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D5A221E575500F556C0 /* Theme.swift */; };
+		83B93D5D221E6D0B00F556C0 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D5C221E6D0B00F556C0 /* UIImage+Color.swift */; };
+		83B93D5E221E6D1E00F556C0 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D5C221E6D0B00F556C0 /* UIImage+Color.swift */; };
+		83B93D61221E710300F556C0 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D60221E710300F556C0 /* UIColorExtension.swift */; };
+		83B93D63221E71CC00F556C0 /* SelectedRecipientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D62221E71CC00F556C0 /* SelectedRecipientView.swift */; };
+		83B93D65221E825300F556C0 /* DoneActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D64221E825300F556C0 /* DoneActionButton.swift */; };
+		83B93E882223CCF700F556C0 /* RecipientInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93E872223CCF700F556C0 /* RecipientInputView.swift */; };
+		83B93E8A222411C300F556C0 /* UIView+blinking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93E89222411C300F556C0 /* UIView+blinking.swift */; };
+		83B93ED9222528AD00F556C0 /* RecommendRecipientsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93ED8222528AD00F556C0 /* RecommendRecipientsView.swift */; };
+		83DFC72C2252EF3100993160 /* KeyRecordDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFC72B2252EF3100993160 /* KeyRecordDBAction.swift */; };
+		83DFC72D2252EF3100993160 /* KeyRecordDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFC72B2252EF3100993160 /* KeyRecordDBAction.swift */; };
+		83DFC73722577B9800993160 /* WormHole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFC73622577B9800993160 /* WormHole.swift */; };
+		83DFC738225789C700993160 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 83214698223F4E31008ECC22 /* Localizable.strings */; };
+		83DFC73B22578ED800993160 /* InterpretFailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFC73A22578ED800993160 /* InterpretFailView.swift */; };
+		83DFC73C2258D0EF00993160 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83214694223F4CA0008ECC22 /* Assets.swift */; };
+		83DFC73E2259BF6D00993160 /* InterpretResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFC73D2259BF6D00993160 /* InterpretResultView.swift */; };
+		83DFC73F2259F0E700993160 /* TCCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146B2223F8725008ECC22 /* TCCardView.swift */; };
+		83DFC7402259F0EC00993160 /* CALayer+Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146B5223F89A8008ECC22 /* CALayer+Shadow.swift */; };
+		83FF06582250D9DA0003BC0D /* MessageDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF06572250D9DA0003BC0D /* MessageDBAction.swift */; };
+		83FF06592250D9DA0003BC0D /* MessageDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF06572250D9DA0003BC0D /* MessageDBAction.swift */; };
+		C5D98E8849B78D615F101C81 /* Pods_TesserCubeKeyboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E62BCA2B022300EA53474B /* Pods_TesserCubeKeyboard.framework */; };
+		DB0758A2224493DB0046FBFD /* PGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0758A1224493DB0046FBFD /* PGPUserIDTranslator.swift */; };
+		DB0758D0224895B40046FBFD /* MessageCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0758CF224895B40046FBFD /* MessageCardCell.swift */; };
+		DB1327152253651C00BD7B98 /* KeyBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1327142253651C00BD7B98 /* KeyBridge.swift */; };
+		DB1327162253651C00BD7B98 /* KeyBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1327142253651C00BD7B98 /* KeyBridge.swift */; };
+		DB3B58D12280180A00879834 /* WizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3B58D02280180A00879834 /* WizardViewController.swift */; };
+		DB3B58DA228126EC00879834 /* WizardCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3B58D9228126EC00879834 /* WizardCollectionViewController.swift */; };
+		DB3B58DC2281280700879834 /* WizardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3B58DB2281280700879834 /* WizardCollectionViewCell.swift */; };
+		DB3B58E22282929700879834 /* WormholdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3B58E12282929700879834 /* WormholdService.swift */; };
+		DB3B58E52282930600879834 /* WormholdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3B58E12282929700879834 /* WormholdService.swift */; };
+		DB449989228C038E000B7E8A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB449988228C038E000B7E8A /* SettingsViewController.swift */; };
+		DB449990228C13CA000B7E8A /* MessageDigitalSignatureSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB44998F228C13CA000B7E8A /* MessageDigitalSignatureSettings.swift */; };
+		DB449991228C1417000B7E8A /* MessageDigitalSignatureSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB44998F228C13CA000B7E8A /* MessageDigitalSignatureSettings.swift */; };
+		DB449995228C1CEF000B7E8A /* SettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB449994228C1CEF000B7E8A /* SettingsTableViewCell.swift */; };
+		DB44999A228C244F000B7E8A /* MessageDigitalSignatureSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB449999228C244F000B7E8A /* MessageDigitalSignatureSettingsViewController.swift */; };
+		DB44999C228C248D000B7E8A /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB44999B228C248D000B7E8A /* SettingsViewModel.swift */; };
+		DB44999E228D3353000B7E8A /* MessageDigitalSignatureSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB44999D228D3353000B7E8A /* MessageDigitalSignatureSettingsViewModel.swift */; };
+		DB4CBCA8224F932B00ED6BF0 /* InterpretMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4CBCA7224F932B00ED6BF0 /* InterpretMessageViewController.swift */; };
+		DB4CBCAA224F962A00ED6BF0 /* InterpretMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4CBCA9224F962A00ED6BF0 /* InterpretMessageViewModel.swift */; };
+		DB4F300122A11F820003804B /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146DF22421F93008ECC22 /* Contact.swift */; };
+		DB4F300322A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F300222A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift */; };
+		DB4F300422A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F300222A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift */; };
+		DB4F309422A145A00003804B /* AppSecret.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F309322A145A00003804B /* AppSecret.swift */; };
+		DB4F309522A145A00003804B /* AppSecret.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F309322A145A00003804B /* AppSecret.swift */; };
+		DB4F309822A14C0D0003804B /* DMSPGPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F309722A14C0D0003804B /* DMSPGPError.swift */; };
+		DB4F309922A14C0D0003804B /* DMSPGPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F309722A14C0D0003804B /* DMSPGPError.swift */; };
+		DB66FE67224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE66224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift */; };
+		DB66FE6A224A330D00D82704 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE69224A330D00D82704 /* String.swift */; };
+		DB66FE6D224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE6C224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift */; };
+		DB66FE6F224A3CD600D82704 /* SenderContactPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE6E224A3CD600D82704 /* SenderContactPickerView.swift */; };
+		DB6AA3EA2273218C00A7ADDF /* KeyFactory+BCOpenPGP.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6AA3E92273218C00A7ADDF /* KeyFactory+BCOpenPGP.swift */; };
+		DB6AA3ED2273247C00A7ADDF /* KeyFactory+BCOpenPGP.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6AA3E92273218C00A7ADDF /* KeyFactory+BCOpenPGP.swift */; };
+		DB6AA3F42275B69C00A7ADDF /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE69224A330D00D82704 /* String.swift */; };
+		DB75454B2296A7C400B4E1EF /* CreateKeyOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB75454A2296A7C400B4E1EF /* CreateKeyOption.swift */; };
+		DBB81AE1225DFF7A003D63C6 /* UIScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB81AE0225DFF7A003D63C6 /* UIScreen.swift */; };
+		DBBA87F62248B8F500B290AC /* ComposeMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBA87F52248B8F500B290AC /* ComposeMessageViewController.swift */; };
+		DBBBC195224E29D70080790F /* KeychainMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBBC194224E29D70080790F /* KeychainMappable.swift */; };
+		DBBBC196224E29D70080790F /* KeychainMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBBC194224E29D70080790F /* KeychainMappable.swift */; };
+		DBBBC198224E29E50080790F /* ContactMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBBC197224E29E50080790F /* ContactMappable.swift */; };
+		DBBBC199224E29E50080790F /* ContactMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBBC197224E29E50080790F /* ContactMappable.swift */; };
+		DBC7DEBD2248C7F600DA4C3E /* RecipientContactPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC7DEBC2248C7F600DA4C3E /* RecipientContactPickerView.swift */; };
+		DBC7DEC12248D49E00DA4C3E /* ComposeMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC7DEC02248D49E00DA4C3E /* ComposeMessageViewModel.swift */; };
+		DBD63FDD229682E400E46FDC /* KeyFactory+TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */; };
+		DBD63FE02296864200E46FDC /* KeyFactory+TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */; };
+		DBE13D79224CCC0B004850A6 /* TCDBManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE13D78224CCC0B004850A6 /* TCDBManagerTests.swift */; };
+		DBFC72A72272DEA300860C34 /* TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146E122422024008ECC22 /* TCKey.swift */; };
+		E1274EE8AEE0608EE39A1F31 /* Pods_TesserCube.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 829EC06ABC2887E5DB724F5B /* Pods_TesserCube.framework */; };
+		E605970E17096EDED17503F3 /* Pods_TesserCubeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F203D9B4CDFBB0FD0E45FB6D /* Pods_TesserCubeTests.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		8304E9A6221BF10200122637 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8304E989221BF10000122637 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8304E990221BF10000122637;
+			remoteInfo = TesserCube;
+		};
+		8304E9B1221BF10200122637 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8304E989221BF10000122637 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8304E990221BF10000122637;
+			remoteInfo = TesserCube;
+		};
+		83B93D2F221D22FA00F556C0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8304E989221BF10000122637 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 83B93D29221D22FA00F556C0;
+			remoteInfo = TesserCubeKeyboard;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		83B93D35221D22FA00F556C0 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				83B93D31221D22FA00F556C0 /* TesserCubeKeyboard.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		23A4444BC35B6DAB5A8039E3 /* Pods-TesserCubeKeyboard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeKeyboard.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeKeyboard/Pods-TesserCubeKeyboard.release.xcconfig"; sourceTree = "<group>"; };
+		34254D2B33B9D38AA6A8B02B /* Pods-TesserCubeKeyboard.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeKeyboard.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeKeyboard/Pods-TesserCubeKeyboard.debug stub.xcconfig"; sourceTree = "<group>"; };
+		433A84EFFA67237E885331BD /* Pods-TesserCubeTests.debug pgp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.debug pgp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.debug pgp.xcconfig"; sourceTree = "<group>"; };
+		54E62BCA2B022300EA53474B /* Pods_TesserCubeKeyboard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesserCubeKeyboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		55827FE378FDFCA0E1177DDA /* Pods-TesserCubeKeyboard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeKeyboard.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeKeyboard/Pods-TesserCubeKeyboard.debug.xcconfig"; sourceTree = "<group>"; };
+		6AAD1C52FBF55BCAC977EEFC /* Pods-TesserCube.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.release.xcconfig"; sourceTree = "<group>"; };
+		829EC06ABC2887E5DB724F5B /* Pods_TesserCube.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesserCube.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8304E991221BF10000122637 /* TesserCube.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TesserCube.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8304E994221BF10000122637 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		8304E999221BF10000122637 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8304E99B221BF10100122637 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		8304E99E221BF10100122637 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8304E9A0221BF10100122637 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8304E9A5221BF10200122637 /* TesserCubeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TesserCubeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8304E9A9221BF10200122637 /* TesserCubeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TesserCubeTests.swift; sourceTree = "<group>"; };
+		8304E9AB221BF10200122637 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8304E9B0221BF10200122637 /* TesserCubeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TesserCubeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8304E9B4221BF10200122637 /* TesserCubeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TesserCubeUITests.swift; sourceTree = "<group>"; };
+		8304E9B6221BF10200122637 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8304E9C4221BF1CD00122637 /* TesserCube.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TesserCube.entitlements; sourceTree = "<group>"; };
+		8304E9C6221BF1DD00122637 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
+		8310B34422325E0C00C35AEC /* String+Compare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Compare.swift"; sourceTree = "<group>"; };
+		8313F6902247164000C09C2D /* FloatingAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingAction.swift; sourceTree = "<group>"; };
+		8313F6922247165F00C09C2D /* FloatingActionGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingActionGroup.swift; sourceTree = "<group>"; };
+		8313F69522475AC600C09C2D /* SharePublicKeyActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePublicKeyActivity.swift; sourceTree = "<group>"; };
+		8313F69722476ADD00C09C2D /* ShareUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareUtil.swift; sourceTree = "<group>"; };
+		8313F69A22476F5500C09C2D /* SharePosterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePosterViewController.swift; sourceTree = "<group>"; };
+		8313F69C22477CA000C09C2D /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
+		8313F6A52247ACC800C09C2D /* TCErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCErrors.swift; sourceTree = "<group>"; };
+		83214683223F3BEE008ECC22 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		83214687223F40BC008ECC22 /* MainTabbarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabbarViewController.swift; sourceTree = "<group>"; };
+		83214694223F4CA0008ECC22 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
+		83214697223F4E31008ECC22 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		83214699223F4E34008ECC22 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		8321469D223F5113008ECC22 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		8321469F223F5114008ECC22 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		832146A1223F5FCE008ECC22 /* ContactsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsListViewController.swift; sourceTree = "<group>"; };
+		832146A4223F604F008ECC22 /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
+		832146A9223F6756008ECC22 /* UIViewController+EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+EmptyView.swift"; sourceTree = "<group>"; };
+		832146AD223F7CD3008ECC22 /* MeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeViewController.swift; sourceTree = "<group>"; };
+		832146B0223F7D98008ECC22 /* ProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileService.swift; sourceTree = "<group>"; };
+		832146B2223F8725008ECC22 /* TCCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCCardView.swift; sourceTree = "<group>"; };
+		832146B5223F89A8008ECC22 /* CALayer+Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Shadow.swift"; sourceTree = "<group>"; };
+		832146B8223F8AA1008ECC22 /* KeyCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyCardCell.swift; sourceTree = "<group>"; };
+		832146B9223F8AA1008ECC22 /* KeyCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = KeyCardCell.xib; sourceTree = "<group>"; };
+		832146BD223F957B008ECC22 /* MeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeViewModel.swift; sourceTree = "<group>"; };
+		832146C4223FC9E4008ECC22 /* TCActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCActionButton.swift; sourceTree = "<group>"; };
+		832146CA2240AEC0008ECC22 /* ImageUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUtil.swift; sourceTree = "<group>"; };
+		832146CC2240B135008ECC22 /* TCBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCBaseViewController.swift; sourceTree = "<group>"; };
+		832146CF2240C2D0008ECC22 /* Tessercube-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tessercube-Bridging-Header.h"; sourceTree = "<group>"; };
+		832146D72241D980008ECC22 /* ImportKeyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportKeyViewController.swift; sourceTree = "<group>"; };
+		832146D92241FAC6008ECC22 /* PasteKeyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteKeyViewController.swift; sourceTree = "<group>"; };
+		832146DF22421F93008ECC22 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
+		832146E122422024008ECC22 /* TCKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCKey.swift; sourceTree = "<group>"; };
+		832146E6224339EB008ECC22 /* CreateNewKeyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewKeyViewController.swift; sourceTree = "<group>"; };
+		832146EE22437467008ECC22 /* SwitchCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SwitchCell.xib; sourceTree = "<group>"; };
+		832146F32243ACCE008ECC22 /* KeyFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyFactory.swift; sourceTree = "<group>"; };
+		832146F92244CCF4008ECC22 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
+		832146FB2244CD43008ECC22 /* MessagesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewModel.swift; sourceTree = "<group>"; };
+		8325E46C222CBFBC00EE9B83 /* KeyboardLayoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLayoutManager.swift; sourceTree = "<group>"; };
+		8325E46F222CC11800EE9B83 /* OptionFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionFieldView.swift; sourceTree = "<group>"; };
+		8325E471222CCD4F00EE9B83 /* SuggestionStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionStackView.swift; sourceTree = "<group>"; };
+		8325E473222CCEB600EE9B83 /* ActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsView.swift; sourceTree = "<group>"; };
+		8325E476222CD0E700EE9B83 /* SeparatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeparatorView.swift; sourceTree = "<group>"; };
+		8325E478222CD48200EE9B83 /* ActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
+		8325E47B222D10A500EE9B83 /* SuggestionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionButton.swift; sourceTree = "<group>"; };
+		8325E47D222D254200EE9B83 /* UIImage+RoundCorners.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+RoundCorners.swift"; sourceTree = "<group>"; };
+		8325E485222E768500EE9B83 /* Debounce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debounce.swift; sourceTree = "<group>"; };
+		8325E489222F6D4500EE9B83 /* RecipientCellTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientCellTableViewCell.swift; sourceTree = "<group>"; };
+		8325E48A222F6D4500EE9B83 /* RecipientCellTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RecipientCellTableViewCell.xib; sourceTree = "<group>"; };
+		8325E48E222F8FBC00EE9B83 /* SF-Pro-Text-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Regular.otf"; sourceTree = "<group>"; };
+		8325E48F222F8FBC00EE9B83 /* SF-Pro-Display-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Light.otf"; sourceTree = "<group>"; };
+		8325E490222F8FBC00EE9B83 /* SF-Pro-Display-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Regular.otf"; sourceTree = "<group>"; };
+		8325E491222F8FBD00EE9B83 /* SF-Pro-Display-Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Bold.otf"; sourceTree = "<group>"; };
+		8325E492222F8FBD00EE9B83 /* SF-Pro-Text-Semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Semibold.otf"; sourceTree = "<group>"; };
+		8325E493222F8FBD00EE9B83 /* SF-Pro-Display-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Medium.otf"; sourceTree = "<group>"; };
+		8325E494222F8FBD00EE9B83 /* SourceCodePro-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceCodePro-Medium.ttf"; sourceTree = "<group>"; };
+		8325E4A3222F8FDA00EE9B83 /* Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		8325E4A72230FEC500EE9B83 /* UIInputViewController+TextProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIInputViewController+TextProxy.swift"; sourceTree = "<group>"; };
+		8325E4A922310B1900EE9B83 /* SuggestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestHelper.swift; sourceTree = "<group>"; };
+		833FF388224E3CBC00EFE0A9 /* ToastAlerter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastAlerter.swift; sourceTree = "<group>"; };
+		833FF38C224F97BD00EFE0A9 /* ProfileService+Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileService+Message.swift"; sourceTree = "<group>"; };
+		833FF390224F97D900EFE0A9 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		833FF393224F9D8100EFE0A9 /* KeyboardInterpretor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardInterpretor.swift; sourceTree = "<group>"; };
+		834CA61822659EE900AC8355 /* FullAccessHintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullAccessHintView.swift; sourceTree = "<group>"; };
+		837833542248840600F2C0BF /* TCTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCTypes.swift; sourceTree = "<group>"; };
+		8378335D2248F1DE00F2C0BF /* HUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUD.swift; sourceTree = "<group>"; };
+		837833622249C33B00F2C0BF /* TCDBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCDBManager.swift; sourceTree = "<group>"; };
+		8378336A224B352500F2C0BF /* ContactListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactListViewModel.swift; sourceTree = "<group>"; };
+		8378336C224B36A400F2C0BF /* String+Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Localization.swift"; sourceTree = "<group>"; };
+		8378336F224B384000F2C0BF /* ContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
+		83783370224B384000F2C0BF /* ContactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
+		83783374224B544100F2C0BF /* ListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListEmptyView.swift; sourceTree = "<group>"; };
+		83783376224B9B9B00F2C0BF /* ContactDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailViewController.swift; sourceTree = "<group>"; };
+		83783378224BA43700F2C0BF /* ContactDBAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDBAction.swift; sourceTree = "<group>"; };
+		8378337B224C990100F2C0BF /* SourceCodePro-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceCodePro-Regular.otf"; sourceTree = "<group>"; };
+		8378337E224CB06B00F2C0BF /* ContactEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactEditViewController.swift; sourceTree = "<group>"; };
+		83783382224CB7F400F2C0BF /* strings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = strings.swift; sourceTree = "<group>"; };
+		83783385224CC23400F2C0BF /* ContactEditTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactEditTextCell.swift; sourceTree = "<group>"; };
+		83783386224CC23400F2C0BF /* ContactEditTextCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactEditTextCell.xib; sourceTree = "<group>"; };
+		8378338A224DFED100F2C0BF /* SubKeyCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubKeyCardCell.swift; sourceTree = "<group>"; };
+		8378338B224DFED100F2C0BF /* SubKeyCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SubKeyCardCell.xib; sourceTree = "<group>"; };
+		83B93D0D221CDC0200F556C0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
+		83B93D0E221CDC0200F556C0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		83B93D1E221CE06100F556C0 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
+		83B93D21221CEB9800F556C0 /* UserDefaults+AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+AppGroup.swift"; sourceTree = "<group>"; };
+		83B93D2A221D22FA00F556C0 /* TesserCubeKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TesserCubeKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		83B93D2C221D22FA00F556C0 /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
+		83B93D2E221D22FA00F556C0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		83B93D36221D231100F556C0 /* TesserCubeKeyboard.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TesserCubeKeyboard.entitlements; sourceTree = "<group>"; };
+		83B93D39221D486600F556C0 /* KeyboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardModel.swift; sourceTree = "<group>"; };
+		83B93D3B221D4AC900F556C0 /* DefaultKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultKeyboard.swift; sourceTree = "<group>"; };
+		83B93D3D221D4AED00F556C0 /* Direction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
+		83B93D42221D7E4400F556C0 /* KeyboardKeyBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardKeyBackground.swift; sourceTree = "<group>"; };
+		83B93D44221D7E5700F556C0 /* KeyboardConnector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardConnector.swift; sourceTree = "<group>"; };
+		83B93D46221D7E7200F556C0 /* KeyboardKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardKey.swift; sourceTree = "<group>"; };
+		83B93D48221D7E8900F556C0 /* ImageKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageKey.swift; sourceTree = "<group>"; };
+		83B93D4A221D7EB000F556C0 /* Shapes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shapes.swift; sourceTree = "<group>"; };
+		83B93D4C221D844900F556C0 /* LayoutMetrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutMetrics.swift; sourceTree = "<group>"; };
+		83B93D4E221D89FD00F556C0 /* KeyboardLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLayout.swift; sourceTree = "<group>"; };
+		83B93D50221E2DCA00F556C0 /* KeyboardInputTraits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardInputTraits.swift; sourceTree = "<group>"; };
+		83B93D52221E33C600F556C0 /* ForwardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForwardingView.swift; sourceTree = "<group>"; };
+		83B93D54221E546C00F556C0 /* KeyboardModeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardModeManager.swift; sourceTree = "<group>"; };
+		83B93D57221E570200F556C0 /* RecipientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientButton.swift; sourceTree = "<group>"; };
+		83B93D5A221E575500F556C0 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		83B93D5C221E6D0B00F556C0 /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
+		83B93D60221E710300F556C0 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		83B93D62221E71CC00F556C0 /* SelectedRecipientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedRecipientView.swift; sourceTree = "<group>"; };
+		83B93D64221E825300F556C0 /* DoneActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneActionButton.swift; sourceTree = "<group>"; };
+		83B93E872223CCF700F556C0 /* RecipientInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientInputView.swift; sourceTree = "<group>"; };
+		83B93E89222411C300F556C0 /* UIView+blinking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+blinking.swift"; sourceTree = "<group>"; };
+		83B93ED8222528AD00F556C0 /* RecommendRecipientsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendRecipientsView.swift; sourceTree = "<group>"; };
+		83DFC72B2252EF3100993160 /* KeyRecordDBAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyRecordDBAction.swift; sourceTree = "<group>"; };
+		83DFC73622577B9800993160 /* WormHole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WormHole.swift; sourceTree = "<group>"; };
+		83DFC73A22578ED800993160 /* InterpretFailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretFailView.swift; sourceTree = "<group>"; };
+		83DFC73D2259BF6D00993160 /* InterpretResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretResultView.swift; sourceTree = "<group>"; };
+		83FF06572250D9DA0003BC0D /* MessageDBAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDBAction.swift; sourceTree = "<group>"; };
+		84957C7609515FCFA95F42A3 /* Pods-TesserCubeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.release.xcconfig"; sourceTree = "<group>"; };
+		9B17EDD1F3A38E5966DCBA34 /* Pods-TesserCubeTests.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.debug stub.xcconfig"; sourceTree = "<group>"; };
+		9C1A99D94821B29F622B677D /* Pods-TesserCube.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.debug stub.xcconfig"; sourceTree = "<group>"; };
+		B9140FA57B00A5B2BD89FABF /* Pods-TesserCube.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.debug.xcconfig"; sourceTree = "<group>"; };
+		BA307858963D472080CE0E2A /* Pods-TesserCubeKeyboard.debug pgp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeKeyboard.debug pgp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeKeyboard/Pods-TesserCubeKeyboard.debug pgp.xcconfig"; sourceTree = "<group>"; };
+		C0A9D10AB1612B0483E24D78 /* Pods-TesserCube.debug pgp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.debug pgp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.debug pgp.xcconfig"; sourceTree = "<group>"; };
+		DB0758A1224493DB0046FBFD /* PGPUserIDTranslator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGPUserIDTranslator.swift; sourceTree = "<group>"; };
+		DB0758CF224895B40046FBFD /* MessageCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCardCell.swift; sourceTree = "<group>"; };
+		DB1327142253651C00BD7B98 /* KeyBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBridge.swift; sourceTree = "<group>"; };
+		DB3B58D02280180A00879834 /* WizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WizardViewController.swift; sourceTree = "<group>"; };
+		DB3B58D9228126EC00879834 /* WizardCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WizardCollectionViewController.swift; sourceTree = "<group>"; };
+		DB3B58DB2281280700879834 /* WizardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WizardCollectionViewCell.swift; sourceTree = "<group>"; };
+		DB3B58E12282929700879834 /* WormholdService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WormholdService.swift; sourceTree = "<group>"; };
+		DB449988228C038E000B7E8A /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		DB44998F228C13CA000B7E8A /* MessageDigitalSignatureSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDigitalSignatureSettings.swift; sourceTree = "<group>"; };
+		DB449994228C1CEF000B7E8A /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
+		DB449999228C244F000B7E8A /* MessageDigitalSignatureSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDigitalSignatureSettingsViewController.swift; sourceTree = "<group>"; };
+		DB44999B228C248D000B7E8A /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		DB44999D228D3353000B7E8A /* MessageDigitalSignatureSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDigitalSignatureSettingsViewModel.swift; sourceTree = "<group>"; };
+		DB4CBCA7224F932B00ED6BF0 /* InterpretMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretMessageViewController.swift; sourceTree = "<group>"; };
+		DB4CBCA9224F962A00ED6BF0 /* InterpretMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretMessageViewModel.swift; sourceTree = "<group>"; };
+		DB4F300222A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSPGPPublicKeyAlgorithm.swift; sourceTree = "<group>"; };
+		DB4F309322A145A00003804B /* AppSecret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSecret.swift; sourceTree = "<group>"; };
+		DB4F309722A14C0D0003804B /* DMSPGPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSPGPError.swift; sourceTree = "<group>"; };
+		DB66FE66224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPickerTagCollectionViewCell.swift; sourceTree = "<group>"; };
+		DB66FE69224A330D00D82704 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		DB66FE6C224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPickerTextFieldCollectionViewCell.swift; sourceTree = "<group>"; };
+		DB66FE6E224A3CD600D82704 /* SenderContactPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderContactPickerView.swift; sourceTree = "<group>"; };
+		DB6AA3E92273218C00A7ADDF /* KeyFactory+BCOpenPGP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyFactory+BCOpenPGP.swift"; sourceTree = "<group>"; };
+		DB75454A2296A7C400B4E1EF /* CreateKeyOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateKeyOption.swift; sourceTree = "<group>"; };
+		DB9C11EA2292A36E00801BE0 /* DMSPGPKeyRingFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSPGPKeyRingFactory.swift; sourceTree = "<group>"; };
+		DBB81AE0225DFF7A003D63C6 /* UIScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScreen.swift; sourceTree = "<group>"; };
+		DBBA87F52248B8F500B290AC /* ComposeMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeMessageViewController.swift; sourceTree = "<group>"; };
+		DBBBC194224E29D70080790F /* KeychainMappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMappable.swift; sourceTree = "<group>"; };
+		DBBBC197224E29E50080790F /* ContactMappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactMappable.swift; sourceTree = "<group>"; };
+		DBC7DEBC2248C7F600DA4C3E /* RecipientContactPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientContactPickerView.swift; sourceTree = "<group>"; };
+		DBC7DEC02248D49E00DA4C3E /* ComposeMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeMessageViewModel.swift; sourceTree = "<group>"; };
+		DBD638E5227EDC6B00E10BF2 /* JRE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JRE.framework; path = "../../../Java/j2objc-2.4/frameworks/JRE.framework"; sourceTree = "<group>"; };
+		DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyFactory+TCKey.swift"; sourceTree = "<group>"; };
+		DBE13D78224CCC0B004850A6 /* TCDBManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCDBManagerTests.swift; sourceTree = "<group>"; };
+		ED5112F3F342C6B4F96019B9 /* Pods-TesserCubeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.debug.xcconfig"; sourceTree = "<group>"; };
+		F203D9B4CDFBB0FD0E45FB6D /* Pods_TesserCubeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesserCubeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8304E98E221BF10000122637 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8304E9C7221BF1DD00122637 /* AuthenticationServices.framework in Frameworks */,
+				E1274EE8AEE0608EE39A1F31 /* Pods_TesserCube.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8304E9A2221BF10200122637 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E605970E17096EDED17503F3 /* Pods_TesserCubeTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8304E9AD221BF10200122637 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		83B93D27221D22FA00F556C0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C5D98E8849B78D615F101C81 /* Pods_TesserCubeKeyboard.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8304E988221BF10000122637 = {
+			isa = PBXGroup;
+			children = (
+				8304E993221BF10000122637 /* TesserCube */,
+				8304E9A8221BF10200122637 /* TesserCubeTests */,
+				8304E9B3221BF10200122637 /* TesserCubeUITests */,
+				83B93D2B221D22FA00F556C0 /* TesserCubeKeyboard */,
+				8304E992221BF10000122637 /* Products */,
+				8304E9C5221BF1DD00122637 /* Frameworks */,
+				D1FFF0FDB0B433C2937C6F21 /* Pods */,
+				8315F0F12293C268006F0787 /* Recovered References */,
+			);
+			sourceTree = "<group>";
+		};
+		8304E992221BF10000122637 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8304E991221BF10000122637 /* TesserCube.app */,
+				8304E9A5221BF10200122637 /* TesserCubeTests.xctest */,
+				8304E9B0221BF10200122637 /* TesserCubeUITests.xctest */,
+				83B93D2A221D22FA00F556C0 /* TesserCubeKeyboard.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8304E993221BF10000122637 /* TesserCube */ = {
+			isa = PBXGroup;
+			children = (
+				832146DD22421F81008ECC22 /* Model */,
+				832146AF223F7D89008ECC22 /* Service */,
+				832146BC223F955D008ECC22 /* ViewModel */,
+				83214685223F4011008ECC22 /* Scene */,
+				832146D12240CB42008ECC22 /* Crypto */,
+				8378335C22488A8A00F2C0BF /* Database */,
+				8313F69422475A9000C09C2D /* Share */,
+				8321462F223F30AE008ECC22 /* Vendor */,
+				83B93D1D221CE05300F556C0 /* Application */,
+				83B93D20221CEB8500F556C0 /* Extension */,
+				83B93ED52224CA9100F556C0 /* Generated */,
+				83B93D12221CDC3D00F556C0 /* Resources */,
+				83B93D11221CDC3400F556C0 /* Support Files */,
+				8304E9C4221BF1CD00122637 /* TesserCube.entitlements */,
+				8304E9A0221BF10100122637 /* Info.plist */,
+			);
+			path = TesserCube;
+			sourceTree = "<group>";
+		};
+		8304E9A8221BF10200122637 /* TesserCubeTests */ = {
+			isa = PBXGroup;
+			children = (
+				8304E9AB221BF10200122637 /* Info.plist */,
+				8304E9A9221BF10200122637 /* TesserCubeTests.swift */,
+				DBE13D78224CCC0B004850A6 /* TCDBManagerTests.swift */,
+			);
+			path = TesserCubeTests;
+			sourceTree = "<group>";
+		};
+		8304E9B3221BF10200122637 /* TesserCubeUITests */ = {
+			isa = PBXGroup;
+			children = (
+				8304E9B4221BF10200122637 /* TesserCubeUITests.swift */,
+				8304E9B6221BF10200122637 /* Info.plist */,
+			);
+			path = TesserCubeUITests;
+			sourceTree = "<group>";
+		};
+		8304E9C5221BF1DD00122637 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DBD638E5227EDC6B00E10BF2 /* JRE.framework */,
+				8304E9C6221BF1DD00122637 /* AuthenticationServices.framework */,
+				829EC06ABC2887E5DB724F5B /* Pods_TesserCube.framework */,
+				54E62BCA2B022300EA53474B /* Pods_TesserCubeKeyboard.framework */,
+				F203D9B4CDFBB0FD0E45FB6D /* Pods_TesserCubeTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8313F68F2247162F00C09C2D /* FloatingActionSheetController */ = {
+			isa = PBXGroup;
+			children = (
+				8313F6902247164000C09C2D /* FloatingAction.swift */,
+				8313F6922247165F00C09C2D /* FloatingActionGroup.swift */,
+			);
+			path = FloatingActionSheetController;
+			sourceTree = "<group>";
+		};
+		8313F69422475A9000C09C2D /* Share */ = {
+			isa = PBXGroup;
+			children = (
+				8313F69522475AC600C09C2D /* SharePublicKeyActivity.swift */,
+				8313F69722476ADD00C09C2D /* ShareUtil.swift */,
+			);
+			path = Share;
+			sourceTree = "<group>";
+		};
+		8313F69922476F4800C09C2D /* Share */ = {
+			isa = PBXGroup;
+			children = (
+				8313F69A22476F5500C09C2D /* SharePosterViewController.swift */,
+			);
+			path = Share;
+			sourceTree = "<group>";
+		};
+		8315F0F12293C268006F0787 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				DB9C11EA2292A36E00801BE0 /* DMSPGPKeyRingFactory.swift */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		8321462F223F30AE008ECC22 /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				8313F68F2247162F00C09C2D /* FloatingActionSheetController */,
+				832146C92240AEAA008ECC22 /* SwiftyButton */,
+			);
+			path = Vendor;
+			sourceTree = "<group>";
+		};
+		83214685223F4011008ECC22 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				83214686223F4019008ECC22 /* MainTab */,
+				832146A0223F5FBE008ECC22 /* Contacts */,
+				832146F82244CCD2008ECC22 /* Messages */,
+				832146AC223F7CCA008ECC22 /* Me */,
+				8313F69922476F4800C09C2D /* Share */,
+				832146A3223F6045008ECC22 /* Base */,
+				832146A7223F65CB008ECC22 /* Common */,
+				DB3B58D42280181400879834 /* Wizard */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		83214686223F4019008ECC22 /* MainTab */ = {
+			isa = PBXGroup;
+			children = (
+				83214687223F40BC008ECC22 /* MainTabbarViewController.swift */,
+			);
+			path = MainTab;
+			sourceTree = "<group>";
+		};
+		832146A0223F5FBE008ECC22 /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				8378336E224B382900F2C0BF /* Cell */,
+				832146A1223F5FCE008ECC22 /* ContactsListViewController.swift */,
+				83783376224B9B9B00F2C0BF /* ContactDetailViewController.swift */,
+				8378337E224CB06B00F2C0BF /* ContactEditViewController.swift */,
+			);
+			path = Contacts;
+			sourceTree = "<group>";
+		};
+		832146A3223F6045008ECC22 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				832146A4223F604F008ECC22 /* BaseNavigationController.swift */,
+				832146A9223F6756008ECC22 /* UIViewController+EmptyView.swift */,
+				832146CC2240B135008ECC22 /* TCBaseViewController.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		832146A7223F65CB008ECC22 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				832146C722407AE6008ECC22 /* Button */,
+				832146B2223F8725008ECC22 /* TCCardView.swift */,
+				8378335D2248F1DE00F2C0BF /* HUD.swift */,
+				83783374224B544100F2C0BF /* ListEmptyView.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		832146AC223F7CCA008ECC22 /* Me */ = {
+			isa = PBXGroup;
+			children = (
+				832146E4224339C9008ECC22 /* KeyManageScene */,
+				832146B7223F8A87008ECC22 /* Cell */,
+				832146AD223F7CD3008ECC22 /* MeViewController.swift */,
+				DB44998C228C0AAE000B7E8A /* SettingsScene */,
+			);
+			path = Me;
+			sourceTree = "<group>";
+		};
+		832146AF223F7D89008ECC22 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				832146B0223F7D98008ECC22 /* ProfileService.swift */,
+				833FF38C224F97BD00EFE0A9 /* ProfileService+Message.swift */,
+				DB3B58E12282929700879834 /* WormholdService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		832146B7223F8A87008ECC22 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				832146B8223F8AA1008ECC22 /* KeyCardCell.swift */,
+				832146B9223F8AA1008ECC22 /* KeyCardCell.xib */,
+				8378338A224DFED100F2C0BF /* SubKeyCardCell.swift */,
+				8378338B224DFED100F2C0BF /* SubKeyCardCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		832146BC223F955D008ECC22 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				8378336A224B352500F2C0BF /* ContactListViewModel.swift */,
+				832146FB2244CD43008ECC22 /* MessagesViewModel.swift */,
+				DBC7DEC02248D49E00DA4C3E /* ComposeMessageViewModel.swift */,
+				DB4CBCA9224F962A00ED6BF0 /* InterpretMessageViewModel.swift */,
+				832146BD223F957B008ECC22 /* MeViewModel.swift */,
+				DB44999B228C248D000B7E8A /* SettingsViewModel.swift */,
+				DB44999D228D3353000B7E8A /* MessageDigitalSignatureSettingsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		832146C722407AE6008ECC22 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				832146C4223FC9E4008ECC22 /* TCActionButton.swift */,
+			);
+			path = Button;
+			sourceTree = "<group>";
+		};
+		832146C92240AEAA008ECC22 /* SwiftyButton */ = {
+			isa = PBXGroup;
+			children = (
+				832146CA2240AEC0008ECC22 /* ImageUtil.swift */,
+			);
+			path = SwiftyButton;
+			sourceTree = "<group>";
+		};
+		832146D12240CB42008ECC22 /* Crypto */ = {
+			isa = PBXGroup;
+			children = (
+				832146F32243ACCE008ECC22 /* KeyFactory.swift */,
+				DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */,
+				DB6AA3E92273218C00A7ADDF /* KeyFactory+BCOpenPGP.swift */,
+				DB0758A1224493DB0046FBFD /* PGPUserIDTranslator.swift */,
+				DB75454A2296A7C400B4E1EF /* CreateKeyOption.swift */,
+			);
+			path = Crypto;
+			sourceTree = "<group>";
+		};
+		832146DD22421F81008ECC22 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				832146DF22421F93008ECC22 /* Contact.swift */,
+				833FF390224F97D900EFE0A9 /* Message.swift */,
+				832146E122422024008ECC22 /* TCKey.swift */,
+				8313F6A52247ACC800C09C2D /* TCErrors.swift */,
+				837833542248840600F2C0BF /* TCTypes.swift */,
+				DBBBC197224E29E50080790F /* ContactMappable.swift */,
+				DBBBC194224E29D70080790F /* KeychainMappable.swift */,
+				DB1327142253651C00BD7B98 /* KeyBridge.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		832146E4224339C9008ECC22 /* KeyManageScene */ = {
+			isa = PBXGroup;
+			children = (
+				832146E9224373C4008ECC22 /* EurekaCell */,
+				832146D72241D980008ECC22 /* ImportKeyViewController.swift */,
+				832146D92241FAC6008ECC22 /* PasteKeyViewController.swift */,
+				832146E6224339EB008ECC22 /* CreateNewKeyViewController.swift */,
+			);
+			path = KeyManageScene;
+			sourceTree = "<group>";
+		};
+		832146E9224373C4008ECC22 /* EurekaCell */ = {
+			isa = PBXGroup;
+			children = (
+				832146EE22437467008ECC22 /* SwitchCell.xib */,
+			);
+			path = EurekaCell;
+			sourceTree = "<group>";
+		};
+		832146F82244CCD2008ECC22 /* Messages */ = {
+			isa = PBXGroup;
+			children = (
+				DBBA87F82248B8F900B290AC /* ComposeMessageScene */,
+				DB0758D1224895B90046FBFD /* Cell */,
+				832146F92244CCF4008ECC22 /* MessagesViewController.swift */,
+			);
+			path = Messages;
+			sourceTree = "<group>";
+		};
+		8325E46E222CC0AF00EE9B83 /* TypingMode */ = {
+			isa = PBXGroup;
+			children = (
+				8325E471222CCD4F00EE9B83 /* SuggestionStackView.swift */,
+				8325E47B222D10A500EE9B83 /* SuggestionButton.swift */,
+			);
+			path = TypingMode;
+			sourceTree = "<group>";
+		};
+		8325E475222CCEC900EE9B83 /* PickingRecipientsMode */ = {
+			isa = PBXGroup;
+			children = (
+				83B93D57221E570200F556C0 /* RecipientButton.swift */,
+				83B93E872223CCF700F556C0 /* RecipientInputView.swift */,
+				83B93D62221E71CC00F556C0 /* SelectedRecipientView.swift */,
+				83B93ED8222528AD00F556C0 /* RecommendRecipientsView.swift */,
+				8325E489222F6D4500EE9B83 /* RecipientCellTableViewCell.swift */,
+				8325E48A222F6D4500EE9B83 /* RecipientCellTableViewCell.xib */,
+			);
+			path = PickingRecipientsMode;
+			sourceTree = "<group>";
+		};
+		8325E48D222F8F9000EE9B83 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				8378337B224C990100F2C0BF /* SourceCodePro-Regular.otf */,
+				8325E491222F8FBD00EE9B83 /* SF-Pro-Display-Bold.otf */,
+				8325E48F222F8FBC00EE9B83 /* SF-Pro-Display-Light.otf */,
+				8325E493222F8FBD00EE9B83 /* SF-Pro-Display-Medium.otf */,
+				8325E490222F8FBC00EE9B83 /* SF-Pro-Display-Regular.otf */,
+				8325E48E222F8FBC00EE9B83 /* SF-Pro-Text-Regular.otf */,
+				8325E492222F8FBD00EE9B83 /* SF-Pro-Text-Semibold.otf */,
+				8325E494222F8FBD00EE9B83 /* SourceCodePro-Medium.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		833FF387224E3C5F00EFE0A9 /* Alert */ = {
+			isa = PBXGroup;
+			children = (
+				833FF388224E3CBC00EFE0A9 /* ToastAlerter.swift */,
+			);
+			path = Alert;
+			sourceTree = "<group>";
+		};
+		8378335C22488A8A00F2C0BF /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				837833622249C33B00F2C0BF /* TCDBManager.swift */,
+				83783378224BA43700F2C0BF /* ContactDBAction.swift */,
+				83FF06572250D9DA0003BC0D /* MessageDBAction.swift */,
+				83DFC72B2252EF3100993160 /* KeyRecordDBAction.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		8378336E224B382900F2C0BF /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				8378336F224B384000F2C0BF /* ContactCell.swift */,
+				83783370224B384000F2C0BF /* ContactCell.xib */,
+				83783385224CC23400F2C0BF /* ContactEditTextCell.swift */,
+				83783386224CC23400F2C0BF /* ContactEditTextCell.xib */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		83B93D11221CDC3400F556C0 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				8304E994221BF10000122637 /* AppDelegate.swift */,
+				DB4F309322A145A00003804B /* AppSecret.swift */,
+			);
+			path = "Support Files";
+			sourceTree = "<group>";
+		};
+		83B93D12221CDC3D00F556C0 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8325E48D222F8F9000EE9B83 /* Fonts */,
+				8321469E223F5113008ECC22 /* InfoPlist.strings */,
+				83214698223F4E31008ECC22 /* Localizable.strings */,
+				8304E998221BF10000122637 /* Main.storyboard */,
+				8304E99D221BF10100122637 /* LaunchScreen.storyboard */,
+				8304E99B221BF10100122637 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		83B93D1D221CE05300F556C0 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				83B93D1E221CE06100F556C0 /* Application.swift */,
+				83214683223F3BEE008ECC22 /* Coordinator.swift */,
+				832146CF2240C2D0008ECC22 /* Tessercube-Bridging-Header.h */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		83B93D20221CEB8500F556C0 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				DB66FE69224A330D00D82704 /* String.swift */,
+				8378336C224B36A400F2C0BF /* String+Localization.swift */,
+				DBB81AE0225DFF7A003D63C6 /* UIScreen.swift */,
+				832146B5223F89A8008ECC22 /* CALayer+Shadow.swift */,
+				83B93D5C221E6D0B00F556C0 /* UIImage+Color.swift */,
+				8313F69C22477CA000C09C2D /* UIViewController+Alert.swift */,
+				83B93D21221CEB9800F556C0 /* UserDefaults+AppGroup.swift */,
+				DB4F300522A120F50003804B /* DMSOpenPGP */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		83B93D2B221D22FA00F556C0 /* TesserCubeKeyboard */ = {
+			isa = PBXGroup;
+			children = (
+				833FF387224E3C5F00EFE0A9 /* Alert */,
+				83B93EDA22253C8F00F556C0 /* Core */,
+				83B93D5F221E70F400F556C0 /* Extension */,
+				83B93D41221D7BB000F556C0 /* Views */,
+				83B93D40221D4CB000F556C0 /* LayoutManager */,
+				83B93D3F221D4C8F00F556C0 /* Controller */,
+				83B93D38221D485A00F556C0 /* Model */,
+				83B93D36221D231100F556C0 /* TesserCubeKeyboard.entitlements */,
+				83B93D2E221D22FA00F556C0 /* Info.plist */,
+			);
+			path = TesserCubeKeyboard;
+			sourceTree = "<group>";
+		};
+		83B93D38221D485A00F556C0 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				83B93D39221D486600F556C0 /* KeyboardModel.swift */,
+				83B93D3B221D4AC900F556C0 /* DefaultKeyboard.swift */,
+				83B93D3D221D4AED00F556C0 /* Direction.swift */,
+				8325E4A922310B1900EE9B83 /* SuggestHelper.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		83B93D3F221D4C8F00F556C0 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				83B93D2C221D22FA00F556C0 /* KeyboardViewController.swift */,
+				83B93D4E221D89FD00F556C0 /* KeyboardLayout.swift */,
+				83B93D50221E2DCA00F556C0 /* KeyboardInputTraits.swift */,
+				83B93D52221E33C600F556C0 /* ForwardingView.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		83B93D40221D4CB000F556C0 /* LayoutManager */ = {
+			isa = PBXGroup;
+			children = (
+				83B93D4C221D844900F556C0 /* LayoutMetrics.swift */,
+				83B93D54221E546C00F556C0 /* KeyboardModeManager.swift */,
+				8325E46C222CBFBC00EE9B83 /* KeyboardLayoutManager.swift */,
+			);
+			path = LayoutManager;
+			sourceTree = "<group>";
+		};
+		83B93D41221D7BB000F556C0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				83B93D59221E574C00F556C0 /* Theme */,
+				83B93D56221E547A00F556C0 /* ExtraViews */,
+				83B93D42221D7E4400F556C0 /* KeyboardKeyBackground.swift */,
+				83B93D44221D7E5700F556C0 /* KeyboardConnector.swift */,
+				83B93D46221D7E7200F556C0 /* KeyboardKey.swift */,
+				83B93D48221D7E8900F556C0 /* ImageKey.swift */,
+				83B93D4A221D7EB000F556C0 /* Shapes.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		83B93D56221E547A00F556C0 /* ExtraViews */ = {
+			isa = PBXGroup;
+			children = (
+				83DFC73922578EAC00993160 /* InterpretResult */,
+				8325E475222CCEC900EE9B83 /* PickingRecipientsMode */,
+				8325E46E222CC0AF00EE9B83 /* TypingMode */,
+				83B93D64221E825300F556C0 /* DoneActionButton.swift */,
+				8325E46F222CC11800EE9B83 /* OptionFieldView.swift */,
+				8325E473222CCEB600EE9B83 /* ActionsView.swift */,
+				8325E476222CD0E700EE9B83 /* SeparatorView.swift */,
+				8325E478222CD48200EE9B83 /* ActionButton.swift */,
+				834CA61822659EE900AC8355 /* FullAccessHintView.swift */,
+			);
+			path = ExtraViews;
+			sourceTree = "<group>";
+		};
+		83B93D59221E574C00F556C0 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				83B93D5A221E575500F556C0 /* Theme.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
+		83B93D5F221E70F400F556C0 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				83B93D60221E710300F556C0 /* UIColorExtension.swift */,
+				83B93E89222411C300F556C0 /* UIView+blinking.swift */,
+				8325E47D222D254200EE9B83 /* UIImage+RoundCorners.swift */,
+				8325E485222E768500EE9B83 /* Debounce.swift */,
+				8325E4A72230FEC500EE9B83 /* UIInputViewController+TextProxy.swift */,
+				8310B34422325E0C00C35AEC /* String+Compare.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		83B93ED52224CA9100F556C0 /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				83783382224CB7F400F2C0BF /* strings.swift */,
+				83214694223F4CA0008ECC22 /* Assets.swift */,
+				8325E4A3222F8FDA00EE9B83 /* Fonts.swift */,
+			);
+			path = Generated;
+			sourceTree = "<group>";
+		};
+		83B93EDA22253C8F00F556C0 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				833FF393224F9D8100EFE0A9 /* KeyboardInterpretor.swift */,
+				83DFC73622577B9800993160 /* WormHole.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		83DFC73922578EAC00993160 /* InterpretResult */ = {
+			isa = PBXGroup;
+			children = (
+				83DFC73A22578ED800993160 /* InterpretFailView.swift */,
+				83DFC73D2259BF6D00993160 /* InterpretResultView.swift */,
+			);
+			path = InterpretResult;
+			sourceTree = "<group>";
+		};
+		D1FFF0FDB0B433C2937C6F21 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B9140FA57B00A5B2BD89FABF /* Pods-TesserCube.debug.xcconfig */,
+				6AAD1C52FBF55BCAC977EEFC /* Pods-TesserCube.release.xcconfig */,
+				55827FE378FDFCA0E1177DDA /* Pods-TesserCubeKeyboard.debug.xcconfig */,
+				23A4444BC35B6DAB5A8039E3 /* Pods-TesserCubeKeyboard.release.xcconfig */,
+				ED5112F3F342C6B4F96019B9 /* Pods-TesserCubeTests.debug.xcconfig */,
+				84957C7609515FCFA95F42A3 /* Pods-TesserCubeTests.release.xcconfig */,
+				9C1A99D94821B29F622B677D /* Pods-TesserCube.debug stub.xcconfig */,
+				34254D2B33B9D38AA6A8B02B /* Pods-TesserCubeKeyboard.debug stub.xcconfig */,
+				9B17EDD1F3A38E5966DCBA34 /* Pods-TesserCubeTests.debug stub.xcconfig */,
+				C0A9D10AB1612B0483E24D78 /* Pods-TesserCube.debug pgp.xcconfig */,
+				BA307858963D472080CE0E2A /* Pods-TesserCubeKeyboard.debug pgp.xcconfig */,
+				433A84EFFA67237E885331BD /* Pods-TesserCubeTests.debug pgp.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		DB0758D1224895B90046FBFD /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				DB0758CF224895B40046FBFD /* MessageCardCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		DB3B58D42280181400879834 /* Wizard */ = {
+			isa = PBXGroup;
+			children = (
+				DB3B58D02280180A00879834 /* WizardViewController.swift */,
+				DB3B58D9228126EC00879834 /* WizardCollectionViewController.swift */,
+				DB3B58DB2281280700879834 /* WizardCollectionViewCell.swift */,
+			);
+			path = Wizard;
+			sourceTree = "<group>";
+		};
+		DB44998C228C0AAE000B7E8A /* SettingsScene */ = {
+			isa = PBXGroup;
+			children = (
+				DB449998228C1D09000B7E8A /* Cell */,
+				DB449988228C038E000B7E8A /* SettingsViewController.swift */,
+				DB449999228C244F000B7E8A /* MessageDigitalSignatureSettingsViewController.swift */,
+				DB44998F228C13CA000B7E8A /* MessageDigitalSignatureSettings.swift */,
+			);
+			path = SettingsScene;
+			sourceTree = "<group>";
+		};
+		DB449998228C1D09000B7E8A /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				DB449994228C1CEF000B7E8A /* SettingsTableViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		DB4F300522A120F50003804B /* DMSOpenPGP */ = {
+			isa = PBXGroup;
+			children = (
+				DB4F300222A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift */,
+				DB4F309722A14C0D0003804B /* DMSPGPError.swift */,
+			);
+			path = DMSOpenPGP;
+			sourceTree = "<group>";
+		};
+		DB66FE6B224A34C100D82704 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				DB66FE66224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift */,
+				DB66FE6C224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		DBBA87F82248B8F900B290AC /* ComposeMessageScene */ = {
+			isa = PBXGroup;
+			children = (
+				DBC7DEC32248DAAA00DA4C3E /* View */,
+				DBBA87F52248B8F500B290AC /* ComposeMessageViewController.swift */,
+				DB4CBCA7224F932B00ED6BF0 /* InterpretMessageViewController.swift */,
+			);
+			path = ComposeMessageScene;
+			sourceTree = "<group>";
+		};
+		DBC7DEC32248DAAA00DA4C3E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DB66FE6B224A34C100D82704 /* Cell */,
+				DBC7DEBC2248C7F600DA4C3E /* RecipientContactPickerView.swift */,
+				DB66FE6E224A3CD600D82704 /* SenderContactPickerView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8304E990221BF10000122637 /* TesserCube */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8304E9B9221BF10200122637 /* Build configuration list for PBXNativeTarget "TesserCube" */;
+			buildPhases = (
+				3CE9F0091F3480B2CCB8533A /* [CP] Check Pods Manifest.lock */,
+				83B93D0C221BFCBE00F556C0 /* ShellScript */,
+				83B93D25221D22A700F556C0 /* ShellScript */,
+				8304E98D221BF10000122637 /* Sources */,
+				8304E98E221BF10000122637 /* Frameworks */,
+				8304E98F221BF10000122637 /* Resources */,
+				7EB5699A2940872DAE1D1D5A /* [CP] Embed Pods Frameworks */,
+				83B93D35221D22FA00F556C0 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				83B93D30221D22FA00F556C0 /* PBXTargetDependency */,
+			);
+			name = TesserCube;
+			productName = TesserCube;
+			productReference = 8304E991221BF10000122637 /* TesserCube.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8304E9A4221BF10200122637 /* TesserCubeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8304E9BC221BF10200122637 /* Build configuration list for PBXNativeTarget "TesserCubeTests" */;
+			buildPhases = (
+				F0537008C3F4E71AA479C549 /* [CP] Check Pods Manifest.lock */,
+				8304E9A1221BF10200122637 /* Sources */,
+				8304E9A2221BF10200122637 /* Frameworks */,
+				8304E9A3221BF10200122637 /* Resources */,
+				FDC05A80114CDACE38E572A1 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8304E9A7221BF10200122637 /* PBXTargetDependency */,
+			);
+			name = TesserCubeTests;
+			productName = TesserCubeTests;
+			productReference = 8304E9A5221BF10200122637 /* TesserCubeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		8304E9AF221BF10200122637 /* TesserCubeUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8304E9BF221BF10200122637 /* Build configuration list for PBXNativeTarget "TesserCubeUITests" */;
+			buildPhases = (
+				8304E9AC221BF10200122637 /* Sources */,
+				8304E9AD221BF10200122637 /* Frameworks */,
+				8304E9AE221BF10200122637 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8304E9B2221BF10200122637 /* PBXTargetDependency */,
+			);
+			name = TesserCubeUITests;
+			productName = TesserCubeUITests;
+			productReference = 8304E9B0221BF10200122637 /* TesserCubeUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		83B93D29221D22FA00F556C0 /* TesserCubeKeyboard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 83B93D32221D22FA00F556C0 /* Build configuration list for PBXNativeTarget "TesserCubeKeyboard" */;
+			buildPhases = (
+				BA365843081ECDE68FC0F58E /* [CP] Check Pods Manifest.lock */,
+				83B93D26221D22FA00F556C0 /* Sources */,
+				83B93D27221D22FA00F556C0 /* Frameworks */,
+				83B93D28221D22FA00F556C0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TesserCubeKeyboard;
+			productName = TesserCubeKeyboard;
+			productReference = 83B93D2A221D22FA00F556C0 /* TesserCubeKeyboard.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8304E989221BF10000122637 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1010;
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = Sujitech;
+				TargetAttributes = {
+					8304E990221BF10000122637 = {
+						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.AutoFillCredentialProvider = {
+								enabled = 1;
+							};
+							com.apple.DataProtection = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.SafariKeychain = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 0;
+							};
+						};
+					};
+					8304E9A4221BF10200122637 = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = 8304E990221BF10000122637;
+					};
+					8304E9AF221BF10200122637 = {
+						CreatedOnToolsVersion = 10.1;
+						TestTargetID = 8304E990221BF10000122637;
+					};
+					83B93D29221D22FA00F556C0 = {
+						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.DataProtection = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 0;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = 8304E98C221BF10000122637 /* Build configuration list for PBXProject "TesserCube" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				"zh-Hans",
+			);
+			mainGroup = 8304E988221BF10000122637;
+			productRefGroup = 8304E992221BF10000122637 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8304E990221BF10000122637 /* TesserCube */,
+				83B93D29221D22FA00F556C0 /* TesserCubeKeyboard */,
+				8304E9A4221BF10200122637 /* TesserCubeTests */,
+				8304E9AF221BF10200122637 /* TesserCubeUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8304E98F221BF10000122637 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8325E497222F8FBD00EE9B83 /* SF-Pro-Display-Light.otf in Resources */,
+				8325E495222F8FBD00EE9B83 /* SF-Pro-Text-Regular.otf in Resources */,
+				8378337C224C990100F2C0BF /* SourceCodePro-Regular.otf in Resources */,
+				8325E49D222F8FBD00EE9B83 /* SF-Pro-Text-Semibold.otf in Resources */,
+				832146BB223F8AA1008ECC22 /* KeyCardCell.xib in Resources */,
+				8321469C223F5113008ECC22 /* InfoPlist.strings in Resources */,
+				8325E4A1222F8FBD00EE9B83 /* SourceCodePro-Medium.ttf in Resources */,
+				8325E49B222F8FBD00EE9B83 /* SF-Pro-Display-Bold.otf in Resources */,
+				8325E499222F8FBD00EE9B83 /* SF-Pro-Display-Regular.otf in Resources */,
+				8304E99F221BF10100122637 /* LaunchScreen.storyboard in Resources */,
+				8325E49F222F8FBD00EE9B83 /* SF-Pro-Display-Medium.otf in Resources */,
+				83214696223F4E31008ECC22 /* Localizable.strings in Resources */,
+				83783372224B384000F2C0BF /* ContactCell.xib in Resources */,
+				8304E99C221BF10100122637 /* Assets.xcassets in Resources */,
+				8304E99A221BF10000122637 /* Main.storyboard in Resources */,
+				8378338D224DFED100F2C0BF /* SubKeyCardCell.xib in Resources */,
+				832146F022437467008ECC22 /* SwitchCell.xib in Resources */,
+				83783388224CC23400F2C0BF /* ContactEditTextCell.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8304E9A3221BF10200122637 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8304E9AE221BF10200122637 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		83B93D28221D22FA00F556C0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8325E4A0222F8FBD00EE9B83 /* SF-Pro-Display-Medium.otf in Resources */,
+				8325E496222F8FBD00EE9B83 /* SF-Pro-Text-Regular.otf in Resources */,
+				83DFC738225789C700993160 /* Localizable.strings in Resources */,
+				8325E47A222D001C00EE9B83 /* Assets.xcassets in Resources */,
+				8325E49C222F8FBD00EE9B83 /* SF-Pro-Display-Bold.otf in Resources */,
+				8325E498222F8FBD00EE9B83 /* SF-Pro-Display-Light.otf in Resources */,
+				8325E49A222F8FBD00EE9B83 /* SF-Pro-Display-Regular.otf in Resources */,
+				8325E4A2222F8FBD00EE9B83 /* SourceCodePro-Medium.ttf in Resources */,
+				8325E48C222F6D4500EE9B83 /* RecipientCellTableViewCell.xib in Resources */,
+				8378337D224C990100F2C0BF /* SourceCodePro-Regular.otf in Resources */,
+				8325E49E222F8FBD00EE9B83 /* SF-Pro-Text-Semibold.otf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3CE9F0091F3480B2CCB8533A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TesserCube-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7EB5699A2940872DAE1D1D5A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TesserCube/Pods-TesserCube-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TesserCube/Pods-TesserCube-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TesserCube/Pods-TesserCube-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		83B93D0C221BFCBE00F556C0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "$PODS_ROOT/SwiftGen/bin/swiftgen\n";
+		};
+		83B93D25221D22A700F556C0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
+		};
+		BA365843081ECDE68FC0F58E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TesserCubeKeyboard-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F0537008C3F4E71AA479C549 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TesserCubeTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FDC05A80114CDACE38E572A1 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8304E98D221BF10000122637 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DB4F300122A11F820003804B /* Contact.swift in Sources */,
+				DB3B58DC2281280700879834 /* WizardCollectionViewCell.swift in Sources */,
+				8313F6932247165F00C09C2D /* FloatingActionGroup.swift in Sources */,
+				832146CD2240B135008ECC22 /* TCBaseViewController.swift in Sources */,
+				DB3B58E22282929700879834 /* WormholdService.swift in Sources */,
+				83783383224CB7F500F2C0BF /* strings.swift in Sources */,
+				DB66FE6A224A330D00D82704 /* String.swift in Sources */,
+				8378338C224DFED100F2C0BF /* SubKeyCardCell.swift in Sources */,
+				83783379224BA43700F2C0BF /* ContactDBAction.swift in Sources */,
+				832146FC2244CD43008ECC22 /* MessagesViewModel.swift in Sources */,
+				832146E7224339EB008ECC22 /* CreateNewKeyViewController.swift in Sources */,
+				83FF06582250D9DA0003BC0D /* MessageDBAction.swift in Sources */,
+				832146BE223F957B008ECC22 /* MeViewModel.swift in Sources */,
+				DB4CBCAA224F962A00ED6BF0 /* InterpretMessageViewModel.swift in Sources */,
+				8378335E2248F1DE00F2C0BF /* HUD.swift in Sources */,
+				DB449990228C13CA000B7E8A /* MessageDigitalSignatureSettings.swift in Sources */,
+				DB44999E228D3353000B7E8A /* MessageDigitalSignatureSettingsViewModel.swift in Sources */,
+				832146AE223F7CD3008ECC22 /* MeViewController.swift in Sources */,
+				83B93D1F221CE06100F556C0 /* Application.swift in Sources */,
+				DBC7DEBD2248C7F600DA4C3E /* RecipientContactPickerView.swift in Sources */,
+				DB0758A2224493DB0046FBFD /* PGPUserIDTranslator.swift in Sources */,
+				8325E486222E768500EE9B83 /* Debounce.swift in Sources */,
+				DB66FE67224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift in Sources */,
+				DB1327152253651C00BD7B98 /* KeyBridge.swift in Sources */,
+				8313F6A62247ACC800C09C2D /* TCErrors.swift in Sources */,
+				8313F6912247164000C09C2D /* FloatingAction.swift in Sources */,
+				832146A2223F5FCE008ECC22 /* ContactsListViewController.swift in Sources */,
+				DBBBC195224E29D70080790F /* KeychainMappable.swift in Sources */,
+				DBC7DEC12248D49E00DA4C3E /* ComposeMessageViewModel.swift in Sources */,
+				DB449989228C038E000B7E8A /* SettingsViewController.swift in Sources */,
+				83B93D5D221E6D0B00F556C0 /* UIImage+Color.swift in Sources */,
+				832146E222422024008ECC22 /* TCKey.swift in Sources */,
+				832146F42243ACCE008ECC22 /* KeyFactory.swift in Sources */,
+				83214684223F3BEE008ECC22 /* Coordinator.swift in Sources */,
+				DBBBC198224E29E50080790F /* ContactMappable.swift in Sources */,
+				DB4CBCA8224F932B00ED6BF0 /* InterpretMessageViewController.swift in Sources */,
+				8313F69822476ADD00C09C2D /* ShareUtil.swift in Sources */,
+				8378336D224B36A400F2C0BF /* String+Localization.swift in Sources */,
+				833FF394224F9D8100EFE0A9 /* KeyboardInterpretor.swift in Sources */,
+				83783371224B384000F2C0BF /* ContactCell.swift in Sources */,
+				832146A5223F604F008ECC22 /* BaseNavigationController.swift in Sources */,
+				DB4F309422A145A00003804B /* AppSecret.swift in Sources */,
+				8378337F224CB06B00F2C0BF /* ContactEditViewController.swift in Sources */,
+				DBD63FDD229682E400E46FDC /* KeyFactory+TCKey.swift in Sources */,
+				832146B3223F8725008ECC22 /* TCCardView.swift in Sources */,
+				8313F69622475AC600C09C2D /* SharePublicKeyActivity.swift in Sources */,
+				832146DA2241FAC6008ECC22 /* PasteKeyViewController.swift in Sources */,
+				832146BA223F8AA1008ECC22 /* KeyCardCell.swift in Sources */,
+				8313F69D22477CA000C09C2D /* UIViewController+Alert.swift in Sources */,
+				832146FA2244CCF4008ECC22 /* MessagesViewController.swift in Sources */,
+				DB449995228C1CEF000B7E8A /* SettingsTableViewCell.swift in Sources */,
+				8325E4A4222F8FDA00EE9B83 /* Fonts.swift in Sources */,
+				DBB81AE1225DFF7A003D63C6 /* UIScreen.swift in Sources */,
+				DB44999A228C244F000B7E8A /* MessageDigitalSignatureSettingsViewController.swift in Sources */,
+				832146CB2240AEC0008ECC22 /* ImageUtil.swift in Sources */,
+				83783387224CC23400F2C0BF /* ContactEditTextCell.swift in Sources */,
+				DB66FE6F224A3CD600D82704 /* SenderContactPickerView.swift in Sources */,
+				DB4F309822A14C0D0003804B /* DMSPGPError.swift in Sources */,
+				DB3B58DA228126EC00879834 /* WizardCollectionViewController.swift in Sources */,
+				83DFC72C2252EF3100993160 /* KeyRecordDBAction.swift in Sources */,
+				832146B1223F7D98008ECC22 /* ProfileService.swift in Sources */,
+				DB66FE6D224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */,
+				832146AA223F6756008ECC22 /* UIViewController+EmptyView.swift in Sources */,
+				832146D82241D980008ECC22 /* ImportKeyViewController.swift in Sources */,
+				832146C5223FC9E4008ECC22 /* TCActionButton.swift in Sources */,
+				837833552248840600F2C0BF /* TCTypes.swift in Sources */,
+				83783375224B544100F2C0BF /* ListEmptyView.swift in Sources */,
+				DB44999C228C248D000B7E8A /* SettingsViewModel.swift in Sources */,
+				DB3B58D12280180A00879834 /* WizardViewController.swift in Sources */,
+				83214695223F4CA0008ECC22 /* Assets.swift in Sources */,
+				83B93D22221CEB9800F556C0 /* UserDefaults+AppGroup.swift in Sources */,
+				832146B6223F89A8008ECC22 /* CALayer+Shadow.swift in Sources */,
+				8313F69B22476F5500C09C2D /* SharePosterViewController.swift in Sources */,
+				837833632249C33B00F2C0BF /* TCDBManager.swift in Sources */,
+				833FF38D224F97BD00EFE0A9 /* ProfileService+Message.swift in Sources */,
+				83783377224B9B9B00F2C0BF /* ContactDetailViewController.swift in Sources */,
+				833FF391224F97D900EFE0A9 /* Message.swift in Sources */,
+				DB6AA3EA2273218C00A7ADDF /* KeyFactory+BCOpenPGP.swift in Sources */,
+				8378336B224B352500F2C0BF /* ContactListViewModel.swift in Sources */,
+				DBBA87F62248B8F500B290AC /* ComposeMessageViewController.swift in Sources */,
+				83214688223F40BC008ECC22 /* MainTabbarViewController.swift in Sources */,
+				8304E995221BF10000122637 /* AppDelegate.swift in Sources */,
+				DB0758D0224895B40046FBFD /* MessageCardCell.swift in Sources */,
+				DB4F300322A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift in Sources */,
+				DB75454B2296A7C400B4E1EF /* CreateKeyOption.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8304E9A1221BF10200122637 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DBE13D79224CCC0B004850A6 /* TCDBManagerTests.swift in Sources */,
+				8304E9AA221BF10200122637 /* TesserCubeTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8304E9AC221BF10200122637 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8304E9B5221BF10200122637 /* TesserCubeUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		83B93D26221D22FA00F556C0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				83B93D37221D2D0000F556C0 /* UserDefaults+AppGroup.swift in Sources */,
+				8325E48B222F6D4500EE9B83 /* RecipientCellTableViewCell.swift in Sources */,
+				83B93D2D221D22FA00F556C0 /* KeyboardViewController.swift in Sources */,
+				83B93D51221E2DCA00F556C0 /* KeyboardInputTraits.swift in Sources */,
+				DB6AA3F42275B69C00A7ADDF /* String.swift in Sources */,
+				83B93D43221D7E4400F556C0 /* KeyboardKeyBackground.swift in Sources */,
+				8325E47C222D10A500EE9B83 /* SuggestionButton.swift in Sources */,
+				837833652249C34400F2C0BF /* TCDBManager.swift in Sources */,
+				83FF06592250D9DA0003BC0D /* MessageDBAction.swift in Sources */,
+				834CA61922659EE900AC8355 /* FullAccessHintView.swift in Sources */,
+				8325E47E222D254200EE9B83 /* UIImage+RoundCorners.swift in Sources */,
+				DBD63FE02296864200E46FDC /* KeyFactory+TCKey.swift in Sources */,
+				837833582248897C00F2C0BF /* KeyFactory.swift in Sources */,
+				83DFC73B22578ED800993160 /* InterpretFailView.swift in Sources */,
+				833FF389224E3CBC00EFE0A9 /* ToastAlerter.swift in Sources */,
+				83B93D61221E710300F556C0 /* UIColorExtension.swift in Sources */,
+				83B93D3C221D4AC900F556C0 /* DefaultKeyboard.swift in Sources */,
+				83B93D4D221D844900F556C0 /* LayoutMetrics.swift in Sources */,
+				DBBBC199224E29E50080790F /* ContactMappable.swift in Sources */,
+				DB6AA3ED2273247C00A7ADDF /* KeyFactory+BCOpenPGP.swift in Sources */,
+				83B93D49221D7E8900F556C0 /* ImageKey.swift in Sources */,
+				833FF392224F97D900EFE0A9 /* Message.swift in Sources */,
+				83B93D55221E546C00F556C0 /* KeyboardModeManager.swift in Sources */,
+				83B93D63221E71CC00F556C0 /* SelectedRecipientView.swift in Sources */,
+				83B93E8A222411C300F556C0 /* UIView+blinking.swift in Sources */,
+				83DFC73F2259F0E700993160 /* TCCardView.swift in Sources */,
+				83B93D4F221D89FD00F556C0 /* KeyboardLayout.swift in Sources */,
+				8325E4AA22310B1900EE9B83 /* SuggestHelper.swift in Sources */,
+				83B93E882223CCF700F556C0 /* RecipientInputView.swift in Sources */,
+				DB449991228C1417000B7E8A /* MessageDigitalSignatureSettings.swift in Sources */,
+				83B93D3E221D4AED00F556C0 /* Direction.swift in Sources */,
+				8378337A224BA43700F2C0BF /* ContactDBAction.swift in Sources */,
+				83DFC73C2258D0EF00993160 /* Assets.swift in Sources */,
+				83B93D53221E33C600F556C0 /* ForwardingView.swift in Sources */,
+				83B93D65221E825300F556C0 /* DoneActionButton.swift in Sources */,
+				83B93D5E221E6D1E00F556C0 /* UIImage+Color.swift in Sources */,
+				8325E477222CD0E700EE9B83 /* SeparatorView.swift in Sources */,
+				83783384224CB7F700F2C0BF /* strings.swift in Sources */,
+				83B93D3A221D486600F556C0 /* KeyboardModel.swift in Sources */,
+				8325E487222E768500EE9B83 /* Debounce.swift in Sources */,
+				8310B34522325E0C00C35AEC /* String+Compare.swift in Sources */,
+				833FF395224F9D8100EFE0A9 /* KeyboardInterpretor.swift in Sources */,
+				83783369224B32AC00F2C0BF /* PGPUserIDTranslator.swift in Sources */,
+				83DFC73722577B9800993160 /* WormHole.swift in Sources */,
+				833FF38E224F97BD00EFE0A9 /* ProfileService+Message.swift in Sources */,
+				DB4F300422A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift in Sources */,
+				83B93D4B221D7EB000F556C0 /* Shapes.swift in Sources */,
+				8378335A224889B100F2C0BF /* ProfileService.swift in Sources */,
+				837833562248840600F2C0BF /* TCTypes.swift in Sources */,
+				DB4F309922A14C0D0003804B /* DMSPGPError.swift in Sources */,
+				83B93ED9222528AD00F556C0 /* RecommendRecipientsView.swift in Sources */,
+				83DFC7402259F0EC00993160 /* CALayer+Shadow.swift in Sources */,
+				83B93D47221D7E7200F556C0 /* KeyboardKey.swift in Sources */,
+				DBFC72A72272DEA300860C34 /* TCKey.swift in Sources */,
+				83DFC73E2259BF6D00993160 /* InterpretResultView.swift in Sources */,
+				8325E472222CCD4F00EE9B83 /* SuggestionStackView.swift in Sources */,
+				DBBBC196224E29D70080790F /* KeychainMappable.swift in Sources */,
+				DB3B58E52282930600879834 /* WormholdService.swift in Sources */,
+				DB4F309522A145A00003804B /* AppSecret.swift in Sources */,
+				DB1327162253651C00BD7B98 /* KeyBridge.swift in Sources */,
+				83783367224B232000F2C0BF /* Contact.swift in Sources */,
+				83B93D45221D7E5700F556C0 /* KeyboardConnector.swift in Sources */,
+				8325E470222CC11800EE9B83 /* OptionFieldView.swift in Sources */,
+				8325E474222CCEB600EE9B83 /* ActionsView.swift in Sources */,
+				83B93D58221E570200F556C0 /* RecipientButton.swift in Sources */,
+				837833592248898A00F2C0BF /* TCErrors.swift in Sources */,
+				8325E46D222CBFBC00EE9B83 /* KeyboardLayoutManager.swift in Sources */,
+				83B93D5B221E575500F556C0 /* Theme.swift in Sources */,
+				8325E4A5222F8FDA00EE9B83 /* Fonts.swift in Sources */,
+				8325E479222CD48200EE9B83 /* ActionButton.swift in Sources */,
+				83DFC72D2252EF3100993160 /* KeyRecordDBAction.swift in Sources */,
+				8325E4A82230FEC500EE9B83 /* UIInputViewController+TextProxy.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8304E9A7221BF10200122637 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8304E990221BF10000122637 /* TesserCube */;
+			targetProxy = 8304E9A6221BF10200122637 /* PBXContainerItemProxy */;
+		};
+		8304E9B2221BF10200122637 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8304E990221BF10000122637 /* TesserCube */;
+			targetProxy = 8304E9B1221BF10200122637 /* PBXContainerItemProxy */;
+		};
+		83B93D30221D22FA00F556C0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 83B93D29221D22FA00F556C0 /* TesserCubeKeyboard */;
+			targetProxy = 83B93D2F221D22FA00F556C0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		8304E998221BF10000122637 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8304E999221BF10000122637 /* Base */,
+				83B93D0D221CDC0200F556C0 /* zh-Hans */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		8304E99D221BF10100122637 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8304E99E221BF10100122637 /* Base */,
+				83B93D0E221CDC0200F556C0 /* zh-Hans */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		83214698223F4E31008ECC22 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				83214697223F4E31008ECC22 /* en */,
+				83214699223F4E34008ECC22 /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		8321469E223F5113008ECC22 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				8321469D223F5113008ECC22 /* en */,
+				8321469F223F5114008ECC22 /* zh-Hans */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		8304E9B7221BF10200122637 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "${J2OBJC_HOME}/frameworks";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"${PROJECT_DIR}/BCOpenPGP/converted",
+					"${PROJECT_DIR}/BCOpenPGP/BCOpenPGP",
+					"${J2OBJC_HOME}/include",
+				);
+				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "FLEX DEBUG";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		8304E9B8221BF10200122637 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "${J2OBJC_HOME}/frameworks";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"${PROJECT_DIR}/BCOpenPGP/converted",
+					"${PROJECT_DIR}/BCOpenPGP/BCOpenPGP",
+					"${J2OBJC_HOME}/include",
+				);
+				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		8304E9BA221BF10200122637 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B9140FA57B00A5B2BD89FABF /* Pods-TesserCube.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = TesserCube/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
+				SYSTEM_HEADER_SEARCH_PATHS = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "";
+			};
+			name = Debug;
+		};
+		8304E9BB221BF10200122637 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6AAD1C52FBF55BCAC977EEFC /* Pods-TesserCube.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = TesserCube/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
+				SYSTEM_HEADER_SEARCH_PATHS = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "";
+			};
+			name = Release;
+		};
+		8304E9BD221BF10200122637 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ED5112F3F342C6B4F96019B9 /* Pods-TesserCubeTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCubeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TesserCube.app/TesserCube";
+			};
+			name = Debug;
+		};
+		8304E9BE221BF10200122637 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 84957C7609515FCFA95F42A3 /* Pods-TesserCubeTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCubeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TesserCube.app/TesserCube";
+			};
+			name = Release;
+		};
+		8304E9C0221BF10200122637 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCubeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TesserCube;
+			};
+			name = Debug;
+		};
+		8304E9C1221BF10200122637 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCubeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TesserCube;
+			};
+			name = Release;
+		};
+		83B93D33221D22FA00F556C0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 55827FE378FDFCA0E1177DDA /* Pods-TesserCubeKeyboard.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeKeyboard;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		83B93D34221D22FA00F556C0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 23A4444BC35B6DAB5A8039E3 /* Pods-TesserCubeKeyboard.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeKeyboard;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		DB3F5B9C226833BD00998F67 /* Debug PGP */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "${J2OBJC_HOME}/frameworks";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"${PROJECT_DIR}/BCOpenPGP/converted",
+					"${PROJECT_DIR}/BCOpenPGP/BCOpenPGP",
+					"${J2OBJC_HOME}/include",
+				);
+				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "FLEX DEBUG DEBUGPGP";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = "Debug PGP";
+		};
+		DB3F5B9D226833BD00998F67 /* Debug PGP */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C0A9D10AB1612B0483E24D78 /* Pods-TesserCube.debug pgp.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = TesserCube/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
+				SYSTEM_HEADER_SEARCH_PATHS = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "";
+			};
+			name = "Debug PGP";
+		};
+		DB3F5B9E226833BD00998F67 /* Debug PGP */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 433A84EFFA67237E885331BD /* Pods-TesserCubeTests.debug pgp.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCubeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TesserCube.app/TesserCube";
+			};
+			name = "Debug PGP";
+		};
+		DB3F5B9F226833BD00998F67 /* Debug PGP */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCubeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TesserCube;
+			};
+			name = "Debug PGP";
+		};
+		DB3F5BA0226833BD00998F67 /* Debug PGP */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BA307858963D472080CE0E2A /* Pods-TesserCubeKeyboard.debug pgp.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeKeyboard;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Debug PGP";
+		};
+		DBD3BCB82254C3FE00A74920 /* Debug Stub */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "${J2OBJC_HOME}/frameworks";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"${PROJECT_DIR}/BCOpenPGP/converted",
+					"${PROJECT_DIR}/BCOpenPGP/BCOpenPGP",
+					"${J2OBJC_HOME}/include",
+				);
+				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "FLEX DEBUG STUB";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = "Debug Stub";
+		};
+		DBD3BCB92254C3FE00A74920 /* Debug Stub */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9C1A99D94821B29F622B677D /* Pods-TesserCube.debug stub.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = TesserCube/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
+				SYSTEM_HEADER_SEARCH_PATHS = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "";
+			};
+			name = "Debug Stub";
+		};
+		DBD3BCBA2254C3FE00A74920 /* Debug Stub */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9B17EDD1F3A38E5966DCBA34 /* Pods-TesserCubeTests.debug stub.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCubeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TesserCube.app/TesserCube";
+			};
+			name = "Debug Stub";
+		};
+		DBD3BCBB2254C3FE00A74920 /* Debug Stub */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCubeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TesserCube;
+			};
+			name = "Debug Stub";
+		};
+		DBD3BCBC2254C3FE00A74920 /* Debug Stub */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 34254D2B33B9D38AA6A8B02B /* Pods-TesserCubeKeyboard.debug stub.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeKeyboard;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Debug Stub";
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8304E98C221BF10000122637 /* Build configuration list for PBXProject "TesserCube" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8304E9B7221BF10200122637 /* Debug */,
+				DB3F5B9C226833BD00998F67 /* Debug PGP */,
+				DBD3BCB82254C3FE00A74920 /* Debug Stub */,
+				8304E9B8221BF10200122637 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8304E9B9221BF10200122637 /* Build configuration list for PBXNativeTarget "TesserCube" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8304E9BA221BF10200122637 /* Debug */,
+				DB3F5B9D226833BD00998F67 /* Debug PGP */,
+				DBD3BCB92254C3FE00A74920 /* Debug Stub */,
+				8304E9BB221BF10200122637 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8304E9BC221BF10200122637 /* Build configuration list for PBXNativeTarget "TesserCubeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8304E9BD221BF10200122637 /* Debug */,
+				DB3F5B9E226833BD00998F67 /* Debug PGP */,
+				DBD3BCBA2254C3FE00A74920 /* Debug Stub */,
+				8304E9BE221BF10200122637 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8304E9BF221BF10200122637 /* Build configuration list for PBXNativeTarget "TesserCubeUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8304E9C0221BF10200122637 /* Debug */,
+				DB3F5B9F226833BD00998F67 /* Debug PGP */,
+				DBD3BCBB2254C3FE00A74920 /* Debug Stub */,
+				8304E9C1221BF10200122637 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		83B93D32221D22FA00F556C0 /* Build configuration list for PBXNativeTarget "TesserCubeKeyboard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				83B93D33221D22FA00F556C0 /* Debug */,
+				DB3F5BA0226833BD00998F67 /* Debug PGP */,
+				DBD3BCBC2254C3FE00A74920 /* Debug Stub */,
+				83B93D34221D22FA00F556C0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8304E989221BF10000122637 /* Project object */;
+}

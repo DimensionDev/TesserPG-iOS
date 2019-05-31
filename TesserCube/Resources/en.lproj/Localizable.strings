@@ -1,0 +1,212 @@
+/* 
+  Localizable.strings
+  TesserCube
+
+  Created by jk234ert on 2019/2/20.
+  Copyright © 2019 Sujitech. All rights reserved.
+*/
+"Common.Button.Cancel" = "Cancel";
+"Common.Button.OK" = "OK";
+"Common.Button.Delete" = "Delete";
+"Common.Button.Edit" = "Edit";
+"Common.Button.Discard" = "Discard";
+
+"Common.Label.NameUnknown" = "[Unknown]";
+"Common.Label.NameNone" = "[None]";
+"Common.Label.NameNull" = "[null]";
+
+"Common.Alert.Error" = "Error";
+"Common.Alert.UnknownError" = "Unknown Error";
+
+"Common.HUD.CreatingKey" = "Creating key, please wait...";
+"Common.HUD.ImportingKey" = "Importing key, please wait...";
+
+"ContactListViewController.EmptyView.Prompt" = "You do not have any contact yet.\nAdd contacts by importing their public keys.";
+
+"WizardViewController.Action.Button.Next" = "Next";
+"WizardViewController.Action.Button.StartUsing" = "Start Using";
+
+"WizardCollectionViewController.Page.importPublicKeys.titleText" = "Import Public Keys";
+"WizardCollectionViewController.Page.typeAndEncrypt.titleText" = "Type and Encrypt";
+"WizardCollectionViewController.Page.copytoInterpret.titleText" = "Copy to Interpret";
+
+"WizardCollectionViewController.Page.importPublicKeys.detailText" = "You can import OpenPGP public keys\nby tapping \"+\" button in Contacts view\n and pasting in the full public key.";
+"WizardCollectionViewController.Page.typeAndEncrypt.detailText" = "With Tessercube Keyboard, after\ntyping a message, you can tap the\n\"tesseract\" icon and select recipeints\nto encrypt for them.";
+"WizardCollectionViewController.Page.copytoInterpret.detailText" = "Copy an encrypted message in a chat\nview to interpret the message. You\ncan also tap the \"Key\" icon in text edit\narea to interpret the text in the field.";
+
+"ContactDetailViewController.Label.Fingerprint" = "fingerprint";
+"ContactDetailViewController.Label.Validity" = "validity";
+"ContactDetailViewController.Label.Keytype" = "type";
+"ContactDetailViewController.Label.CreatedAt" = "created at";
+"ContactDetailViewController.Label.Email" = "email";
+"ContactDetailViewController.Label.InvalidFingerprint" = "Invalid Fingerprint";
+"ContactDetailViewController.Label.Valid" = "Valid";
+"ContactDetailViewController.Label.Invalid" = "Invalid";
+"ContactDetailViewController.Button.SendMessage" = "Send Message";
+
+"EditContactViewController.Label.DeleteContact" = "Delete Contact";
+"EditContactViewController.Action.Button.ConfirmDeleteContact" = "Would you like to delete this contact?";
+"EditContactViewController.Action.Button.ConfirmDeleteKeypairs" = "Would you like to keep the public key of this contact?";
+"EditContactViewController.Action.Button.KeepPublicKey" = "Keep Public Key";
+"EditContactViewController.Action.Button.DeleteKeyPair" = "Delete Key Pairs";
+"EditContactViewController.EditType.Name" = "Name";
+"EditContactViewController.EditType.Trust" = "Trust";
+
+"MainTabbarViewController.TabBarItem.Contacts.title" = "Contacts";
+"MainTabbarViewController.TabBarItem.Messages.title" = "Messages";
+"MainTabbarViewController.TabBarItem.Me.title" = "Me";
+
+"MessagesViewController.SegmentedControl.timeline" = "Timeline";
+"MessagesViewController.SegmentedControl.savedDrafts" = "Saved Drafts";
+"MessagesViewController.EmptyView.Prompt" = "No message yet.\nYou can compose and interpret messages.\nMessages composed and interpreted in\nTessercube keyboard will appear here.";
+"MessagesViewController.EmptyView.SearchingPrompt" = "No message.";
+"MessagesViewController.Action.Button.Compose" = "Compose";
+"MessagesViewController.Action.Button.Interpret" = "Interpret";
+"MessagesViewController.Action.Button.CopyMessageContent" = "Copy Message Content";
+"MessagesViewController.Action.Button.CopyRawPayload" = "Copy Raw Payload";
+"MessagesViewController.Action.Button.MarkAsFinished" = "Mark as Finished";
+"MessagesViewController.Action.Button.ShareEncryptedMessage" = "Share Encrypted Message";
+"MessagesViewController.Action.Button.ShareSignedMessage" = "Share Signed Message";
+"MessagesViewController.Action.Button.ReCompose" = "Re-compose";
+"MessagesViewController.Alert.Title.DeleteMessage" = "Delete Message?";
+
+"MessageCardCell.Label.SignedBy" = "Signed by:";
+"MessageCardCell.Label.Recipeints" = "Recipeints:";
+"MessageCardCell.Label.Composed" = " composed";
+"MessageCardCell.Label.Interpret" = " interpreted";
+"MessageCardCell.Label.Edited" = " last edited";
+
+"ComposeMessageViewController.Title" = "Compose";
+"ComposeMessageViewController.BarButtonItem.Finish" = "Finish";
+"ComposeMessageViewController.TextView.Message.Placeholder" = "Message goes here...";
+"ComposeMessageViewController.RecipientContactPickerView.TitleLabel.Text.To" = "To:";
+"ComposeMessageViewController.SenderContactPickerView.TitleLabel.Text.From" = "From:";
+"ComposeMessageViewController.Alert.Title.SkipInvalidResipients" = "Skip invalid recipeints";
+"ComposeMessageViewController.Alert.Title.SaveDraft" = "Save draft?";
+"ComposeMessageViewController.Alert.Title.MissingEncryptionKey" = "Missing encryption key";
+"ComposeMessageViewController.Alert.Message.SkipAndFinish" = "Skip & Finish";
+"ComposeMessageViewController.Alert.Message.MissingEncryptionKey" = "Not found encryption key in keyring: %@";
+"ComposeMessageViewController.Alert.Action.SaveDraft" = "Save Draft";
+"ComposeMessageViewController.Alert.Action.UpdateDraft" = "Update Draft";
+
+"InterpretMessageViewController.Title" = "Interpret";
+"InterpretMessageViewModel.Alert.Title.BadPayload" = "Bad Payload";
+"InterpretMessageViewModel.Alert.Message.BadPayload" = "The message payload is invalid.\nPlease verify again.";
+
+"MeViewController.KeyCardCell.Label.NoKeyYet" = "No keypair yet";
+"MeViewController.KeyCardCell.Label.InvalidFingerprint" = "Invalid Fingerprint";
+
+"MeViewController.Action.Prompt" = "Create or import a key to start using.";
+"MeViewController.Action.Button.CreateKey" = "Create Keypair";
+"MeViewController.Action.Button.ImportKey" = "Import Keypair";
+"MeViewController.Action.Button.ScanQR" = "Scan QR Code";
+"MeViewController.Action.Button.Settings" = "Settings";
+"MeViewController.Action.Button.ConfirmDeleteKey" = "Yes, Delete ";
+
+"CreateNewKeyViewController.Alert.NameRequired" = "Name is required to create a key";
+"CreateNewKeyViewController.Alert.EmailRequired" = "Email is required to create a key";
+"CreateNewKeyViewController.Alert.EmailInvalid" = "Please input a valid email address";
+"CreateNewKeyViewController.Alert.ConfirmPasswordNotSame" = "Confirm password should be same as password";
+
+"CreateNewKeyViewController.Alert.ConfirmPasswordNotSame" = "Confirm password should be same as password";
+
+"ImportKeyController.Prompt.FromPGP" = "From another openPGP app...";
+"SettingsViewController.Title" = "Settings";
+"SettingsViewController.TableView.Header.Keyboard" = "Keyboard";
+"SettingsViewController.Settings.MessageDigitalSignature" = "Message Digital Signature";
+"SettingsViewController.Settings.MessageDigitalSignature.Automatic.short" = "Automatic";
+"SettingsViewController.Settings.MessageDigitalSignature.Automatic.long" = "Automatic (Top in list)";
+"SettingsViewController.Settings.MessageDigitalSignature.NotSign.short" = "Not Sign";
+"SettingsViewController.Settings.MessageDigitalSignature.NotSign.long" = "Do not sign messages";
+"SettingsViewController.Settings.ShowLowercaseKeys" = "Show Lowercase Keys";
+
+"ImportKeyController.Prompt.FromPGP" = "From another OpenPGP app...";
+"ImportKeyController.Prompt.FromAnotherDevice" = "From another device...";
+"ImportKeyController.Prompt.FromPreviousBackup" = "From a previous backup...";
+
+"ImportKeyController.Action.Button.PastePrivateKey" = "Paste Private Key";
+"ImportKeyController.Action.Button.ScanQR" = "Scan QR Code";
+"ImportKeyController.Action.Button.MaybeLater" = "Maybe Later";
+
+"PasteKeyViewController.Title.PastePrivateKey" = "Paste Private Key";
+"PasteKeyViewController.Title.ImportPublicKey" = "Import Public Key";
+"PasteKeyViewController.Placeholder.Password" = "Password";
+
+"MeViewController.Action.Button.Export" = "Export Private Key";
+"MeViewController.Action.Button.Share" = "Share Public Key";
+
+"CreateNewKeyViewController.Label.Name" = "Name";
+"CreateNewKeyViewController.Label.Email" = "Email";
+"CreateNewKeyViewController.Label.Password" = "Password";
+"CreateNewKeyViewController.Label.ConfirmPassword" = "Confirm Password";
+"CreateNewKeyViewController.Label.Easymode" = "Easy Mode";
+"CreateNewKeyViewController.Label.Algorithm" = "Algorithm";
+"CreateNewKeyViewController.Label.KeyLength" = "Key Length";
+
+"CreateNewKeyViewController.Alert.Title.NameRequired" = "Name is required to create a key";
+"CreateNewKeyViewController.Alert.Title.EmailRequired" = "Email is required to create a key";
+"CreateNewKeyViewController.Alert.Title.EmailInvalid" = "Please input a valid email address";
+"CreateNewKeyViewController.Alert.Title.PasswordNotMatch" = "Confirm password should be same as password";
+
+"SharePosterController.Title" = "Share Public Key";
+"SharePosterController.Action.Button.SaveImage" = "Save Image";
+"SharePosterController.Action.Button.ShareImage" = "Share Image";
+
+"Keyboard.Prompt.EnableFullAccess" = "Click to enable \"Full Access\" please";
+"Keyboard.Button.Interpret" = "Interpret";
+"Keyboard.Button.Encrypt" = "Encrypt";
+
+"Keyboard.Alert.NoSelectedRecipient" = "Select at least 1 recipeint to encrypt.";
+"Keyboard.Alert.NoEncryptedText" = "No encrypted text or digital signature found.";
+
+"Keyboard.Label.SelectRecipients" = "Select Recipients";
+"Keyboard.Label.NoContactsFound" = "No contacts found";
+"Keyboard.Label.OneContactFound" = "One contact found";
+"Keyboard.Label.PluralContactFound" = "%lu contacts found";
+
+"Keyboard.Interpreted.Title.MessageInterpreted" = "Message Interpreted";
+"Keyboard.Interpreted.Title.NoNeccessaryPrivateKey" = "Cannot Decrypt Message";
+"Keyboard.Interpreted.Content.NoNeccessaryPrivateKey" = "You do not have the necessary private key to decrypt this message.";
+"Keyboard.Interpreted.Title.BadSignature" = "Bad Signature: Possibly Fake Sender";
+"Keyboard.Interpreted.Title.UnknownSender" = "Unknown Sender: Keep Caution";
+
+"DMSPGPError.internal"                  = "Internal Error";
+"DMSPGPError.notArmoredInput"           = "Invalid Message Format";
+"DMSPGPError.invalidArmored"            = "Invalid Message Format";
+"DMSPGPError.invalidKeyID"              = "Internal Error (KeyID)";
+"DMSPGPError.invalidCleartext"          = "Invalid Cleartext Format";
+"DMSPGPError.invalidMessage"            = "Invalid Message Format";
+"DMSPGPError.invalidPublicKeyRing"      = "Invalid Public Key Format";
+"DMSPGPError.invalidSecretKeyRing"      = "Invalid Secret Key Format";
+"DMSPGPError.invalidPrivateKey"         = "Invalid Private Key Format";
+"DMSPGPError.invalidSecrectKeyPassword" = "Invalid SecretKey Password";
+"DMSPGPError.invalidCurve"              = "Curve must be provided for this algorithm";
+"DMSPGPError.invalidKeyLength"          = "Invalid key length";
+"DMSPGPError.notSupportAlgorithm"       = "Algorithm %@ is not supported";
+"DMSPGPError.missingEncryptionKey"      = "Missing Encryption Key: %@";
+
+"TCError.keysAlreadyExsit" = "Keys already exist";
+
+"TCError.PGPKeyErrorReason.invalidPassword"       = "Invalid Password";
+"TCError.PGPKeyErrorReason.invalidKeyFormat"      = "Invalid Key";
+"TCError.PGPKeyErrorReason.messageNotSigned"      = "Fail to export the key";
+"TCError.PGPKeyErrorReason.failToExport"          = "The message is not signed";
+"TCError.PGPKeyErrorReason.failToSave"            = "You do not have the necessary private key to decrypt this message";
+"TCError.PGPKeyErrorReason.failToGenerate"        = "Key generate fail. Please try again";
+"TCError.PGPKeyErrorReason.noAvailableDecryptKey" = "No available secret key to decrypt this message";
+
+"TCError.ComposeErrorReason.internal"                 = "Internal error";
+"TCError.ComposeErrorReason.emptyInput"               = "Message should not be empty";
+"TCError.ComposeErrorReason.emptySenderAndRecipients" = "Add recipient to send message or\nchoose your secret key to sign";
+"TCError.ComposeErrorReason.invalidSigner"            = "The sender does not have a valid key";
+"TCError.ComposeErrorReason.emptyRecipients"          = "No recipients available";
+"TCError.ComposeErrorReason.keychainUnlockFail"       = "Can't retrieve secret key from Keychain";
+"TCError.ComposeErrorReason.pgpError"                 = "Error Domain: %@\nCode: %@\n%@";
+
+"TCError.InterpretErrorReason.internal"             = "Internal Error";
+"TCError.InterpretErrorReason.emptyMessage"         = "Message should not be empty";
+"TCError.InterpretErrorReason.badPayload"           = "The message payload is invalid.\nPlease verify again";
+"TCError.InterpretErrorReason.keychianUnlockFailed" = "Can't retrieve secret key from Keychain";
+"TCError.InterpretErrorReason.pgpError"             = "Error Domain: %@\nCode: %@\n%@";
+
+"TCError.UserInfoErrorType.invalidUserID" = "Invalid user name without name or email: %@";

@@ -1,0 +1,15 @@
+strings:
+  inputs: TesserCube/Resources/en.lproj/Localizable.strings
+  outputs:
+    - templateName: structured-swift4
+      output: TesserCube/Generated/strings.swift
+fonts:
+  inputs: TesserCube/Resources/Fonts
+  outputs:
+    - templateName: swift4
+      output: TesserCube/Generated/Fonts.swift
+xcassets:
+  inputs: TesserCube/Resources/Assets.xcassets
+  outputs:
+    templateName: swift4
+    output: TesserCube/Generated/Assets.swift
