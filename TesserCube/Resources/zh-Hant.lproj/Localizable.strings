@@ -1,0 +1,206 @@
+/* 
+  Localizable.strings
+  TesserCube
+
+  Created by jk234ert on 2019/2/20.
+  Copyright © 2019 Sujitech. All rights reserved.
+*/
+"Common.Button.Cancel" = "取消";
+"Common.Button.OK" = "好的";
+"Common.Button.Delete" = "刪除";
+"Common.Button.Edit" = "編輯";
+"Common.Button.Discard" = "丟棄";
+
+"Common.Label.NameUnknown" = "[未知]";
+"Common.Label.NameNone" = "[無]";
+"Common.Label.NameNull" = "[空]";
+
+"Common.Alert.Error" = "錯誤";
+"Common.Alert.UnknownError" = "未知錯誤";
+
+"Common.HUD.CreatingKey" = "密鑰創建中...";
+"Common.HUD.ImportingKey" = "密鑰導入中...";
+
+"ContactListViewController.EmptyView.Prompt" = "暫無聯繫人\n請通過導入公鑰添加聯繫人";
+
+"WizardViewController.Action.Button.Next" = "下一步";
+"WizardViewController.Action.Button.StartUsing" = "開始";
+
+"WizardCollectionViewController.Page.importPublicKeys.titleText" = "導入公鑰";
+"WizardCollectionViewController.Page.typeAndEncrypt.titleText" = "鍵入並加密";
+"WizardCollectionViewController.Page.copytoInterpret.titleText" = "拷貝並解密";
+
+"WizardCollectionViewController.Page.importPublicKeys.detailText" = "您可以在聯繫人頁面輕點 \"+\" 號\n粘貼聯繫人的公鑰\來完成公鑰導入";
+"WizardCollectionViewController.Page.typeAndEncrypt.detailText" = "有了 Tessercube 鍵盤，鍵入消息後\n輕點 \"Tessercube\" 圖標選擇收件人\n點擊加密後按鈕即可加密消息";
+"WizardCollectionViewController.Page.copytoInterpret.detailText" = "在聊天時拷貝加密消息\n即可完成消息的解密";
+
+"ContactDetailViewController.Label.Fingerprint" = "指紋";
+"ContactDetailViewController.Label.Validity" = "有效性";
+"ContactDetailViewController.Label.Keytype" = "類型";
+"ContactDetailViewController.Label.CreatedAt" = "創建於";
+"ContactDetailViewController.Label.Email" = "電子郵箱";
+"ContactDetailViewController.Label.InvalidFingerprint" = "無效指紋";
+"ContactDetailViewController.Label.Valid" = "有效";
+"ContactDetailViewController.Label.Invalid" = "無效";
+"ContactDetailViewController.Button.SendMessage" = "發送消息";
+
+"EditContactViewController.Label.DeleteContact" = "刪除聯繫人";
+"EditContactViewController.Action.Button.ConfirmDeleteContact" = "確認刪除該聯繫人";
+"EditContactViewController.Action.Button.ConfirmDeleteKeypairs" = "是否需要保留聯繫人公鑰";
+"EditContactViewController.Action.Button.KeepPublicKey" = "保留公鑰";
+"EditContactViewController.Action.Button.DeleteKeyPair" = "刪除公私鑰";
+"EditContactViewController.EditType.Name" = "姓名";
+"EditContactViewController.EditType.Trust" = "信任";
+
+"MainTabbarViewController.TabBarItem.Contacts.title" = "聯繫人";
+"MainTabbarViewController.TabBarItem.Messages.title" = "消息";
+"MainTabbarViewController.TabBarItem.Me.title" = "我";
+
+"MessagesViewController.SegmentedControl.timeline" = "時間線";
+"MessagesViewController.SegmentedControl.savedDrafts" = "草稿";
+"MessagesViewController.EmptyView.Prompt" = "暫無消息\n您可以撰寫或解密消息\n通過 Tessercube 鍵盤加密的消息\n也將顯示在這裡";
+"MessagesViewController.EmptyView.SearchingPrompt" = "無消息";
+"MessagesViewController.Action.Button.Compose" = "撰寫";
+"MessagesViewController.Action.Button.Interpret" = "解密";
+"MessagesViewController.Action.Button.CopyMessageContent" = "拷貝消息內容";
+"MessagesViewController.Action.Button.CopyRawPayload" = "拷貝原始報文";
+"MessagesViewController.Action.Button.MarkAsFinished" = "完成草稿";
+"MessagesViewController.Action.Button.ShareEncryptedMessage" = "分享加密報文";
+"MessagesViewController.Action.Button.ShareSignedMessage" = "分享簽名報文";
+"MessagesViewController.Action.Button.ReCompose" = "重新撰寫";
+"MessagesViewController.Alert.Title.DeleteMessage" = "刪除消息";
+
+"MessageCardCell.Label.SignedBy" = "簽名者:";
+"MessageCardCell.Label.Recipeints" = "收件人:";
+"MessageCardCell.Label.Composed" = "撰寫";
+"MessageCardCell.Label.Interpret" = "解密";
+"MessageCardCell.Label.Edited" = "編輯";
+"MessageCardCell.Button.Expand.expand" = "展開全部 %lu 行";
+"MessageCardCell.Button.Expand.collapse" = "折疊";
+
+"ComposeMessageViewController.Title" = "撰寫";
+"ComposeMessageViewController.BarButtonItem.Finish" = "完成";
+"ComposeMessageViewController.TextView.Message.Placeholder" = "消息內容...";
+"ComposeMessageViewController.RecipientContactPickerView.TitleLabel.Text.To" = "收件人:";
+"ComposeMessageViewController.SenderContactPickerView.TitleLabel.Text.From" = "簽名者:";
+"ComposeMessageViewController.Alert.Title.SkipInvalidResipients" = "忽略公鑰無效的收件人";
+"ComposeMessageViewController.Alert.Title.SaveDraft" = "保存草稿";
+"ComposeMessageViewController.Alert.Title.MissingEncryptionKey" = "加密密鑰丟失";
+"ComposeMessageViewController.Alert.Message.SkipAndFinish" = "忽略並加密";
+"ComposeMessageViewController.Alert.Message.MissingEncryptionKey" = "未能在以下公鑰找到加密密鑰: %@";
+"ComposeMessageViewController.Alert.Action.SaveDraft" = "保存草稿";
+"ComposeMessageViewController.Alert.Action.UpdateDraft" = "更新草稿";
+
+"InterpretMessageViewController.Title" = "解密";
+"InterpretMessageViewModel.Alert.Title.BadPayload" = "無效報文";
+"InterpretMessageViewModel.Alert.Message.BadPayload" = "該報文無效\n請嘗試重新驗證";
+
+"MeViewController.KeyCardCell.Label.NoKeyYet" = "暫無密鑰";
+"MeViewController.KeyCardCell.Label.InvalidFingerprint" = "無效的指紋";
+
+"MeViewController.Action.Prompt" = "創建或導入一個密鑰";
+"MeViewController.Action.Button.CreateKey" = "創建密鑰";
+"MeViewController.Action.Button.ImportKey" = "導入密鑰";
+"MeViewController.Action.Button.ScanQR" = "掃描二維碼";
+"MeViewController.Action.Button.Settings" = "設置";
+"MeViewController.Action.Button.ConfirmDeleteKey" = "是，刪除 ";
+
+"SettingsViewController.Title" = "設置";
+"SettingsViewController.TableView.Header.Keyboard" = "鍵盤";
+"SettingsViewController.Settings.MessageDigitalSignature" = "消息簽名";
+"SettingsViewController.Settings.MessageDigitalSignature.Automatic.short" = "自動";
+"SettingsViewController.Settings.MessageDigitalSignature.Automatic.long" = "自動 (選擇第一個密鑰)";
+"SettingsViewController.Settings.MessageDigitalSignature.NotSign.short" = "不簽名";
+"SettingsViewController.Settings.MessageDigitalSignature.NotSign.long" = "不進行消息簽名";
+"SettingsViewController.Settings.ShowLowercaseKeys" = "顯示小寫字母鍵帽";
+
+"ImportKeyController.Prompt.FromPGP" = "從其他的 OpenPGP 應用...";
+"ImportKeyController.Prompt.FromAnotherDevice" = "從其他設備...";
+"ImportKeyController.Prompt.FromPreviousBackup" = "從之前的備份...";
+
+"ImportKeyController.Action.Button.PastePrivateKey" = "粘貼密鑰";
+"ImportKeyController.Action.Button.ScanQR" = "掃描二維碼";
+"ImportKeyController.Action.Button.MaybeLater" = "稍後";
+
+"PasteKeyViewController.Title.PastePrivateKey" = "粘貼密鑰";
+"PasteKeyViewController.Title.ImportPublicKey" = "導入公鑰";
+"PasteKeyViewController.Placeholder.Password" = "密碼";
+
+"MeViewController.Action.Button.Export" = "導出密鑰";
+"MeViewController.Action.Button.Share" = "分享公鑰";
+
+"CreateNewKeyViewController.Label.Name" = "姓名";
+"CreateNewKeyViewController.Label.Email" = "電子郵箱";
+"CreateNewKeyViewController.Label.Password" = "密碼";
+"CreateNewKeyViewController.Label.ConfirmPassword" = "確認密碼";
+"CreateNewKeyViewController.Label.Easymode" = "簡易模式";
+"CreateNewKeyViewController.Label.Algorithm" = "算法";
+"CreateNewKeyViewController.Label.KeyLength" = "密鑰長度";
+
+"CreateNewKeyViewController.Alert.Title.NameRequired" = "名字不能為空";
+"CreateNewKeyViewController.Alert.Title.EmailRequired" = "郵箱不能為空";
+"CreateNewKeyViewController.Alert.Title.EmailInvalid" = "電子郵箱格式不正確";
+"CreateNewKeyViewController.Alert.Title.PasswordNotMatch" = "兩次輸入的密碼需不一致";
+
+"SharePosterController.Title" = "分享公鑰";
+"SharePosterController.Action.Button.SaveImage" = "保存圖片";
+"SharePosterController.Action.Button.ShareImage" = "分享圖片";
+
+"Keyboard.Prompt.EnableFullAccess" = "請點擊此處 開啟 \"允許完全訪問\"";
+"Keyboard.Button.Interpret" = "解密";
+"Keyboard.Button.Encrypt" = "加密";
+
+"Keyboard.Label.SelectRecipients" = "選擇收件人";
+"Keyboard.Label.NoContactsFound" = "無聯繫人";
+"Keyboard.Label.OneContactFound" = "一位聯繫人";
+"Keyboard.Label.PluralContactFound" = "%lu 位聯繫人";
+
+"Keyboard.Alert.NoSelectedRecipient" = "請選擇至少一位聯繫人來加密";
+"Keyboard.Alert.NoEncryptedText" = "沒有找到加密或簽名文本";
+
+"Keyboard.Interpreted.Title.MessageInterpreted" = "消息已解密";
+"Keyboard.Interpreted.Title.NoNeccessaryPrivateKey" = "無法解密消息";
+"Keyboard.Interpreted.Content.NoNeccessaryPrivateKey" = "沒有找到可以用來解密該消息的密鑰";
+"Keyboard.Interpreted.Title.BadSignature" = "無效簽名: 可能來自偽造的簽名者";
+"Keyboard.Interpreted.Title.UnknownSender" = "未知簽名: 請保持警惕";
+
+"DMSPGPError.internal"                  = "內部錯誤";
+"DMSPGPError.notArmoredInput"           = "無效的消息格式";
+"DMSPGPError.invalidArmored"            = "無效的消息格式";
+"DMSPGPError.invalidKeyID"              = "內部錯誤 (KeyID)";
+"DMSPGPError.invalidCleartext"          = "無效的簽名格式";
+"DMSPGPError.invalidMessage"            = "無效的消息格式";
+"DMSPGPError.invalidPublicKeyRing"      = "無效的公鑰格式";
+"DMSPGPError.invalidSecretKeyRing"      = "無效的密鑰格式";
+"DMSPGPError.invalidPrivateKey"         = "無效的私鑰格式";
+"DMSPGPError.invalidSecrectKeyPassword" = "密鑰密碼無效";
+"DMSPGPError.invalidCurve"              = "該算法必須設置加密曲線類型";
+"DMSPGPError.invalidKeyLength"          = "無效的密鑰長度";
+"DMSPGPError.notSupportAlgorithm"       = "%@算法暫不支持";
+"DMSPGPError.missingEncryptionKey"      = "以下密鑰對缺少加密密鑰: %@";
+
+"TCError.keysAlreadyExsit" = "此密鑰對已存在";
+
+"TCError.PGPKeyErrorReason.invalidPassword"       = "無效的密碼";
+"TCError.PGPKeyErrorReason.invalidKeyFormat"      = "無效的密鑰對";
+"TCError.PGPKeyErrorReason.messageNotSigned"      = "消息未被簽名";
+"TCError.PGPKeyErrorReason.failToExport"          = "導出密鑰對失敗";
+"TCError.PGPKeyErrorReason.failToSave"            = "保存密鑰對失敗";
+"TCError.PGPKeyErrorReason.failToGenerate"        = "密鑰對生成失敗，請重試";
+"TCError.PGPKeyErrorReason.noAvailableDecryptKey" = "沒有可用的密鑰來解密此消息";
+
+"TCError.ComposeErrorReason.internal"                 = "內部錯誤";
+"TCError.ComposeErrorReason.emptyInput"               = "消息內容不能為空";
+"TCError.ComposeErrorReason.emptySenderAndRecipients" = "請添加收件人或選擇需要簽名的密鑰";
+"TCError.ComposeErrorReason.invalidSigner"            = "未能找到有效的密鑰用於簽名";
+"TCError.ComposeErrorReason.emptyRecipients"          = "收件人的加密密鑰不可用";
+"TCError.ComposeErrorReason.keychainUnlockFail"       = "未能解鎖簽名密鑰";
+"TCError.ComposeErrorReason.pgpError"                 = "錯誤域: %@\n錯誤編號: %@\n%@";
+
+"TCError.InterpretErrorReason.internal"             = "內部錯誤";
+"TCError.InterpretErrorReason.emptyMessage"         = "消息內容不能為空";
+"TCError.InterpretErrorReason.badPayload"           = "消息報文無效.\n請重新驗證";
+"TCError.InterpretErrorReason.keychianUnlockFailed" = "未能解鎖簽名密鑰";
+"TCError.InterpretErrorReason.pgpError"             = "錯誤域: %@\n錯誤編號: %@\n%@";
+
+"TCError.UserInfoErrorType.invalidUserID" = "無效的 UserID: %@\n缺少有效的姓名和電子郵箱";
