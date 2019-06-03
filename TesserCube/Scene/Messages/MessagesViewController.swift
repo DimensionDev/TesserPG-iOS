@@ -124,6 +124,9 @@ class MessagesViewController: TCBaseViewController {
 
         viewModel.messages.asDriver()
             .drive(onNext: { [weak self] _ in
+                // clear cache data when data source changed
+                self?.viewModel.messageExpandedDict = [:]
+                self?.viewModel.messageMaxNumberOfLinesDict = [:]
                 self?.tableView.reloadData()
             })
             .disposed(by: disposeBag)
@@ -191,6 +194,18 @@ class MessagesViewController: TCBaseViewController {
 }
 
 extension MessagesViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        self.tableView.setNeedsLayout()
+        self.tableView.layoutIfNeeded()
+
+        // reload data source when table view set right frame
+        viewModel.messageExpandedDict = [:]
+        viewModel.messageMaxNumberOfLinesDict = [:]
+        self.tableView.reloadData()
+    }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -264,6 +279,13 @@ extension MessagesViewController: UITableViewDelegate {
         }
     }
 
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let cell = cell as? MessageCardCell else { return }
+
+        cell.delegate = self
+    }
+
+
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let headerView = tableView.tableHeaderView else {
             return
@@ -316,12 +338,12 @@ extension MessagesViewController: UISearchResultsUpdating {
 extension MessagesViewController {
 
     @objc private func keyboardWillShowNotification(_ notification: Notification) {
-//        consolePrint(notification)
+        // consolePrint(notification)
         guard let endFrame = notification.userInfo?["UIKeyboardFrameEndUserInfoKey"] as? CGRect else {
             return
         }
 
-        consolePrint(endFrame)
+        // consolePrint(endFrame)
         additionalSafeAreaInsets.bottom = endFrame.height - (tabBarController?.tabBar.size.height ?? 0.0)
     }
 
@@ -468,6 +490,29 @@ extension MessagesViewController {
             presenter.sourceRect = cell.bounds
         }
         return alertController
+    }
+
+}
+
+// MARK: - MessageCardCellDelegate
+extension MessagesViewController: MessageCardCellDelegate {
+
+    func messageCardCell(_ cell: MessageCardCell, expandButtonPressed: UIButton) {
+        guard let indexPath = tableView.indexPath(for: cell),
+        let isExpand = viewModel.messageExpandedDict[indexPath],
+        let maxNumberOfLines = viewModel.messageMaxNumberOfLinesDict[indexPath] else {
+            return
+        }
+
+        cell.messageLabel.numberOfLines = isExpand ? 4 : 0
+        viewModel.messageExpandedDict[indexPath] = !isExpand
+        let title = !isExpand ? L10n.MessageCardCell.Button.Expand.collapse : L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
+        cell.expandButton.setTitle(title, for: .normal)
+
+        tableView.beginUpdates()
+        tableView.endUpdates()
+
+        tableView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
 
 }
