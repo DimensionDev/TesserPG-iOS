@@ -75,6 +75,8 @@
 "MessageCardCell.Label.Composed" = "撰写";
 "MessageCardCell.Label.Interpret" = "解密";
 "MessageCardCell.Label.Edited" = "编辑";
+"MessageCardCell.Button.Expand.expand" = "展开全部 %lu 行";
+"MessageCardCell.Button.Expand.collapse" = "折叠";
 
 "ComposeMessageViewController.Title" = "撰写";
 "ComposeMessageViewController.BarButtonItem.Finish" = "完成";
