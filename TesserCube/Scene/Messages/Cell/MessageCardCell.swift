@@ -9,10 +9,15 @@
 import UIKit
 import SnapKit
 
-// TODO: fix auto-layout warning 
+protocol MessageCardCellDelegate: class {
+    func messageCardCell(_ cell: MessageCardCell, expandButtonPressed: UIButton)
+}
+
 final class MessageCardCell: UITableViewCell {
 
     static let cardVerticalMargin: CGFloat = 8
+
+    weak var delegate: MessageCardCellDelegate?
 
     let cardView: TCCardView = {
         let cardView = TCCardView()
@@ -47,6 +52,7 @@ final class MessageCardCell: UITableViewCell {
         let label = UILabel()
         label.numberOfLines = 4
         label.text = String(repeating: "Message content here. ", count: 10)
+        label.contentMode = .top
         return label
     }()
     let leftFooterLabel: UILabel = {
@@ -63,6 +69,25 @@ final class MessageCardCell: UITableViewCell {
         label.text = "Right Footer"
         label.textAlignment = .right
         return label
+    }()
+
+    lazy var extraBackgroundViewHeightConstraint = extraBackgroundView.heightAnchor.constraint(equalToConstant: 0)
+    lazy var extraBackgroundView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Asset.cellGreyBackground.color
+        view.layer.cornerRadius = cardView.cardCornerRadius
+        view.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        view.clipsToBounds = true
+        return view
+    }()
+
+    lazy var expandButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.titleLabel?.font = FontFamily.SFProText.regular.font(size: 17)
+        button.titleLabel?.textAlignment = .center
+        button.setTitle("Expand Button", for: .normal)
+        button.addTarget(self, action: #selector(MessageCardCell.expandButtonPressed(_:)), for: .touchUpInside)
+        return button
     }()
 
     override func prepareForReuse() {
@@ -94,11 +119,14 @@ final class MessageCardCell: UITableViewCell {
 
     func setupUI() {
         // - Card
+        //  [StackView]
         //   - Header
         //     - Signed By: [name, email, shortID]
         //     - Recipeints: [name, email, shortID]
-        //   - Content: message
-        //   - Footer: (left, right)
+        //   - Content:
+        //      - Message: (Message Content)
+        //      - Footer: (left, right)
+        //   - Extra: Expand Button (default hidden)
 
         // Card
         cardView.layoutMargins = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
@@ -107,6 +135,15 @@ final class MessageCardCell: UITableViewCell {
             maker.top.equalToSuperview().offset(MessageCardCell.cardVerticalMargin)
             maker.bottom.equalToSuperview().offset(-MessageCardCell.cardVerticalMargin)
             maker.leading.trailing.equalTo(layoutMarginsGuide)
+        }
+
+        // [StackView]
+        let stackView = UIStackView(frame: .zero)
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        cardView.addSubview(stackView)
+        stackView.snp.makeConstraints { maker in
+            maker.top.leading.trailing.bottom.equalToSuperview()
         }
 
         // Header
@@ -118,11 +155,6 @@ final class MessageCardCell: UITableViewCell {
             view.layoutMargins = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
             return view
         }()
-        cardView.addSubview(headerBackgroundView)
-        headerBackgroundView.snp.makeConstraints { maker in
-            maker.top.equalToSuperview()
-            maker.leading.trailing.equalToSuperview()
-        }
 
         headerBackgroundView.addSubview(signedByLabel)
         signedByLabel.snp.makeConstraints { maker in
@@ -162,29 +194,66 @@ final class MessageCardCell: UITableViewCell {
         }
 
         // Content
-        cardView.addSubview(messageLabel)
+        let contentBackgroundView: UIView = {
+            let view = UIView()
+            // view.backgroundColor = .white
+            view.layoutMargins = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+            return view
+        }()
+        contentBackgroundView.snp.makeConstraints { maker in
+            // maker.height.greaterThanOrEqualTo(100)
+        }
+
+        // Message
+        contentBackgroundView.addSubview(messageLabel)
         messageLabel.snp.makeConstraints { maker in
-            maker.top.equalTo(headerBackgroundView.snp.bottom).offset(12)
-            maker.leading.trailing.equalTo(cardView.layoutMargins)
+            maker.top.equalTo(contentBackgroundView.snp.topMargin)
+            maker.leading.trailing.equalTo(contentBackgroundView.layoutMargins)
         }
         messageLabel.setContentHuggingPriority(UILayoutPriority(floatLiteral: 100), for: .vertical)
-        messageLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        messageLabel.setContentCompressionResistancePriority(.required, for: .vertical)
 
-        cardView.addSubview(leftFooterLabel)
+        // Footer
+        contentBackgroundView.addSubview(leftFooterLabel)
         leftFooterLabel.snp.makeConstraints { maker in
             maker.top.equalTo(messageLabel.snp.bottom).offset(16)
-            maker.leading.equalTo(cardView.snp.leadingMargin)
-            maker.bottom.equalTo(cardView.snp.bottomMargin)
+            maker.leading.equalTo(contentBackgroundView.snp.leadingMargin)
+            maker.bottom.equalTo(contentBackgroundView.snp.bottomMargin)
         }
         leftFooterLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
-        leftFooterLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-        cardView.addSubview(rightFooterLabel)
+        leftFooterLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        contentBackgroundView.addSubview(rightFooterLabel)
         rightFooterLabel.snp.makeConstraints { maker in
             maker.top.equalTo(leftFooterLabel.snp.top)
             maker.leading.equalTo(leftFooterLabel.snp.trailing).offset(8)
-            maker.trailing.equalTo(cardView.snp.trailingMargin)
+            maker.trailing.equalTo(contentBackgroundView.snp.trailingMargin)
         }
         rightFooterLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        rightFooterLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+
+        // Extra
+        extraBackgroundView.snp.makeConstraints { maker in
+            maker.height.equalTo(44)
+        }
+
+        extraBackgroundView.addSubview(expandButton)
+        expandButton.snp.makeConstraints { maker in
+            maker.top.equalTo(extraBackgroundView.snp.top)
+            maker.leading.equalTo(extraBackgroundView.snp.leading)
+            maker.trailing.equalTo(extraBackgroundView.snp.trailing)
+            maker.bottom.equalTo(extraBackgroundView.snp.bottom)
+        }
+
+        extraBackgroundViewHeightConstraint.isActive = true
+        stackView.addArrangedSubviews([headerBackgroundView, contentBackgroundView, extraBackgroundView])
+    }
+
+}
+
+extension MessageCardCell {
+
+    @objc func expandButtonPressed(_ sender: UIButton) {
+        delegate?.messageCardCell(self, expandButtonPressed: sender)
     }
 
 }

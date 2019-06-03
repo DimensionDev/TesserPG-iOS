@@ -29,12 +29,16 @@ class MessagesViewModel: NSObject {
     let disposeBag = DisposeBag()
 
     // Input
+    // all messages in database
     let _messages = BehaviorRelay<[Message]>(value: [])
     let searchText = BehaviorRelay(value: "")
+    // UI cache for displaying message
+    var messageExpandedDict: [IndexPath : Bool] = [:]
+    var messageMaxNumberOfLinesDict: [IndexPath : Int] = [:]
 
     // Output
     let segmentedControlItems = MessageType.allCases.map { $0.segmentedControlTitle }
-
+    // messages should display
     let messages = BehaviorRelay<[Message]>(value: [])
     let selectedSegmentIndex = BehaviorRelay(value: 0)
     let selectedMessageType = BehaviorRelay<MessageType>(value: .timeline)
@@ -81,7 +85,8 @@ class MessagesViewModel: NSObject {
                             if searchText.isEmpty { return true }
                             return $0.rawMessage.contains(searchText, caseSensitive: false) ||
                                 $0.senderKeyUserId.contains(searchText, caseSensitive: false) ||
-                                $0.getRecipients().first(where: { messageRecipient in messageRecipient.keyUserId.contains(searchText, caseSensitive: false) ?? false } ) != nil
+                                $0.getRecipients().first(where: { messageRecipient in messageRecipient.keyUserId.contains(searchText, caseSensitive: false)
+                                }) != nil
                         }
                         .sorted(by: { lhs, rhs -> Bool in
                             guard let lhsDate = lhs.interpretedAt ?? lhs.composedAt else {
@@ -115,22 +120,6 @@ extension MessagesViewModel: UITableViewDataSource {
 
     // swiftlint:disable force_cast
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        func retrieveNameBy(longIdentifier: String, fallbackToMeta meta: PGPUserIDTranslator) -> String {
-            guard !longIdentifier.isEmpty else {
-                return L10n.Common.Label.nameNone
-            }
-
-            let contacts = Contact.getOwnerContacts(longIdentifier: longIdentifier)
-            if contacts.count == 1 {
-                // Display contact's name when only 1 contact owns this key
-                return contacts.first?.name ?? meta.name ?? L10n.Common.Label.nameUnknown
-            } else {
-                if meta.userID.isEmpty {
-                    return L10n.Common.Label.nameUnknown
-                }
-                return meta.name ?? L10n.Common.Label.nameUnknown
-            }
-        }
         // TODO: update data source when contact changed
 
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: MessageCardCell.self), for: indexPath) as! MessageCardCell
@@ -180,9 +169,50 @@ extension MessagesViewModel: UITableViewDataSource {
         }
         cell.leftFooterLabel.text = leftFooterText
         cell.rightFooterLabel.text = rightFooterText
+
+        if let isExpand = messageExpandedDict[indexPath],
+        let maxNumberOfLines = messageMaxNumberOfLinesDict[indexPath] {
+            cell.messageLabel.numberOfLines = isExpand ? 0 : 4
+            cell.extraBackgroundViewHeightConstraint.constant = maxNumberOfLines > 4 ? 44 : 0
+            let title = isExpand ? L10n.MessageCardCell.Button.Expand.collapse : L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
+            cell.expandButton.setTitle(title, for: .normal)
+        } else {
+            cell.messageLabel.layoutIfNeeded()
+            let maxNumberOfLines = cell.messageLabel.maxNumberOfLines
+            messageExpandedDict[indexPath] = false
+            messageMaxNumberOfLinesDict[indexPath] = maxNumberOfLines
+            cell.messageLabel.numberOfLines = 4
+            cell.extraBackgroundViewHeightConstraint.constant = maxNumberOfLines > 4 ? 44 : 0
+            let title = L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
+            cell.expandButton.setTitle(title, for: .normal)
+        }
+
+        cell.setNeedsLayout()
+        cell.layoutIfNeeded()
         
         return cell
     }
     // swiftlint:enable force_cast
+
+}
+
+extension MessagesViewModel {
+
+    private func retrieveNameBy(longIdentifier: String, fallbackToMeta meta: PGPUserIDTranslator) -> String {
+        guard !longIdentifier.isEmpty else {
+            return L10n.Common.Label.nameNone
+        }
+
+        let contacts = Contact.getOwnerContacts(longIdentifier: longIdentifier)
+        if contacts.count == 1 {
+            // Display contact's name when only 1 contact owns this key
+            return contacts.first?.name ?? meta.name ?? L10n.Common.Label.nameUnknown
+        } else {
+            if meta.userID.isEmpty {
+                return L10n.Common.Label.nameUnknown
+            }
+            return meta.name ?? L10n.Common.Label.nameUnknown
+        }
+    }
 
 }
