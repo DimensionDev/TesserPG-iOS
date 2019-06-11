@@ -22,7 +22,6 @@ class ContactsListViewController: TCBaseViewController {
     
     var isPickContactMode: Bool = false {
         didSet {
-            navigationItem.hidesSearchBarWhenScrolling = isPickContactMode ? false : true
             tableView.isEditing = isPickContactMode
         }
     }
@@ -69,14 +68,12 @@ class ContactsListViewController: TCBaseViewController {
         return view
     }()
     
-
     private lazy var searchController: UISearchController = {
         let controller = UISearchController(searchResultsController: nil)
         controller.obscuresBackgroundDuringPresentation = false
         controller.delegate = self
         // controller.searchBar.delegate = self
         controller.searchResultsUpdater = self
-        controller.hidesNavigationBarDuringPresentation = false
 
         return controller
     }()
@@ -88,6 +85,7 @@ class ContactsListViewController: TCBaseViewController {
 
         navigationItem.searchController = searchController
         navigationItem.largeTitleDisplayMode = .automatic
+        navigationItem.hidesSearchBarWhenScrolling = false
         definesPresentationContext = true
 
         setupSearchBar()
