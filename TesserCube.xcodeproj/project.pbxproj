@@ -114,6 +114,7 @@
 		83783388224CC23400F2C0BF /* ContactEditTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83783386224CC23400F2C0BF /* ContactEditTextCell.xib */; };
 		8378338C224DFED100F2C0BF /* SubKeyCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8378338A224DFED100F2C0BF /* SubKeyCardCell.swift */; };
 		8378338D224DFED100F2C0BF /* SubKeyCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8378338B224DFED100F2C0BF /* SubKeyCardCell.xib */; };
+		83B03EB122AF57450098B099 /* AppSecret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B03EB022AF57450098B099 /* AppSecret.swift */; };
 		83B93D1F221CE06100F556C0 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D1E221CE06100F556C0 /* Application.swift */; };
 		83B93D22221CEB9800F556C0 /* UserDefaults+AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D21221CEB9800F556C0 /* UserDefaults+AppGroup.swift */; };
 		83B93D2D221D22FA00F556C0 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D2C221D22FA00F556C0 /* KeyboardViewController.swift */; };
@@ -175,8 +176,6 @@
 		DB4F300122A11F820003804B /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146DF22421F93008ECC22 /* Contact.swift */; };
 		DB4F300322A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F300222A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift */; };
 		DB4F300422A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F300222A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift */; };
-		DB4F309422A145A00003804B /* AppSecret.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F309322A145A00003804B /* AppSecret.swift */; };
-		DB4F309522A145A00003804B /* AppSecret.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F309322A145A00003804B /* AppSecret.swift */; };
 		DB4F309822A14C0D0003804B /* DMSPGPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F309722A14C0D0003804B /* DMSPGPError.swift */; };
 		DB4F309922A14C0D0003804B /* DMSPGPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F309722A14C0D0003804B /* DMSPGPError.swift */; };
 		DB616C0922A4CBB4002768B4 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB616C0822A4CBB4002768B4 /* UILabel.swift */; };
@@ -345,6 +344,7 @@
 		83783386224CC23400F2C0BF /* ContactEditTextCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactEditTextCell.xib; sourceTree = "<group>"; };
 		8378338A224DFED100F2C0BF /* SubKeyCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubKeyCardCell.swift; sourceTree = "<group>"; };
 		8378338B224DFED100F2C0BF /* SubKeyCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SubKeyCardCell.xib; sourceTree = "<group>"; };
+		83B03EB022AF57450098B099 /* AppSecret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSecret.swift; sourceTree = "<group>"; };
 		83B93D0D221CDC0200F556C0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		83B93D0E221CDC0200F556C0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		83B93D1E221CE06100F556C0 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
@@ -402,7 +402,6 @@
 		DB4CBCA7224F932B00ED6BF0 /* InterpretMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretMessageViewController.swift; sourceTree = "<group>"; };
 		DB4CBCA9224F962A00ED6BF0 /* InterpretMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretMessageViewModel.swift; sourceTree = "<group>"; };
 		DB4F300222A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSPGPPublicKeyAlgorithm.swift; sourceTree = "<group>"; };
-		DB4F309322A145A00003804B /* AppSecret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSecret.swift; sourceTree = "<group>"; };
 		DB4F309722A14C0D0003804B /* DMSPGPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSPGPError.swift; sourceTree = "<group>"; };
 		DB616C0822A4CBB4002768B4 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		DB66FE66224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPickerTagCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -828,7 +827,7 @@
 			isa = PBXGroup;
 			children = (
 				8304E994221BF10000122637 /* AppDelegate.swift */,
-				DB4F309322A145A00003804B /* AppSecret.swift */,
+				83B03EB022AF57450098B099 /* AppSecret.swift */,
 			);
 			path = "Support Files";
 			sourceTree = "<group>";
@@ -1492,6 +1491,7 @@
 				8313F6912247164000C09C2D /* FloatingAction.swift in Sources */,
 				832146A2223F5FCE008ECC22 /* ContactsListViewController.swift in Sources */,
 				DBBBC195224E29D70080790F /* KeychainMappable.swift in Sources */,
+				83B03EB122AF57450098B099 /* AppSecret.swift in Sources */,
 				DBC7DEC12248D49E00DA4C3E /* ComposeMessageViewModel.swift in Sources */,
 				DB449989228C038E000B7E8A /* SettingsViewController.swift in Sources */,
 				83B93D5D221E6D0B00F556C0 /* UIImage+Color.swift in Sources */,
@@ -1505,7 +1505,6 @@
 				833FF394224F9D8100EFE0A9 /* KeyboardInterpretor.swift in Sources */,
 				83783371224B384000F2C0BF /* ContactCell.swift in Sources */,
 				832146A5223F604F008ECC22 /* BaseNavigationController.swift in Sources */,
-				DB4F309422A145A00003804B /* AppSecret.swift in Sources */,
 				8378337F224CB06B00F2C0BF /* ContactEditViewController.swift in Sources */,
 				DBD63FDD229682E400E46FDC /* KeyFactory+TCKey.swift in Sources */,
 				832146B3223F8725008ECC22 /* TCCardView.swift in Sources */,
@@ -1632,7 +1631,6 @@
 				8325E472222CCD4F00EE9B83 /* SuggestionStackView.swift in Sources */,
 				DBBBC196224E29D70080790F /* KeychainMappable.swift in Sources */,
 				DB3B58E52282930600879834 /* WormholdService.swift in Sources */,
-				DB4F309522A145A00003804B /* AppSecret.swift in Sources */,
 				DB1327162253651C00BD7B98 /* KeyBridge.swift in Sources */,
 				83783367224B232000F2C0BF /* Contact.swift in Sources */,
 				83B93D45221D7E5700F556C0 /* KeyboardConnector.swift in Sources */,
