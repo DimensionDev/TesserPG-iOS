@@ -23,6 +23,7 @@ class ContactsListViewController: TCBaseViewController {
     var isPickContactMode: Bool = false {
         didSet {
             tableView.isEditing = isPickContactMode
+            searchController.hidesNavigationBarDuringPresentation = !isPickContactMode
         }
     }
     
