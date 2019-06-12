@@ -6,5 +6,5 @@
   Copyright © 2019 Sujitech. All rights reserved.
 */
 
-"NSContactsUsageDescription" = "需要通讯录权限，用 来将联系人添加位作为消息收件人";
-"NSPhotoLibraryAddUsageDescription" = "需要相册的写权限，用来将图片保存到本地";
+"NSContactsUsageDescription" = "We need to read your contact records as the recipients of your encrypted messages";
+"NSPhotoLibraryAddUsageDescription" = "We need to access your photo library to save the image";

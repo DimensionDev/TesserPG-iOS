@@ -368,6 +368,16 @@ internal enum L10n {
   }
 
   internal enum MessageCardCell {
+    internal enum Button {
+      internal enum Expand {
+        /// Collapse
+        internal static let collapse = L10n.tr("Localizable", "MessageCardCell.Button.Expand.collapse")
+        /// Show full %lu lines
+        internal static func expand(_ p1: Int) -> String {
+          return L10n.tr("Localizable", "MessageCardCell.Button.Expand.expand", p1)
+        }
+      }
+    }
     internal enum Label {
       ///  composed
       internal static let composed = L10n.tr("Localizable", "MessageCardCell.Label.Composed")

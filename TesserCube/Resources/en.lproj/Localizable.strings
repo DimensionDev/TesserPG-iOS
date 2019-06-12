@@ -75,6 +75,8 @@
 "MessageCardCell.Label.Composed" = " composed";
 "MessageCardCell.Label.Interpret" = " interpreted";
 "MessageCardCell.Label.Edited" = " last edited";
+"MessageCardCell.Button.Expand.expand" = "Show full %lu lines";
+"MessageCardCell.Button.Expand.collapse" = "Collapse";
 
 "ComposeMessageViewController.Title" = "Compose";
 "ComposeMessageViewController.BarButtonItem.Finish" = "Finish";

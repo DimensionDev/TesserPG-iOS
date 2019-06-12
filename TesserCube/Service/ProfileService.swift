@@ -20,19 +20,14 @@ class ProfileService {
     
     let contactKeyPairs = BehaviorRelay<[(Contact, [TCKey])]>(value: [])
     let keys: BehaviorRelay<[TCKey]>
-    
     let contacts: BehaviorRelay<[Contact]>
-    
     let messages: BehaviorRelay<[Message]>
-    
-    let contactChanged = PublishRelay<[Int64]>()
 
+    let contactChanged = PublishRelay<[Int64]>()
     let messageChanged = PublishRelay<Int64>()
     
     private var contactsObervation: TransactionObserver?
-    
     private var messagesObervation: TransactionObserver?
-    
     private var keysObervation: TransactionObserver?
     
     let keyChain = Keychain(service: "com.Sujitech.TesserCube", accessGroup: "7LFDZ96332.com.Sujitech.TesserCube").accessibility(.afterFirstUnlock, authenticationPolicy: .userPresence)
