@@ -47,11 +47,12 @@ extension KeyFactory {
         }
 
         do {
+            var message: String?
             let armoredMessage = armoredMessage.trimmingCharacters(in: .whitespacesAndNewlines)
             let decryptor = try DMSPGPDecryptor(armoredMessage: armoredMessage)
             
             let encryptingKeyIDSet = Set(decryptor.encryptingKeyIDs)
-            let recipientKeys = keys
+            var recipientKeys = keys
                 .filter { $0.hasSecretKey }
                 .filter { key in
                     let decryptingKeyIDs: [String] = key.keyRing.secretKeyRing?.getDecryptingKeyIDs() ?? []
@@ -62,62 +63,71 @@ extension KeyFactory {
             }
             let unknownRecipientKeyIDs = Array(encryptingKeyIDSet.subtracting(recipientKeys.map { $0.keyID } ))
             
-            
-            let hiddenRecipientIDCount = unknownRecipientKeyIDs.getNumberOfHiddenRecipientKeyIDs()
+            let hiddenRecipientIDCount = decryptor.hiddenRecipientsDataList.count
             
             if hiddenRecipientIDCount > 0 {
                 var detectedRecipients = [TCKey]()
                 // 1. Filter out all keypairs with secret keys inside
-                let recipientKeys = keys
+                let possibleKeys = keys
                     .filter { $0.hasSecretKey }
                 
                 // 2. Collect a keyID-password dict from KeyChain
                 var keyPasswordDict = [String: String]()
-                let decrypingKeyIDs = recipientKeys.compactMap { $0.longIdentifier }
+                let possibleKeyIDs = possibleKeys.compactMap { $0.longIdentifier }
                 
                 for keyChainItem in ProfileService.default.keyChain.allItems() {
                     if let key = keyChainItem["key"] as? String, let password = keyChainItem["value"] as? String {
-                        if decrypingKeyIDs.contains(key) {
+                        if possibleKeyIDs.contains(key) {
                             keyPasswordDict[key] = password
                         }
                     }
                 }
                 
-                for possibleKey in recipientKeys {
-                    let decryptKeyIDs = possibleKey.keyRing.secretKeyRing?.getDecryptingKeyIDs() ?? []
-                    for perKeyID in decryptKeyIDs {
-                        if let privateKey = possibleKey.keyRing.secretKeyRing?.getDecryptingPrivateKey(keyID: perKeyID, password: keyPasswordDict[perKeyID] ?? "") {
-                            do {
-                                _ = try decryptor.decrypt(privateKey: privateKey, keyID: perKeyID)
-                                detectedRecipients.append(possibleKey)
-                            } catch {
-                                continue
+                for hiddenRecipientEncryptedData in decryptor.hiddenRecipientsDataList {
+                    // For each hidden recipient encrypted data, check all possible keys to decrypt
+                    for possibleKey in possibleKeys {
+                        let possibleDecryptKeyIDs = possibleKey.keyRing.secretKeyRing?.getDecryptingKeyIDs() ?? []
+                        for perKeyID in possibleDecryptKeyIDs {
+                            if let privateKey = possibleKey.keyRing.secretKeyRing?.getDecryptingPrivateKey(keyID: perKeyID, password: keyPasswordDict[perKeyID] ?? "") {
+                                do {
+                                    message = try decryptor.decrypt(privateKey: privateKey, encryptedData: hiddenRecipientEncryptedData)
+                                    detectedRecipients.append(possibleKey)
+                                } catch {
+                                    continue
+                                }
                             }
                         }
                     }
                 }
+                recipientKeys.append(contentsOf: detectedRecipients)
             }
             
-            // Now we known all recipients. Use one available key to decryt
-            guard let decryptKey = recipientKeys.first,
-                let password = try? ProfileService.default.keyChain.get(decryptKey.longIdentifier) else {
-                    throw TCError.pgpKeyError(reason: .noAvailableDecryptKey)
+            if message == nil {
+                // Now we known all recipients. Use one available key to decryt
+                guard let decryptKey = recipientKeys.first,
+                    let password = try? ProfileService.default.keyChain.get(decryptKey.longIdentifier) else {
+                        throw TCError.pgpKeyError(reason: .noAvailableDecryptKey)
+                }
+                
+                let decryptKeyIDs = decryptKey.keyRing.secretKeyRing?.getDecryptingKeyIDs() ?? []
+                guard let keyID = decryptor.encryptingKeyIDs.first(where: { decryptKeyIDs.contains($0) }),
+                    let privateKey = decryptKey.keyRing.secretKeyRing?.getDecryptingPrivateKey(keyID: keyID, password: password) else {
+                        assertionFailure()
+                        throw TCError.pgpKeyError(reason: .noAvailableDecryptKey)        // not found secret key to decrypt
+                }
+                
+                message = try decryptor.decrypt(privateKey: privateKey, keyID: keyID)
             }
             
-            let decryptKeyIDs = decryptKey.keyRing.secretKeyRing?.getDecryptingKeyIDs() ?? []
-            guard let keyID = decryptor.encryptingKeyIDs.first(where: { decryptKeyIDs.contains($0) }),
-                let privateKey = decryptKey.keyRing.secretKeyRing?.getDecryptingPrivateKey(keyID: keyID, password: password) else {
-                    assertionFailure()
-                    throw TCError.pgpKeyError(reason: .noAvailableDecryptKey)        // not found secret key to decrypt
+            guard let decryptedMessage = message else {
+                throw TCError.pgpKeyError(reason: .noAvailableDecryptKey)
             }
             
-            let message = try decryptor.decrypt(privateKey: privateKey, keyID: keyID)
-            
-            let signatureVerifier = DMSPGPSignatureVerifier(message: message, onePassSignatureList: decryptor.onePassSignatureList, signatureList: decryptor.signatureList)
+            let signatureVerifier = DMSPGPSignatureVerifier(message: decryptedMessage, onePassSignatureList: decryptor.onePassSignatureList, signatureList: decryptor.signatureList)
             let (verifyResult, signatureKey) = signatureVerifier.verifySignature(use: keys)
             
             // TODO: Display if there is any hidden recipients
-            return DecryptResult(message: message,
+            return DecryptResult(message: decryptedMessage,
                                  signatureKey: signatureKey,
                                  recipientKeys: recipientKeys,
                                  verifyResult: verifyResult,
@@ -214,9 +224,11 @@ extension KeyFactory {
             var encryptor: DMSPGPEncryptor
             // Add encryption key of signer if possible otherwise sender (a.k.a signer) could not decrypt message
             if let secretKeyRing = signatureKey?.keyRing.secretKeyRing, let senderPublicKeyRing = signatureKey?.keyRing.publicKeyRing, let password = signatureKeyPassword {
-                encryptor = try DMSPGPEncryptor(publicKeyRings: recipients.map { $0.keyRing.publicKeyRing } + [senderPublicKeyRing], secretKeyRing: secretKeyRing, password: password)
+                let publicKeyDataList = recipients.map { DMSPGPEncryptor.PublicKeyData(publicKeyRing: $0.keyRing.publicKeyRing, isHidden: false)  } + [ DMSPGPEncryptor.PublicKeyData(publicKeyRing: senderPublicKeyRing, isHidden: false)]
+                encryptor = try DMSPGPEncryptor(publicKeyDataList: publicKeyDataList, secretKeyRing: secretKeyRing, password: password)
             } else {
-                encryptor = try DMSPGPEncryptor(publicKeyRings: recipients.map { $0.keyRing.publicKeyRing })
+                let publicKeyDataList = recipients.map { DMSPGPEncryptor.PublicKeyData(publicKeyRing: $0.keyRing.publicKeyRing, isHidden: false)  }
+                encryptor = try DMSPGPEncryptor(publicKeyDataList: publicKeyDataList)
             }
 
             let encrypted = try encryptor.encrypt(message: message)
