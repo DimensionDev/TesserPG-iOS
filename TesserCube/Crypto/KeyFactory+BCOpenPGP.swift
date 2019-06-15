@@ -88,7 +88,7 @@ extension KeyFactory {
                     for possibleKey in possibleKeys {
                         let possibleDecryptKeyIDs = possibleKey.keyRing.secretKeyRing?.getDecryptingKeyIDs() ?? []
                         for perKeyID in possibleDecryptKeyIDs {
-                            if let privateKey = possibleKey.keyRing.secretKeyRing?.getDecryptingPrivateKey(keyID: perKeyID, password: keyPasswordDict[perKeyID] ?? "") {
+                            if let privateKey = possibleKey.keyRing.secretKeyRing?.getDecryptingPrivateKey(keyID: perKeyID, password: keyPasswordDict[possibleKey.longIdentifier] ?? "") {
                                 do {
                                     message = try decryptor.decrypt(privateKey: privateKey, encryptedData: hiddenRecipientEncryptedData)
                                     detectedRecipients.append(possibleKey)
