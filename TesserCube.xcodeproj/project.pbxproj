@@ -22,6 +22,8 @@
 		8313F69B22476F5500C09C2D /* SharePosterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F69A22476F5500C09C2D /* SharePosterViewController.swift */; };
 		8313F69D22477CA000C09C2D /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F69C22477CA000C09C2D /* UIViewController+Alert.swift */; };
 		8313F6A62247ACC800C09C2D /* TCErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F6A52247ACC800C09C2D /* TCErrors.swift */; };
+		831EC43122B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831EC43022B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift */; };
+		831EC43222B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831EC43022B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift */; };
 		83214684223F3BEE008ECC22 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83214683223F3BEE008ECC22 /* Coordinator.swift */; };
 		83214688223F40BC008ECC22 /* MainTabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83214687223F40BC008ECC22 /* MainTabbarViewController.swift */; };
 		83214695223F4CA0008ECC22 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83214694223F4CA0008ECC22 /* Assets.swift */; };
@@ -271,6 +273,7 @@
 		8313F69A22476F5500C09C2D /* SharePosterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePosterViewController.swift; sourceTree = "<group>"; };
 		8313F69C22477CA000C09C2D /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		8313F6A52247ACC800C09C2D /* TCErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCErrors.swift; sourceTree = "<group>"; };
+		831EC43022B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSReceipientKeyIDUtil.swift; sourceTree = "<group>"; };
 		83214683223F3BEE008ECC22 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		83214687223F40BC008ECC22 /* MainTabbarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabbarViewController.swift; sourceTree = "<group>"; };
 		83214694223F4CA0008ECC22 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
@@ -1059,6 +1062,7 @@
 			children = (
 				DB4F300222A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift */,
 				DB4F309722A14C0D0003804B /* DMSPGPError.swift */,
+				831EC43022B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift */,
 			);
 			path = DMSOpenPGP;
 			sourceTree = "<group>";
@@ -1482,6 +1486,7 @@
 				DB44999E228D3353000B7E8A /* MessageDigitalSignatureSettingsViewModel.swift in Sources */,
 				832146AE223F7CD3008ECC22 /* MeViewController.swift in Sources */,
 				83B93D1F221CE06100F556C0 /* Application.swift in Sources */,
+				831EC43122B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift in Sources */,
 				DBC7DEBD2248C7F600DA4C3E /* RecipientContactPickerView.swift in Sources */,
 				DB0758A2224493DB0046FBFD /* PGPUserIDTranslator.swift in Sources */,
 				8325E486222E768500EE9B83 /* Debounce.swift in Sources */,
@@ -1636,6 +1641,7 @@
 				83B93D45221D7E5700F556C0 /* KeyboardConnector.swift in Sources */,
 				8325E470222CC11800EE9B83 /* OptionFieldView.swift in Sources */,
 				8325E474222CCEB600EE9B83 /* ActionsView.swift in Sources */,
+				831EC43222B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift in Sources */,
 				83B93D58221E570200F556C0 /* RecipientButton.swift in Sources */,
 				837833592248898A00F2C0BF /* TCErrors.swift in Sources */,
 				8325E46D222CBFBC00EE9B83 /* KeyboardLayoutManager.swift in Sources */,
