@@ -37,8 +37,8 @@ struct Preference {
         set { UserDefaults.standard[#function] = newValue }
     }
     
-    static var isFirstLogin: Bool {
-        get { return UserDefaults.standard[#function] ?? false }
+    static var isFirstTimeLaunch: Bool {
+        get { return UserDefaults.standard[#function] ?? true }
         set { UserDefaults.standard[#function] = newValue }
     }
     

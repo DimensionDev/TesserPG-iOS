@@ -41,7 +41,7 @@ class Application: NSObject {
 
         if !AppSecret.MSAppCenterID.isEmpty {
             MSAppCenter.start(AppSecret.MSAppCenterID, withServices: [
-                MSAnalytics.self, MSCrashes.self
+               
             ])
         }
 

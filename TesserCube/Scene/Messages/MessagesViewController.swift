@@ -516,3 +516,22 @@ extension MessagesViewController: MessageCardCellDelegate {
     }
 
 }
+
+// MARK: For introduction wizard
+extension MessagesViewController {
+    func getComposeButtonFrame() -> CGRect {
+        if let actionsStackView = bottomActionsView.arrangedSubviews.last as? UIStackView, let composeButton = actionsStackView.arrangedSubviews.first {
+            let composeButtonFrame = composeButton.convert(composeButton.bounds, to: view)
+            return composeButtonFrame
+        }
+        return .zero
+    }
+    
+    func getInterpretButtonFrame() -> CGRect {
+        if let actionsStackView = bottomActionsView.arrangedSubviews.last as? UIStackView, let interpretButton = actionsStackView.arrangedSubviews.last {
+            let interpretButtonFrame = interpretButton.convert(interpretButton.bounds, to: view)
+            return interpretButtonFrame
+        }
+        return .zero
+    }
+}
