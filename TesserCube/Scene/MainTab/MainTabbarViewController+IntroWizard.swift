@@ -126,7 +126,8 @@ extension MainTabbarViewController: IntroWizardViewContorllerDelegate, IntroWiza
     }
     
     func introWizardViewController(_ viewController: IntroWizardViewController, willDismissAt index: Int) {
-        Preference.isFirstTimeLaunch = false
+        //Warning: Uncomment after finishing testing the new introduction wizard feature!
+//        Preference.isFirstTimeLaunch = false
     }
 }
 
