@@ -24,6 +24,7 @@
 		8313F6A62247ACC800C09C2D /* TCErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F6A52247ACC800C09C2D /* TCErrors.swift */; };
 		831EC43122B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831EC43022B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift */; };
 		831EC43222B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831EC43022B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift */; };
+		8320AF4A22B64D1C00843FE7 /* IntroWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8320AF4922B64D1C00843FE7 /* IntroWizardViewController.swift */; };
 		83214684223F3BEE008ECC22 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83214683223F3BEE008ECC22 /* Coordinator.swift */; };
 		83214688223F40BC008ECC22 /* MainTabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83214687223F40BC008ECC22 /* MainTabbarViewController.swift */; };
 		83214695223F4CA0008ECC22 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83214694223F4CA0008ECC22 /* Assets.swift */; };
@@ -154,6 +155,10 @@
 		83DFC73E2259BF6D00993160 /* InterpretResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFC73D2259BF6D00993160 /* InterpretResultView.swift */; };
 		83DFC73F2259F0E700993160 /* TCCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146B2223F8725008ECC22 /* TCCardView.swift */; };
 		83DFC7402259F0EC00993160 /* CALayer+Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146B5223F89A8008ECC22 /* CALayer+Shadow.swift */; };
+		83FE345C22B72DEC0077C1A5 /* IntroSpotlight.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FE345B22B72DEC0077C1A5 /* IntroSpotlight.swift */; };
+		83FE345E22B730CE0077C1A5 /* IntroArrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FE345D22B730CE0077C1A5 /* IntroArrow.swift */; };
+		83FE346022B73AD70077C1A5 /* IntroCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FE345F22B73AD70077C1A5 /* IntroCardView.swift */; };
+		83FE346222B74E980077C1A5 /* MainTabbarViewController+IntroWizard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FE346122B74E980077C1A5 /* MainTabbarViewController+IntroWizard.swift */; };
 		83FF06582250D9DA0003BC0D /* MessageDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF06572250D9DA0003BC0D /* MessageDBAction.swift */; };
 		83FF06592250D9DA0003BC0D /* MessageDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF06572250D9DA0003BC0D /* MessageDBAction.swift */; };
 		C5D98E8849B78D615F101C81 /* Pods_TesserCubeKeyboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E62BCA2B022300EA53474B /* Pods_TesserCubeKeyboard.framework */; };
@@ -274,6 +279,7 @@
 		8313F69C22477CA000C09C2D /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		8313F6A52247ACC800C09C2D /* TCErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCErrors.swift; sourceTree = "<group>"; };
 		831EC43022B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSReceipientKeyIDUtil.swift; sourceTree = "<group>"; };
+		8320AF4922B64D1C00843FE7 /* IntroWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroWizardViewController.swift; sourceTree = "<group>"; };
 		83214683223F3BEE008ECC22 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		83214687223F40BC008ECC22 /* MainTabbarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabbarViewController.swift; sourceTree = "<group>"; };
 		83214694223F4CA0008ECC22 /* Assets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
@@ -382,6 +388,10 @@
 		83DFC73622577B9800993160 /* WormHole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WormHole.swift; sourceTree = "<group>"; };
 		83DFC73A22578ED800993160 /* InterpretFailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretFailView.swift; sourceTree = "<group>"; };
 		83DFC73D2259BF6D00993160 /* InterpretResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretResultView.swift; sourceTree = "<group>"; };
+		83FE345B22B72DEC0077C1A5 /* IntroSpotlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroSpotlight.swift; sourceTree = "<group>"; };
+		83FE345D22B730CE0077C1A5 /* IntroArrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroArrow.swift; sourceTree = "<group>"; };
+		83FE345F22B73AD70077C1A5 /* IntroCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroCardView.swift; sourceTree = "<group>"; };
+		83FE346122B74E980077C1A5 /* MainTabbarViewController+IntroWizard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainTabbarViewController+IntroWizard.swift"; sourceTree = "<group>"; };
 		83FF06572250D9DA0003BC0D /* MessageDBAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDBAction.swift; sourceTree = "<group>"; };
 		84957C7609515FCFA95F42A3 /* Pods-TesserCubeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.release.xcconfig"; sourceTree = "<group>"; };
 		9B17EDD1F3A38E5966DCBA34 /* Pods-TesserCubeTests.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.debug stub.xcconfig"; sourceTree = "<group>"; };
@@ -577,6 +587,17 @@
 			name = "Recovered References";
 			sourceTree = "<group>";
 		};
+		8320AF4822B64C8D00843FE7 /* Introduction */ = {
+			isa = PBXGroup;
+			children = (
+				8320AF4922B64D1C00843FE7 /* IntroWizardViewController.swift */,
+				83FE345B22B72DEC0077C1A5 /* IntroSpotlight.swift */,
+				83FE345D22B730CE0077C1A5 /* IntroArrow.swift */,
+				83FE345F22B73AD70077C1A5 /* IntroCardView.swift */,
+			);
+			path = Introduction;
+			sourceTree = "<group>";
+		};
 		8321462F223F30AE008ECC22 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
@@ -589,6 +610,7 @@
 		83214685223F4011008ECC22 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				8320AF4822B64C8D00843FE7 /* Introduction */,
 				83214686223F4019008ECC22 /* MainTab */,
 				832146A0223F5FBE008ECC22 /* Contacts */,
 				832146F82244CCD2008ECC22 /* Messages */,
@@ -605,6 +627,7 @@
 			isa = PBXGroup;
 			children = (
 				83214687223F40BC008ECC22 /* MainTabbarViewController.swift */,
+				83FE346122B74E980077C1A5 /* MainTabbarViewController+IntroWizard.swift */,
 			);
 			path = MainTab;
 			sourceTree = "<group>";
@@ -1493,6 +1516,7 @@
 				DB66FE67224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift in Sources */,
 				DB1327152253651C00BD7B98 /* KeyBridge.swift in Sources */,
 				8313F6A62247ACC800C09C2D /* TCErrors.swift in Sources */,
+				83FE345E22B730CE0077C1A5 /* IntroArrow.swift in Sources */,
 				8313F6912247164000C09C2D /* FloatingAction.swift in Sources */,
 				832146A2223F5FCE008ECC22 /* ContactsListViewController.swift in Sources */,
 				DBBBC195224E29D70080790F /* KeychainMappable.swift in Sources */,
@@ -1513,6 +1537,7 @@
 				8378337F224CB06B00F2C0BF /* ContactEditViewController.swift in Sources */,
 				DBD63FDD229682E400E46FDC /* KeyFactory+TCKey.swift in Sources */,
 				832146B3223F8725008ECC22 /* TCCardView.swift in Sources */,
+				8320AF4A22B64D1C00843FE7 /* IntroWizardViewController.swift in Sources */,
 				8313F69622475AC600C09C2D /* SharePublicKeyActivity.swift in Sources */,
 				832146DA2241FAC6008ECC22 /* PasteKeyViewController.swift in Sources */,
 				832146BA223F8AA1008ECC22 /* KeyCardCell.swift in Sources */,
@@ -1532,6 +1557,7 @@
 				832146B1223F7D98008ECC22 /* ProfileService.swift in Sources */,
 				DB66FE6D224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */,
 				832146AA223F6756008ECC22 /* UIViewController+EmptyView.swift in Sources */,
+				83FE345C22B72DEC0077C1A5 /* IntroSpotlight.swift in Sources */,
 				832146D82241D980008ECC22 /* ImportKeyViewController.swift in Sources */,
 				832146C5223FC9E4008ECC22 /* TCActionButton.swift in Sources */,
 				837833552248840600F2C0BF /* TCTypes.swift in Sources */,
@@ -1545,6 +1571,7 @@
 				837833632249C33B00F2C0BF /* TCDBManager.swift in Sources */,
 				833FF38D224F97BD00EFE0A9 /* ProfileService+Message.swift in Sources */,
 				83783377224B9B9B00F2C0BF /* ContactDetailViewController.swift in Sources */,
+				83FE346022B73AD70077C1A5 /* IntroCardView.swift in Sources */,
 				833FF391224F97D900EFE0A9 /* Message.swift in Sources */,
 				DB6AA3EA2273218C00A7ADDF /* KeyFactory+BCOpenPGP.swift in Sources */,
 				8378336B224B352500F2C0BF /* ContactListViewModel.swift in Sources */,
@@ -1552,6 +1579,7 @@
 				83214688223F40BC008ECC22 /* MainTabbarViewController.swift in Sources */,
 				8304E995221BF10000122637 /* AppDelegate.swift in Sources */,
 				DB0758D0224895B40046FBFD /* MessageCardCell.swift in Sources */,
+				83FE346222B74E980077C1A5 /* MainTabbarViewController+IntroWizard.swift in Sources */,
 				DB4F300322A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift in Sources */,
 				DB75454B2296A7C400B4E1EF /* CreateKeyOption.swift in Sources */,
 			);
