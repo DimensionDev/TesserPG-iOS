@@ -145,6 +145,7 @@ class IntroWizardViewController: UIViewController {
     private func naivgateTo(index: Int) {
         guard index < stepsCount else {
             assert(false, "step index \(index) is out of stepsCount's range")
+            return
         }
         
         // Remove exisiting layer masks & images
