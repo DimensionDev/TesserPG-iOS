@@ -35,7 +35,7 @@
 "WizardCollectionViewController.Page.copytoInterpret.detailText" = "在聊天时拷贝加密消息\n即可完成消息的解密";
 
 "IntroWizardViewController.Action.Button.skipGuides" = "跳过";
-"IntroWizardViewController.Action.Button.notNow" = "现在不要";
+"IntroWizardViewController.Action.Button.notNow" = "稍后";
 
 "IntroWizardViewController.Step.contactsScene" = "您可以在这里管理您的联系人。";
 "IntroWizardViewController.Step.importContact" = "轻点\"+\"按钮，通过导入公钥添加联系人。";
