@@ -34,17 +34,17 @@
 "WizardCollectionViewController.Page.typeAndEncrypt.detailText" = "有了 Tessercube 键盘，键入消息后\n轻点 \"Tessercube\" 图标选择收件人\n点击加密后按钮即可加密消息";
 "WizardCollectionViewController.Page.copytoInterpret.detailText" = "在聊天时拷贝加密消息\n即可完成消息的解密";
 
-"IntroWizardViewController.Action.Button.skipGuides" = "Skip Guides";
-"IntroWizardViewController.Action.Button.notNow" = "Not Now";
+"IntroWizardViewController.Action.Button.skipGuides" = "跳过教学";
+"IntroWizardViewController.Action.Button.notNow" = "稍后";
 
-"IntroWizardViewController.Step.contactsScene" = "This is where you manage your contacts.";
-"IntroWizardViewController.Step.importContact" = "Tap \"+\" to import a contact with their public key.";
-"IntroWizardViewController.Step.messagesScene" = "This is where you manage your message history.";
-"IntroWizardViewController.Step.composeMessage" = "Tap \"Compose\" to encrypt a message or create a signature; or both.";
-"IntroWizardViewController.Step.interpretMessage" = "Tap \"Interpret\" to decrypt a message or verify a signature, or both.";
-"IntroWizardViewController.Step.meScene" = "This is where you manage your private keys.";
-"IntroWizardViewController.Step.createKeyPair" = "Tap \"+\" to create a keypair or import your existing keypairs.";
-"IntroWizardViewController.Step.completeGuide" = "🎉 Guide Completed 🎉\nCreate a keypair right now?";
+"IntroWizardViewController.Step.contactsScene" = "在这里管理您的联系人信息";
+"IntroWizardViewController.Step.importContact" = "轻点 \"+\" 开始导入联系人的公钥";
+"IntroWizardViewController.Step.messagesScene" = "在这里管理您的所有消息";
+"IntroWizardViewController.Step.composeMessage" = "轻点 \"撰写\" 来加密或签名消息";
+"IntroWizardViewController.Step.interpretMessage" = "轻点 \"解密\" 来解密和验证消息";
+"IntroWizardViewController.Step.meScene" = "在这里管理您的密钥";
+"IntroWizardViewController.Step.createKeyPair" = "轻点 \"+\" 来创建或导入密钥";
+"IntroWizardViewController.Step.completeGuide" = "🎉 教学完成 🎉\n现在来创建一个密钥吧";
 
 "ContactDetailViewController.Label.Fingerprint" = "指纹";
 "ContactDetailViewController.Label.Validity" = "有效性";
