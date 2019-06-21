@@ -14,6 +14,34 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "0039DBE3F9EF8D1645EEEAA5D6CF54E6"
+               BuildableName = "Pods_TesserCube.framework"
+               BlueprintName = "Pods-TesserCube"
+               ReferencedContainer = "container:Pods/Pods.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4C909E54228A92E657B12EF7C95692BC"
+               BuildableName = "Pods_TesserCubeKeyboard.framework"
+               BlueprintName = "Pods-TesserCubeKeyboard"
+               ReferencedContainer = "container:Pods/Pods.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "8304E990221BF10000122637"
                BuildableName = "TesserCube.app"
                BlueprintName = "TesserCube"
