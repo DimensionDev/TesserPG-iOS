@@ -50,23 +50,23 @@ class Coordinator {
     func present(scene: Scene, from sender: UIViewController?, transition: Transition = .detail, completion: (() -> Void)? = nil) {
         switch scene {
         case .main(let message):
-            guard WizardViewController.didPresentWizard else {
-                UIApplication.shared.keyWindow?.rootViewController = WizardViewController()
-                UIApplication.shared.keyWindow?.makeKeyAndVisible()
-                completion?()
-                return
-            }
-
-            var rootVC: UIViewController
-            
-            // Warning: Check if logged after implementation Logging mechanism
-            var logged = true
-            if logged {
-                rootVC = MainTabbarViewController()
-            } else {
-                rootVC = MainTabbarViewController()
-            }
-            UIApplication.shared.keyWindow?.rootViewController = rootVC
+//            guard WizardViewController.didPresentWizard else {
+//                UIApplication.shared.keyWindow?.rootViewController = WizardViewController()
+//                UIApplication.shared.keyWindow?.makeKeyAndVisible()
+//                completion?()
+//                return
+//            }
+//
+//            var rootVC: UIViewController
+//
+//            // Warning: Check if logged after implementation Logging mechanism
+//            var logged = true
+//            if logged {
+//                rootVC = MainTabbarViewController()
+//            } else {
+//                rootVC = MainTabbarViewController()
+//            }
+            UIApplication.shared.keyWindow?.rootViewController = MainTabbarViewController()
             UIApplication.shared.keyWindow?.makeKeyAndVisible()
             completion?()
         default:
