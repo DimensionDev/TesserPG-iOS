@@ -21,7 +21,7 @@
 "Common.HUD.CreatingKey" = "密鑰創建中...";
 "Common.HUD.ImportingKey" = "密鑰導入中...";
 
-"ContactListViewController.EmptyView.Prompt" = "暫無聯繫人\n請通過導入公鑰添加聯繫人";
+"ContactListViewController.EmptyView.Prompt" = "暫無聯絡人\n請通過導入公鑰添加聯絡人";
 
 "WizardViewController.Action.Button.Next" = "下一步";
 "WizardViewController.Action.Button.StartUsing" = "開始";
@@ -30,9 +30,21 @@
 "WizardCollectionViewController.Page.typeAndEncrypt.titleText" = "鍵入並加密";
 "WizardCollectionViewController.Page.copytoInterpret.titleText" = "拷貝並解密";
 
-"WizardCollectionViewController.Page.importPublicKeys.detailText" = "您可以在聯繫人頁面輕點 \"+\" 號\n粘貼聯繫人的公鑰\來完成公鑰導入";
+"WizardCollectionViewController.Page.importPublicKeys.detailText" = "您可以在聯絡人頁面輕點 \"+\" 號\n粘貼聯絡人的公鑰\來完成公鑰導入";
 "WizardCollectionViewController.Page.typeAndEncrypt.detailText" = "有了 Tessercube 鍵盤，鍵入消息後\n輕點 \"Tessercube\" 圖標選擇收件人\n點擊加密後按鈕即可加密消息";
 "WizardCollectionViewController.Page.copytoInterpret.detailText" = "在聊天時拷貝加密消息\n即可完成消息的解密";
+
+"IntroWizardViewController.Action.Button.skipGuides" = "跳過";
+"IntroWizardViewController.Action.Button.notNow" = "現在不要";
+
+"IntroWizardViewController.Step.contactsScene" = "您可以在這裡管理您的聯絡人。";
+"IntroWizardViewController.Step.importContact" = "輕點\"+\"按鈕，通過導入公鑰添加聯絡人。";
+"IntroWizardViewController.Step.messagesScene" = "您可以在這裡管理您的歷史消息。";
+"IntroWizardViewController.Step.composeMessage" = "輕點\"撰寫\"按鈕，您可以開始撰寫加密消息，也可以創建您的專屬簽名。";
+"IntroWizardViewController.Step.interpretMessage" = "輕點\"解密\"按鈕，您可以在這裡解密消息，驗證簽名有效性。";
+"IntroWizardViewController.Step.meScene" = "您可以在這裡管理您的密鑰。";
+"IntroWizardViewController.Step.createKeyPair" = "輕點\"+\"按鈕，創建或導入您的密鑰";
+"IntroWizardViewController.Step.completeGuide" = "🎉 您已閱讀完本指南 🎉\n現在就創建屬於您的密鑰？";
 
 "ContactDetailViewController.Label.Fingerprint" = "指紋";
 "ContactDetailViewController.Label.Validity" = "有效性";
@@ -44,15 +56,15 @@
 "ContactDetailViewController.Label.Invalid" = "無效";
 "ContactDetailViewController.Button.SendMessage" = "發送消息";
 
-"EditContactViewController.Label.DeleteContact" = "刪除聯繫人";
-"EditContactViewController.Action.Button.ConfirmDeleteContact" = "確認刪除該聯繫人";
-"EditContactViewController.Action.Button.ConfirmDeleteKeypairs" = "是否需要保留聯繫人公鑰";
+"EditContactViewController.Label.DeleteContact" = "刪除聯絡人";
+"EditContactViewController.Action.Button.ConfirmDeleteContact" = "確認刪除該聯絡人";
+"EditContactViewController.Action.Button.ConfirmDeleteKeypairs" = "是否需要保留聯絡人公鑰";
 "EditContactViewController.Action.Button.KeepPublicKey" = "保留公鑰";
 "EditContactViewController.Action.Button.DeleteKeyPair" = "刪除公私鑰";
 "EditContactViewController.EditType.Name" = "姓名";
 "EditContactViewController.EditType.Trust" = "信任";
 
-"MainTabbarViewController.TabBarItem.Contacts.title" = "聯繫人";
+"MainTabbarViewController.TabBarItem.Contacts.title" = "聯絡人";
 "MainTabbarViewController.TabBarItem.Messages.title" = "消息";
 "MainTabbarViewController.TabBarItem.Me.title" = "我";
 
@@ -151,11 +163,11 @@
 "Keyboard.Button.Encrypt" = "加密";
 
 "Keyboard.Label.SelectRecipients" = "選擇收件人";
-"Keyboard.Label.NoContactsFound" = "無聯繫人";
-"Keyboard.Label.OneContactFound" = "一位聯繫人";
-"Keyboard.Label.PluralContactFound" = "%lu 位聯繫人";
+"Keyboard.Label.NoContactsFound" = "無聯絡人";
+"Keyboard.Label.OneContactFound" = "一位聯絡人";
+"Keyboard.Label.PluralContactFound" = "%lu 位聯絡人";
 
-"Keyboard.Alert.NoSelectedRecipient" = "請選擇至少一位聯繫人來加密";
+"Keyboard.Alert.NoSelectedRecipient" = "請選擇至少一位聯絡人來加密";
 "Keyboard.Alert.NoEncryptedText" = "沒有找到加密或簽名文本";
 
 "Keyboard.Interpreted.Title.MessageInterpreted" = "消息已解密";
