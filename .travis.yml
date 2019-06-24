@@ -10,7 +10,7 @@ before_install:
 script:
   - set -o pipefail
   - cat Pods/BouncyCastle-ObjC/dist/VERSION
-  - chmod +x ./Pods/BouncyCastle-ObjC/Scripts/generate.sh
-  - ./Pods/BouncyCastle-ObjC/Scripts/generate.sh
+  - chmod +x Pods/BouncyCastle-ObjC/BouncyCastle-ObjC/Scripts/generate.sh
+  - ./Pods/BouncyCastle-ObjC/BouncyCastle-ObjC/Scripts/generate.sh
   - cat Pods/BouncyCastle-ObjC/BouncyCastle-ObjC/Classes/Base64.h
   - xcodebuild -workspace TesserCube.xcworkspace -scheme TesserCube -destination platform\=iOS\ Simulator,OS\=12.2,name\=iPhone\ X | xcpretty -c
