@@ -1,13 +1,5 @@
 PODS:
   - AlignedCollectionViewFlowLayout (1.1.2)
-  - AppCenter (1.14.0):
-    - AppCenter/Analytics (= 1.14.0)
-    - AppCenter/Crashes (= 1.14.0)
-  - AppCenter/Analytics (1.14.0):
-    - AppCenter/Core
-  - AppCenter/Core (1.14.0)
-  - AppCenter/Crashes (1.14.0):
-    - AppCenter/Core
   - BouncyCastle-ObjC (0.1.0)
   - ConsolePrint (0.1.0)
   - DateToolsSwift (4.0.0)
@@ -64,7 +56,6 @@ PODS:
 
 DEPENDENCIES:
   - AlignedCollectionViewFlowLayout (~> 1.1.2)
-  - AppCenter (~> 1.14.0)
   - ConsolePrint (~> 0.1.0)
   - DateToolsSwift (~> 4.0.0)
   - DeepDiff (~> 2.0.1)
@@ -90,7 +81,6 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AlignedCollectionViewFlowLayout
-    - AppCenter
     - BouncyCastle-ObjC
     - ConsolePrint
     - DateToolsSwift
@@ -119,7 +109,6 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AlignedCollectionViewFlowLayout: ee2ef451e741ec08f8e0967d828001e2f051c20a
-  AppCenter: 02c5efe08d3bbab5421ae41d5f7aa7238906b817
   BouncyCastle-ObjC: e9e35f6cf5b1333f6ce4cc6bb5ab19cbf5dfc7aa
   ConsolePrint: 695d494f0a2595d1792ec19483f2aa16e4501c19
   DateToolsSwift: 875d97ff9e3a5d54abdd67a269b3f51c757b71ab
@@ -146,6 +135,6 @@ SPEC CHECKSUMS:
   SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
   "UITextView+Placeholder": 0c3efd97f37ea64bde7f34cc6e90fe02e87b3909
 
-PODFILE CHECKSUM: 4ec6bba6618dd7a0a46d4db85795d803ada639a1
+PODFILE CHECKSUM: f92ab28f916a83a738f340e2a340b0c255cffa38
 
 COCOAPODS: 1.7.2
