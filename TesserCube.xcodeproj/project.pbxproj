@@ -117,7 +117,6 @@
 		83783388224CC23400F2C0BF /* ContactEditTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83783386224CC23400F2C0BF /* ContactEditTextCell.xib */; };
 		8378338C224DFED100F2C0BF /* SubKeyCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8378338A224DFED100F2C0BF /* SubKeyCardCell.swift */; };
 		8378338D224DFED100F2C0BF /* SubKeyCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8378338B224DFED100F2C0BF /* SubKeyCardCell.xib */; };
-		83B03EB122AF57450098B099 /* AppSecret.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B03EB022AF57450098B099 /* AppSecret.swift */; };
 		83B93D1F221CE06100F556C0 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D1E221CE06100F556C0 /* Application.swift */; };
 		83B93D22221CEB9800F556C0 /* UserDefaults+AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D21221CEB9800F556C0 /* UserDefaults+AppGroup.swift */; };
 		83B93D2D221D22FA00F556C0 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D2C221D22FA00F556C0 /* KeyboardViewController.swift */; };
@@ -353,7 +352,6 @@
 		83783386224CC23400F2C0BF /* ContactEditTextCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactEditTextCell.xib; sourceTree = "<group>"; };
 		8378338A224DFED100F2C0BF /* SubKeyCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubKeyCardCell.swift; sourceTree = "<group>"; };
 		8378338B224DFED100F2C0BF /* SubKeyCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SubKeyCardCell.xib; sourceTree = "<group>"; };
-		83B03EB022AF57450098B099 /* AppSecret.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSecret.swift; sourceTree = "<group>"; };
 		83B93D0D221CDC0200F556C0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		83B93D0E221CDC0200F556C0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		83B93D1E221CE06100F556C0 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
@@ -853,7 +851,6 @@
 			isa = PBXGroup;
 			children = (
 				8304E994221BF10000122637 /* AppDelegate.swift */,
-				83B03EB022AF57450098B099 /* AppSecret.swift */,
 			);
 			path = "Support Files";
 			sourceTree = "<group>";
@@ -1520,7 +1517,6 @@
 				8313F6912247164000C09C2D /* FloatingAction.swift in Sources */,
 				832146A2223F5FCE008ECC22 /* ContactsListViewController.swift in Sources */,
 				DBBBC195224E29D70080790F /* KeychainMappable.swift in Sources */,
-				83B03EB122AF57450098B099 /* AppSecret.swift in Sources */,
 				DBC7DEC12248D49E00DA4C3E /* ComposeMessageViewModel.swift in Sources */,
 				DB449989228C038E000B7E8A /* SettingsViewController.swift in Sources */,
 				83B93D5D221E6D0B00F556C0 /* UIImage+Color.swift in Sources */,
