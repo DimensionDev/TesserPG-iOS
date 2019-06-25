@@ -3,12 +3,8 @@ language: swift
 xcode_workspace: TesserCube.xcworkspace
 xcode_scheme: TesserCube
 xcode_destination: platform=iOS Simulator,OS=12.2,name=iPhone X
-env:
-  global:
-    - JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-12.jdk
 # cache: cocoapods
 before_install:
-  - echo $JAVA_HOME
   - java -version
   - gem install cocoapods
   - pod install --repo-update
