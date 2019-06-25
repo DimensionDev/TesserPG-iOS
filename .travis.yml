@@ -8,7 +8,7 @@ jdk: openjdk11
 before_install:
   - java -version
   - export JAVA_HOME=$HOME/openjdk11
-  - $TRAVIS_BUILD_DIR/install-jdk.sh --url 'https://api.adoptopenjdk.net/v2/binary/releases/openjdk11?openjdk_impl=hotspot&os=linux&arch=x64&release=latest&heap_size=normal&type=jdk' --target $JAVA_HOME
+  - $TRAVIS_BUILD_DIR/install-jdk.sh --url 'https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_osx-x64_bin.tar.gz' --target $JAVA_HOME
   - java -version
   - gem install cocoapods
   - pod install --repo-update
