@@ -13,7 +13,7 @@ class TCActionButton: UIButton {
     
     private var shadow2Layer: CALayer?
     
-    private let minHeight: CGFloat = 50
+    var minHeight: CGFloat = 50
     
     private let insetLength: CGFloat = 7.5
     
