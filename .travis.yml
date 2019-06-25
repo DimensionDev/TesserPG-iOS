@@ -16,4 +16,4 @@ script:
   # - ./BouncyCastle-ObjC/Scripts/generate.sh
   # - cd .. && cd ..
   - cat Pods/BouncyCastle-ObjC/BouncyCastle-ObjC/Classes/Base64.h
-  - xcodebuild -workspace TesserCube.xcworkspace -scheme TesserCube -destination platform\=iOS\ Simulator,OS\=12.2,name\=iPhone\ X | xcpretty -c
+  - xcodebuild -workspace TesserCube.xcworkspace -scheme TesserCube -destination platform\=iOS\ Simulator,OS\=12.1,name\=iPhone\ X | xcpretty -c
