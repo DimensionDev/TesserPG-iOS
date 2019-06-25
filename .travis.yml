@@ -7,8 +7,10 @@ xcode_destination: platform=iOS Simulator,OS=12.2,name=iPhone X
 jdk: openjdk11
 before_install:
   - java -version
+   - export JAVA_HOME=$HOME/openjdk11
+  - $TRAVIS_BUILD_DIR/install-jdk.sh --install openjdk11 --target $JAVA_HOME
   - gem install cocoapods
-  
+  - pod install --repo-update
 script:
   - set -o pipefail
   # - cat Pods/BouncyCastle-ObjC/dist/VERSION
@@ -16,9 +18,5 @@ script:
   # - chmod +x BouncyCastle-ObjC/Scripts/generate.sh
   # - ./BouncyCastle-ObjC/Scripts/generate.sh
   # - cd .. && cd ..
-  - export JAVA_HOME=$HOME/openjdk11
-  - $TRAVIS_BUILD_DIR/install-jdk.sh --install openjdk11 --target $JAVA_HOME
-  # do stuff with open OpenJDK 11
-  - pod install --repo-update
   - cat Pods/BouncyCastle-ObjC/BouncyCastle-ObjC/Classes/Base64.h
   - xcodebuild -workspace TesserCube.xcworkspace -scheme TesserCube -destination platform\=iOS\ Simulator,OS\=12.2,name\=iPhone\ X | xcpretty -c
