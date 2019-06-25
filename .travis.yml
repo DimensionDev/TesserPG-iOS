@@ -14,10 +14,5 @@ before_install:
   - pod install --repo-update
 script:
   - set -o pipefail
-  # - cat Pods/BouncyCastle-ObjC/dist/VERSION
-  # - cd Pods/BouncyCastle-ObjC
-  # - chmod +x BouncyCastle-ObjC/Scripts/generate.sh
-  # - ./BouncyCastle-ObjC/Scripts/generate.sh
-  # - cd .. && cd ..
   - cat Pods/BouncyCastle-ObjC/BouncyCastle-ObjC/Classes/Base64.h
   - xcodebuild -workspace TesserCube.xcworkspace -scheme TesserCube -destination platform\=iOS\ Simulator,OS\=12.2,name\=iPhone\ X | xcpretty -c
