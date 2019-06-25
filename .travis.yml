@@ -3,10 +3,9 @@ language: swift
 xcode_workspace: TesserCube.xcworkspace
 xcode_scheme: TesserCube
 xcode_destination: platform=iOS Simulator,OS=12.2,name=iPhone X
-cache: cocoapods
+# cache: cocoapods
 jdk: openjdk11
 before_install:
-  - java -version
   - export JAVA_HOME=$HOME/openjdk11
   - $TRAVIS_BUILD_DIR/install-jdk.sh --url 'https://download.java.net/java/GA/jdk11/9/GPL/openjdk-11.0.2_osx-x64_bin.tar.gz' --target $JAVA_HOME
   - java -version
