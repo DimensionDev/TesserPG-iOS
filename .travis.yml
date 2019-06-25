@@ -9,6 +9,7 @@ env:
 # cache: cocoapods
 before_install:
   - echo $JAVA_HOME
+  - java -version
   - gem install cocoapods
   - pod install --repo-update
 script:
