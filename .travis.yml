@@ -3,15 +3,16 @@ language: swift
 xcode_workspace: TesserCube.xcworkspace
 xcode_scheme: TesserCube
 xcode_destination: platform=iOS Simulator,OS=12.2,name=iPhone X
-jdk: openjdk11
+env:
+  global:
+    - JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-12.jdk
 # cache: cocoapods
 before_install:
+  - echo $JAVA_HOME
   - gem install cocoapods
   - pod install --repo-update
 script:
   - set -o pipefail
-  - echo $JAVA_HOME
-  - export JAVA_HOME=~/openjdk11
   - cat Pods/BouncyCastle-ObjC/dist/VERSION
   - cd Pods/BouncyCastle-ObjC
   - chmod +x BouncyCastle-ObjC/Scripts/generate.sh
