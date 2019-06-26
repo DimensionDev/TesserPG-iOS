@@ -16,9 +16,6 @@ import FLEX
 import SwifterSwift
 import IQKeyboardManagerSwift
 import SVProgressHUD
-import AppCenter
-import AppCenterAnalytics
-import AppCenterCrashes
 
 class Application: NSObject {
     
@@ -38,12 +35,6 @@ class Application: NSObject {
     }
     
     private class func initServices(_ application: UIApplication, launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
-
-        if !AppSecret.MSAppCenterID.isEmpty {
-            MSAppCenter.start(AppSecret.MSAppCenterID, withServices: [
-                MSAnalytics.self, MSCrashes.self
-            ])
-        }
 
         UIApplication.shared.applicationSupportsShakeToEdit = true
 

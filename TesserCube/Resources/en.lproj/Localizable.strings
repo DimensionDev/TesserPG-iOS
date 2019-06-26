@@ -34,6 +34,18 @@
 "WizardCollectionViewController.Page.typeAndEncrypt.detailText" = "With Tessercube Keyboard, after\ntyping a message, you can tap the\n\"tesseract\" icon and select recipeints\nto encrypt for them.";
 "WizardCollectionViewController.Page.copytoInterpret.detailText" = "Copy an encrypted message in a chat\nview to interpret the message. You\ncan also tap the \"Key\" icon in text edit\narea to interpret the text in the field.";
 
+"IntroWizardViewController.Action.Button.skipGuides" = "Skip Guides";
+"IntroWizardViewController.Action.Button.notNow" = "Not Now";
+
+"IntroWizardViewController.Step.contactsScene" = "This is where you manage your contacts.";
+"IntroWizardViewController.Step.importContact" = "Tap \"+\" to import a contact with their public key.";
+"IntroWizardViewController.Step.messagesScene" = "This is where you manage your message history.";
+"IntroWizardViewController.Step.composeMessage" = "Tap \"Compose\" to encrypt a message or create a signature; or both.";
+"IntroWizardViewController.Step.interpretMessage" = "Tap \"Interpret\" to decrypt a message or verify a signature, or both.";
+"IntroWizardViewController.Step.meScene" = "This is where you manage your private keys.";
+"IntroWizardViewController.Step.createKeyPair" = "Tap \"+\" to create a keypair or import your existing keypairs.";
+"IntroWizardViewController.Step.completeGuide" = "🎉 Guide Completed 🎉\nCreate a keypair right now?";
+
 "ContactDetailViewController.Label.Fingerprint" = "fingerprint";
 "ContactDetailViewController.Label.Validity" = "validity";
 "ContactDetailViewController.Label.Keytype" = "type";

@@ -34,6 +34,18 @@
 "WizardCollectionViewController.Page.typeAndEncrypt.detailText" = "有了 Tessercube 键盘，键入消息后\n轻点 \"Tessercube\" 图标选择收件人\n点击加密后按钮即可加密消息";
 "WizardCollectionViewController.Page.copytoInterpret.detailText" = "在聊天时拷贝加密消息\n即可完成消息的解密";
 
+"IntroWizardViewController.Action.Button.skipGuides" = "跳过";
+"IntroWizardViewController.Action.Button.notNow" = "稍后";
+
+"IntroWizardViewController.Step.contactsScene" = "您可以在这里管理您的联系人。";
+"IntroWizardViewController.Step.importContact" = "轻点\"+\"按钮，通过导入公钥添加联系人。";
+"IntroWizardViewController.Step.messagesScene" = "您可以在这里管理您的历史消息。";
+"IntroWizardViewController.Step.composeMessage" = "轻点\"撰写\"按钮，您可以开始撰写加密消息，也可以创建您的专属签名。";
+"IntroWizardViewController.Step.interpretMessage" = "轻点\"解密\"按钮，您可以在这里解密消息，验证签名有效性。";
+"IntroWizardViewController.Step.meScene" = "您可以在这里管理您的密钥。";
+"IntroWizardViewController.Step.createKeyPair" = "轻点\"+\"按钮，创建或导入您的密钥。";
+"IntroWizardViewController.Step.completeGuide" = "🎉 您已阅读完本指南 🎉\n现在就创建属于您的密钥吧？";
+
 "ContactDetailViewController.Label.Fingerprint" = "指纹";
 "ContactDetailViewController.Label.Validity" = "有效性";
 "ContactDetailViewController.Label.Keytype" = "类型";

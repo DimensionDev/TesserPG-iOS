@@ -272,6 +272,35 @@ internal enum L10n {
     }
   }
 
+  internal enum IntroWizardViewController {
+    internal enum Action {
+      internal enum Button {
+        /// Not Now
+        internal static let notNow = L10n.tr("Localizable", "IntroWizardViewController.Action.Button.notNow")
+        /// Skip Guides
+        internal static let skipGuides = L10n.tr("Localizable", "IntroWizardViewController.Action.Button.skipGuides")
+      }
+    }
+    internal enum Step {
+      /// 🎉 Guide Completed 🎉\nCreate a keypair right now?
+      internal static let completeGuide = L10n.tr("Localizable", "IntroWizardViewController.Step.completeGuide")
+      /// Tap "Compose" to encrypt a message or create a signature; or both.
+      internal static let composeMessage = L10n.tr("Localizable", "IntroWizardViewController.Step.composeMessage")
+      /// This is where you manage your contacts.
+      internal static let contactsScene = L10n.tr("Localizable", "IntroWizardViewController.Step.contactsScene")
+      /// Tap "+" to create a keypair or import your existing keypairs.
+      internal static let createKeyPair = L10n.tr("Localizable", "IntroWizardViewController.Step.createKeyPair")
+      /// Tap "+" to import a contact with their public key.
+      internal static let importContact = L10n.tr("Localizable", "IntroWizardViewController.Step.importContact")
+      /// Tap "Interpret" to decrypt a message or verify a signature, or both.
+      internal static let interpretMessage = L10n.tr("Localizable", "IntroWizardViewController.Step.interpretMessage")
+      /// This is where you manage your private keys.
+      internal static let meScene = L10n.tr("Localizable", "IntroWizardViewController.Step.meScene")
+      /// This is where you manage your message history.
+      internal static let messagesScene = L10n.tr("Localizable", "IntroWizardViewController.Step.messagesScene")
+    }
+  }
+
   internal enum Keyboard {
     internal enum Alert {
       /// No encrypted text or digital signature found.
