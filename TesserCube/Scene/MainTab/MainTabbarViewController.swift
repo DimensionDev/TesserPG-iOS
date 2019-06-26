@@ -54,6 +54,13 @@ class MainTabbarViewController: UITabBarController {
         configUI()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if Preference.isFirstTimeLaunch {
+            showIntroWizard()
+        }
+    }
+    
     private func configUI() {
         tabBar.isTranslucent = false
         let tabViewControllers: [UIViewController] = MainTabItem.allCases.map {
@@ -68,6 +75,6 @@ class MainTabbarViewController: UITabBarController {
         
 //        tabBar.tintColor = .purple
         setViewControllers(tabViewControllers, animated: false)
-        selectedIndex = (MainTabItem.allCases.count - 1)
+        selectedIndex = 1
     }
 }

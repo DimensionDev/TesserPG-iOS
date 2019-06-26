@@ -56,6 +56,8 @@ class MeViewController: TCBaseViewController {
         view.addSubview(tableView)
         view.addSubview(bottomActionsView)
         
+        navigationItem.rightBarButtonItem = createAddKeyBarButtonItem()
+        
         bottomActionsView.snp.makeConstraints { maker in
             maker.leading.trailing.equalTo(view.layoutMarginsGuide)
             maker.bottom.equalToSuperview().offset(-15)
@@ -68,7 +70,6 @@ class MeViewController: TCBaseViewController {
         viewModel.hasKey
             .drive(onNext: { [weak self] result in
                 self?.reloadActionsView(hasKey: result)
-                self?.navigationItem.rightBarButtonItem = result ? self?.createAddKeyBarButtonItem() : nil
             })
             .disposed(by: disposeBag)
         

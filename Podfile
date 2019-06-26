@@ -25,8 +25,6 @@ def common_pods
   pod 'GRDBCipher', '~> 3.7.0'
   pod 'DeepDiff', '~> 2.0.1'
 
-  pod 'AppCenter', '~> 1.14.0'
-
 end
 
 target 'TesserCube' do
