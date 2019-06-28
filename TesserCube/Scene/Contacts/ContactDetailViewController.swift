@@ -18,36 +18,36 @@ class ContactDetailViewController: TCBaseViewController {
 
     private var defaultNavigationBarShadowImage: UIImage?
 
-    lazy var backBarButtonItem: UIBarButtonItem = {
-        var rootTitle = ""
-        if let viewControllers = navigationController?.viewControllers, viewControllers.count >= 2 {
-            let previousVC = viewControllers[viewControllers.count - 2]
-            if let previousTitle = previousVC.title {
-                rootTitle = previousTitle
-            }
-        }
+//    lazy var backBarButtonItem: UIBarButtonItem = {
+//        var rootTitle = ""
+//        if let viewControllers = navigationController?.viewControllers, viewControllers.count >= 2 {
+//            let previousVC = viewControllers[viewControllers.count - 2]
+//            if let previousTitle = previousVC.title {
+//                rootTitle = previousTitle
+//            }
+//        }
+//
+//        return UIBarButtonItem(title: rootTitle, style: .plain, target: nil, action: nil)
+//    }()
+//
+//    lazy var standaloneNavigationItems: [UINavigationItem] = {
+//        let rootItem = UINavigationItem(title: backBarButtonItem.title ?? "")
+//        rootItem.backBarButtonItem = backBarButtonItem
+//
+//        let item = UINavigationItem(title: "")
+//        item.rightBarButtonItem = UIBarButtonItem(title: L10n.Common.Button.edit, style: .plain, target: self, action: #selector(ContactDetailViewController.editButtonDidClicked(_:)))
+//
+//        return [rootItem, item]
+//    }()
 
-        return UIBarButtonItem(title: rootTitle, style: .plain, target: nil, action: nil)
-    }()
-
-    lazy var standaloneNavigationItems: [UINavigationItem] = {
-        let rootItem = UINavigationItem(title: backBarButtonItem.title ?? "")
-        rootItem.backBarButtonItem = backBarButtonItem
-
-        let item = UINavigationItem(title: "")
-        item.rightBarButtonItem = UIBarButtonItem(title: L10n.Common.Button.edit, style: .plain, target: self, action: #selector(ContactDetailViewController.editButtonDidClicked(_:)))
-
-        return [rootItem, item]
-    }()
-
-    lazy var navigationBar: UINavigationBar = {
-        let navigationBar = UINavigationBar()
-        navigationBar.delegate = self
-        navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationBar.shadowImage = UIImage()
-        navigationBar.items = standaloneNavigationItems
-        return navigationBar
-    }()
+//    lazy var navigationBar: UINavigationBar = {
+//        let navigationBar = UINavigationBar()
+//        navigationBar.delegate = self
+//        navigationBar.setBackgroundImage(UIImage(), for: .default)
+//        navigationBar.shadowImage = UIImage()
+//        navigationBar.items = standaloneNavigationItems
+//        return navigationBar
+//    }()
 
     private var contact: Contact?
 
@@ -137,36 +137,37 @@ class ContactDetailViewController: TCBaseViewController {
         super.configUI()
 
         view.backgroundColor = .white
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: L10n.Common.Button.edit, style: .plain, target: self, action: #selector(ContactDetailViewController.editButtonDidClicked(_:)))
 
-        view.addSubview(navigationBar)
-        navigationBar.snp.makeConstraints { maker in
-            maker.leading.trailing.equalToSuperview()
-            maker.top.equalTo(view.snp.topMargin)
-        }
-
-//        view.addSubview(scrollView)
-//        scrollView.snp.makeConstraints { maker in
-//            maker.leading.trailing.top.bottom.equalToSuperview()
+//        view.addSubview(navigationBar)
+//
+//        navigationBar.snp.makeConstraints { maker in
+//            maker.leading.trailing.equalToSuperview()
+//            maker.top.equalTo(view.snp.topMargin)
 //        }
-
+        
         view.addSubview(topBackgroundView)
-        topBackgroundView.snp.makeConstraints { maker in
-            maker.leading.trailing.equalToSuperview()
-            maker.top.equalToSuperview()
-            maker.height.equalTo(162)
-        }
 
-        topBackgroundView.addSubview(userIdentifierLabel)
         topBackgroundView.addSubview(userNameLabel)
+        topBackgroundView.addSubview(userIdentifierLabel)
+        
+        userNameLabel.snp.makeConstraints { maker in
+            maker.leading.trailing.equalTo(view.layoutMarginsGuide)
+            maker.top.equalToSuperview().offset(79)
+//            maker.bottom.equalTo(userIdentifierLabel.snp.top).offset(-10)
+        }
 
         userIdentifierLabel.snp.makeConstraints { maker in
             maker.leading.trailing.equalTo(view.layoutMarginsGuide)
-            maker.bottom.equalToSuperview().offset(-15)
+            maker.top.equalTo(userNameLabel.snp.bottom).offset(10)
+//            maker.bottom.equalToSuperview().offset(-15)
         }
 
-        userNameLabel.snp.makeConstraints { maker in
-            maker.leading.trailing.equalTo(view.layoutMarginsGuide)
-            maker.bottom.equalTo(userIdentifierLabel.snp.top).offset(-10)
+        topBackgroundView.snp.makeConstraints { maker in
+            maker.leading.trailing.equalToSuperview()
+            maker.top.equalToSuperview()
+//            maker.height.equalTo(162)
+            maker.bottom.equalTo(userIdentifierLabel.snp.bottom).offset(15)
         }
 
         // 1. Fingerprint
@@ -254,7 +255,7 @@ class ContactDetailViewController: TCBaseViewController {
 
         sendMessageButton.addTarget(self, action: #selector(ContactDetailViewController.sendMessageButtonDidClicked(_:)), for: .touchUpInside)
 
-        view.bringSubviewToFront(navigationBar)
+//        view.bringSubviewToFront(navigationBar)
     }
 
 }
@@ -264,7 +265,7 @@ extension ContactDetailViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+//        navigationController?.setNavigationBarHidden(true, animated: animated)
 
         // fix navigation bar hairline bug
         if isPresenting {
