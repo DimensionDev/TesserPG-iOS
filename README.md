@@ -16,7 +16,6 @@ pod install
 
 ## Acknowledgements
 - [AlignedCollectionViewFlowLayout](https://github.com/mischa-hildebrand/AlignedCollectionViewFlowLayout)
-- [AppCenter](https://github.com/microsoft/appcenter-sdk-apple)
 - [DMSOpenPGP](https://github.com/DimensionDev/DMSOpenPGP)
 - [DateToolsSwift](https://github.com/MatthewYork/DateTools)
 - [DeepDiff](https://github.com/onmyway133/DeepDiff)
