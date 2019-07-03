@@ -162,6 +162,22 @@
 "CreateNewKeyViewController.Alert.Title.EmailInvalid" = "Please input a valid email address";
 "CreateNewKeyViewController.Alert.Title.PasswordNotMatch" = "Confirm password should be same as password";
 
+"ImportPublicKeyConfirmViewController.Title.NewContact" = "New Contact";
+"ImportPublicKeyConfirmViewController.Label.Availability" = "Availability";
+"ImportPublicKeyConfirmViewController.Label.IsAvailable" = "Not Added Yet";
+"ImportPublicKeyConfirmViewController.Label.IsUnavailable" = "Already Added";
+"ImportPublicKeyConfirmViewController.Label.ContactsAddedSuccessfully" = "Contacts Added Successfully";
+"ImportPublicKeyConfirmViewController.Button.AddContact" = "Add Contact";
+"ImportPublicKeyConfirmViewController.Button.Close" = "Close";
+
+"ImportPrivateKeyConfirmViewController.Title.NewPrivateKey" = "New Private Key";
+"ImportPrivateKeyConfirmViewController.Label.Availability" = "Availability";
+"ImportPrivateKeyConfirmViewController.Label.IsAvailable" = "Not Added Yet";
+"ImportPrivateKeyConfirmViewController.Label.IsUnavailable" = "Already Added";
+"ImportPrivateKeyConfirmViewController.Label.PrivateKeyAddedSuccessfully" = "Private Keys Imported Successfully";
+"ImportPrivateKeyConfirmViewController.Button.ImportPrivateKey" = "Import Private Key";
+"ImportPrivateKeyConfirmViewController.Button.Close" = "Close";
+
 "SharePosterController.Title" = "Share Public Key";
 "SharePosterController.Action.Button.SaveImage" = "Save Image";
 "SharePosterController.Action.Button.ShareImage" = "Share Image";

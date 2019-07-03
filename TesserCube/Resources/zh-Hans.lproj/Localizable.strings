@@ -154,6 +154,22 @@
 "CreateNewKeyViewController.Alert.Title.EmailInvalid" = "电子邮箱格式不正确";
 "CreateNewKeyViewController.Alert.Title.PasswordNotMatch" = "两次输入的密码需不一致";
 
+"ImportPublicKeyConfirmViewController.Title.NewContact" = "新联系人";
+"ImportPublicKeyConfirmViewController.Label.Availability" = "是否已添加";
+"ImportPublicKeyConfirmViewController.Label.IsAvailable" = "未添加";
+"ImportPublicKeyConfirmViewController.Label.IsUnavailable" = "已添加";
+"ImportPublicKeyConfirmViewController.Label.ContactsAddedSuccessfully" = "联系人添加成功";
+"ImportPublicKeyConfirmViewController.Button.AddContact" = "添加联系人";
+"ImportPublicKeyConfirmViewController.Button.Close" = "关闭";
+
+"ImportPrivateKeyConfirmViewController.Title.NewPrivateKey" = "新密钥";
+"ImportPrivateKeyConfirmViewController.Label.Availability" = "是否已导入";
+"ImportPrivateKeyConfirmViewController.Label.IsAvailable" = "未导入";
+"ImportPrivateKeyConfirmViewController.Label.IsUnavailable" = "已导入";
+"ImportPrivateKeyConfirmViewController.Label.PrivateKeyAddedSuccessfully" = "密钥导入成功";
+"ImportPrivateKeyConfirmViewController.Button.ImportPrivateKey" = "导入密钥";
+"ImportPrivateKeyConfirmViewController.Button.Close" = "关闭";
+
 "SharePosterController.Title" = "分享公钥";
 "SharePosterController.Action.Button.SaveImage" = "保存图片";
 "SharePosterController.Action.Button.ShareImage" = "分享图片";

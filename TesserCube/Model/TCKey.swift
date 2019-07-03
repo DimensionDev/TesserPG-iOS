@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import BouncyCastle_ObjC
 import DMSOpenPGP
 
 struct TCKey: KeychianMappable {
