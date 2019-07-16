@@ -189,6 +189,10 @@
 		DB4F309822A14C0D0003804B /* DMSPGPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F309722A14C0D0003804B /* DMSPGPError.swift */; };
 		DB4F309922A14C0D0003804B /* DMSPGPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F309722A14C0D0003804B /* DMSPGPError.swift */; };
 		DB616C0922A4CBB4002768B4 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB616C0822A4CBB4002768B4 /* UILabel.swift */; };
+		DB63A0D022DD82EE00C2DDA6 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB63A0CF22DD82EE00C2DDA6 /* Media.xcassets */; };
+		DB63A0D222DD82EE00C2DDA6 /* ActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB63A0D122DD82EE00C2DDA6 /* ActionViewController.swift */; };
+		DB63A0D522DD82EE00C2DDA6 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB63A0D322DD82EE00C2DDA6 /* MainInterface.storyboard */; };
+		DB63A0D922DD82EE00C2DDA6 /* TesserCubeInterpretAction.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = DB63A0CD22DD82EE00C2DDA6 /* TesserCubeInterpretAction.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		DB66FE67224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE66224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift */; };
 		DB66FE6A224A330D00D82704 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE69224A330D00D82704 /* String.swift */; };
 		DB66FE6D224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE6C224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift */; };
@@ -211,6 +215,7 @@
 		DBFC72A72272DEA300860C34 /* TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146E122422024008ECC22 /* TCKey.swift */; };
 		E1274EE8AEE0608EE39A1F31 /* Pods_TesserCube.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 829EC06ABC2887E5DB724F5B /* Pods_TesserCube.framework */; };
 		E605970E17096EDED17503F3 /* Pods_TesserCubeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F203D9B4CDFBB0FD0E45FB6D /* Pods_TesserCubeTests.framework */; };
+		EA3A30F1DEAE9F030E6346A2 /* Pods_TesserCubeInterpretAction.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F14CF0BD6C2C55A0BFF1B2B0 /* Pods_TesserCubeInterpretAction.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -235,6 +240,13 @@
 			remoteGlobalIDString = 83B93D29221D22FA00F556C0;
 			remoteInfo = TesserCubeKeyboard;
 		};
+		DB63A0D722DD82EE00C2DDA6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8304E989221BF10000122637 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DB63A0CC22DD82EE00C2DDA6;
+			remoteInfo = TesserCubeInterpretAction;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -245,6 +257,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				83B93D31221D22FA00F556C0 /* TesserCubeKeyboard.appex in Embed App Extensions */,
+				DB63A0D922DD82EE00C2DDA6 /* TesserCubeInterpretAction.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -252,12 +265,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		03698CC6E2986F14532C6D66 /* Pods-TesserCubeInterpretAction.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeInterpretAction.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeInterpretAction/Pods-TesserCubeInterpretAction.debug.xcconfig"; sourceTree = "<group>"; };
 		23A4444BC35B6DAB5A8039E3 /* Pods-TesserCubeKeyboard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeKeyboard.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeKeyboard/Pods-TesserCubeKeyboard.release.xcconfig"; sourceTree = "<group>"; };
 		34254D2B33B9D38AA6A8B02B /* Pods-TesserCubeKeyboard.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeKeyboard.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeKeyboard/Pods-TesserCubeKeyboard.debug stub.xcconfig"; sourceTree = "<group>"; };
 		433A84EFFA67237E885331BD /* Pods-TesserCubeTests.debug pgp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.debug pgp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.debug pgp.xcconfig"; sourceTree = "<group>"; };
+		47231CE0AB21C16DA6B3C73E /* Pods-TesserCubeInterpretAction.debug pgp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeInterpretAction.debug pgp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeInterpretAction/Pods-TesserCubeInterpretAction.debug pgp.xcconfig"; sourceTree = "<group>"; };
 		54E62BCA2B022300EA53474B /* Pods_TesserCubeKeyboard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesserCubeKeyboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		55827FE378FDFCA0E1177DDA /* Pods-TesserCubeKeyboard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeKeyboard.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeKeyboard/Pods-TesserCubeKeyboard.debug.xcconfig"; sourceTree = "<group>"; };
 		6AAD1C52FBF55BCAC977EEFC /* Pods-TesserCube.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.release.xcconfig"; sourceTree = "<group>"; };
+		6C37B876F4476EE0FA92731A /* Pods-TesserCubeInterpretAction.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeInterpretAction.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeInterpretAction/Pods-TesserCubeInterpretAction.release.xcconfig"; sourceTree = "<group>"; };
 		829EC06ABC2887E5DB724F5B /* Pods_TesserCube.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesserCube.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8304E991221BF10000122637 /* TesserCube.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TesserCube.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8304E994221BF10000122637 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -423,6 +439,11 @@
 		DB4F300222A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSPGPPublicKeyAlgorithm.swift; sourceTree = "<group>"; };
 		DB4F309722A14C0D0003804B /* DMSPGPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSPGPError.swift; sourceTree = "<group>"; };
 		DB616C0822A4CBB4002768B4 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
+		DB63A0CD22DD82EE00C2DDA6 /* TesserCubeInterpretAction.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TesserCubeInterpretAction.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB63A0CF22DD82EE00C2DDA6 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		DB63A0D122DD82EE00C2DDA6 /* ActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionViewController.swift; sourceTree = "<group>"; };
+		DB63A0D422DD82EE00C2DDA6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		DB63A0D622DD82EE00C2DDA6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB66FE66224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPickerTagCollectionViewCell.swift; sourceTree = "<group>"; };
 		DB66FE69224A330D00D82704 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		DB66FE6C224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPickerTextFieldCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -441,7 +462,9 @@
 		DBE13D78224CCC0B004850A6 /* TCDBManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCDBManagerTests.swift; sourceTree = "<group>"; };
 		DBF01ECD22A53BEE004711F1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		DBF01ECE22A53BEE004711F1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		DDADE9070E9C7B3A44C27B2D /* Pods-TesserCubeInterpretAction.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeInterpretAction.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeInterpretAction/Pods-TesserCubeInterpretAction.debug stub.xcconfig"; sourceTree = "<group>"; };
 		ED5112F3F342C6B4F96019B9 /* Pods-TesserCubeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.debug.xcconfig"; sourceTree = "<group>"; };
+		F14CF0BD6C2C55A0BFF1B2B0 /* Pods_TesserCubeInterpretAction.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesserCubeInterpretAction.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F203D9B4CDFBB0FD0E45FB6D /* Pods_TesserCubeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesserCubeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -478,6 +501,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DB63A0CA22DD82EE00C2DDA6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA3A30F1DEAE9F030E6346A2 /* Pods_TesserCubeInterpretAction.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -488,6 +519,7 @@
 				8304E9A8221BF10200122637 /* TesserCubeTests */,
 				8304E9B3221BF10200122637 /* TesserCubeUITests */,
 				83B93D2B221D22FA00F556C0 /* TesserCubeKeyboard */,
+				DB63A0CE22DD82EE00C2DDA6 /* TesserCubeInterpretAction */,
 				8304E992221BF10000122637 /* Products */,
 				8304E9C5221BF1DD00122637 /* Frameworks */,
 				D1FFF0FDB0B433C2937C6F21 /* Pods */,
@@ -502,6 +534,7 @@
 				8304E9A5221BF10200122637 /* TesserCubeTests.xctest */,
 				8304E9B0221BF10200122637 /* TesserCubeUITests.xctest */,
 				83B93D2A221D22FA00F556C0 /* TesserCubeKeyboard.appex */,
+				DB63A0CD22DD82EE00C2DDA6 /* TesserCubeInterpretAction.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -555,6 +588,7 @@
 				829EC06ABC2887E5DB724F5B /* Pods_TesserCube.framework */,
 				54E62BCA2B022300EA53474B /* Pods_TesserCubeKeyboard.framework */,
 				F203D9B4CDFBB0FD0E45FB6D /* Pods_TesserCubeTests.framework */,
+				F14CF0BD6C2C55A0BFF1B2B0 /* Pods_TesserCubeInterpretAction.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1048,6 +1082,10 @@
 				C0A9D10AB1612B0483E24D78 /* Pods-TesserCube.debug pgp.xcconfig */,
 				BA307858963D472080CE0E2A /* Pods-TesserCubeKeyboard.debug pgp.xcconfig */,
 				433A84EFFA67237E885331BD /* Pods-TesserCubeTests.debug pgp.xcconfig */,
+				03698CC6E2986F14532C6D66 /* Pods-TesserCubeInterpretAction.debug.xcconfig */,
+				47231CE0AB21C16DA6B3C73E /* Pods-TesserCubeInterpretAction.debug pgp.xcconfig */,
+				DDADE9070E9C7B3A44C27B2D /* Pods-TesserCubeInterpretAction.debug stub.xcconfig */,
+				6C37B876F4476EE0FA92731A /* Pods-TesserCubeInterpretAction.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1099,6 +1137,17 @@
 			path = DMSOpenPGP;
 			sourceTree = "<group>";
 		};
+		DB63A0CE22DD82EE00C2DDA6 /* TesserCubeInterpretAction */ = {
+			isa = PBXGroup;
+			children = (
+				DB63A0CF22DD82EE00C2DDA6 /* Media.xcassets */,
+				DB63A0D122DD82EE00C2DDA6 /* ActionViewController.swift */,
+				DB63A0D322DD82EE00C2DDA6 /* MainInterface.storyboard */,
+				DB63A0D622DD82EE00C2DDA6 /* Info.plist */,
+			);
+			path = TesserCubeInterpretAction;
+			sourceTree = "<group>";
+		};
 		DB66FE6B224A34C100D82704 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -1148,6 +1197,7 @@
 			);
 			dependencies = (
 				83B93D30221D22FA00F556C0 /* PBXTargetDependency */,
+				DB63A0D822DD82EE00C2DDA6 /* PBXTargetDependency */,
 			);
 			name = TesserCube;
 			productName = TesserCube;
@@ -1210,13 +1260,31 @@
 			productReference = 83B93D2A221D22FA00F556C0 /* TesserCubeKeyboard.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		DB63A0CC22DD82EE00C2DDA6 /* TesserCubeInterpretAction */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DB63A0DE22DD82EE00C2DDA6 /* Build configuration list for PBXNativeTarget "TesserCubeInterpretAction" */;
+			buildPhases = (
+				E2497A202BAA56B208F9F039 /* [CP] Check Pods Manifest.lock */,
+				DB63A0C922DD82EE00C2DDA6 /* Sources */,
+				DB63A0CA22DD82EE00C2DDA6 /* Frameworks */,
+				DB63A0CB22DD82EE00C2DDA6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TesserCubeInterpretAction;
+			productName = TesserCubeInterpretAction;
+			productReference = DB63A0CD22DD82EE00C2DDA6 /* TesserCubeInterpretAction.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		8304E989221BF10000122637 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1010;
+				LastSwiftUpdateCheck = 1020;
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = Sujitech;
 				TargetAttributes = {
@@ -1272,6 +1340,9 @@
 							};
 						};
 					};
+					DB63A0CC22DD82EE00C2DDA6 = {
+						CreatedOnToolsVersion = 10.2.1;
+					};
 				};
 			};
 			buildConfigurationList = 8304E98C221BF10000122637 /* Build configuration list for PBXProject "TesserCube" */;
@@ -1291,6 +1362,7 @@
 			targets = (
 				8304E990221BF10000122637 /* TesserCube */,
 				83B93D29221D22FA00F556C0 /* TesserCubeKeyboard */,
+				DB63A0CC22DD82EE00C2DDA6 /* TesserCubeInterpretAction */,
 				8304E9A4221BF10200122637 /* TesserCubeTests */,
 				8304E9AF221BF10200122637 /* TesserCubeUITests */,
 			);
@@ -1353,6 +1425,15 @@
 				8325E48C222F6D4500EE9B83 /* RecipientCellTableViewCell.xib in Resources */,
 				8378337D224C990100F2C0BF /* SourceCodePro-Regular.otf in Resources */,
 				8325E49E222F8FBD00EE9B83 /* SF-Pro-Text-Semibold.otf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DB63A0CB22DD82EE00C2DDA6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DB63A0D022DD82EE00C2DDA6 /* Media.xcassets in Resources */,
+				DB63A0D522DD82EE00C2DDA6 /* MainInterface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1448,6 +1529,28 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-TesserCubeKeyboard-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E2497A202BAA56B208F9F039 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TesserCubeInterpretAction-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1693,6 +1796,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DB63A0C922DD82EE00C2DDA6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DB63A0D222DD82EE00C2DDA6 /* ActionViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1710,6 +1821,11 @@
 			isa = PBXTargetDependency;
 			target = 83B93D29221D22FA00F556C0 /* TesserCubeKeyboard */;
 			targetProxy = 83B93D2F221D22FA00F556C0 /* PBXContainerItemProxy */;
+		};
+		DB63A0D822DD82EE00C2DDA6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DB63A0CC22DD82EE00C2DDA6 /* TesserCubeInterpretAction */;
+			targetProxy = DB63A0D722DD82EE00C2DDA6 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1750,6 +1866,14 @@
 				DBF01ECD22A53BEE004711F1 /* zh-Hant */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		DB63A0D322DD82EE00C2DDA6 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DB63A0D422DD82EE00C2DDA6 /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1794,7 +1918,6 @@
 				ENABLE_BITCODE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = "${J2OBJC_HOME}/frameworks";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1809,12 +1932,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"${PROJECT_DIR}/BCOpenPGP/converted",
-					"${PROJECT_DIR}/BCOpenPGP/BCOpenPGP",
-					"${J2OBJC_HOME}/include",
-				);
-				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -1863,7 +1980,6 @@
 				ENABLE_BITCODE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = "${J2OBJC_HOME}/frameworks";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1872,12 +1988,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"${PROJECT_DIR}/BCOpenPGP/converted",
-					"${PROJECT_DIR}/BCOpenPGP/BCOpenPGP",
-					"${J2OBJC_HOME}/include",
-				);
-				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -2128,7 +2238,6 @@
 				ENABLE_BITCODE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = "${J2OBJC_HOME}/frameworks";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -2143,12 +2252,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"${PROJECT_DIR}/BCOpenPGP/converted",
-					"${PROJECT_DIR}/BCOpenPGP/BCOpenPGP",
-					"${J2OBJC_HOME}/include",
-				);
-				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2255,6 +2358,96 @@
 			};
 			name = "Debug PGP";
 		};
+		DB63A0DA22DD82EE00C2DDA6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 03698CC6E2986F14532C6D66 /* Pods-TesserCubeInterpretAction.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeInterpretAction;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		DB63A0DB22DD82EE00C2DDA6 /* Debug PGP */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 47231CE0AB21C16DA6B3C73E /* Pods-TesserCubeInterpretAction.debug pgp.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeInterpretAction;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Debug PGP";
+		};
+		DB63A0DC22DD82EE00C2DDA6 /* Debug Stub */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DDADE9070E9C7B3A44C27B2D /* Pods-TesserCubeInterpretAction.debug stub.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeInterpretAction;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Debug Stub";
+		};
+		DB63A0DD22DD82EE00C2DDA6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6C37B876F4476EE0FA92731A /* Pods-TesserCubeInterpretAction.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeInterpretAction;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		DBD3BCB82254C3FE00A74920 /* Debug Stub */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2294,7 +2487,6 @@
 				ENABLE_BITCODE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				FRAMEWORK_SEARCH_PATHS = "${J2OBJC_HOME}/frameworks";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -2309,12 +2501,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"${PROJECT_DIR}/BCOpenPGP/converted",
-					"${PROJECT_DIR}/BCOpenPGP/BCOpenPGP",
-					"${J2OBJC_HOME}/include",
-				);
-				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2479,6 +2665,17 @@
 				DB3F5BA0226833BD00998F67 /* Debug PGP */,
 				DBD3BCBC2254C3FE00A74920 /* Debug Stub */,
 				83B93D34221D22FA00F556C0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DB63A0DE22DD82EE00C2DDA6 /* Build configuration list for PBXNativeTarget "TesserCubeInterpretAction" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB63A0DA22DD82EE00C2DDA6 /* Debug */,
+				DB63A0DB22DD82EE00C2DDA6 /* Debug PGP */,
+				DB63A0DC22DD82EE00C2DDA6 /* Debug Stub */,
+				DB63A0DD22DD82EE00C2DDA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
