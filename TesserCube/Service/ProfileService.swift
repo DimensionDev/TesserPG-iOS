@@ -202,8 +202,9 @@ extension ProfileService {
             guard username != nil || email != nil else {
                 throw TCError.userInfoError(type: .invalidUserID(userID: keyUserID))
             }
-            
-            let contact = try TCDBManager.default.dbQueue.write({ db -> Contact in
+
+            // contactsObervation will handle database update
+            let _ = try TCDBManager.default.dbQueue.write { db -> Contact in
                 var newContact = Contact(id: nil, name: username ?? "")
                 try newContact.insert(db)
                 if let contactId = newContact.id {
@@ -215,10 +216,8 @@ extension ProfileService {
                     try newKeyRecord.insert(db)
                 }
                 return newContact
-            })
-//            var currentContacts = contacts.value
-//            currentContacts.append(contact)
-//            contacts.accept(currentContacts)
+            }   // end let _ = try …
+
         } catch let error {
             throw error
         }
