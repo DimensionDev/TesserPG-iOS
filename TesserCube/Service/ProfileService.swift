@@ -155,7 +155,41 @@ class ProfileService {
             }
         }
     }
+    
+    func decryptKey(armoredKey: String, passphrase: String?, _ completion: @escaping (TCKey?, Error?) -> Void) {
+        DispatchQueue.global().async {
+            do {
+                let key = try KeyFactory.key(from: armoredKey, passphrase: passphrase)
+                completion(key, nil)
+            } catch let error {
+                completion(nil, error)
+            }
+        }
+    }
 
+    func addKey(_ tckey: TCKey, passphrase: String?, _ completion: @escaping (Error?) -> Void) {
+        DispatchQueue.global().async {
+            do {
+                // Only create one Contact from key's primary userID
+                let userIDs = tckey.keyRing.publicKeyRing.primaryKey.userIDs
+                
+                // TODO: KeyRecord insert here. Should Refactoring here when we support sub-key feature
+                try userIDs.forEach { try self.addNewContact(keyUserID: $0, key: tckey) }
+                
+                try self.keyChain
+                    .authenticationPrompt("Authenticate to update your password")
+                    .set(passphrase ?? "", key: tckey.longIdentifier)
+                
+                var currentKeys = self.keys.value
+                currentKeys.append(tckey)
+                self.keys.accept(currentKeys)
+                
+                completion(nil)
+            } catch let error {
+                completion(error)
+            }
+        }
+    }
 }
 
 // MARK: Contacts related function

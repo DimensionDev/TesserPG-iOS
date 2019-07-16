@@ -22,6 +22,9 @@
 		8313F69B22476F5500C09C2D /* SharePosterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F69A22476F5500C09C2D /* SharePosterViewController.swift */; };
 		8313F69D22477CA000C09C2D /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F69C22477CA000C09C2D /* UIViewController+Alert.swift */; };
 		8313F6A62247ACC800C09C2D /* TCErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F6A52247ACC800C09C2D /* TCErrors.swift */; };
+		8316ADAB22CB4E1000246E5A /* ConfirmContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8316ADA922CB4E1000246E5A /* ConfirmContactCell.swift */; };
+		8316ADAC22CB4E1000246E5A /* ConfirmContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8316ADAA22CB4E1000246E5A /* ConfirmContactCell.xib */; };
+		831C831422CC9BEB008DE52C /* ImportPublicKeyConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831C831322CC9BEB008DE52C /* ImportPublicKeyConfirmViewController.swift */; };
 		831EC43122B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831EC43022B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift */; };
 		831EC43222B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831EC43022B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift */; };
 		8320AF4A22B64D1C00843FE7 /* IntroWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8320AF4922B64D1C00843FE7 /* IntroWizardViewController.swift */; };
@@ -82,6 +85,7 @@
 		8325E4A5222F8FDA00EE9B83 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E4A3222F8FDA00EE9B83 /* Fonts.swift */; };
 		8325E4A82230FEC500EE9B83 /* UIInputViewController+TextProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E4A72230FEC500EE9B83 /* UIInputViewController+TextProxy.swift */; };
 		8325E4AA22310B1900EE9B83 /* SuggestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E4A922310B1900EE9B83 /* SuggestHelper.swift */; };
+		8335283322C6FF1E006E19BC /* ImportPrivateKeyConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8335283222C6FF1E006E19BC /* ImportPrivateKeyConfirmViewController.swift */; };
 		833FF389224E3CBC00EFE0A9 /* ToastAlerter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FF388224E3CBC00EFE0A9 /* ToastAlerter.swift */; };
 		833FF38D224F97BD00EFE0A9 /* ProfileService+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FF38C224F97BD00EFE0A9 /* ProfileService+Message.swift */; };
 		833FF38E224F97BD00EFE0A9 /* ProfileService+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FF38C224F97BD00EFE0A9 /* ProfileService+Message.swift */; };
@@ -277,6 +281,9 @@
 		8313F69A22476F5500C09C2D /* SharePosterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharePosterViewController.swift; sourceTree = "<group>"; };
 		8313F69C22477CA000C09C2D /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
 		8313F6A52247ACC800C09C2D /* TCErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCErrors.swift; sourceTree = "<group>"; };
+		8316ADA922CB4E1000246E5A /* ConfirmContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmContactCell.swift; sourceTree = "<group>"; };
+		8316ADAA22CB4E1000246E5A /* ConfirmContactCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConfirmContactCell.xib; sourceTree = "<group>"; };
+		831C831322CC9BEB008DE52C /* ImportPublicKeyConfirmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportPublicKeyConfirmViewController.swift; sourceTree = "<group>"; };
 		831EC43022B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSReceipientKeyIDUtil.swift; sourceTree = "<group>"; };
 		8320AF4922B64D1C00843FE7 /* IntroWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroWizardViewController.swift; sourceTree = "<group>"; };
 		83214683223F3BEE008ECC22 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
@@ -330,6 +337,7 @@
 		8325E4A3222F8FDA00EE9B83 /* Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		8325E4A72230FEC500EE9B83 /* UIInputViewController+TextProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIInputViewController+TextProxy.swift"; sourceTree = "<group>"; };
 		8325E4A922310B1900EE9B83 /* SuggestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestHelper.swift; sourceTree = "<group>"; };
+		8335283222C6FF1E006E19BC /* ImportPrivateKeyConfirmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportPrivateKeyConfirmViewController.swift; sourceTree = "<group>"; };
 		833FF388224E3CBC00EFE0A9 /* ToastAlerter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastAlerter.swift; sourceTree = "<group>"; };
 		833FF38C224F97BD00EFE0A9 /* ProfileService+Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileService+Message.swift"; sourceTree = "<group>"; };
 		833FF390224F97D900EFE0A9 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
@@ -690,6 +698,8 @@
 				832146B9223F8AA1008ECC22 /* KeyCardCell.xib */,
 				8378338A224DFED100F2C0BF /* SubKeyCardCell.swift */,
 				8378338B224DFED100F2C0BF /* SubKeyCardCell.xib */,
+				8316ADA922CB4E1000246E5A /* ConfirmContactCell.swift */,
+				8316ADAA22CB4E1000246E5A /* ConfirmContactCell.xib */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -758,6 +768,8 @@
 				832146D72241D980008ECC22 /* ImportKeyViewController.swift */,
 				832146D92241FAC6008ECC22 /* PasteKeyViewController.swift */,
 				832146E6224339EB008ECC22 /* CreateNewKeyViewController.swift */,
+				8335283222C6FF1E006E19BC /* ImportPrivateKeyConfirmViewController.swift */,
+				831C831322CC9BEB008DE52C /* ImportPublicKeyConfirmViewController.swift */,
 			);
 			path = KeyManageScene;
 			sourceTree = "<group>";
@@ -1294,6 +1306,7 @@
 				8325E495222F8FBD00EE9B83 /* SF-Pro-Text-Regular.otf in Resources */,
 				8378337C224C990100F2C0BF /* SourceCodePro-Regular.otf in Resources */,
 				8325E49D222F8FBD00EE9B83 /* SF-Pro-Text-Semibold.otf in Resources */,
+				8316ADAC22CB4E1000246E5A /* ConfirmContactCell.xib in Resources */,
 				832146BB223F8AA1008ECC22 /* KeyCardCell.xib in Resources */,
 				8321469C223F5113008ECC22 /* InfoPlist.strings in Resources */,
 				8325E4A1222F8FBD00EE9B83 /* SourceCodePro-Medium.ttf in Resources */,
@@ -1495,6 +1508,7 @@
 				83783383224CB7F500F2C0BF /* strings.swift in Sources */,
 				DB66FE6A224A330D00D82704 /* String.swift in Sources */,
 				8378338C224DFED100F2C0BF /* SubKeyCardCell.swift in Sources */,
+				8335283322C6FF1E006E19BC /* ImportPrivateKeyConfirmViewController.swift in Sources */,
 				83783379224BA43700F2C0BF /* ContactDBAction.swift in Sources */,
 				832146FC2244CD43008ECC22 /* MessagesViewModel.swift in Sources */,
 				832146E7224339EB008ECC22 /* CreateNewKeyViewController.swift in Sources */,
@@ -1522,6 +1536,7 @@
 				83B93D5D221E6D0B00F556C0 /* UIImage+Color.swift in Sources */,
 				832146E222422024008ECC22 /* TCKey.swift in Sources */,
 				832146F42243ACCE008ECC22 /* KeyFactory.swift in Sources */,
+				8316ADAB22CB4E1000246E5A /* ConfirmContactCell.swift in Sources */,
 				83214684223F3BEE008ECC22 /* Coordinator.swift in Sources */,
 				DBBBC198224E29E50080790F /* ContactMappable.swift in Sources */,
 				DB4CBCA8224F932B00ED6BF0 /* InterpretMessageViewController.swift in Sources */,
@@ -1574,6 +1589,7 @@
 				DBBA87F62248B8F500B290AC /* ComposeMessageViewController.swift in Sources */,
 				83214688223F40BC008ECC22 /* MainTabbarViewController.swift in Sources */,
 				8304E995221BF10000122637 /* AppDelegate.swift in Sources */,
+				831C831422CC9BEB008DE52C /* ImportPublicKeyConfirmViewController.swift in Sources */,
 				DB0758D0224895B40046FBFD /* MessageCardCell.swift in Sources */,
 				83FE346222B74E980077C1A5 /* MainTabbarViewController+IntroWizard.swift in Sources */,
 				DB4F300322A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift in Sources */,
