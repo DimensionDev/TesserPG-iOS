@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwifterSwift
 import RxSwift
 import RxCocoa
 import DateToolsSwift
@@ -63,9 +62,9 @@ class MessagesViewModel: NSObject {
                         .filter { !$0.isDraft }
                         .filter {
                             if searchText.isEmpty { return true }
-                            return $0.rawMessage.contains(searchText, caseSensitive: false) ||
-                                $0.senderKeyUserId.contains(searchText, caseSensitive: false) ||
-                                $0.getRecipients().first(where: { messageRecipient in messageRecipient.keyUserId.contains(searchText, caseSensitive: false) ?? false } ) != nil
+                            return $0.rawMessage.range(of: searchText, options: .caseInsensitive) != nil ||
+                                $0.senderKeyUserId.range(of: searchText, options: .caseInsensitive) != nil ||
+                                $0.getRecipients().first(where: { messageRecipient in messageRecipient.keyUserId.range(of: searchText, options: .caseInsensitive) != nil } ) != nil
                         }
                         .sorted(by: { lhs, rhs -> Bool in
                             guard let lhsDate = lhs.interpretedAt ?? lhs.composedAt else {
@@ -83,10 +82,9 @@ class MessagesViewModel: NSObject {
                         .filter { $0.isDraft }
                         .filter {
                             if searchText.isEmpty { return true }
-                            return $0.rawMessage.contains(searchText, caseSensitive: false) ||
-                                $0.senderKeyUserId.contains(searchText, caseSensitive: false) ||
-                                $0.getRecipients().first(where: { messageRecipient in messageRecipient.keyUserId.contains(searchText, caseSensitive: false)
-                                }) != nil
+                            return $0.rawMessage.range(of: searchText, options: .caseInsensitive) != nil ||
+                                $0.senderKeyUserId.range(of: searchText, options: .caseInsensitive) != nil ||
+                                $0.getRecipients().first(where: { messageRecipient in messageRecipient.keyUserId.range(of: searchText, options: .caseInsensitive) != nil }) != nil
                         }
                         .sorted(by: { lhs, rhs -> Bool in
                             guard let lhsDate = lhs.interpretedAt ?? lhs.composedAt else {
@@ -130,7 +128,7 @@ extension MessagesViewModel: UITableViewDataSource {
 
         // Discuss: Should we put following username mechanism in message's extension?
         let senderMeta = PGPUserIDTranslator(userID: messageModel.senderKeyUserId)
-        senderInfoView.nameLabel.text = retrieveNameBy(longIdentifier: messageModel.senderKeyId, fallbackToMeta: senderMeta)
+        senderInfoView.nameLabel.text = MessagesViewModel.retrieveNameBy(longIdentifier: messageModel.senderKeyId, fallbackToMeta: senderMeta)
         senderInfoView.emailLabel.text = senderMeta.email.flatMap { "(\($0))"}
         senderInfoView.shortIDLabel.text = String(messageModel.senderKeyId.suffix(8))
         senderInfoView.shortIDLabel.textColor = Asset.shortIdBlue.color
@@ -139,12 +137,14 @@ extension MessagesViewModel: UITableViewDataSource {
         let recipeintsInfoViews = messageModel.getRecipients().map { recipient -> MessageContactInfoView in
             let infoView = MessageContactInfoView()
             let meta = PGPUserIDTranslator(userID: recipient.keyUserId)
-            infoView.nameLabel.text = retrieveNameBy(longIdentifier: recipient.keyId, fallbackToMeta: meta)
+            infoView.nameLabel.text = MessagesViewModel.retrieveNameBy(longIdentifier: recipient.keyId, fallbackToMeta: meta)
             infoView.emailLabel.text = meta.email.flatMap { "(\($0))"}
             infoView.shortIDLabel.text = String(recipient.keyId.suffix(8))
             return infoView
         }
-        cell.recipeintsStackView.addArrangedSubviews(recipeintsInfoViews)
+        for view in recipeintsInfoViews {
+            cell.recipeintsStackView.addArrangedSubview(view)
+        }
         
         if recipeintsInfoViews.isEmpty {
             let infoView = MessageContactInfoView()
@@ -198,7 +198,7 @@ extension MessagesViewModel: UITableViewDataSource {
 
 extension MessagesViewModel {
 
-    private func retrieveNameBy(longIdentifier: String, fallbackToMeta meta: PGPUserIDTranslator) -> String {
+    static func retrieveNameBy(longIdentifier: String, fallbackToMeta meta: PGPUserIDTranslator) -> String {
         guard !longIdentifier.isEmpty else {
             return L10n.Common.Label.nameNone
         }
