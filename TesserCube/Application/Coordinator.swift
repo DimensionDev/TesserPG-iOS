@@ -34,6 +34,7 @@ class Coordinator {
         case contactEdit(contactId: Int64)
         case settings
         case messageDigitalSignatureSettings(viewModel: MessageDigitalSignatureSettingsViewModel, delegate: MessageDigitalSignatureSettingsViewControllerDelegate)
+        case importKeyConfirm(key: TCKey, passphrase: String?)
     }
     
     enum URLHost: String {
@@ -145,6 +146,19 @@ extension Coordinator {
             vc.viewModel = viewModel
             vc.delegate = delegate
             return vc
+        case .importKeyConfirm(let key, let passphrase):
+            if let passphrase = passphrase {
+                let vc = ImportPrivateKeyConfirmViewController()
+                vc.tcKey = key
+                vc.passphrase = passphrase
+                vc.hidesBottomBarWhenPushed = true
+                return vc
+            } else {
+                let vc = ImportPublicKeyConfirmViewController()
+                vc.tcKey = key
+                vc.hidesBottomBarWhenPushed = true
+                return vc
+            }
         }
     }
 }

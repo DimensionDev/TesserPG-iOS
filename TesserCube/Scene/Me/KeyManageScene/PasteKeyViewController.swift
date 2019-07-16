@@ -190,16 +190,33 @@ private extension PasteKeyViewController {
         }
         showHUD(L10n.Common.Hud.importingKey)
         let passphrase = needPassphrase ? passwordTextField.text : nil
-        ProfileService.default.addNewKey(armoredKey: keyString, passphrase: passphrase) { [weak self] error in
+        ProfileService.default.decryptKey(armoredKey: keyString, passphrase: passphrase) { [weak self] (tckey, error) in
             DispatchQueue.main.async {
                 self?.hideHUD()
                 if let error = error {
                     self?.showSimpleAlert(title: L10n.Common.Alert.error, message: error.localizedDescription)
                 } else {
-                    self?.dismiss(animated: true, completion: nil)
+                    Coordinator.main.present(scene: .importKeyConfirm(key: tckey!, passphrase: passphrase), from: self)
                 }
             }
-        }   // end addNewKeys
+        }
+//        Coordinator.main.present(scene: .importKeyConfirm, from: self)
+//        return
+//        guard let keyString = keyTextView.text else {
+//            return
+//        }
+//        showHUD(L10n.Common.Hud.importingKey)
+//        let passphrase = needPassphrase ? passwordTextField.text : nil
+//        ProfileService.default.addNewKey(armoredKey: keyString, passphrase: passphrase) { [weak self] error in
+//            DispatchQueue.main.async {
+//                self?.hideHUD()
+//                if let error = error {
+//                    self?.showSimpleAlert(title: L10n.Common.Alert.error, message: error.localizedDescription)
+//                } else {
+//                    self?.dismiss(animated: true, completion: nil)
+//                }
+//            }
+//        }   // end addNewKeys
     }
 
 }

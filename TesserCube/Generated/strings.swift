@@ -254,6 +254,52 @@ internal enum L10n {
     }
   }
 
+  internal enum ImportPrivateKeyConfirmViewController {
+    internal enum Button {
+      /// Close
+      internal static let close = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Button.Close")
+      /// Import Private Key
+      internal static let importPrivateKey = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Button.ImportPrivateKey")
+    }
+    internal enum Label {
+      /// Availability
+      internal static let availability = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Label.Availability")
+      /// Not Added Yet
+      internal static let isAvailable = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Label.IsAvailable")
+      /// Already Added
+      internal static let isUnavailable = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Label.IsUnavailable")
+      /// Private Keys Imported Successfully
+      internal static let privateKeyAddedSuccessfully = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Label.PrivateKeyAddedSuccessfully")
+    }
+    internal enum Title {
+      /// New Private Key
+      internal static let newPrivateKey = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Title.NewPrivateKey")
+    }
+  }
+
+  internal enum ImportPublicKeyConfirmViewController {
+    internal enum Button {
+      /// Add Contact
+      internal static let addContact = L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Button.AddContact")
+      /// Close
+      internal static let close = L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Button.Close")
+    }
+    internal enum Label {
+      /// Availability
+      internal static let availability = L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Label.Availability")
+      /// Contacts Added Successfully
+      internal static let contactsAddedSuccessfully = L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Label.ContactsAddedSuccessfully")
+      /// Not Added Yet
+      internal static let isAvailable = L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Label.IsAvailable")
+      /// Already Added
+      internal static let isUnavailable = L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Label.IsUnavailable")
+    }
+    internal enum Title {
+      /// New Contact
+      internal static let newContact = L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Title.NewContact")
+    }
+  }
+
   internal enum InterpretMessageViewController {
     /// Interpret
     internal static let title = L10n.tr("Localizable", "InterpretMessageViewController.Title")
