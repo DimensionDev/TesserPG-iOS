@@ -123,20 +123,20 @@ extension MessagesViewModel: UITableViewDataSource {
         // TODO: update data source when contact changed
 
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: MessageCardCell.self), for: indexPath) as! MessageCardCell
-        let messageModal = messages.value[indexPath.row]
-        cell.messageLabel.text = messageModal.rawMessage
+        let messageModel = messages.value[indexPath.row]
+        cell.messageLabel.text = messageModel.rawMessage
 
         let senderInfoView = MessageContactInfoView()
 
         // Discuss: Should we put following username mechanism in message's extension?
-        let senderMeta = PGPUserIDTranslator(userID: messageModal.senderKeyUserId)
-        senderInfoView.nameLabel.text = retrieveNameBy(longIdentifier: messageModal.senderKeyId, fallbackToMeta: senderMeta)
+        let senderMeta = PGPUserIDTranslator(userID: messageModel.senderKeyUserId)
+        senderInfoView.nameLabel.text = retrieveNameBy(longIdentifier: messageModel.senderKeyId, fallbackToMeta: senderMeta)
         senderInfoView.emailLabel.text = senderMeta.email.flatMap { "(\($0))"}
-        senderInfoView.shortIDLabel.text = String(messageModal.senderKeyId.suffix(8))
+        senderInfoView.shortIDLabel.text = String(messageModel.senderKeyId.suffix(8))
         senderInfoView.shortIDLabel.textColor = Asset.shortIdBlue.color
         cell.signedByStackView.addArrangedSubview(senderInfoView)
 
-        let recipeintsInfoViews = messageModal.getRecipients().map { recipient -> MessageContactInfoView in
+        let recipeintsInfoViews = messageModel.getRecipients().map { recipient -> MessageContactInfoView in
             let infoView = MessageContactInfoView()
             let meta = PGPUserIDTranslator(userID: recipient.keyUserId)
             infoView.nameLabel.text = retrieveNameBy(longIdentifier: recipient.keyId, fallbackToMeta: meta)
@@ -154,17 +154,17 @@ extension MessagesViewModel: UITableViewDataSource {
 
         var leftFooterText = ""
         var rightFooterText = ""
-        if messageModal.isDraft {
-            leftFooterText = messageModal.composedAt.flatMap { "\($0.timeAgoSinceNow)\(L10n.MessageCardCell.Label.composed)" } ?? ""
-            rightFooterText = messageModal.interpretedAt.flatMap { "\($0.timeAgoSinceNow)\(L10n.MessageCardCell.Label.edited)" } ?? ""
+        if messageModel.isDraft {
+            leftFooterText = messageModel.composedAt.flatMap { "\($0.timeAgoSinceNow)\(L10n.MessageCardCell.Label.composed)" } ?? ""
+            rightFooterText = messageModel.interpretedAt.flatMap { "\($0.timeAgoSinceNow)\(L10n.MessageCardCell.Label.edited)" } ?? ""
         } else {
-            if let composedDate = messageModal.composedAt {
+            if let composedDate = messageModel.composedAt {
                 leftFooterText = "\(composedDate.timeAgoSinceNow)\(L10n.MessageCardCell.Label.composed)"
-                if let interpretedDate = messageModal.interpretedAt {
+                if let interpretedDate = messageModel.interpretedAt {
                     rightFooterText = "\(interpretedDate.timeAgoSinceNow)\(L10n.MessageCardCell.Label.interpret)"
                 }
             } else {
-                leftFooterText = messageModal.interpretedAt.flatMap { "\($0.timeAgoSinceNow)\(L10n.MessageCardCell.Label.interpret)"} ?? ""
+                leftFooterText = messageModel.interpretedAt.flatMap { "\($0.timeAgoSinceNow)\(L10n.MessageCardCell.Label.interpret)"} ?? ""
             }
         }
         cell.leftFooterLabel.text = leftFooterText
