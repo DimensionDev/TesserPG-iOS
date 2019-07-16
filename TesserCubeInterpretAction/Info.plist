@@ -36,6 +36,8 @@
 			<string>TouchBarBezel</string>
 			<key>NSExtensionServiceTouchBarIconName</key>
 			<string>NSActionTemplate</string>
+            <key>NSExtensionActivationSupportsText</key>
+            <true/>
 		</dict>
 		<key>NSExtensionMainStoryboard</key>
 		<string>MainInterface</string>
