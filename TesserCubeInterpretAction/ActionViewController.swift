@@ -19,6 +19,8 @@ final class ActionViewModel: NSObject {
 
     // Input
     var inputTexts: [String] = []
+    var messageExpandedDict: [IndexPath : Bool] = [:]
+    var messageMaxNumberOfLinesDict: [IndexPath : Int] = [:]
 
     // Output
     let armoredMessage = BehaviorRelay<String?>(value: nil)
@@ -121,23 +123,23 @@ extension ActionViewModel: UITableViewDataSource {
         }
         cell.leftFooterLabel.text = leftFooterText
         cell.rightFooterLabel.text = rightFooterText
-//
-//        if let isExpand = messageExpandedDict[indexPath],
-//            let maxNumberOfLines = messageMaxNumberOfLinesDict[indexPath] {
-//            cell.messageLabel.numberOfLines = isExpand ? 0 : 4
-//            cell.extraBackgroundViewHeightConstraint.constant = maxNumberOfLines > 4 ? 44 : 0
-//            let title = isExpand ? L10n.MessageCardCell.Button.Expand.collapse : L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
-//            cell.expandButton.setTitle(title, for: .normal)
-//        } else {
-//            cell.messageLabel.layoutIfNeeded()
-//            let maxNumberOfLines = cell.messageLabel.maxNumberOfLines
-//            messageExpandedDict[indexPath] = false
-//            messageMaxNumberOfLinesDict[indexPath] = maxNumberOfLines
-//            cell.messageLabel.numberOfLines = 4
-//            cell.extraBackgroundViewHeightConstraint.constant = maxNumberOfLines > 4 ? 44 : 0
-//            let title = L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
-//            cell.expandButton.setTitle(title, for: .normal)
-//        }
+
+        if let isExpand = messageExpandedDict[indexPath],
+        let maxNumberOfLines = messageMaxNumberOfLinesDict[indexPath] {
+            cell.messageLabel.numberOfLines = isExpand ? 0 : 4
+            cell.extraBackgroundViewHeightConstraint.constant = maxNumberOfLines > 4 ? 44 : 0
+            let title = isExpand ? L10n.MessageCardCell.Button.Expand.collapse : L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
+            cell.expandButton.setTitle(title, for: .normal)
+        } else {
+            cell.messageLabel.layoutIfNeeded()
+            let maxNumberOfLines = cell.messageLabel.maxNumberOfLines
+            messageExpandedDict[indexPath] = false
+            messageMaxNumberOfLinesDict[indexPath] = maxNumberOfLines
+            cell.messageLabel.numberOfLines = 4
+            cell.extraBackgroundViewHeightConstraint.constant = maxNumberOfLines > 4 ? 44 : 0
+            let title = L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
+            cell.expandButton.setTitle(title, for: .normal)
+        }
 
         cell.setNeedsLayout()
         cell.layoutIfNeeded()
@@ -183,7 +185,6 @@ final class ActionViewController: UIViewController {
     private func _init() {
         // Setup Bouncy Castle
         JavaSecuritySecurity.addProvider(with: OrgBouncycastleJceProviderBouncyCastleProvider())
-
     }
 
 }
@@ -207,6 +208,9 @@ extension ActionViewController {
         tableView.dataSource = viewModel
         tableView.delegate = self
 
+        // reload data source when table view set right frame
+        viewModel.messageExpandedDict = [:]
+        viewModel.messageMaxNumberOfLinesDict = [:]
         viewModel.message.asDriver()
             .drive(onNext: { [weak self] _ in
                 guard let `self` = self else { return }
@@ -268,6 +272,47 @@ extension ActionViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 20 - MessageCardCell.cardVerticalMargin
+    }
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let cell = cell as? MessageCardCell else {
+            return
+        }
+
+        cell.delegate = self
+
+        // Layout when cell display to make sure maxNumberOfLines calculated under right frame size
+        cell.setNeedsLayout()
+        cell.layoutIfNeeded()
+
+        let maxNumberOfLines = cell.messageLabel.maxNumberOfLines
+        viewModel.messageMaxNumberOfLinesDict[indexPath] = maxNumberOfLines
+        let isExpand = viewModel.messageExpandedDict[indexPath] ?? false
+        let title = isExpand ? L10n.MessageCardCell.Button.Expand.collapse : L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
+        cell.expandButton.setTitle(title, for: .normal)
+    }
+
+}
+
+// MARK: - MessageCardCellDelegate
+extension ActionViewController: MessageCardCellDelegate {
+
+    func messageCardCell(_ cell: MessageCardCell, expandButtonPressed: UIButton) {
+        guard let indexPath = tableView.indexPath(for: cell),
+            let isExpand = viewModel.messageExpandedDict[indexPath],
+            let maxNumberOfLines = viewModel.messageMaxNumberOfLinesDict[indexPath] else {
+                return
+        }
+
+        cell.messageLabel.numberOfLines = isExpand ? 4 : 0
+        viewModel.messageExpandedDict[indexPath] = !isExpand
+        let title = !isExpand ? L10n.MessageCardCell.Button.Expand.collapse : L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
+        cell.expandButton.setTitle(title, for: .normal)
+
+        tableView.beginUpdates()
+        tableView.endUpdates()
+
+        tableView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
 
 }
