@@ -19,8 +19,11 @@ final class InterpretActionViewModel: NSObject {
     var inputTexts: [String] = []
     var messageExpandedDict: [IndexPath : Bool] = [:]
     var messageMaxNumberOfLinesDict: [IndexPath : Int] = [:]
+    var copyAction = PublishRelay<UIButton>()
+    var writeAction = PublishRelay<UIButton>()
 
     // Output
+    let title = BehaviorRelay<String>(value: L10n.InterpretActionViewController.Title.messageInterpreting)
     let armoredMessage = BehaviorRelay<String?>(value: nil)
     let message = BehaviorRelay<Message?>(value: nil)
     let availableActions = BehaviorRelay<[Action]>(value: [])
@@ -49,6 +52,29 @@ final class InterpretActionViewModel: NSObject {
 
             })
             .disposed(by: disposeBag)
+
+        message.asDriver()
+            .skip(1)
+            .drive(onNext: { message in
+                let title = message != nil ? L10n.InterpretActionViewController.Title.messageInterpreted : L10n.InterpretActionViewController.Title.brokenMessage
+                self.title.accept(title)
+            })
+            .disposed(by: disposeBag)
+
+        // handler actions
+        copyAction
+            .observeOn(MainScheduler.asyncInstance)
+            .do(onNext: { sender in
+                sender.setTitle(L10n.InterpretActionViewController.Action.Button.copied, for: .normal)
+                UIPasteboard.general.string = self.message.value?.rawMessage
+            })
+            .debounce(1, scheduler: MainScheduler.asyncInstance)
+            .delay(1, scheduler: MainScheduler.asyncInstance)
+            .subscribe(onNext: { sender in
+                sender.setTitle(L10n.InterpretActionViewController.Action.Button.copyContent, for: .normal)
+            })
+            .disposed(by: disposeBag)
+
     }   // end init()
 
 }

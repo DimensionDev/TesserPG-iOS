@@ -184,7 +184,9 @@
 
 "InterpretActionViewController.Title.MessageInterpreting" = "Message Interpreting...";
 "InterpretActionViewController.Title.MessageInterpreted" = "Message Interpreted";
+"InterpretActionViewController.Title.BrokenMessage" = "Broken Message";
 "InterpretActionViewController.Action.Button.CopyContent" = "Copy Content";
+"InterpretActionViewController.Action.Button.Copied" = "Copied";
 "InterpretActionViewController.Action.Button.WriteReply" = "Write Reply";
 
 "Keyboard.Prompt.EnableFullAccess" = "Click to enable \"Full Access\" please";
