@@ -12,6 +12,7 @@ import RxCocoa
 import MobileCoreServices
 import BouncyCastle_ObjC
 import DMSOpenPGP
+import ConsolePrint
 
 final class InterpretActionViewController: UIViewController {
 
@@ -68,6 +69,7 @@ extension InterpretActionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        viewModel.title.asDriver().drive(rx.title).disposed(by: disposeBag)
         view.backgroundColor = Asset.sceneBackground.color
 
         // Use content view controller to make addtional safe area insets
@@ -135,7 +137,10 @@ extension InterpretActionViewController {
             return
         }
 
+        
         for (i, provider) in providers.enumerated() {
+            consolePrint(provider)
+
             let typeIdentifier = kUTTypePlainText as String
             guard provider.hasItemConformingToTypeIdentifier(typeIdentifier) else { continue }
 
@@ -193,7 +198,7 @@ extension InterpretActionViewController {
     }
 
     @objc private func composeButtonPressed(_ sender: UIButton) {
-//        Coordinator.main.present(scene: .composeMessage, from: self, transition: .modal, completion: nil)
+        viewModel.copyAction.accept(sender)
     }
 
     @objc private func interpretButtonPressed(_ sender: UIButton) {
