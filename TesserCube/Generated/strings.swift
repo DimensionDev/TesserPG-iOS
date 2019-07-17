@@ -300,6 +300,17 @@ internal enum L10n {
     }
   }
 
+  internal enum InterpretActionViewController {
+    internal enum Action {
+      internal enum Button {
+        /// Copy Content
+        internal static let copyContent = L10n.tr("Localizable", "InterpretActionViewController.Action.Button.CopyContent")
+        /// Write Reply
+        internal static let writeReply = L10n.tr("Localizable", "InterpretActionViewController.Action.Button.WriteReply")
+      }
+    }
+  }
+
   internal enum InterpretMessageViewController {
     /// Interpret
     internal static let title = L10n.tr("Localizable", "InterpretMessageViewController.Title")

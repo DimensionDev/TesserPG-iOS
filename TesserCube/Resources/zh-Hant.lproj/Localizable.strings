@@ -174,6 +174,11 @@
 "SharePosterController.Action.Button.SaveImage" = "保存圖片";
 "SharePosterController.Action.Button.ShareImage" = "分享圖片";
 
+"InterpretActionViewController.Title.MessageInterpreting" = "消息解密中...";
+"InterpretActionViewController.Title.MessageInterpreted" = "消息已解密";
+"InterpretActionViewController.Action.Button.CopyContent" = "拷贝内容";
+"InterpretActionViewController.Action.Button.WriteReply" = "撰寫回复";
+
 "Keyboard.Prompt.EnableFullAccess" = "請點擊此處 開啟 \"允許完全訪問\"";
 "Keyboard.Button.Interpret" = "解密";
 "Keyboard.Button.Encrypt" = "加密";
