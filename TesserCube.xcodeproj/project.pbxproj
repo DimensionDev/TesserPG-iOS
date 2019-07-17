@@ -226,8 +226,11 @@
 		DB63A10222DDCCF100C2DDA6 /* KeyFactory+BCOpenPGP.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6AA3E92273218C00A7ADDF /* KeyFactory+BCOpenPGP.swift */; };
 		DB63A10322DDCD0300C2DDA6 /* KeyRecordDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFC72B2252EF3100993160 /* KeyRecordDBAction.swift */; };
 		DB63A10522DDCF1600C2DDA6 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB616C0822A4CBB4002768B4 /* UILabel.swift */; };
-		DB63A10622DDD0EF00C2DDA6 /* ActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB63A0D122DD82EE00C2DDA6 /* ActionViewController.swift */; };
+		DB63A10622DDD0EF00C2DDA6 /* InterpretActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB63A0D122DD82EE00C2DDA6 /* InterpretActionViewController.swift */; };
 		DB63A10722DDD18100C2DDA6 /* MessagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146FB2244CD43008ECC22 /* MessagesViewModel.swift */; };
+		DB63A10922DEF41700C2DDA6 /* TCActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146C4223FC9E4008ECC22 /* TCActionButton.swift */; };
+		DB63A10A22DEF4D300C2DDA6 /* ImageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146CA2240AEC0008ECC22 /* ImageUtil.swift */; };
+		DB63A10C22DEF75100C2DDA6 /* InterpretActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB63A10B22DEF75100C2DDA6 /* InterpretActionViewModel.swift */; };
 		DB66FE67224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE66224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift */; };
 		DB66FE6A224A330D00D82704 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE69224A330D00D82704 /* String.swift */; };
 		DB66FE6D224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE6C224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift */; };
@@ -476,10 +479,11 @@
 		DB616C0822A4CBB4002768B4 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		DB63A0CD22DD82EE00C2DDA6 /* TesserCubeInterpretAction.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TesserCubeInterpretAction.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB63A0CF22DD82EE00C2DDA6 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
-		DB63A0D122DD82EE00C2DDA6 /* ActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionViewController.swift; sourceTree = "<group>"; };
+		DB63A0D122DD82EE00C2DDA6 /* InterpretActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretActionViewController.swift; sourceTree = "<group>"; };
 		DB63A0D422DD82EE00C2DDA6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		DB63A0D622DD82EE00C2DDA6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB63A10822DDD1EC00C2DDA6 /* TesserCubeInterpretAction.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TesserCubeInterpretAction.entitlements; sourceTree = "<group>"; };
+		DB63A10B22DEF75100C2DDA6 /* InterpretActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretActionViewModel.swift; sourceTree = "<group>"; };
 		DB66FE66224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPickerTagCollectionViewCell.swift; sourceTree = "<group>"; };
 		DB66FE69224A330D00D82704 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		DB66FE6C224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPickerTextFieldCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -1178,7 +1182,8 @@
 			children = (
 				DB63A10822DDD1EC00C2DDA6 /* TesserCubeInterpretAction.entitlements */,
 				DB63A0CF22DD82EE00C2DDA6 /* Media.xcassets */,
-				DB63A0D122DD82EE00C2DDA6 /* ActionViewController.swift */,
+				DB63A0D122DD82EE00C2DDA6 /* InterpretActionViewController.swift */,
+				DB63A10B22DEF75100C2DDA6 /* InterpretActionViewModel.swift */,
 				DB63A0D322DD82EE00C2DDA6 /* MainInterface.storyboard */,
 				DB63A0D622DD82EE00C2DDA6 /* Info.plist */,
 			);
@@ -1862,6 +1867,7 @@
 				DB63A0FF22DDCBB600C2DDA6 /* String.swift in Sources */,
 				DB63A0F522DDCAE600C2DDA6 /* Contact.swift in Sources */,
 				DB63A0FC22DDCB9100C2DDA6 /* ContactDBAction.swift in Sources */,
+				DB63A10922DEF41700C2DDA6 /* TCActionButton.swift in Sources */,
 				DB63A10022DDCBC700C2DDA6 /* ProfileService+Message.swift in Sources */,
 				DB63A0F722DDCAFF00C2DDA6 /* KeychainMappable.swift in Sources */,
 				DB63A0F422DDCAC600C2DDA6 /* ProfileService.swift in Sources */,
@@ -1872,13 +1878,15 @@
 				DB63A0F022DDA2C000C2DDA6 /* strings.swift in Sources */,
 				DB63A0FD22DDCB9700C2DDA6 /* KeyFactory+TCKey.swift in Sources */,
 				DB63A0F922DDCB2000C2DDA6 /* TCDBManager.swift in Sources */,
+				DB63A10A22DEF4D300C2DDA6 /* ImageUtil.swift in Sources */,
 				DB63A10522DDCF1600C2DDA6 /* UILabel.swift in Sources */,
 				DB63A0E422DD9B5600C2DDA6 /* CALayer+Shadow.swift in Sources */,
 				DB63A0FE22DDCBA000C2DDA6 /* PGPUserIDTranslator.swift in Sources */,
-				DB63A10622DDD0EF00C2DDA6 /* ActionViewController.swift in Sources */,
+				DB63A10622DDD0EF00C2DDA6 /* InterpretActionViewController.swift in Sources */,
 				DB63A0F322DDCAB400C2DDA6 /* Message.swift in Sources */,
 				DB63A0E322DD9B2400C2DDA6 /* Fonts.swift in Sources */,
 				DB63A0E022DD9AFF00C2DDA6 /* TCCardView.swift in Sources */,
+				DB63A10C22DEF75100C2DDA6 /* InterpretActionViewModel.swift in Sources */,
 				DB63A0FB22DDCB6500C2DDA6 /* TCErrors.swift in Sources */,
 				DB63A10122DDCBD700C2DDA6 /* MessageDBAction.swift in Sources */,
 				DB63A0F622DDCAEB00C2DDA6 /* TCKey.swift in Sources */,

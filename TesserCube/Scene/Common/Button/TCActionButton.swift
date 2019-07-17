@@ -86,7 +86,8 @@ class TCActionButton: UIButton {
 //        adjustsImageWhenDisabled = false
 //        adjustsImageWhenHighlighted = false
         
-        cornerRadius = buttonCornerRadius
+        layer.cornerRadius = buttonCornerRadius
+        layer.masksToBounds = true
         shadow2Layer = CALayer(layer: layer)
         layer.insertSublayer(shadow2Layer!, at: 0)
         
