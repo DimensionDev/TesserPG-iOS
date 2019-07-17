@@ -131,6 +131,14 @@ class MessagesViewController: TCBaseViewController {
             })
             .disposed(by: disposeBag)
 
+        // reload messages when interpret action extension update message
+        WormholdService.shared.listeningWormhole.listenForMessage(withIdentifier: WormholdService.MessageIdentifier.interpretActionExtensionDidUpdateMessage.rawValue) { [weak self] _ in
+            guard let `self` = self else { return }
+            let messages = ProfileService.default.loadMessages()
+            self.viewModel._messages.accept(messages)
+            NSLog("WormholdService.MessageIdentifier.interpretActionExtensionDidUpdateMessage")
+        }
+
         segmentedControl.rx.selectedSegmentIndex
             .bind(to: viewModel.selectedSegmentIndex)
             .disposed(by: disposeBag)
