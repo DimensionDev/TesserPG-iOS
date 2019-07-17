@@ -26,11 +26,19 @@ final class ActionViewModel: NSObject {
 
     override init() {
         armoredMessage.asDriver()
-            .delay(3)
             .flatMapLatest { message in
                return Driver.just(message.flatMap { try? ProfileService.default.decryptMessage($0) })
             }
             .drive(message)
+            .disposed(by: disposeBag)
+
+        message.asDriver()
+            .drive(onNext: { message in
+                guard message != nil else { return }
+                WormholdService.shared.wormhole.clearMessageContents(forIdentifier: WormholdService.MessageIdentifier.interpretActionExtensionDidUpdateMessage.rawValue)
+                WormholdService.shared.wormhole.passMessageObject("interpretActionExtensionDidUpdateMessage" as NSCoding, identifier: WormholdService.MessageIdentifier.interpretActionExtensionDidUpdateMessage.rawValue)
+
+            })
             .disposed(by: disposeBag)
     }
 
@@ -201,7 +209,8 @@ extension ActionViewController {
 
         viewModel.message.asDriver()
             .drive(onNext: { [weak self] _ in
-                self?.tableView.reloadData()
+                guard let `self` = self else { return }
+                self.tableView.reloadData()
             })
             .disposed(by: disposeBag)
     }
