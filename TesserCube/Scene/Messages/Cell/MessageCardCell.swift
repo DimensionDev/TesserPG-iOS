@@ -293,7 +293,7 @@ final class MessageContactInfoView: UIView {
         _init()
     }
     
-    func _init() {
+    private func _init() {
         addSubview(nameLabel)
         nameLabel.snp.makeConstraints { maker in
             maker.leading.top.bottom.equalToSuperview()
