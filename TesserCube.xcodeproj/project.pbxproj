@@ -231,6 +231,10 @@
 		DB63A10922DEF41700C2DDA6 /* TCActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146C4223FC9E4008ECC22 /* TCActionButton.swift */; };
 		DB63A10A22DEF4D300C2DDA6 /* ImageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146CA2240AEC0008ECC22 /* ImageUtil.swift */; };
 		DB63A10C22DEF75100C2DDA6 /* InterpretActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB63A10B22DEF75100C2DDA6 /* InterpretActionViewModel.swift */; };
+		DB63A10E22DF2A5900C2DDA6 /* BrokenMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB63A10D22DF2A5900C2DDA6 /* BrokenMessageViewController.swift */; };
+		DB63A11022DF2CBB00C2DDA6 /* Menlo.ttc in Resources */ = {isa = PBXBuildFile; fileRef = DB63A10F22DF2CBA00C2DDA6 /* Menlo.ttc */; };
+		DB63A11122DF2CBB00C2DDA6 /* Menlo.ttc in Resources */ = {isa = PBXBuildFile; fileRef = DB63A10F22DF2CBA00C2DDA6 /* Menlo.ttc */; };
+		DB63A11222DF2CBB00C2DDA6 /* Menlo.ttc in Resources */ = {isa = PBXBuildFile; fileRef = DB63A10F22DF2CBA00C2DDA6 /* Menlo.ttc */; };
 		DB66FE67224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE66224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift */; };
 		DB66FE6A224A330D00D82704 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE69224A330D00D82704 /* String.swift */; };
 		DB66FE6D224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE6C224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift */; };
@@ -484,6 +488,8 @@
 		DB63A0D622DD82EE00C2DDA6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB63A10822DDD1EC00C2DDA6 /* TesserCubeInterpretAction.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TesserCubeInterpretAction.entitlements; sourceTree = "<group>"; };
 		DB63A10B22DEF75100C2DDA6 /* InterpretActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretActionViewModel.swift; sourceTree = "<group>"; };
+		DB63A10D22DF2A5900C2DDA6 /* BrokenMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrokenMessageViewController.swift; sourceTree = "<group>"; };
+		DB63A10F22DF2CBA00C2DDA6 /* Menlo.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = Menlo.ttc; sourceTree = "<group>"; };
 		DB66FE66224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPickerTagCollectionViewCell.swift; sourceTree = "<group>"; };
 		DB66FE69224A330D00D82704 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		DB66FE6C224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPickerTextFieldCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -899,6 +905,7 @@
 				8325E48E222F8FBC00EE9B83 /* SF-Pro-Text-Regular.otf */,
 				8325E492222F8FBD00EE9B83 /* SF-Pro-Text-Semibold.otf */,
 				8325E494222F8FBD00EE9B83 /* SourceCodePro-Medium.ttf */,
+				DB63A10F22DF2CBA00C2DDA6 /* Menlo.ttc */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -1184,6 +1191,7 @@
 				DB63A0CF22DD82EE00C2DDA6 /* Media.xcassets */,
 				DB63A0D122DD82EE00C2DDA6 /* InterpretActionViewController.swift */,
 				DB63A10B22DEF75100C2DDA6 /* InterpretActionViewModel.swift */,
+				DB63A10D22DF2A5900C2DDA6 /* BrokenMessageViewController.swift */,
 				DB63A0D322DD82EE00C2DDA6 /* MainInterface.storyboard */,
 				DB63A0D622DD82EE00C2DDA6 /* Info.plist */,
 			);
@@ -1428,6 +1436,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8325E497222F8FBD00EE9B83 /* SF-Pro-Display-Light.otf in Resources */,
+				DB63A11022DF2CBB00C2DDA6 /* Menlo.ttc in Resources */,
 				8325E495222F8FBD00EE9B83 /* SF-Pro-Text-Regular.otf in Resources */,
 				8378337C224C990100F2C0BF /* SourceCodePro-Regular.otf in Resources */,
 				8325E49D222F8FBD00EE9B83 /* SF-Pro-Text-Semibold.otf in Resources */,
@@ -1468,6 +1477,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8325E4A0222F8FBD00EE9B83 /* SF-Pro-Display-Medium.otf in Resources */,
+				DB63A11122DF2CBB00C2DDA6 /* Menlo.ttc in Resources */,
 				8325E496222F8FBD00EE9B83 /* SF-Pro-Text-Regular.otf in Resources */,
 				83DFC738225789C700993160 /* Localizable.strings in Resources */,
 				8325E47A222D001C00EE9B83 /* Assets.xcassets in Resources */,
@@ -1495,6 +1505,7 @@
 				DB63A0E722DDA2AF00C2DDA6 /* SF-Pro-Display-Bold.otf in Resources */,
 				DB63A0EA22DDA2AF00C2DDA6 /* SF-Pro-Display-Regular.otf in Resources */,
 				DB63A0EC22DDA2AF00C2DDA6 /* SF-Pro-Text-Semibold.otf in Resources */,
+				DB63A11222DF2CBB00C2DDA6 /* Menlo.ttc in Resources */,
 				DB63A0EB22DDA2AF00C2DDA6 /* SF-Pro-Text-Regular.otf in Resources */,
 				DB63A0D522DD82EE00C2DDA6 /* MainInterface.storyboard in Resources */,
 			);
@@ -1884,6 +1895,7 @@
 				DB63A0FE22DDCBA000C2DDA6 /* PGPUserIDTranslator.swift in Sources */,
 				DB63A10622DDD0EF00C2DDA6 /* InterpretActionViewController.swift in Sources */,
 				DB63A0F322DDCAB400C2DDA6 /* Message.swift in Sources */,
+				DB63A10E22DF2A5900C2DDA6 /* BrokenMessageViewController.swift in Sources */,
 				DB63A0E322DD9B2400C2DDA6 /* Fonts.swift in Sources */,
 				DB63A0E022DD9AFF00C2DDA6 /* TCCardView.swift in Sources */,
 				DB63A10C22DEF75100C2DDA6 /* InterpretActionViewModel.swift in Sources */,

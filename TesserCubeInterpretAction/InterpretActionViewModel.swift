@@ -49,7 +49,6 @@ final class InterpretActionViewModel: NSObject {
                 // notify main app message update (interpret date changed)
                 WormholdService.shared.wormhole.clearMessageContents(forIdentifier: WormholdService.MessageIdentifier.interpretActionExtensionDidUpdateMessage.rawValue)
                 WormholdService.shared.wormhole.passMessageObject("interpretActionExtensionDidUpdateMessage" as NSCoding, identifier: WormholdService.MessageIdentifier.interpretActionExtensionDidUpdateMessage.rawValue)
-
             })
             .disposed(by: disposeBag)
 
@@ -91,7 +90,7 @@ extension InterpretActionViewModel {
 extension InterpretActionViewModel {
 
     func finalizeInput() {
-        // Prevent user delete message in main app cause database not sync issue.
+        // Prevent user change messages database in main app cause database not sync between app and extension.
         let latestMessages = ProfileService.default.loadMessages()
         ProfileService.default.messages.accept(latestMessages)
 
