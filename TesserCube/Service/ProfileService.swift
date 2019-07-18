@@ -280,3 +280,12 @@ extension ProfileService {
     }
 
 }
+
+extension ProfileService {
+
+    func containsKey(longIdentifier: String) -> Bool {
+        return keys.value.contains(where: { key in
+            return key.longIdentifier == longIdentifier
+        })
+    }
+}

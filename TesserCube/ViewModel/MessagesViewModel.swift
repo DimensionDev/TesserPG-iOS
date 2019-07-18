@@ -131,7 +131,9 @@ extension MessagesViewModel: UITableViewDataSource {
         senderInfoView.nameLabel.text = MessagesViewModel.retrieveNameBy(longIdentifier: messageModel.senderKeyId, fallbackToMeta: senderMeta)
         senderInfoView.emailLabel.text = senderMeta.email.flatMap { "(\($0))"}
         senderInfoView.shortIDLabel.text = String(messageModel.senderKeyId.suffix(8))
-        senderInfoView.shortIDLabel.textColor = Asset.shortIdBlue.color
+        // Set shortID color to green in key in local key store. And set to blue if not.
+        let senderIDLabelColor = ProfileService.default.containsKey(longIdentifier: messageModel.senderKeyId) ? Asset.sourceGreen.color : Asset.shortIdBlue.color
+        senderInfoView.shortIDLabel.textColor = senderIDLabelColor
         cell.signedByStackView.addArrangedSubview(senderInfoView)
 
         let recipeintsInfoViews = messageModel.getRecipients().map { recipient -> MessageContactInfoView in
