@@ -40,8 +40,6 @@ final class ComposeMessageViewController: TCBaseViewController {
         return scrollView
     }()
 
-//    weak var delegate: ComposeMessageViewControllerDelegate?
-
     override func configUI() {
         super.configUI()
 
@@ -242,7 +240,6 @@ private extension ComposeMessageViewController {
             alertController.addAction(cancelAction)
             return alertController
         }()
-
 
         if let presenter = saveDraftAlertController.popoverPresentationController {
             presenter.barButtonItem = sender

@@ -121,57 +121,10 @@ extension MessagesViewModel: UITableViewDataSource {
         // TODO: update data source when contact changed
 
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: MessageCardCell.self), for: indexPath) as! MessageCardCell
-        let messageModel = messages.value[indexPath.row]
-        cell.messageLabel.text = messageModel.rawMessage
+        let message = messages.value[indexPath.row]
+        MessagesViewModel.configure(messageCardCell: cell, with: message)
 
-        let senderInfoView = MessageContactInfoView()
-
-        // Discuss: Should we put following username mechanism in message's extension?
-        let senderMeta = PGPUserIDTranslator(userID: messageModel.senderKeyUserId)
-        senderInfoView.nameLabel.text = MessagesViewModel.retrieveNameBy(longIdentifier: messageModel.senderKeyId, fallbackToMeta: senderMeta)
-        senderInfoView.emailLabel.text = senderMeta.email.flatMap { "(\($0))"}
-        senderInfoView.shortIDLabel.text = String(messageModel.senderKeyId.suffix(8))
-        // Set shortID color to green in key in local key store. And set to blue if not.
-        let senderIDLabelColor = ProfileService.default.containsKey(longIdentifier: messageModel.senderKeyId) ? Asset.sourceGreen.color : Asset.shortIdBlue.color
-        senderInfoView.shortIDLabel.textColor = senderIDLabelColor
-        cell.signedByStackView.addArrangedSubview(senderInfoView)
-
-        let recipeintsInfoViews = messageModel.getRecipients().map { recipient -> MessageContactInfoView in
-            let infoView = MessageContactInfoView()
-            let meta = PGPUserIDTranslator(userID: recipient.keyUserId)
-            infoView.nameLabel.text = MessagesViewModel.retrieveNameBy(longIdentifier: recipient.keyId, fallbackToMeta: meta)
-            infoView.emailLabel.text = meta.email.flatMap { "(\($0))"}
-            infoView.shortIDLabel.text = String(recipient.keyId.suffix(8))
-            return infoView
-        }
-        for view in recipeintsInfoViews {
-            cell.recipeintsStackView.addArrangedSubview(view)
-        }
-        
-        if recipeintsInfoViews.isEmpty {
-            let infoView = MessageContactInfoView()
-            infoView.nameLabel.text = L10n.Common.Label.nameNone
-            cell.recipeintsStackView.addArrangedSubview(infoView)
-        }
-
-        var leftFooterText = ""
-        var rightFooterText = ""
-        if messageModel.isDraft {
-            leftFooterText = messageModel.composedAt.flatMap { "\($0.timeAgoSinceNow)\(L10n.MessageCardCell.Label.composed)" } ?? ""
-            rightFooterText = messageModel.interpretedAt.flatMap { "\($0.timeAgoSinceNow)\(L10n.MessageCardCell.Label.edited)" } ?? ""
-        } else {
-            if let composedDate = messageModel.composedAt {
-                leftFooterText = "\(composedDate.timeAgoSinceNow)\(L10n.MessageCardCell.Label.composed)"
-                if let interpretedDate = messageModel.interpretedAt {
-                    rightFooterText = "\(interpretedDate.timeAgoSinceNow)\(L10n.MessageCardCell.Label.interpret)"
-                }
-            } else {
-                leftFooterText = messageModel.interpretedAt.flatMap { "\($0.timeAgoSinceNow)\(L10n.MessageCardCell.Label.interpret)"} ?? ""
-            }
-        }
-        cell.leftFooterLabel.text = leftFooterText
-        cell.rightFooterLabel.text = rightFooterText
-
+        // cell expand logic
         if let isExpand = messageExpandedDict[indexPath],
         let maxNumberOfLines = messageMaxNumberOfLinesDict[indexPath] {
             cell.messageLabel.numberOfLines = isExpand ? 0 : 4
@@ -195,6 +148,68 @@ extension MessagesViewModel: UITableViewDataSource {
         return cell
     }
     // swiftlint:enable force_cast
+
+}
+
+extension MessagesViewModel {
+
+    // configure cell UI
+    static func configure(messageCardCell cell: MessageCardCell, with message: Message) {
+        // set message content
+        cell.messageLabel.text = message.rawMessage
+
+        // set sender info
+        let senderInfoView: MessageContactInfoView = {
+            let infoView = MessageContactInfoView()
+            let senderMeta = PGPUserIDTranslator(userID: message.senderKeyUserId)
+            let senderIDLabelColor = ProfileService.default.containsKey(longIdentifier: message.senderKeyId) ? Asset.sourceGreen.color : Asset.shortIdBlue.color
+
+            infoView.nameLabel.text = MessagesViewModel.retrieveNameBy(longIdentifier: message.senderKeyId, fallbackToMeta: senderMeta)
+            infoView.emailLabel.text = senderMeta.email.flatMap { "(\($0))"}
+            infoView.shortIDLabel.text = String(message.senderKeyId.suffix(8))
+            infoView.shortIDLabel.textColor = senderIDLabelColor
+
+            return infoView
+        }()
+        cell.signedByStackView.addArrangedSubview(senderInfoView)
+
+        // set recipient(s) info
+        let recipeintsInfoViews = message.getRecipients().map { recipient -> MessageContactInfoView in
+            let infoView = MessageContactInfoView()
+            let meta = PGPUserIDTranslator(userID: recipient.keyUserId)
+            infoView.nameLabel.text = MessagesViewModel.retrieveNameBy(longIdentifier: recipient.keyId, fallbackToMeta: meta)
+            infoView.emailLabel.text = meta.email.flatMap { "(\($0))"}
+            infoView.shortIDLabel.text = String(recipient.keyId.suffix(8))
+            return infoView
+        }
+        for view in recipeintsInfoViews {
+            cell.recipeintsStackView.addArrangedSubview(view)
+        }
+        if recipeintsInfoViews.isEmpty {
+            let infoView = MessageContactInfoView()
+            infoView.nameLabel.text = L10n.Common.Label.nameNone
+            cell.recipeintsStackView.addArrangedSubview(infoView)
+        }
+
+        // set footer
+        var leftFooterText = ""
+        var rightFooterText = ""
+        if message.isDraft {
+            leftFooterText = message.composedAt.flatMap { "\($0.timeAgoSinceNow)\(L10n.MessageCardCell.Label.composed)" } ?? ""
+            rightFooterText = message.interpretedAt.flatMap { "\($0.timeAgoSinceNow)\(L10n.MessageCardCell.Label.edited)" } ?? ""
+        } else {
+            if let composedDate = message.composedAt {
+                leftFooterText = "\(composedDate.timeAgoSinceNow)\(L10n.MessageCardCell.Label.composed)"
+                if let interpretedDate = message.interpretedAt {
+                    rightFooterText = "\(interpretedDate.timeAgoSinceNow)\(L10n.MessageCardCell.Label.interpret)"
+                }
+            } else {
+                leftFooterText = message.interpretedAt.flatMap { "\($0.timeAgoSinceNow)\(L10n.MessageCardCell.Label.interpret)"} ?? ""
+            }
+        }
+        cell.leftFooterLabel.text = leftFooterText
+        cell.rightFooterLabel.text = rightFooterText
+    }
 
 }
 
