@@ -18,7 +18,12 @@ final class InterpretActionViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
 
-    let contentViewController = UIViewController()
+    let contentViewController: UIViewController = {
+        let controller = UIViewController()
+        controller.view.backgroundColor = Asset.sceneBackground.color
+        return controller
+    }()
+
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.alwaysBounceVertical = true
@@ -40,6 +45,7 @@ final class InterpretActionViewController: UIViewController {
         return stackView
     }()
 
+    private lazy var brokenMessageViewController = BrokenMessageViewController()
 
     let viewModel = InterpretActionViewModel()
 
@@ -104,9 +110,34 @@ extension InterpretActionViewController {
         viewModel.messageExpandedDict = [:]
         viewModel.messageMaxNumberOfLinesDict = [:]
         viewModel.message.asDriver()
-            .drive(onNext: { [weak self] _ in
+            .drive(onNext: { [weak self] message in
                 guard let `self` = self else { return }
                 self.tableView.reloadData()
+            })
+            .disposed(by: disposeBag)
+        viewModel.message.asDriver()
+            .debug()
+            .skip(1)
+            .drive(onNext: { [weak self] message in
+                guard let `self` = self else { return }
+                let controller = self.brokenMessageViewController
+
+                guard message == nil else {
+                    if controller.parent != nil {
+                        controller.willMove(toParent: nil)
+                        controller.view.removeFromSuperview()
+                        controller.removeFromParent()
+                    }
+                    return
+                }
+
+                if controller.parent == nil {
+                    self.addChild(controller)
+                    self.view.addSubview(controller.view)
+                    controller.didMove(toParent: self)
+
+                    controller.messageLabel.text = self.viewModel.inputTexts.joined(separator: "\n")
+                }
             })
             .disposed(by: disposeBag)
         viewModel.availableActions.asDriver()
@@ -137,7 +168,6 @@ extension InterpretActionViewController {
             return
         }
 
-        
         for (i, provider) in providers.enumerated() {
             consolePrint(provider)
 
