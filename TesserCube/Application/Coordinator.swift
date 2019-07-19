@@ -25,6 +25,7 @@ class Coordinator {
         case composeMessage
         case composeMessageTo(keyBridges: [KeyBridge])
         case recomposeMessage(message: Message)
+        case writeReply(to: [KeyBridge], from: KeyBridge?)
         case interpretMessage
         case importKey
         case pasteKey(needPassphrase: Bool)
@@ -105,6 +106,11 @@ extension Coordinator {
         case .recomposeMessage(let message):
             let vc = ComposeMessageViewController()
             vc.viewModel.message.accept(message)
+            return vc
+        case let .writeReply(to, from):
+            let vc = ComposeMessageViewController()
+            vc.viewModel.keyBridges.accept(to)
+            vc.viewModel.senderKeyBridge = from
             return vc
         case .interpretMessage:
             let vc = InterpretMessageViewController()

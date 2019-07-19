@@ -13,9 +13,7 @@ import RxCocoa
 import UITextView_Placeholder
 
 final class InterpretMessageViewController: TCBaseViewController {
-    
-//    weak var delegate: InterpretMessageViewControllerDelegate?
-    
+
     let disposeBag = DisposeBag()
     let viewModel = InterpretMessageViewModel()
     
@@ -84,7 +82,6 @@ private extension InterpretMessageViewController {
         viewModel.interpretMessage()
             .subscribeOn(ConcurrentDispatchQueueScheduler.init(qos: .userInitiated))
             .observeOn(MainScheduler.instance)
-            .debug()
             .subscribe(onSuccess: { [weak self] decrptedMessage in
                 self?.dismiss(animated: true, completion: nil)
             }, onError: { [weak self] error in

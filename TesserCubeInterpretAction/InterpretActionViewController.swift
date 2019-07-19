@@ -109,6 +109,7 @@ extension InterpretActionViewController {
         // reload data source when table view set right frame
         viewModel.messageExpandedDict = [:]
         viewModel.messageMaxNumberOfLinesDict = [:]
+        viewModel.delegate = self
         viewModel.message.asDriver()
             .drive(onNext: { [weak self] message in
                 guard let `self` = self else { return }
@@ -151,6 +152,7 @@ extension InterpretActionViewController {
         super.viewDidAppear(animated)
 
         extractInputFromExtensionContext()
+        NotificationCenter.default.addObserver(self, selector: #selector(InterpretActionViewController.extensionContextCompleteRequest(_:)), name: .extensionContextCompleteRequest, object: nil)
     }
 
 }
@@ -216,7 +218,7 @@ extension InterpretActionViewController {
             replyButton.color = Asset.sketchBlue.color
             replyButton.setTitleColor(.white, for: .normal)
             replyButton.setTitle(L10n.InterpretActionViewController.Action.Button.writeReply, for: .normal)
-            replyButton.addTarget(self, action: #selector(InterpretActionViewController.interpretButtonPressed(_:)), for: .touchUpInside)
+            replyButton.addTarget(self, action: #selector(InterpretActionViewController.replyButtonPressed(_:)), for: .touchUpInside)
 
             bottomActionsView.addArrangedSubview(replyButton)
         }
@@ -231,8 +233,12 @@ extension InterpretActionViewController {
         viewModel.copyAction.accept(sender)
     }
 
-    @objc private func interpretButtonPressed(_ sender: UIButton) {
-//        Coordinator.main.present(scene: .interpretMessage, from: self, transition: .modal, completion: nil)
+    @objc private func replyButtonPressed(_ sender: UIButton) {
+        viewModel.replyAction.accept(sender)
+    }
+
+    @objc private func extensionContextCompleteRequest(_ notification: Notification) {
+        self.extensionContext!.completeRequest(returningItems: self.extensionContext!.inputItems, completionHandler: nil)
     }
 
 }
@@ -289,4 +295,21 @@ extension InterpretActionViewController: MessageCardCellDelegate {
         tableView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
 
+}
+
+// MARK: - InterpretActionViewModelDelegate
+extension InterpretActionViewController: InterpretActionViewModelDelegate {
+
+    func writeReply(to recipients: [KeyBridge], from sender: KeyBridge?) {
+        let controller = ComposeMessageViewController()
+        controller.viewModel.keyBridges.accept(recipients)
+        controller.viewModel.senderKeyBridge = sender
+        present(UINavigationController(rootViewController: controller), animated: true, completion: nil)
+    }
+
+
+}
+
+extension Notification.Name {
+    static let extensionContextCompleteRequest = Notification.Name(rawValue: "extensionContextCompleteRequest")
 }

@@ -5,7 +5,6 @@ use_frameworks!
 inhibit_all_warnings!
 
 def common_pods
-  
   pod 'SwiftLint', '~> 0.30.1'
   pod 'SwiftGen', '~> 6.1.0'
 
@@ -24,19 +23,23 @@ def common_pods
   pod 'GRDB.swift', '~> 3.7.0'
   pod 'GRDBCipher', '~> 3.7.0'
   pod 'DeepDiff', '~> 2.0.1'
+end
 
+def common_ui_pods
+  pod 'UITextView+Placeholder', '~> 1.2.1'
+  pod "AlignedCollectionViewFlowLayout", '~> 1.1.2'
 end
 
 target 'TesserCube' do
   common_pods
+  common_ui_pods
+
   pod 'SwifterSwift', '~> 4.6.0'
   
   # UI
   pod 'SVProgressHUD', '~> 2.2.5'
   pod 'IQKeyboardManagerSwift', '~> 6.2.0'
   pod 'Eureka', '~> 4.3.1'
-  pod 'UITextView+Placeholder', '~> 1.2.1'
-  pod "AlignedCollectionViewFlowLayout", '~> 1.1.2'
 
   # DEBUG
   pod 'FLEX', '~> 2.4.0', :configurations => ['Debug', 'Debug Stub', 'Debug PGP']
@@ -55,6 +58,7 @@ end
 
 target 'TesserCubeInterpretAction' do
   common_pods
+  common_ui_pods
 end
 
 post_install do |installer|

@@ -131,14 +131,6 @@ class MessagesViewController: TCBaseViewController {
             })
             .disposed(by: disposeBag)
 
-        // reload messages when interpret action extension update message
-        WormholdService.shared.listeningWormhole.listenForMessage(withIdentifier: WormholdService.MessageIdentifier.interpretActionExtensionDidUpdateMessage.rawValue) { [weak self] _ in
-            guard let `self` = self else { return }
-            let messages = ProfileService.default.loadMessages()
-            self.viewModel._messages.accept(messages)
-            NSLog("WormholdService.MessageIdentifier.interpretActionExtensionDidUpdateMessage")
-        }
-
         segmentedControl.rx.selectedSegmentIndex
             .bind(to: viewModel.selectedSegmentIndex)
             .disposed(by: disposeBag)
@@ -275,7 +267,7 @@ extension MessagesViewController: UITableViewDelegate {
 
                 let isSignedByOthers = signatureKey == nil && message.composedAt == nil
                 if isSignedByOthers {
-                    return ByOthersMessageAlertController(for: message, didSelectCell: cell)
+                    return SignByOthersMessageAlertController(for: message, didSelectCell: cell)
                 } else {
                     return EncryptedMessageAlertController(for: message, didSelectCell: cell)
                 }
@@ -363,7 +355,7 @@ extension MessagesViewController {
 
 extension MessagesViewController {
 
-    private func ByOthersMessageAlertController(for message: Message, didSelectCell cell: UITableViewCell) -> UIAlertController {
+    private func SignByOthersMessageAlertController(for message: Message, didSelectCell cell: UITableViewCell) -> UIAlertController {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         let copyMessageContentAction = UIAlertAction(title: L10n.MessagesViewController.Action.Button.copyMessageContent, style: .default) { _ in
