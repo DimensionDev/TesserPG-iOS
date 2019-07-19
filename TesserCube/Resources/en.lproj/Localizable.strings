@@ -189,6 +189,9 @@
 "InterpretActionViewController.Action.Button.Copied" = "Copied";
 "InterpretActionViewController.Action.Button.WriteReply" = "Write Reply";
 
+"ComposeActionViewController.Title.Composing" = "Composing";
+"ComposeActionViewController.Title.MessageComposed" = "Message Composed";
+
 "Keyboard.Prompt.EnableFullAccess" = "Click to enable \"Full Access\" please";
 "Keyboard.Button.Interpret" = "Interpret";
 "Keyboard.Button.Encrypt" = "Encrypt";

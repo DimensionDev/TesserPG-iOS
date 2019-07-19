@@ -181,6 +181,9 @@
 "InterpretActionViewController.Action.Button.Copied" = "已拷貝";
 "InterpretActionViewController.Action.Button.WriteReply" = "撰寫回复";
 
+"ComposeActionViewController.Title.Composing" = "撰寫中...";
+"ComposeActionViewController.Title.MessageComposed" = "撰寫完成";
+
 "Keyboard.Prompt.EnableFullAccess" = "請點擊此處 開啟 \"允許完全訪問\"";
 "Keyboard.Button.Interpret" = "解密";
 "Keyboard.Button.Encrypt" = "加密";

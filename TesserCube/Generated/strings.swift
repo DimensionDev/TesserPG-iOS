@@ -47,6 +47,15 @@ internal enum L10n {
     }
   }
 
+  internal enum ComposeActionViewController {
+    internal enum Title {
+      /// Composing
+      internal static let composing = L10n.tr("Localizable", "ComposeActionViewController.Title.Composing")
+      /// Message Composed
+      internal static let messageComposed = L10n.tr("Localizable", "ComposeActionViewController.Title.MessageComposed")
+    }
+  }
+
   internal enum ComposeMessageViewController {
     /// Compose
     internal static let title = L10n.tr("Localizable", "ComposeMessageViewController.Title")

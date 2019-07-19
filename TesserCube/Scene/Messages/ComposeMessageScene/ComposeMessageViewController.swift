@@ -40,6 +40,9 @@ final class ComposeMessageViewController: TCBaseViewController {
         return scrollView
     }()
 
+    // for callee
+    var composedMessage: Message?
+
     override func configUI() {
         super.configUI()
 
@@ -178,6 +181,16 @@ extension ComposeMessageViewController {
         viewModel.viewDidAppear.accept(true)
     }
 
+    // use dismiss proxy for app extension post CompleteRequest safe
+    private func dismiss() {
+        dismiss(animated: true, completion: nil)
+
+        #if TARGET_IS_EXTENSION
+        let userInfo = ["message": composedMessage]
+        NotificationCenter.default.post(name: .extensionContextCompleteRequest, object: self, userInfo: userInfo as [AnyHashable : Any])
+        #endif
+    }
+
 }
 
 private extension ComposeMessageViewController {
@@ -192,7 +205,7 @@ private extension ComposeMessageViewController {
         let recipientKeys = tags.compactMap { $0.key }
 
         guard !rawMessage.isEmpty else {
-            dismiss(animated: true, completion: nil)
+            self.dismiss()
             return
         }
 
@@ -211,7 +224,7 @@ private extension ComposeMessageViewController {
         }()
 
         guard isMessageChanged else {
-            dismiss(animated: true, completion: nil)
+            self.dismiss()
             return
         }
 
@@ -219,7 +232,7 @@ private extension ComposeMessageViewController {
             let alertController = UIAlertController(title: L10n.ComposeMessageViewController.Alert.Title.saveDraft, message: nil, preferredStyle: .actionSheet)
 
             let discardAction = UIAlertAction(title: L10n.Common.Button.discard, style: .destructive, handler: { [weak self] _ in
-                self?.dismiss(animated: true, completion: nil)
+                self?.self.dismiss()
             })
             alertController.addAction(discardAction)
             let saveActionTitle = self.viewModel.message.value?.isDraft ?? false ? L10n.ComposeMessageViewController.Alert.Action.updateDraft : L10n.ComposeMessageViewController.Alert.Action.saveDraft
@@ -243,7 +256,7 @@ private extension ComposeMessageViewController {
                     }
                 }
 
-                self.dismiss(animated: true, completion: nil)
+                self.self.dismiss()
             })
             alertController.addAction(saveAction)
             let cancelAction = UIAlertAction(title: L10n.Common.Button.cancel, style: .cancel, handler: { _ in
@@ -315,18 +328,14 @@ private extension ComposeMessageViewController {
                     var message = Message(id: nil, senderKeyId: sender?.longIdentifier ?? "", senderKeyUserId: sender?.userID ?? "", composedAt: Date(), interpretedAt: nil, isDraft: false, rawMessage: rawMessage, encryptedMessage: armored)
                     // TODO: handle error if throw
                     do {
-                        try ProfileService.default.addMessage(&message, recipientKeys: recipients)
+                        self.composedMessage = try ProfileService.default.addMessage(&message, recipientKeys: recipients)
                     } catch {
                         consolePrint(error.localizedDescription)
                     }
                 }
 
-                #if !TARGET_IS_EXTENSION
-                self.dismiss(animated: true, completion: nil)
-                #else
-                NotificationCenter.default.post(name: .extensionContextCompleteRequest, object: nil)
-                #endif
-                
+                self.self.dismiss()
+
                 }, onError: { [weak self] error in
                     guard let `self` = self else { return }
                     let message = (error as? TCError)?.errorDescription ?? error.localizedDescription

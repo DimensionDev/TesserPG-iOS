@@ -1,27 +1,55 @@
 //
-//  InterpretActionViewController.swift
-//  TesserCubeInterpretAction
+//  ComposeActionViewController.swift
+//  TesserCubeComposeAction
 //
-//  Created by Cirno MainasuK on 2019-7-16.
+//  Created by Cirno MainasuK on 2019-7-19.
 //  Copyright © 2019 Sujitech. All rights reserved.
 //
 
 import UIKit
-import RxSwift
-import RxCocoa
 import MobileCoreServices
 import BouncyCastle_ObjC
 import DMSOpenPGP
 import ConsolePrint
 
-final class InterpretActionViewController: UIViewController {
+import RxSwift
+import RxCocoa
+
+final class ComposeActionViewModel {
+
+    // input
+    var inputTexts: [String] = []
+    let composedMessage = BehaviorRelay<Message?>(value: nil)
+
+    // output
+    let rawMessage = PublishRelay<String>()
+    let messages: Driver<[Message]>
+
+    init() {
+        messages = composedMessage.asDriver()
+            .map { [$0].compactMap { $0} }
+            .asDriver()
+    }
+
+}
+
+extension ComposeActionViewModel {
+
+    func finalizeInput() {
+        let message = inputTexts.joined(separator: "\n")
+        rawMessage.accept(message)
+    }
+
+}
+
+final class ComposeActionViewController: UIViewController {
 
     private let disposeBag = DisposeBag()
+    private let viewModel = ComposeActionViewModel()
 
+    private var didPresentComposeMessageViewController = false
     private lazy var messageCardViewController = MessageCardViewController()
-    private lazy var brokenMessageViewController = BrokenMessageViewController()
-
-    private let viewModel = InterpretActionViewModel()
+    private lazy var composeMessageViewController: ComposeMessageViewController? = ComposeMessageViewController()
 
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -37,63 +65,50 @@ final class InterpretActionViewController: UIViewController {
         // Setup Bouncy Castle
         JavaSecuritySecurity.addProvider(with: OrgBouncycastleJceProviderBouncyCastleProvider())
     }
-
+    
 }
 
-extension InterpretActionViewController {
+extension ComposeActionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        title = L10n.ComposeActionViewController.Title.composing
         view.backgroundColor = Asset.sceneBackground.color
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(InterpretActionViewController.doneBarButtonItemPressed(_:)))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(ComposeActionViewController.doneBarButtonItemPressed(_:)))
 
         addChild(messageCardViewController)
         view.addSubview(messageCardViewController.view)
         messageCardViewController.didMove(toParent: self)
+        messageCardViewController.viewModel.allowActions.accept([.copy])
 
-        messageCardViewController.viewModel.delegate = self
-
-        viewModel.title.asDriver().drive(rx.title).disposed(by: disposeBag)
+        viewModel.rawMessage.asDriver(onErrorJustReturn: "")
+            .drive(onNext: { [weak self] rawMessage in
+                self?.composeMessageViewController?.messageTextView.text = rawMessage
+            })
+            .disposed(by: disposeBag)
         viewModel.messages.asDriver()
             .drive(messageCardViewController.viewModel.messages)
             .disposed(by: disposeBag)
-        viewModel.interpretedMessage.asDriver()
-            .skip(1)
-            .drive(onNext: { [weak self] message in
-                guard let `self` = self else { return }
-                let controller = self.brokenMessageViewController
 
-                guard message == nil else {
-                    if controller.parent != nil {
-                        controller.willMove(toParent: nil)
-                        controller.view.removeFromSuperview()
-                        controller.removeFromParent()
-                    }
-                    return
-                }
-
-                if controller.parent == nil {
-                    self.addChild(controller)
-                    self.view.addSubview(controller.view)
-                    controller.didMove(toParent: self)
-
-                    controller.messageLabel.text = self.viewModel.inputTexts.joined(separator: "\n")
-                }
-            })
-            .disposed(by: disposeBag)
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
 
-        extractInputFromExtensionContext()
-        NotificationCenter.default.addObserver(self, selector: #selector(InterpretActionViewController.extensionContextCompleteRequest(_:)), name: .extensionContextCompleteRequest, object: nil)
+        guard didPresentComposeMessageViewController else {
+            present(UINavigationController(rootViewController: composeMessageViewController!), animated: false, completion: nil)
+            didPresentComposeMessageViewController = true
+
+            extractInputFromExtensionContext()
+            NotificationCenter.default.addObserver(self, selector: #selector(ComposeActionViewController.extensionContextCompleteRequest(_:)), name: .extensionContextCompleteRequest, object: nil)
+            return
+        }
     }
 
 }
 
-extension InterpretActionViewController {
+extension ComposeActionViewController {
 
     private func extractInputFromExtensionContext() {
         // check input text
@@ -131,14 +146,18 @@ extension InterpretActionViewController {
 
 }
 
-extension InterpretActionViewController {
+extension ComposeActionViewController {
 
     @objc private func extensionContextCompleteRequest(_ notification: Notification) {
         guard let _ = notification.object as? ComposeMessageViewController,
         let message = notification.userInfo?["message"] as? Message else {
+            // User cancel compose or save draft
+            self.extensionContext!.completeRequest(returningItems: self.extensionContext!.inputItems, completionHandler: nil)
             return
         }
 
+        title = L10n.ComposeActionViewController.Title.messageComposed
+        composeMessageViewController = nil  // deinit
         messageCardViewController.viewModel.copyContentType = .armoredMessage
         messageCardViewController.viewModel.allowActions.accept([.copy])
         viewModel.composedMessage.accept(message)
@@ -146,18 +165,6 @@ extension InterpretActionViewController {
 
     @objc private func doneBarButtonItemPressed(_ sender: UIBarButtonItem) {
         self.extensionContext!.completeRequest(returningItems: self.extensionContext!.inputItems, completionHandler: nil)
-    }
-
-}
-
-// MARK: - InterpretActionViewModelDelegate
-extension InterpretActionViewController: MessageCardViewModelDelegate {
-
-    func writeReply(to recipients: [KeyBridge], from sender: KeyBridge?) {
-        let controller = ComposeMessageViewController()
-        controller.viewModel.keyBridges.accept(recipients)
-        controller.viewModel.senderKeyBridge = sender
-        present(UINavigationController(rootViewController: controller), animated: true, completion: nil)
     }
 
 }
