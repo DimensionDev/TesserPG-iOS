@@ -17,38 +17,6 @@ class ContactDetailViewController: TCBaseViewController {
     private(set) var didPresented = false
 
     private var defaultNavigationBarShadowImage: UIImage?
-
-//    lazy var backBarButtonItem: UIBarButtonItem = {
-//        var rootTitle = ""
-//        if let viewControllers = navigationController?.viewControllers, viewControllers.count >= 2 {
-//            let previousVC = viewControllers[viewControllers.count - 2]
-//            if let previousTitle = previousVC.title {
-//                rootTitle = previousTitle
-//            }
-//        }
-//
-//        return UIBarButtonItem(title: rootTitle, style: .plain, target: nil, action: nil)
-//    }()
-//
-//    lazy var standaloneNavigationItems: [UINavigationItem] = {
-//        let rootItem = UINavigationItem(title: backBarButtonItem.title ?? "")
-//        rootItem.backBarButtonItem = backBarButtonItem
-//
-//        let item = UINavigationItem(title: "")
-//        item.rightBarButtonItem = UIBarButtonItem(title: L10n.Common.Button.edit, style: .plain, target: self, action: #selector(ContactDetailViewController.editButtonDidClicked(_:)))
-//
-//        return [rootItem, item]
-//    }()
-
-//    lazy var navigationBar: UINavigationBar = {
-//        let navigationBar = UINavigationBar()
-//        navigationBar.delegate = self
-//        navigationBar.setBackgroundImage(UIImage(), for: .default)
-//        navigationBar.shadowImage = UIImage()
-//        navigationBar.items = standaloneNavigationItems
-//        return navigationBar
-//    }()
-
     private var contact: Contact?
 
     init(contactId: Int64) {
@@ -59,12 +27,6 @@ class ContactDetailViewController: TCBaseViewController {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-//    lazy var scrollView: UIScrollView = {
-//        let scrollView = UIScrollView()
-//        scrollView.alwaysBounceVertical = true
-//        return scrollView
-//    }()
 
     private lazy var topBackgroundView: UIView = {
         let view = UIView(frame: .zero)
@@ -138,13 +100,6 @@ class ContactDetailViewController: TCBaseViewController {
 
         view.backgroundColor = .white
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: L10n.Common.Button.edit, style: .plain, target: self, action: #selector(ContactDetailViewController.editButtonDidClicked(_:)))
-
-//        view.addSubview(navigationBar)
-//
-//        navigationBar.snp.makeConstraints { maker in
-//            maker.leading.trailing.equalToSuperview()
-//            maker.top.equalTo(view.snp.topMargin)
-//        }
         
         view.addSubview(topBackgroundView)
 
@@ -154,19 +109,16 @@ class ContactDetailViewController: TCBaseViewController {
         userNameLabel.snp.makeConstraints { maker in
             maker.leading.trailing.equalTo(view.layoutMarginsGuide)
             maker.top.equalToSuperview().offset(79)
-//            maker.bottom.equalTo(userIdentifierLabel.snp.top).offset(-10)
         }
 
         userIdentifierLabel.snp.makeConstraints { maker in
             maker.leading.trailing.equalTo(view.layoutMarginsGuide)
             maker.top.equalTo(userNameLabel.snp.bottom).offset(10)
-//            maker.bottom.equalToSuperview().offset(-15)
         }
 
         topBackgroundView.snp.makeConstraints { maker in
             maker.leading.trailing.equalToSuperview()
             maker.top.equalToSuperview()
-//            maker.height.equalTo(162)
             maker.bottom.equalTo(userIdentifierLabel.snp.bottom).offset(15)
         }
 
@@ -254,8 +206,6 @@ class ContactDetailViewController: TCBaseViewController {
         }
 
         sendMessageButton.addTarget(self, action: #selector(ContactDetailViewController.sendMessageButtonDidClicked(_:)), for: .touchUpInside)
-
-//        view.bringSubviewToFront(navigationBar)
     }
 
 }
@@ -264,8 +214,6 @@ extension ContactDetailViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-//        navigationController?.setNavigationBarHidden(true, animated: animated)
 
         // fix navigation bar hairline bug
         if isPresenting {
@@ -343,26 +291,12 @@ extension ContactDetailViewController {
             let formatter = DateFormatter()
             formatter.dateStyle = .long
             formatter.timeStyle = .long
-//            formatter.dateFormat = "yyyy-MM-dd hh:mm '('z')'"
+            // alternative format style
+            // formatter.dateFormat = "yyyy-MM-dd hh:mm '('z')'"
             return formatter.string(from: $0)
         } ?? L10n.Common.Label.nameUnknown
 
         let emailsString = emails?.compactMap { $0.address }.joined(separator: "\n")
         emailTextView.text = emailsString
     }
-}
-
-// MARK: - UINavigationBarDelegate
-extension ContactDetailViewController: UINavigationBarDelegate {
-
-    func navigationBar(_ navigationBar: UINavigationBar, shouldPop item: UINavigationItem) -> Bool {
-        // Edit bar button item poped
-        navigationController?.popViewController()
-        return true
-    }
-
-    func position(for bar: UIBarPositioning) -> UIBarPosition {
-        return .topAttached
-    }
-
 }

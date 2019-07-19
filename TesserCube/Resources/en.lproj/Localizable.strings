@@ -182,6 +182,16 @@
 "SharePosterController.Action.Button.SaveImage" = "Save Image";
 "SharePosterController.Action.Button.ShareImage" = "Share Image";
 
+"InterpretActionViewController.Title.MessageInterpreting" = "Message Interpreting...";
+"InterpretActionViewController.Title.MessageInterpreted" = "Message Interpreted";
+"InterpretActionViewController.Title.BrokenMessage" = "Broken Message";
+"InterpretActionViewController.Action.Button.CopyContent" = "Copy Content";
+"InterpretActionViewController.Action.Button.Copied" = "Copied";
+"InterpretActionViewController.Action.Button.WriteReply" = "Write Reply";
+
+"ComposeActionViewController.Title.Composing" = "Composing";
+"ComposeActionViewController.Title.MessageComposed" = "Message Composed";
+
 "Keyboard.Prompt.EnableFullAccess" = "Click to enable \"Full Access\" please";
 "Keyboard.Button.Interpret" = "Interpret";
 "Keyboard.Button.Encrypt" = "Encrypt";

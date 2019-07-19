@@ -10,7 +10,6 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
-import SwifterSwift
 
 protocol PickContactsDelegate: class {
     func contactsListViewController(_ controller: ContactsListViewController, didSelect contacts: [Contact])
@@ -56,7 +55,7 @@ class ContactsListViewController: TCBaseViewController {
         tableView.alwaysBounceVertical = true
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none
-        tableView.register(nibWithCellClass: ContactCell.self)
+        tableView.register(UINib(nibName: "ContactCell", bundle: nil), forCellReuseIdentifier: String(describing: ContactCell.self))
         tableView.backgroundColor = Asset.sceneBackground.color
         tableView.allowsMultipleSelectionDuringEditing = true
         tableView.keyboardDismissMode = .interactive
@@ -133,7 +132,9 @@ class ContactsListViewController: TCBaseViewController {
     
     @objc
     private func addContactButtonDidClicked(_ sender: UIBarButtonItem) {
+        #if !TARGET_IS_EXTENSION
         Coordinator.main.present(scene: .pasteKey(needPassphrase: false), from: self, transition: .modal, completion: nil)
+        #endif
     }
     
     @objc
@@ -209,7 +210,7 @@ class ContactsListViewController: TCBaseViewController {
         searchedSortedKeys.removeAll()
         searchedGroupedUsers.removeAll()
         let filteredContacts = viewModel.contacts.value.filter { (contact) -> Bool in
-            return contact.name.contains(searchText, caseSensitive: false)
+            return contact.name.range(of: searchText, options: .caseInsensitive) != nil
         }
         let grouped = [String: [Contact]].init(grouping: filteredContacts) { (contact) -> String in
             guard let firstPinyin = contact.name.pinyin.first else {
@@ -280,7 +281,9 @@ extension ContactsListViewController: UITableViewDelegate {
         }
 
         if !isPickContactMode {
+            #if !TARGET_IS_EXTENSION
             Coordinator.main.present(scene: .contactDetail(contactId: contactId), from: self)
+            #endif
         } else {
             viewModel.selectedContactIDs.insert(contactId)
         }
@@ -323,7 +326,9 @@ extension ContactsListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withClass: ContactCell.self, for: indexPath)
+        // swiftlint:disable force_cast
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ContactCell.self), for: indexPath) as! ContactCell
+        // swiftlint:enable force_cast
         let contacts = sourceGroupedContacts[sourceSortedKeys[indexPath.section]]
         cell.contact = contacts?[indexPath.row]
         return cell

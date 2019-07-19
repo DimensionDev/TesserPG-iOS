@@ -8,7 +8,6 @@
 
 import Foundation
 
-// TODO: remove
 /// Bridge between Keychain and Contact base on PGPKey UserID & KeyID (longIdentifier)
 struct KeyBridge: ContactMappable, KeychianMappable {
 
@@ -40,6 +39,7 @@ struct KeyBridge: ContactMappable, KeychianMappable {
     }
 
     // Key meta info stored in database
+    // Should make sure key pass in or could restore by longIdentifier
     init(contact: Contact?, key: TCKey?, userID: String, longIdentifier: String) {
         let longIdentifier = key?.longIdentifier ?? longIdentifier
         assert(!longIdentifier.isEmpty)
@@ -52,7 +52,15 @@ struct KeyBridge: ContactMappable, KeychianMappable {
             let contacts = Contact.getOwnerContacts(longIdentifier: longIdentifier)
             self.contact = (contacts.count == 1) ? contacts.first : nil
         }
-        self.key = key
+        if let key = key {
+            self.key = key
+        } else if let key = ProfileService.default.keys.value.first(where: { $0.longIdentifier == longIdentifier }) {   // restore key
+            self.key = key
+        } else {
+            assertionFailure("key restore fail")
+            self.key = nil
+        }
+
         self.userID = key?.userID ?? userID
         self.longIdentifier = key?.longIdentifier ?? longIdentifier
     }
