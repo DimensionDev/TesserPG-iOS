@@ -169,9 +169,6 @@
 		DB0758D0224895B40046FBFD /* MessageCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0758CF224895B40046FBFD /* MessageCardCell.swift */; };
 		DB1327152253651C00BD7B98 /* KeyBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1327142253651C00BD7B98 /* KeyBridge.swift */; };
 		DB1327162253651C00BD7B98 /* KeyBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1327142253651C00BD7B98 /* KeyBridge.swift */; };
-		DB3B58D12280180A00879834 /* WizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3B58D02280180A00879834 /* WizardViewController.swift */; };
-		DB3B58DA228126EC00879834 /* WizardCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3B58D9228126EC00879834 /* WizardCollectionViewController.swift */; };
-		DB3B58DC2281280700879834 /* WizardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3B58DB2281280700879834 /* WizardCollectionViewCell.swift */; };
 		DB3B58E22282929700879834 /* WormholdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3B58E12282929700879834 /* WormholdService.swift */; };
 		DB3B58E52282930600879834 /* WormholdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3B58E12282929700879834 /* WormholdService.swift */; };
 		DB449989228C038E000B7E8A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB449988228C038E000B7E8A /* SettingsViewController.swift */; };
@@ -252,6 +249,7 @@
 		DB63A12622E06F0D00C2DDA6 /* UIViewController+EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146A9223F6756008ECC22 /* UIViewController+EmptyView.swift */; };
 		DB63A12722E06F1700C2DDA6 /* ListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83783374224B544100F2C0BF /* ListEmptyView.swift */; };
 		DB63A12822E06F8200C2DDA6 /* ContactListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8378336A224B352500F2C0BF /* ContactListViewModel.swift */; };
+		DB63A12D22E163A700C2DDA6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB63A12F22E163A700C2DDA6 /* InfoPlist.strings */; };
 		DB66FE67224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE66224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift */; };
 		DB66FE6A224A330D00D82704 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE69224A330D00D82704 /* String.swift */; };
 		DB66FE6D224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE6C224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift */; };
@@ -483,9 +481,6 @@
 		DB0758A1224493DB0046FBFD /* PGPUserIDTranslator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGPUserIDTranslator.swift; sourceTree = "<group>"; };
 		DB0758CF224895B40046FBFD /* MessageCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCardCell.swift; sourceTree = "<group>"; };
 		DB1327142253651C00BD7B98 /* KeyBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBridge.swift; sourceTree = "<group>"; };
-		DB3B58D02280180A00879834 /* WizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WizardViewController.swift; sourceTree = "<group>"; };
-		DB3B58D9228126EC00879834 /* WizardCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WizardCollectionViewController.swift; sourceTree = "<group>"; };
-		DB3B58DB2281280700879834 /* WizardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WizardCollectionViewCell.swift; sourceTree = "<group>"; };
 		DB3B58E12282929700879834 /* WormholdService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WormholdService.swift; sourceTree = "<group>"; };
 		DB449988228C038E000B7E8A /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		DB44998F228C13CA000B7E8A /* MessageDigitalSignatureSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDigitalSignatureSettings.swift; sourceTree = "<group>"; };
@@ -507,6 +502,9 @@
 		DB63A10B22DEF75100C2DDA6 /* InterpretActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretActionViewModel.swift; sourceTree = "<group>"; };
 		DB63A10D22DF2A5900C2DDA6 /* BrokenMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrokenMessageViewController.swift; sourceTree = "<group>"; };
 		DB63A10F22DF2CBA00C2DDA6 /* Menlo.ttc */ = {isa = PBXFileReference; lastKnownFileType = file; path = Menlo.ttc; sourceTree = "<group>"; };
+		DB63A12E22E163A700C2DDA6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		DB63A13022E163A900C2DDA6 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		DB63A13122E163AA00C2DDA6 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		DB66FE66224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPickerTagCollectionViewCell.swift; sourceTree = "<group>"; };
 		DB66FE69224A330D00D82704 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		DB66FE6C224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPickerTextFieldCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -721,7 +719,6 @@
 				8313F69922476F4800C09C2D /* Share */,
 				832146A3223F6045008ECC22 /* Base */,
 				832146A7223F65CB008ECC22 /* Common */,
-				DB3B58D42280181400879834 /* Wizard */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -1162,16 +1159,6 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
-		DB3B58D42280181400879834 /* Wizard */ = {
-			isa = PBXGroup;
-			children = (
-				DB3B58D02280180A00879834 /* WizardViewController.swift */,
-				DB3B58D9228126EC00879834 /* WizardCollectionViewController.swift */,
-				DB3B58DB2281280700879834 /* WizardCollectionViewCell.swift */,
-			);
-			path = Wizard;
-			sourceTree = "<group>";
-		};
 		DB44998C228C0AAE000B7E8A /* SettingsScene */ = {
 			isa = PBXGroup;
 			children = (
@@ -1210,6 +1197,7 @@
 				DB63A10B22DEF75100C2DDA6 /* InterpretActionViewModel.swift */,
 				DB63A10D22DF2A5900C2DDA6 /* BrokenMessageViewController.swift */,
 				DB63A0D322DD82EE00C2DDA6 /* MainInterface.storyboard */,
+				DB63A12F22E163A700C2DDA6 /* InfoPlist.strings */,
 				DB63A0D622DD82EE00C2DDA6 /* Info.plist */,
 			);
 			path = TesserCubeInterpretAction;
@@ -1524,6 +1512,7 @@
 				DB63A0EF22DDA2BC00C2DDA6 /* Localizable.strings in Resources */,
 				DB63A0D022DD82EE00C2DDA6 /* Media.xcassets in Resources */,
 				DB63A0EE22DDA2B300C2DDA6 /* Assets.xcassets in Resources */,
+				DB63A12D22E163A700C2DDA6 /* InfoPlist.strings in Resources */,
 				DB63A0E822DDA2AF00C2DDA6 /* SF-Pro-Display-Light.otf in Resources */,
 				DB63A0ED22DDA2AF00C2DDA6 /* SourceCodePro-Medium.ttf in Resources */,
 				DB63A12222E068DC00C2DDA6 /* ContactCell.xib in Resources */,
@@ -1704,7 +1693,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB4F300122A11F820003804B /* Contact.swift in Sources */,
-				DB3B58DC2281280700879834 /* WizardCollectionViewCell.swift in Sources */,
 				8313F6932247165F00C09C2D /* FloatingActionGroup.swift in Sources */,
 				832146CD2240B135008ECC22 /* TCBaseViewController.swift in Sources */,
 				DB3B58E22282929700879834 /* WormholdService.swift in Sources */,
@@ -1766,7 +1754,6 @@
 				83783387224CC23400F2C0BF /* ContactEditTextCell.swift in Sources */,
 				DB66FE6F224A3CD600D82704 /* SenderContactPickerView.swift in Sources */,
 				DB4F309822A14C0D0003804B /* DMSPGPError.swift in Sources */,
-				DB3B58DA228126EC00879834 /* WizardCollectionViewController.swift in Sources */,
 				83DFC72C2252EF3100993160 /* KeyRecordDBAction.swift in Sources */,
 				832146B1223F7D98008ECC22 /* ProfileService.swift in Sources */,
 				DB66FE6D224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */,
@@ -1777,7 +1764,6 @@
 				837833552248840600F2C0BF /* TCTypes.swift in Sources */,
 				83783375224B544100F2C0BF /* ListEmptyView.swift in Sources */,
 				DB44999C228C248D000B7E8A /* SettingsViewModel.swift in Sources */,
-				DB3B58D12280180A00879834 /* WizardViewController.swift in Sources */,
 				83214695223F4CA0008ECC22 /* Assets.swift in Sources */,
 				83B93D22221CEB9800F556C0 /* UserDefaults+AppGroup.swift in Sources */,
 				832146B6223F89A8008ECC22 /* CALayer+Shadow.swift in Sources */,
@@ -2019,6 +2005,16 @@
 				DB63A0D422DD82EE00C2DDA6 /* Base */,
 			);
 			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+		DB63A12F22E163A700C2DDA6 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DB63A12E22E163A700C2DDA6 /* en */,
+				DB63A13022E163A900C2DDA6 /* zh-Hans */,
+				DB63A13122E163AA00C2DDA6 /* zh-Hant */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
