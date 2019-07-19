@@ -47,6 +47,15 @@ internal enum L10n {
     }
   }
 
+  internal enum ComposeActionViewController {
+    internal enum Title {
+      /// Composing
+      internal static let composing = L10n.tr("Localizable", "ComposeActionViewController.Title.Composing")
+      /// Message Composed
+      internal static let messageComposed = L10n.tr("Localizable", "ComposeActionViewController.Title.MessageComposed")
+    }
+  }
+
   internal enum ComposeMessageViewController {
     /// Compose
     internal static let title = L10n.tr("Localizable", "ComposeMessageViewController.Title")
@@ -297,6 +306,27 @@ internal enum L10n {
     internal enum Title {
       /// New Contact
       internal static let newContact = L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Title.NewContact")
+    }
+  }
+
+  internal enum InterpretActionViewController {
+    internal enum Action {
+      internal enum Button {
+        /// Copied
+        internal static let copied = L10n.tr("Localizable", "InterpretActionViewController.Action.Button.Copied")
+        /// Copy Content
+        internal static let copyContent = L10n.tr("Localizable", "InterpretActionViewController.Action.Button.CopyContent")
+        /// Write Reply
+        internal static let writeReply = L10n.tr("Localizable", "InterpretActionViewController.Action.Button.WriteReply")
+      }
+    }
+    internal enum Title {
+      /// Broken Message
+      internal static let brokenMessage = L10n.tr("Localizable", "InterpretActionViewController.Title.BrokenMessage")
+      /// Message Interpreted
+      internal static let messageInterpreted = L10n.tr("Localizable", "InterpretActionViewController.Title.MessageInterpreted")
+      /// Message Interpreting...
+      internal static let messageInterpreting = L10n.tr("Localizable", "InterpretActionViewController.Title.MessageInterpreting")
     }
   }
 

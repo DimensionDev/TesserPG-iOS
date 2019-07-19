@@ -126,7 +126,7 @@ final class ContactPickerTagCollectionViewCell: UICollectionViewCell {
         super.layoutSubviews()
 
         corneredBackgroundView.layer.masksToBounds = true
-        corneredBackgroundView.cornerRadius = ContactPickerTagCollectionViewCell.tagHeight * 0.5
+        corneredBackgroundView.layer.cornerRadius = ContactPickerTagCollectionViewCell.tagHeight * 0.5
     }
 
 }

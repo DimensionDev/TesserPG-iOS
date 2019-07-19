@@ -61,7 +61,22 @@ class ProfileService {
         messagesObervation = try! ValueObservation.trackingAll(Message.all())
             .start(in: TCDBManager.default.dbQueue, onChange: { latestMessages in
                 self.messages.accept(latestMessages)
+
+                #if TARGET_IS_EXTENSION
+                // notify main app message update (interpret date changed)
+                WormholdService.shared.wormhole.clearMessageContents(forIdentifier: WormholdService.MessageIdentifier.interpretActionExtensionDidUpdateMessage.rawValue)
+                WormholdService.shared.wormhole.passMessageObject("interpretActionExtensionDidUpdateMessage" as NSCoding, identifier: WormholdService.MessageIdentifier.interpretActionExtensionDidUpdateMessage.rawValue)
+                #endif
             })
+
+        #if !TARGET_IS_EXTENSION
+        // reload messages when interpret action extension update message
+        WormholdService.shared.listeningWormhole.listenForMessage(withIdentifier: WormholdService.MessageIdentifier.interpretActionExtensionDidUpdateMessage.rawValue) { [weak self] _ in
+            guard let `self` = self else { return }
+            self.messages.accept(self.loadMessages())
+            NSLog("WormholdService.MessageIdentifier.interpretActionExtensionDidUpdateMessage")
+        }
+        #endif
         
         keysObervation = try! ValueObservation.trackingAll(KeyRecord.all())
             .start(in: TCDBManager.default.dbQueue, onChange: { latestKeyRecords in
@@ -202,8 +217,9 @@ extension ProfileService {
             guard username != nil || email != nil else {
                 throw TCError.userInfoError(type: .invalidUserID(userID: keyUserID))
             }
-            
-            let contact = try TCDBManager.default.dbQueue.write({ db -> Contact in
+
+            // contactsObervation will handle database update
+            let _ = try TCDBManager.default.dbQueue.write { db -> Contact in
                 var newContact = Contact(id: nil, name: username ?? "")
                 try newContact.insert(db)
                 if let contactId = newContact.id {
@@ -215,10 +231,8 @@ extension ProfileService {
                     try newKeyRecord.insert(db)
                 }
                 return newContact
-            })
-//            var currentContacts = contacts.value
-//            currentContacts.append(contact)
-//            contacts.accept(currentContacts)
+            }   // end let _ = try …
+
         } catch let error {
             throw error
         }
@@ -280,4 +294,13 @@ extension ProfileService {
         })
     }
 
+}
+
+extension ProfileService {
+
+    func containsKey(longIdentifier: String) -> Bool {
+        return keys.value.contains(where: { key in
+            return key.longIdentifier == longIdentifier
+        })
+    }
 }

@@ -58,9 +58,6 @@ internal enum Asset {
   internal static let mainTabMessages = ImageAsset(name: "main_tab_messages")
   internal static let sceneMeImportKey = ImageAsset(name: "scene_me_import_key")
   internal static let mockPoster = ImageAsset(name: "mock_poster")
-  internal static let wizardCopyToInterpret = ImageAsset(name: "wizard_copy_to_interpret")
-  internal static let wizardImportPublicKeys = ImageAsset(name: "wizard_import_public_keys")
-  internal static let wizardTypeAndEncrypt = ImageAsset(name: "wizard_type_and_encrypt")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 

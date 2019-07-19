@@ -16,6 +16,13 @@
 
 // swiftlint:disable identifier_name line_length type_body_length
 internal enum FontFamily {
+  internal enum Menlo {
+    internal static let bold = FontConvertible(name: "Menlo-Bold", family: "Menlo", path: "Menlo.ttc")
+    internal static let boldItalic = FontConvertible(name: "Menlo-BoldItalic", family: "Menlo", path: "Menlo.ttc")
+    internal static let italic = FontConvertible(name: "Menlo-Italic", family: "Menlo", path: "Menlo.ttc")
+    internal static let regular = FontConvertible(name: "Menlo-Regular", family: "Menlo", path: "Menlo.ttc")
+    internal static let all: [FontConvertible] = [bold, boldItalic, italic, regular]
+  }
   internal enum SFProDisplay {
     internal static let bold = FontConvertible(name: "SFProDisplay-Bold", family: "SF Pro Display", path: "SF-Pro-Display-Bold.otf")
     internal static let light = FontConvertible(name: "SFProDisplay-Light", family: "SF Pro Display", path: "SF-Pro-Display-Light.otf")
@@ -36,7 +43,7 @@ internal enum FontFamily {
     internal static let regular = FontConvertible(name: "SourceCodePro-Medium", family: "Source Code Pro Medium", path: "SourceCodePro-Medium.ttf")
     internal static let all: [FontConvertible] = [regular]
   }
-  internal static let allCustomFonts: [FontConvertible] = [SFProDisplay.all, SFProText.all, SourceCodePro.all, SourceCodeProMedium.all].flatMap { $0 }
+  internal static let allCustomFonts: [FontConvertible] = [Menlo.all, SFProDisplay.all, SFProText.all, SourceCodePro.all, SourceCodeProMedium.all].flatMap { $0 }
   internal static func registerAllCustomFonts() {
     allCustomFonts.forEach { $0.register() }
   }
