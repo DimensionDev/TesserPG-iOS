@@ -11,16 +11,21 @@ import RxSwift
 import RxCocoa
 import DMSOpenPGP
 
+protocol InterpretActionViewModelDelegate: class {
+    func writeReply(to recipients: [KeyBridge], from sender: KeyBridge?)
+}
+
 final class InterpretActionViewModel: NSObject {
 
     private let disposeBag = DisposeBag()
+    weak var delegate: InterpretActionViewModelDelegate?
 
     // Input
     var inputTexts: [String] = []
     var messageExpandedDict: [IndexPath : Bool] = [:]
     var messageMaxNumberOfLinesDict: [IndexPath : Int] = [:]
     var copyAction = PublishRelay<UIButton>()
-    var writeAction = PublishRelay<UIButton>()
+    var replyAction = PublishRelay<UIButton>()
 
     // Output
     let title = BehaviorRelay<String>(value: L10n.InterpretActionViewController.Title.messageInterpreting)
@@ -48,10 +53,6 @@ final class InterpretActionViewModel: NSObject {
                 } else {
                     self.availableActions.accept([.copy])
                 }
-
-                // notify main app message update (interpret date changed)
-                WormholdService.shared.wormhole.clearMessageContents(forIdentifier: WormholdService.MessageIdentifier.interpretActionExtensionDidUpdateMessage.rawValue)
-                WormholdService.shared.wormhole.passMessageObject("interpretActionExtensionDidUpdateMessage" as NSCoding, identifier: WormholdService.MessageIdentifier.interpretActionExtensionDidUpdateMessage.rawValue)
             })
             .disposed(by: disposeBag)
 
@@ -77,6 +78,29 @@ final class InterpretActionViewModel: NSObject {
             })
             .disposed(by: disposeBag)
 
+        replyAction
+            .observeOn(MainScheduler.asyncInstance)
+            .debounce(1, scheduler: MainScheduler.asyncInstance)
+            .subscribe(onNext: { [weak self] sender in
+                guard let message = self?.message.value else {
+                    return
+                }
+
+                let sender = message
+                    .getRecipients()
+                    .first(where: { recipient in
+                        // select first recipient's key, which user has it's secret key, as sender key to reply
+                        guard let key = recipient.getKey(), key.hasPublicKey, key.hasSecretKey else { return false }
+                        return true
+                    })
+                    .flatMap { $0.getKey() }
+                    .map { KeyBridge(contact: nil, key: $0, userID: $0.userID, longIdentifier: $0.longIdentifier) }
+
+                let recipient = KeyBridge(contact: nil, key: nil, userID: message.senderKeyUserId, longIdentifier: message.senderKeyId)
+
+                self?.delegate?.writeReply(to: [recipient], from: sender)
+            })
+            .disposed(by: disposeBag)
     }   // end init()
 
 }

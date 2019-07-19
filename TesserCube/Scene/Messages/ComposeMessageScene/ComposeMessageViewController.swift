@@ -43,12 +43,20 @@ final class ComposeMessageViewController: TCBaseViewController {
     override func configUI() {
         super.configUI()
 
+        // MARK: - setup layout
+
         title = L10n.ComposeMessageViewController.title
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: L10n.Common.Button.cancel, style: .plain, target: self, action: #selector(ComposeMessageViewController.cancelBarButtonItemPressed(_:)))
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: L10n.ComposeMessageViewController.BarButtonItem.finish, style: .done, target: self, action: #selector(ComposeMessageViewController.doneBarButtonItemPressed(_:)))
 
+        #if !TARGET_IS_EXTENSION
         let margin = UIApplication.shared.keyWindow.flatMap { $0.safeAreaInsets.top + $0.safeAreaInsets.bottom } ?? 0
         let barHeight = navigationController?.navigationBar.bounds.height ?? 0
+        #else
+        let margin = CGFloat.zero
+        let barHeight = CGFloat.zero
+        #endif
+
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(scrollView)
         NSLayoutConstraint.activate([
@@ -96,13 +104,15 @@ final class ComposeMessageViewController: TCBaseViewController {
         toContactPickerCellView.contactPickerTagCollectionViewCellDelegate = self
         toContactPickerCellView.pickContactsDelegate = self
 
-        // Fix layout crash issue
+        // MARK: - combine view model
+
+        // combine toContactPickerCellView after view did appear to fix layout crash issue
         viewModel.viewDidAppear.asObservable()
             .filter { $0 }
             .take(1)
             .subscribe(onNext: { [weak self] _ in
                 guard let `self` = self else { return }
-                // recompose recipients
+                // restore message recipients (recompose / writeReply)
                 if let message = self.viewModel.message.value {
                     let keyBridges = message.getRecipients().map { messageRecipient -> KeyBridge in
                         let key = messageRecipient.getKey()
@@ -122,11 +132,12 @@ final class ComposeMessageViewController: TCBaseViewController {
 
         fromContactPickerCellView.titleLabel.text = L10n.ComposeMessageViewController.SenderContactPickerView.TitleLabel.Text.from
 
+        // combine message text
         messageTextView.rx.text.orEmpty.asDriver()
             .drive(viewModel.rawMessage)
             .disposed(by: disposeBag)
 
-        // recompose & compose message
+        // restore message sender (recompose / writeReply)
         if let message = viewModel.message.value {
             if message.senderKeyId.isEmpty {
                 fromContactPickerCellView.viewModel.selectedKey.accept(nil)
@@ -152,6 +163,7 @@ final class ComposeMessageViewController: TCBaseViewController {
                 }
             }
 
+            // combine input message
             self.messageTextView.text = message.rawMessage
         }
     }
@@ -284,7 +296,8 @@ private extension ComposeMessageViewController {
             doComposeMessage(rawMessage, to: recipientKeys, from: senderKey)
         }
     }
-    
+
+    // Note: Create new message whatever compose or re-compose except for draft.
     private func doComposeMessage(_ rawMessage: String, to recipients: [TCKey], from sender: TCKey?, password: String? = nil) {
         ComposeMessageViewModel.composeMessage(rawMessage, to: recipients, from: sender, password: password)
             .subscribeOn(ConcurrentDispatchQueueScheduler.init(qos: .userInitiated))
@@ -308,7 +321,11 @@ private extension ComposeMessageViewController {
                     }
                 }
 
+                #if !TARGET_IS_EXTENSION
                 self.dismiss(animated: true, completion: nil)
+                #else
+                NotificationCenter.default.post(name: .extensionContextCompleteRequest, object: nil)
+                #endif
                 
                 }, onError: { [weak self] error in
                     guard let `self` = self else { return }

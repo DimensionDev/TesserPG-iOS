@@ -10,15 +10,23 @@ import Foundation
 import RxSwift
 import RxCocoa
 
+// Entry:
+// 1. recompose: set message
+// 2. edit draft: set message
+// 3. compose to contact: set keyBridges
+// 4. write reply: set keyBridges and
 final class ComposeMessageViewModel: NSObject {
 
     let disposeBag = DisposeBag()
 
     // Input
-    let message = BehaviorRelay<Message?>(value: nil)
-    let keyBridges = BehaviorRelay<[KeyBridge]>(value: [])
-    let rawMessage = BehaviorRelay(value: "")
     let viewDidAppear = BehaviorRelay<Bool>(value: false)
+    let message = BehaviorRelay<Message?>(value: nil)           // for restore
+    var senderKeyBridge: KeyBridge?                             // for restore
+
+    // Output
+    let keyBridges = BehaviorRelay<[KeyBridge]>(value: [])      // bind to RecipientContactPickerView
+    let rawMessage = BehaviorRelay(value: "")                   // bind to messageTextFiled
 
     enum TableViewCell: CaseIterable {
         case to

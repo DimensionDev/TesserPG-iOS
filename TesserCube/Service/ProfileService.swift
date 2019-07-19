@@ -61,7 +61,22 @@ class ProfileService {
         messagesObervation = try! ValueObservation.trackingAll(Message.all())
             .start(in: TCDBManager.default.dbQueue, onChange: { latestMessages in
                 self.messages.accept(latestMessages)
+
+                #if TARGET_IS_EXTENSION
+                // notify main app message update (interpret date changed)
+                WormholdService.shared.wormhole.clearMessageContents(forIdentifier: WormholdService.MessageIdentifier.interpretActionExtensionDidUpdateMessage.rawValue)
+                WormholdService.shared.wormhole.passMessageObject("interpretActionExtensionDidUpdateMessage" as NSCoding, identifier: WormholdService.MessageIdentifier.interpretActionExtensionDidUpdateMessage.rawValue)
+                #endif
             })
+
+        #if !TARGET_IS_EXTENSION
+        // reload messages when interpret action extension update message
+        WormholdService.shared.listeningWormhole.listenForMessage(withIdentifier: WormholdService.MessageIdentifier.interpretActionExtensionDidUpdateMessage.rawValue) { [weak self] _ in
+            guard let `self` = self else { return }
+            self.messages.accept(self.loadMessages())
+            NSLog("WormholdService.MessageIdentifier.interpretActionExtensionDidUpdateMessage")
+        }
+        #endif
         
         keysObervation = try! ValueObservation.trackingAll(KeyRecord.all())
             .start(in: TCDBManager.default.dbQueue, onChange: { latestKeyRecords in
