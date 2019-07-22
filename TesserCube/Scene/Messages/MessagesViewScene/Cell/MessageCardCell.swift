@@ -210,7 +210,7 @@ final class MessageCardCell: UITableViewCell {
             maker.top.equalTo(contentBackgroundView.snp.topMargin)
             maker.leading.trailing.equalTo(contentBackgroundView.layoutMargins)
         }
-        messageLabel.setContentHuggingPriority(UILayoutPriority(floatLiteral: 100), for: .vertical)
+        messageLabel.setContentHuggingPriority(.init(100), for: .vertical)
         messageLabel.setContentCompressionResistancePriority(.required, for: .vertical)
 
         // Footer
@@ -245,7 +245,9 @@ final class MessageCardCell: UITableViewCell {
         }
 
         extraBackgroundViewHeightConstraint.isActive = true
-        stackView.addArrangedSubviews([headerBackgroundView, contentBackgroundView, extraBackgroundView])
+        [headerBackgroundView, contentBackgroundView, extraBackgroundView].forEach { view in
+            stackView.addArrangedSubview(view)
+        }
     }
 
 }
@@ -291,7 +293,7 @@ final class MessageContactInfoView: UIView {
         _init()
     }
     
-    func _init() {
+    private func _init() {
         addSubview(nameLabel)
         nameLabel.snp.makeConstraints { maker in
             maker.leading.top.bottom.equalToSuperview()

@@ -47,6 +47,15 @@ internal enum L10n {
     }
   }
 
+  internal enum ComposeActionViewController {
+    internal enum Title {
+      /// Composing
+      internal static let composing = L10n.tr("Localizable", "ComposeActionViewController.Title.Composing")
+      /// Message Composed
+      internal static let messageComposed = L10n.tr("Localizable", "ComposeActionViewController.Title.MessageComposed")
+    }
+  }
+
   internal enum ComposeMessageViewController {
     /// Compose
     internal static let title = L10n.tr("Localizable", "ComposeMessageViewController.Title")
@@ -251,6 +260,73 @@ internal enum L10n {
       internal static let fromPGP = L10n.tr("Localizable", "ImportKeyController.Prompt.FromPGP")
       /// From a previous backup...
       internal static let fromPreviousBackup = L10n.tr("Localizable", "ImportKeyController.Prompt.FromPreviousBackup")
+    }
+  }
+
+  internal enum ImportPrivateKeyConfirmViewController {
+    internal enum Button {
+      /// Close
+      internal static let close = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Button.Close")
+      /// Import Private Key
+      internal static let importPrivateKey = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Button.ImportPrivateKey")
+    }
+    internal enum Label {
+      /// Availability
+      internal static let availability = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Label.Availability")
+      /// Not Added Yet
+      internal static let isAvailable = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Label.IsAvailable")
+      /// Already Added
+      internal static let isUnavailable = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Label.IsUnavailable")
+      /// Private Keys Imported Successfully
+      internal static let privateKeyAddedSuccessfully = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Label.PrivateKeyAddedSuccessfully")
+    }
+    internal enum Title {
+      /// New Private Key
+      internal static let newPrivateKey = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Title.NewPrivateKey")
+    }
+  }
+
+  internal enum ImportPublicKeyConfirmViewController {
+    internal enum Button {
+      /// Add Contact
+      internal static let addContact = L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Button.AddContact")
+      /// Close
+      internal static let close = L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Button.Close")
+    }
+    internal enum Label {
+      /// Availability
+      internal static let availability = L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Label.Availability")
+      /// Contacts Added Successfully
+      internal static let contactsAddedSuccessfully = L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Label.ContactsAddedSuccessfully")
+      /// Not Added Yet
+      internal static let isAvailable = L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Label.IsAvailable")
+      /// Already Added
+      internal static let isUnavailable = L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Label.IsUnavailable")
+    }
+    internal enum Title {
+      /// New Contact
+      internal static let newContact = L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Title.NewContact")
+    }
+  }
+
+  internal enum InterpretActionViewController {
+    internal enum Action {
+      internal enum Button {
+        /// Copied
+        internal static let copied = L10n.tr("Localizable", "InterpretActionViewController.Action.Button.Copied")
+        /// Copy Content
+        internal static let copyContent = L10n.tr("Localizable", "InterpretActionViewController.Action.Button.CopyContent")
+        /// Write Reply
+        internal static let writeReply = L10n.tr("Localizable", "InterpretActionViewController.Action.Button.WriteReply")
+      }
+    }
+    internal enum Title {
+      /// Broken Message
+      internal static let brokenMessage = L10n.tr("Localizable", "InterpretActionViewController.Title.BrokenMessage")
+      /// Message Interpreted
+      internal static let messageInterpreted = L10n.tr("Localizable", "InterpretActionViewController.Title.MessageInterpreted")
+      /// Message Interpreting...
+      internal static let messageInterpreting = L10n.tr("Localizable", "InterpretActionViewController.Title.MessageInterpreting")
     }
   }
 

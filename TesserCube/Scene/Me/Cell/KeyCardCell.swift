@@ -8,57 +8,57 @@
 
 import UIKit
 
-class KeyCardCell: UITableViewCell {
+enum KeyValue {
+    case mockKey
+    case TCKey(value: TCKey)
     
-    enum KeyValue {
-        case mockKey
-        case TCKey(value: TCKey)
-        
-        var hashCodeString: String {
-            switch self {
-            case .mockKey:
-                return "**** **** **** **** ****\n**** **** **** **** ****"
-            case .TCKey(let key):
-                return key.displayFingerprint ?? L10n.MeViewController.KeyCardCell.Label.invalidFingerprint
-            }
-        }
-        
-        var address: String {
-            switch self {
-            case .mockKey:
-                return "****@*****.***"
-            case .TCKey(let key):
-                if let userID = key.keyRing.publicKeyRing.primaryKey.primaryUserID {
-                let meta = PGPUserIDTranslator(userID: userID)
-                    return meta.name ?? meta.email ?? " " // userID should have one of name and email
-                }
-                
-                return L10n.Common.Label.nameNull
-            }
-        }
-        
-        var status: String {
-            switch self {
-            case .mockKey:
-                return L10n.MeViewController.KeyCardCell.Label.noKeyYet
-            case .TCKey(let key):
-                let keySizeString = key.keyStrength?.string ?? L10n.Common.Label.nameUnknown
-                var keyDescString = "\(keySizeString)-bit / "
-                
-                let pubKeyAlgorithmString = key.algorithm?.displayName ?? L10n.Common.Label.nameUnknown
-                let pubKeyDescString = "\(pubKeyAlgorithmString)\(keySizeString)"
-                keyDescString.append(pubKeyDescString)
-                
-                if key.hasSubkey {
-                    let subkeySizeString = key.subkeyStrength?.string ?? L10n.Common.Label.nameUnknown
-                    let subkeyAlgorithmString = key.subkeyAlgorithm?.displayName ?? L10n.Common.Label.nameUnknown
-                    let subkeyDescString = "\(subkeyAlgorithmString)\(subkeySizeString)"
-                    keyDescString.append(" + \(subkeyDescString)")
-                }
-                return keyDescString
-            }
+    var hashCodeString: String {
+        switch self {
+        case .mockKey:
+            return "**** **** **** **** ****\n**** **** **** **** ****"
+        case .TCKey(let key):
+            return key.displayFingerprint ?? L10n.MeViewController.KeyCardCell.Label.invalidFingerprint
         }
     }
+    
+    var address: String {
+        switch self {
+        case .mockKey:
+            return "****@*****.***"
+        case .TCKey(let key):
+            if let userID = key.keyRing.publicKeyRing.primaryKey.primaryUserID {
+                let meta = PGPUserIDTranslator(userID: userID)
+                return meta.name ?? meta.email ?? " " // userID should have one of name and email
+            }
+            
+            return L10n.Common.Label.nameNull
+        }
+    }
+    
+    var status: String {
+        switch self {
+        case .mockKey:
+            return L10n.MeViewController.KeyCardCell.Label.noKeyYet
+        case .TCKey(let key):
+            let keySizeString = key.keyStrength?.string ?? L10n.Common.Label.nameUnknown
+            var keyDescString = "\(keySizeString)-bit / "
+            
+            let pubKeyAlgorithmString = key.algorithm?.displayName ?? L10n.Common.Label.nameUnknown
+            let pubKeyDescString = "\(pubKeyAlgorithmString)\(keySizeString)"
+            keyDescString.append(pubKeyDescString)
+            
+            if key.hasSubkey {
+                let subkeySizeString = key.subkeyStrength?.string ?? L10n.Common.Label.nameUnknown
+                let subkeyAlgorithmString = key.subkeyAlgorithm?.displayName ?? L10n.Common.Label.nameUnknown
+                let subkeyDescString = "\(subkeyAlgorithmString)\(subkeySizeString)"
+                keyDescString.append(" + \(subkeyDescString)")
+            }
+            return keyDescString
+        }
+    }
+}
+
+class KeyCardCell: UITableViewCell {
     
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var codeLabel: UILabel!
