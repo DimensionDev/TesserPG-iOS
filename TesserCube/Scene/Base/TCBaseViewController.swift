@@ -47,7 +47,9 @@ class CustomBackButton: UIButton {
     }
     
     private func configUI() {
-        titleEdgeInsets = UIEdgeInsets(horizontal: titleLeftInset, vertical: 0)
+        let horizontal: CGFloat = titleLeftInset
+        let vertical: CGFloat = 0.0
+        titleEdgeInsets = UIEdgeInsets(top: vertical/2, left: horizontal/2, bottom: vertical/2, right: horizontal/2)
     }
     
     override func titleRect(forContentRect contentRect: CGRect) -> CGRect {

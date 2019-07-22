@@ -191,7 +191,7 @@ final class RecipientContactPickerView: UIView {
         contactCollectionView.layoutIfNeeded()
         super.layoutSubviews()
 
-        contactCollectionViewHeightLayoutConstraint.constant = max(contactCollectionView.contentSize.height, paddingView.height - 2 * RecipientContactPickerView.verticalMargin)
+        contactCollectionViewHeightLayoutConstraint.constant = max(contactCollectionView.contentSize.height, paddingView.frame.height - 2 * RecipientContactPickerView.verticalMargin)
     }
     
 }
@@ -201,7 +201,16 @@ private extension RecipientContactPickerView {
     @objc func addButtonPressed(_ sender: UIButton) {
         // FIXME: filter out contact without attached public key
         let selectedContacts = viewModel.tags.value.compactMap { $0.contact }
+        #if !TARGET_IS_EXTENSION
         Coordinator.main.present(scene: .pickContacts(delegate: pickContactsDelegate, selectedContacts: selectedContacts), from: pickContactsDelegate, transition: .modal, completion: nil)
+        #else
+        let vc = ContactsListViewController()
+        vc.isPickContactMode = true
+        vc.delegate = pickContactsDelegate
+        vc.preSelectedContacts = selectedContacts
+        vc.hidesBottomBarWhenPushed = true
+        pickContactsDelegate?.present(UINavigationController(rootViewController: vc), animated: true, completion: nil)
+        #endif
     }
 
 }

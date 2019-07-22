@@ -31,6 +31,7 @@ extension WormholdService {
     enum MessageIdentifier: String, CaseIterable {
         case appDidUpdateKeys
         case keyboardDidEncryptMessage
+        case interpretActionExtensionDidUpdateMessage
     }
 
 }
