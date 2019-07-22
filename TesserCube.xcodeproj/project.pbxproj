@@ -311,7 +311,6 @@
 		DB63A12722E06F1700C2DDA6 /* ListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83783374224B544100F2C0BF /* ListEmptyView.swift */; };
 		DB63A12822E06F8200C2DDA6 /* ContactListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8378336A224B352500F2C0BF /* ContactListViewModel.swift */; };
 		DB63A12D22E163A700C2DDA6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB63A12F22E163A700C2DDA6 /* InfoPlist.strings */; };
-		DB63A13922E17D3300C2DDA6 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DB63A13822E17D3300C2DDA6 /* Media.xcassets */; };
 		DB63A13E22E17D3300C2DDA6 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB63A13C22E17D3300C2DDA6 /* MainInterface.storyboard */; };
 		DB63A14222E17D3300C2DDA6 /* TesserCubeComposeAction.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = DB63A13622E17D3300C2DDA6 /* TesserCubeComposeAction.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		DB63A14822E17D4600C2DDA6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8304E99B221BF10100122637 /* Assets.xcassets */; };
@@ -593,7 +592,6 @@
 		DB63A13022E163A900C2DDA6 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		DB63A13122E163AA00C2DDA6 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		DB63A13622E17D3300C2DDA6 /* TesserCubeComposeAction.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TesserCubeComposeAction.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		DB63A13822E17D3300C2DDA6 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		DB63A13D22E17D3300C2DDA6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		DB63A13F22E17D3300C2DDA6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB63A14C22E1809200C2DDA6 /* ComposeActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeActionViewController.swift; sourceTree = "<group>"; };
@@ -1342,7 +1340,6 @@
 			isa = PBXGroup;
 			children = (
 				DB1169D122E187340099BA25 /* TesserCubeComposeAction.entitlements */,
-				DB63A13822E17D3300C2DDA6 /* Media.xcassets */,
 				DB63A14C22E1809200C2DDA6 /* ComposeActionViewController.swift */,
 				DB63A13C22E17D3300C2DDA6 /* MainInterface.storyboard */,
 				DB1169E722E1B63D0099BA25 /* InfoPlist.strings */,
@@ -1704,7 +1701,6 @@
 			files = (
 				DB1169A622E1827B0099BA25 /* SF-Pro-Display-Medium.otf in Resources */,
 				DB1169A522E1827B0099BA25 /* SF-Pro-Display-Light.otf in Resources */,
-				DB63A13922E17D3300C2DDA6 /* Media.xcassets in Resources */,
 				DB1169AA22E1827B0099BA25 /* SourceCodePro-Medium.ttf in Resources */,
 				DB1169E522E1B63D0099BA25 /* InfoPlist.strings in Resources */,
 				DB63A14922E17D4B00C2DDA6 /* Localizable.strings in Resources */,
