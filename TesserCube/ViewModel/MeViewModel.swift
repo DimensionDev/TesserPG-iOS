@@ -49,12 +49,12 @@ extension MeViewModel {
 extension MeViewModel: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ProfileService.default.keys.value.isEmpty ? 1 : keys.value.count
+        return keys.value.isEmpty ? 1 : keys.value.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withClass: KeyCardCell.self, for: indexPath)
-        if ProfileService.default.keys.value.isEmpty {
+        if keys.value.isEmpty {
             cell.keyValue = .mockKey
         } else {
             cell.keyValue = .TCKey(value: keys.value[indexPath.row])
