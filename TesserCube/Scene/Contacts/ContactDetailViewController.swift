@@ -30,7 +30,12 @@ class ContactDetailViewController: TCBaseViewController {
 
     private lazy var topBackgroundView: UIView = {
         let view = UIView(frame: .zero)
-        view.backgroundColor = Asset.sceneBackground.color
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = .secondarySystemBackground
+        } else {
+            // Fallback on earlier versions
+            view.backgroundColor = Asset.sceneBackground.color
+        }
         return view
     }()
 
@@ -45,7 +50,7 @@ class ContactDetailViewController: TCBaseViewController {
     private lazy var userIdentifierLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = FontFamily.SourceCodeProMedium.regular.font(size: 17)
-        label.textColor = Asset.sourceGreen.color
+        label.textColor = .systemGreen
         label.textAlignment = .center
         label.numberOfLines = 1
         return label
@@ -61,7 +66,7 @@ class ContactDetailViewController: TCBaseViewController {
     private lazy var validitylabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = FontFamily.SFProText.regular.font(size: 17)
-        label.textColor = Asset.sourceGreen.color
+        label.textColor = .systemGreen
         return label
     }()
 
@@ -98,7 +103,12 @@ class ContactDetailViewController: TCBaseViewController {
     override func configUI() {
         super.configUI()
 
-        view.backgroundColor = .white
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = .systemBackground
+        } else {
+            // Fallback on earlier versions
+            view.backgroundColor = .white
+        }
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: L10n.Common.Button.edit, style: .plain, target: self, action: #selector(ContactDetailViewController.editButtonDidClicked(_:)))
         
         view.addSubview(topBackgroundView)
@@ -280,7 +290,7 @@ extension ContactDetailViewController {
 
         let isValid = keys?.first?.isValid ?? false
         validitylabel.text = isValid ? L10n.ContactDetailViewController.Label.valid : L10n.ContactDetailViewController.Label.invalid
-        validitylabel.textColor = isValid ? Asset.sourceGreen.color : Asset.tagIdRed.color
+        validitylabel.textColor = isValid ? .systemGreen : .systemRed
 
         let keyTypeString = keys?.first?.algorithm?.displayName ?? L10n.Common.Label.nameUnknown
         let keySizeString = keys?.first?.keyStrength?.string ?? L10n.Common.Label.nameUnknown
