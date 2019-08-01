@@ -23,7 +23,12 @@ final class ComposeMessageViewController: TCBaseViewController {
     let fromContactPickerCellView = SenderContactPickerView()
     let messageTextView: UITextView = {
         let textView = UITextView()
-        textView.placeholderColor = Asset.lightTextGrey.color
+        if #available(iOS 13.0, *) {
+            textView.placeholderColor = .secondaryLabel
+        } else {
+            // Fallback on earlier versions
+            textView.placeholderColor = Asset.lightTextGrey.color
+        }
         textView.placeholder = L10n.ComposeMessageViewController.TextView.Message.placeholder
         textView.isScrollEnabled = false
         textView.font = FontFamily.SFProText.regular.font(size: 15)
