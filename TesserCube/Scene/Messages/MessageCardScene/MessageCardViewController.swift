@@ -128,7 +128,11 @@ extension MessageCardViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = Asset.sceneBackground.color
+        if #available(iOS 13, *) {
+            view.backgroundColor = .systemBackground
+        } else {
+            view.backgroundColor = Asset.sceneBackground.color
+        }
 
         addChild(messageCardTableViewController)
         view.addSubview(messageCardTableViewController.view)
@@ -169,8 +173,13 @@ extension MessageCardViewController {
 
         if actions.contains(.copy) {
             let copyButton = TCActionButton(frame: .zero)
-            copyButton.color = .white
-            copyButton.setTitleColor(.black, for: .normal)
+            if #available(iOS 13, *) {
+                copyButton.color = .secondarySystemBackground
+                copyButton.setTitleColor(.label, for: .normal)
+            } else {
+                copyButton.color = .white
+                copyButton.setTitleColor(.black, for: .normal)
+            }
             copyButton.setTitle(L10n.InterpretActionViewController.Action.Button.copyContent, for: .normal)
             copyButton.addTarget(self, action: #selector(MessageCardViewController.composeButtonPressed(_:)), for: .touchUpInside)
 
@@ -179,7 +188,11 @@ extension MessageCardViewController {
 
         if actions.contains(.reply) {
             let replyButton = TCActionButton(frame: .zero)
-            replyButton.color = Asset.sketchBlue.color
+            if #available(iOS 13, *) {
+                replyButton.color = .systemBlue
+            } else {
+                replyButton.color = Asset.sketchBlue.color
+            }
             replyButton.setTitleColor(.white, for: .normal)
             replyButton.setTitle(L10n.InterpretActionViewController.Action.Button.writeReply, for: .normal)
             replyButton.addTarget(self, action: #selector(MessageCardViewController.replyButtonPressed(_:)), for: .touchUpInside)
