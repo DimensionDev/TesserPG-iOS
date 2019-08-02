@@ -85,7 +85,7 @@ final class ContactPickerTagCollectionViewCell: UICollectionViewCell {
     var isInvalid = false {
         didSet {
             if isInvalid {
-                corneredBackgroundView.backgroundColor = .systemPink
+                corneredBackgroundView.backgroundColor = Asset.tagBackgroundPink.color
                 shortIDLabel.textColor = .systemRed
             } else {
                 if #available(iOS 13.0, *) {

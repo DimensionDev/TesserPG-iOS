@@ -16,7 +16,6 @@ import ConsolePrint
 class MeViewController: TCBaseViewController {
     
     let disposeBag = DisposeBag()
-    
     let viewModel = MeViewModel()
     
     private lazy var tableView: UITableView = {
@@ -25,7 +24,11 @@ class MeViewController: TCBaseViewController {
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none
         tableView.register(nibWithCellClass: KeyCardCell.self)
-        tableView.backgroundColor = Asset.sceneBackground.color
+        if #available(iOS 13, *) {
+            tableView.backgroundColor = .systemBackground
+        } else {
+            tableView.backgroundColor = Asset.sceneBackground.color
+        }
         return tableView
     }()
     
@@ -42,7 +45,11 @@ class MeViewController: TCBaseViewController {
         let label = UILabel(frame: .zero)
         label.font = FontFamily.SFProDisplay.regular.font(size: 17)
         label.textAlignment = .center
-        label.textColor = .black
+        if #available(iOS 13, *) {
+            label.textColor = .label
+        } else {
+            label.textColor = .black
+        }
         label.text = L10n.MeViewController.Action.prompt
         return label
     }()
@@ -117,24 +124,37 @@ class MeViewController: TCBaseViewController {
                 .disposed(by: disposeBag)
             
             let importKeyButton = TCActionButton(frame: .zero)
-            importKeyButton.setTitleColor(.black, for: .normal)
+            if #available(iOS 13, *) {
+                importKeyButton.color = .secondarySystemBackground
+                importKeyButton.setTitleColor(.label, for: .normal)
+            } else {
+                importKeyButton.color = .white
+                importKeyButton.setTitleColor(.black, for: .normal)
+            }
             importKeyButton.setTitle(L10n.MeViewController.Action.Button.importKey, for: .normal)
             importKeyButton.rx.tap.bind {
                     Coordinator.main.present(scene: .importKey, from: self, transition: .modal, completion: nil)
                 }
                 .disposed(by: disposeBag)
-            
+
             actionViews.append(actionPromptLabel)
             actionViews.append(createKeyButton)
             actionViews.append(importKeyButton)
-        }
+
+        }   // end if !hasKey { … }
         
 //        let scanQRButton = TCActionButton(frame: .zero)
 //        scanQRButton.setTitleColor(.black, for: .normal)
 //        scanQRButton.setTitle(L10n.MeViewController.Action.Button.scanQR, for: .normal)
 
         let settingsButton = TCActionButton(frame: .zero)
-        settingsButton.setTitleColor(.black, for: .normal)
+        if #available(iOS 13, *) {
+            settingsButton.color = .secondarySystemBackground
+            settingsButton.setTitleColor(.label, for: .normal)
+        } else {
+            settingsButton.color = .white
+            settingsButton.setTitleColor(.black, for: .normal)
+        }
         settingsButton.setTitle(L10n.MeViewController.Action.Button.settings, for: .normal)
         settingsButton.addTarget(self, action: #selector(settingButtonDidClicked(_:)), for: .touchUpInside)
 
