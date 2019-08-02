@@ -26,7 +26,7 @@ def common_pods
 end
 
 def common_ui_pods
-  pod 'UITextView+Placeholder', '~> 1.2.1'
+  pod 'UITextView+Placeholder', '~> 1.3.1'
   pod "AlignedCollectionViewFlowLayout", '~> 1.1.2'
 end
 

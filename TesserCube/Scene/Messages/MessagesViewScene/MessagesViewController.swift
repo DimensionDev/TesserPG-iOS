@@ -47,17 +47,21 @@ class MessagesViewController: TCBaseViewController {
     private lazy var tableHeaderView: UIView = {
         let headerView = UIView()
 
-        let toolbar = UIToolbar()
-        toolbar.translatesAutoresizingMaskIntoConstraints = false
-        toolbar.delegate = self
+        if #available(iOS 13, *) {
+            // iOS 13 changed the navigation bar bottom hairline appearance
+            // so only add tool bar in iOS 12 and previous
+        } else {
+            let toolbar = UIToolbar()
+            toolbar.translatesAutoresizingMaskIntoConstraints = false
+            toolbar.delegate = self
 
-        headerView.addSubview(toolbar)
-        toolbar.snp.makeConstraints { maker in
-            maker.top.equalTo(headerView.snp.top)
-            maker.leading.trailing.equalTo(headerView)
-            maker.bottom.equalTo(headerView.snp.bottom)
+            headerView.addSubview(toolbar)
+            toolbar.snp.makeConstraints { maker in
+                maker.top.equalTo(headerView.snp.top)
+                maker.leading.trailing.equalTo(headerView)
+                maker.bottom.equalTo(headerView.snp.bottom)
+            }
         }
-
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         headerView.addSubview(segmentedControl)
         segmentedControl.snp.makeConstraints { maker in
@@ -100,7 +104,12 @@ class MessagesViewController: TCBaseViewController {
         view.addSubview(tableView)
         view.addSubview(bottomActionsView)
         addEmptyStateView(emptyView)
-        view.backgroundColor = Asset.sceneBackground.color
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = .systemBackground
+        } else {
+            // Fallback on earlier versions
+            view.backgroundColor = Asset.sceneBackground.color
+        }
 
         tableView.snp.makeConstraints { maker in
             maker.leading.trailing.top.bottom.equalToSuperview()

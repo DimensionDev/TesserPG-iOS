@@ -47,7 +47,7 @@ class ImportPublicKeyConfirmViewController: TCBaseViewController {
     private lazy var validitylabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = FontFamily.SFProText.regular.font(size: 17)
-        label.textColor = Asset.sourceGreen.color
+        label.textColor = .systemGreen
         return label
     }()
     
@@ -171,7 +171,7 @@ class ImportPublicKeyConfirmViewController: TCBaseViewController {
     func updateStatus() {
         let isValid = tcKey?.isValid ?? false
         validitylabel.text = isValid ? L10n.ContactDetailViewController.Label.valid : L10n.ContactDetailViewController.Label.invalid
-        validitylabel.textColor = isValid ? Asset.sourceGreen.color : Asset.tagIdRed.color
+        validitylabel.textColor = isValid ? .systemGreen : .systemRed
         
         let isAvailable = isKeyAvailable()
         availabilitylabel.text = isAvailable ? L10n.ImportPublicKeyConfirmViewController.Label.isAvailable : L10n.ImportPublicKeyConfirmViewController.Label.isUnavailable
@@ -180,8 +180,13 @@ class ImportPublicKeyConfirmViewController: TCBaseViewController {
         successlabel.isHidden = isAvailable
         
         if !isAvailable {
-            importButton.color = .white
-            importButton.setTitleColor(.black, for: .normal)
+            if #available(iOS 13, *) {
+                importButton.color = .secondarySystemBackground
+                importButton.setTitleColor(.label, for: .normal)
+            } else {
+                importButton.color = .white
+                importButton.setTitleColor(.black, for: .normal)
+            }
             importButton.setTitle(L10n.ImportPublicKeyConfirmViewController.Button.close, for: .normal)
             
             importButton.removeTarget(self, action: #selector(importButtonDidClicked), for: .touchUpInside)

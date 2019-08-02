@@ -37,7 +37,12 @@ final class ContactPickerTagCollectionViewCell: UICollectionViewCell {
 
     let corneredBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = Asset.tagBackgroundGrey.color
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = .secondarySystemBackground
+        } else {
+            // Fallback on earlier versions
+            view.backgroundColor = Asset.tagBackgroundGrey.color
+        }
         return view
     }()
 
@@ -47,13 +52,19 @@ final class ContactPickerTagCollectionViewCell: UICollectionViewCell {
         label.font = FontFamily.SFProDisplay.regular.font(size: 16)
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.8
+        if #available(iOS 13.0, *) {
+            label.textColor = .label
+        } else {
+            // Fallback on earlier versions
+            label.textColor = .black
+        }
         return label
     }()
 
     let shortIDLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SourceCodeProMedium.regular.font(size: 11)
-        label.textColor = Asset.tagIdGreen.color
+        label.textColor = .systemGreen
         label.numberOfLines = 2
         return label
     }()
@@ -74,11 +85,21 @@ final class ContactPickerTagCollectionViewCell: UICollectionViewCell {
     var isInvalid = false {
         didSet {
             if isInvalid {
-                corneredBackgroundView.backgroundColor = Asset.tagBackgroundPink.color
-                shortIDLabel.textColor = Asset.tagIdRed.color
+                if #available(iOS 13, *) {
+                    corneredBackgroundView.backgroundColor = traitCollection.userInterfaceStyle == .dark ? .systemRed : Asset.tagBackgroundPink.color
+                    shortIDLabel.textColor = traitCollection.userInterfaceStyle == .dark ? Asset.tagBackgroundPink.color : .systemRed
+                } else {
+                    corneredBackgroundView.backgroundColor = Asset.tagBackgroundPink.color
+                    shortIDLabel.textColor = .systemRed
+                }
             } else {
-                corneredBackgroundView.backgroundColor = Asset.tagBackgroundGrey.color
-                shortIDLabel.textColor = Asset.tagIdGreen.color
+                if #available(iOS 13.0, *) {
+                    corneredBackgroundView.backgroundColor = .secondarySystemBackground
+                } else {
+                    // Fallback on earlier versions
+                    corneredBackgroundView.backgroundColor = Asset.tagBackgroundGrey.color
+                }
+                shortIDLabel.textColor = .systemGreen
             }
         }
     }
@@ -129,6 +150,16 @@ final class ContactPickerTagCollectionViewCell: UICollectionViewCell {
         corneredBackgroundView.layer.cornerRadius = ContactPickerTagCollectionViewCell.tagHeight * 0.5
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if isInvalid {
+            // reload color
+            let value = isInvalid
+            isInvalid = value
+        }
+    }
+
 }
 
 extension ContactPickerTagCollectionViewCell {
@@ -159,16 +190,23 @@ extension ContactPickerTagCollectionViewCell {
             if isSelected {
                 if !isFirstResponder { becomeFirstResponder() }
                 UIView.animate(withDuration: 0.33) {
-                    self.corneredBackgroundView.backgroundColor = Asset.sketchBlue.color
+                    self.corneredBackgroundView.backgroundColor = .systemBlue
                     self.nameLabel.textColor = .white
                     self.shortIDLabel.textColor = .white
                 }
             } else {
                 if isFirstResponder { resignFirstResponder() }
                 UIView.animate(withDuration: 0.33) {
-                    self.corneredBackgroundView.backgroundColor = Asset.tagBackgroundGrey.color
-                    self.nameLabel.textColor = .black
-                    self.shortIDLabel.textColor = Asset.tagIdGreen.color
+                    if #available(iOS 13.0, *) {
+                        self.corneredBackgroundView.backgroundColor = .secondarySystemBackground
+                        self.nameLabel.textColor = .label
+                    } else {
+                        // Fallback on earlier versions
+                        self.corneredBackgroundView.backgroundColor = Asset.tagBackgroundGrey.color
+                        self.nameLabel.textColor = .black
+                    }
+
+                    self.shortIDLabel.textColor = .systemGreen
                     let isInvalid = self.isInvalid
                     self.isInvalid = isInvalid
                 }
