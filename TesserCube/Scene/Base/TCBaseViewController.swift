@@ -75,7 +75,7 @@ class TCBaseViewController: UIViewController {
     
     func configUI() {
         if #available(iOS 13.0, *) {
-            view.backgroundColor = .secondarySystemBackground
+            view.backgroundColor = .systemBackground
         } else {
             // Fallback on earlier versions
             view.backgroundColor = Asset.sceneBackground.color
