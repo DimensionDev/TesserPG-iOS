@@ -21,13 +21,17 @@ final class MessageCardCell: UITableViewCell {
 
     let cardView: TCCardView = {
         let cardView = TCCardView()
-        cardView.cardBackgroundColor = .white
         return cardView
+    }()
+    let headerBackgroundView: UIView = {
+        let view = UIView()
+        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        view.layoutMargins = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        return view
     }()
     let signedByLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SFProDisplay.regular.font(size: 14)
-        label.textColor = Asset.darkTextGrey.color
         label.text = L10n.MessageCardCell.Label.signedBy
         return label
     }()
@@ -39,7 +43,6 @@ final class MessageCardCell: UITableViewCell {
     let recipeintsLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SFProDisplay.regular.font(size: 14)
-        label.textColor = Asset.darkTextGrey.color
         label.text = L10n.MessageCardCell.Label.recipeints
         return label
     }()
@@ -58,14 +61,12 @@ final class MessageCardCell: UITableViewCell {
     let leftFooterLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SFProDisplay.regular.font(size: 14)
-        label.textColor = Asset.lightTextGrey.color
         label.text = "Left Footer"
         return label
     }()
     let rightFooterLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SFProDisplay.regular.font(size: 14)
-        label.textColor = Asset.lightTextGrey.color
         label.text = "Right Footer"
         label.textAlignment = .right
         return label
@@ -74,7 +75,6 @@ final class MessageCardCell: UITableViewCell {
     lazy var extraBackgroundViewHeightConstraint = extraBackgroundView.heightAnchor.constraint(equalToConstant: 0)
     lazy var extraBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = Asset.cellGreyBackground.color
         view.layer.cornerRadius = cardView.cardCornerRadius
         view.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         view.clipsToBounds = true
@@ -112,10 +112,22 @@ final class MessageCardCell: UITableViewCell {
 
     func _init() {
         selectionStyle = .none
-        backgroundColor = .clear
         clipsToBounds = false
         setupUI()
+        setupColor()
     }
+
+}
+
+extension MessageCardCell {
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        setupColor()
+    }
+
+}
+
+extension MessageCardCell {
 
     func setupUI() {
         // - Card
@@ -147,15 +159,7 @@ final class MessageCardCell: UITableViewCell {
         }
 
         // Header
-        let headerBackgroundView: UIView = {
-            let view = UIView()
-            view.backgroundColor = Asset.cellGreyBackground.color
-            view.layer.cornerRadius = cardView.cardCornerRadius
-            view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-            view.layoutMargins = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
-            return view
-        }()
-
+        headerBackgroundView.layer.cornerRadius = cardView.cardCornerRadius
         headerBackgroundView.addSubview(signedByLabel)
         signedByLabel.snp.makeConstraints { maker in
             maker.top.equalTo(headerBackgroundView.snp.topMargin)
@@ -196,7 +200,6 @@ final class MessageCardCell: UITableViewCell {
         // Content
         let contentBackgroundView: UIView = {
             let view = UIView()
-            // view.backgroundColor = .white
             view.layoutMargins = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
             return view
         }()
@@ -247,6 +250,28 @@ final class MessageCardCell: UITableViewCell {
         extraBackgroundViewHeightConstraint.isActive = true
         [headerBackgroundView, contentBackgroundView, extraBackgroundView].forEach { view in
             stackView.addArrangedSubview(view)
+        }
+    }
+
+    func setupColor() {
+        if #available(iOS 13.0, *) {
+            cardView.cardBackgroundColor = traitCollection.userInterfaceStyle == .dark ? .secondarySystemBackground : .white
+            headerBackgroundView.backgroundColor = traitCollection.userInterfaceStyle == .dark ? .tertiarySystemBackground : .systemGray6
+            signedByLabel.textColor = .secondaryLabel
+            recipeintsLabel.textColor = .secondaryLabel
+            leftFooterLabel.textColor = .tertiaryLabel
+            rightFooterLabel.textColor = .tertiaryLabel
+            extraBackgroundView.backgroundColor = traitCollection.userInterfaceStyle == .dark ? .tertiarySystemBackground : Asset.cellGreyBackground.color
+
+        } else {
+            // Fallback on earlier versions
+            cardView.cardBackgroundColor = .white
+            headerBackgroundView.backgroundColor = Asset.cellGreyBackground.color
+            signedByLabel.textColor = Asset.darkTextGrey.color
+            recipeintsLabel.textColor = Asset.darkTextGrey.color
+            leftFooterLabel.textColor = Asset.lightTextGrey.color
+            rightFooterLabel.textColor = Asset.lightTextGrey.color
+            extraBackgroundView.backgroundColor = Asset.cellGreyBackground.color
         }
     }
 
