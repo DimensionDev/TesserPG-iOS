@@ -32,7 +32,7 @@ final class ComposeMessageViewController: TCBaseViewController {
         textView.placeholder = L10n.ComposeMessageViewController.TextView.Message.placeholder
         textView.isScrollEnabled = false
         textView.font = FontFamily.SFProText.regular.font(size: 15)
-        textView.contentInset.left = RecipientContactPickerView.leadingMargin - 4
+        textView.textContainerInset.left = RecipientContactPickerView.leadingMargin - 4
         textView.backgroundColor = .clear
         return textView
     }()
