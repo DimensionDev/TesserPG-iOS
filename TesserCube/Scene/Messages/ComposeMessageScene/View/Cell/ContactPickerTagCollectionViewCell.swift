@@ -85,8 +85,13 @@ final class ContactPickerTagCollectionViewCell: UICollectionViewCell {
     var isInvalid = false {
         didSet {
             if isInvalid {
-                corneredBackgroundView.backgroundColor = Asset.tagBackgroundPink.color
-                shortIDLabel.textColor = .systemRed
+                if #available(iOS 13, *) {
+                    corneredBackgroundView.backgroundColor = traitCollection.userInterfaceStyle == .dark ? .systemRed : Asset.tagBackgroundPink.color
+                    shortIDLabel.textColor = traitCollection.userInterfaceStyle == .dark ? Asset.tagBackgroundPink.color : .systemRed
+                } else {
+                    corneredBackgroundView.backgroundColor = Asset.tagBackgroundPink.color
+                    shortIDLabel.textColor = .systemRed
+                }
             } else {
                 if #available(iOS 13.0, *) {
                     corneredBackgroundView.backgroundColor = .secondarySystemBackground
@@ -143,6 +148,16 @@ final class ContactPickerTagCollectionViewCell: UICollectionViewCell {
 
         corneredBackgroundView.layer.masksToBounds = true
         corneredBackgroundView.layer.cornerRadius = ContactPickerTagCollectionViewCell.tagHeight * 0.5
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if isInvalid {
+            // reload color
+            let value = isInvalid
+            isInvalid = value
+        }
     }
 
 }

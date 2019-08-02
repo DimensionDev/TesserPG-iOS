@@ -96,7 +96,6 @@ class PasteKeyViewController: TCBaseViewController {
             maker.height.equalTo(176)
         }
         
-        
         separator3.snp.makeConstraints { maker in
             maker.leading.trailing.equalTo(view.layoutMarginsGuide)
             maker.height.equalTo(1)
