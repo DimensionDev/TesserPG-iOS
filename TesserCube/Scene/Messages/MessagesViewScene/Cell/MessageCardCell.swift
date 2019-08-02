@@ -122,6 +122,7 @@ final class MessageCardCell: UITableViewCell {
 extension MessageCardCell {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
         setupColor()
     }
 
@@ -254,6 +255,10 @@ extension MessageCardCell {
     }
 
     func setupColor() {
+        // Set background color to clear to prevent shadow clipped
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
+
         if #available(iOS 13.0, *) {
             cardView.cardBackgroundColor = traitCollection.userInterfaceStyle == .dark ? .secondarySystemBackground : .white
             headerBackgroundView.backgroundColor = traitCollection.userInterfaceStyle == .dark ? .tertiarySystemBackground : .systemGray6
