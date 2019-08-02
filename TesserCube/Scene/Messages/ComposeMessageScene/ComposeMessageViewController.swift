@@ -41,7 +41,12 @@ final class ComposeMessageViewController: TCBaseViewController {
         let scrollView = UIScrollView()
         scrollView.alwaysBounceVertical = true
         scrollView.keyboardDismissMode = .interactive
-        scrollView.backgroundColor = Asset.sceneBackground.color
+
+        if #available(iOS 13, *) {
+            scrollView.backgroundColor = .systemBackground
+        } else {
+            scrollView.backgroundColor = Asset.sceneBackground.color
+        }
         return scrollView
     }()
 

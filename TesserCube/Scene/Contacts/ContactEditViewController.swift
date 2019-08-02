@@ -233,5 +233,4 @@ extension ContactEditViewController: UITableViewDataSource {
         return 2
     }
     
-    
 }

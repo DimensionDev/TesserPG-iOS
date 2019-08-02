@@ -57,7 +57,7 @@ class ContactsListViewController: TCBaseViewController {
         tableView.separatorStyle = .none
         tableView.register(UINib(nibName: "ContactCell", bundle: nil), forCellReuseIdentifier: String(describing: ContactCell.self))
         if #available(iOS 13.0, *) {
-            tableView.backgroundColor = .secondarySystemBackground
+            tableView.backgroundColor = .systemBackground
         } else {
             // Fallback on earlier versions
             tableView.backgroundColor = Asset.sceneBackground.color
