@@ -97,7 +97,9 @@ extension ComposeActionViewController {
         super.viewWillAppear(animated)
 
         guard didPresentComposeMessageViewController else {
-            present(UINavigationController(rootViewController: composeMessageViewController!), animated: false, completion: nil)
+            let navigationController = UINavigationController(rootViewController: composeMessageViewController!)
+            navigationController.modalPresentationStyle = .currentContext
+            present(navigationController, animated: false, completion: nil)
             didPresentComposeMessageViewController = true
 
             extractInputFromExtensionContext()
