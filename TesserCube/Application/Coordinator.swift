@@ -71,6 +71,9 @@ class Coordinator {
                 }
             case .modal:
                 let navigationController = UINavigationController(rootViewController: vc)
+                if let adaptivePresentationControllerDelegate = vc as? UIAdaptivePresentationControllerDelegate {
+                    navigationController.presentationController?.delegate = adaptivePresentationControllerDelegate
+                }
                 (sender?.navigationController ?? sender)?.present(navigationController, animated: true, completion: completion)
             default:
                 return
