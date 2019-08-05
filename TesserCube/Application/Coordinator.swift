@@ -21,7 +21,7 @@ class Coordinator {
     }
     
     enum Scene {
-        case main(message: String?)
+        case main(message: String?, window: UIWindow)
         case composeMessage
         case composeMessageTo(keyBridges: [KeyBridge])
         case recomposeMessage(message: Message)
@@ -51,9 +51,14 @@ class Coordinator {
     
     func present(scene: Scene, from sender: UIViewController?, transition: Transition = .detail, completion: (() -> Void)? = nil) {
         switch scene {
-        case .main(let message):
-            UIApplication.shared.keyWindow?.rootViewController = MainTabbarViewController()
-            UIApplication.shared.keyWindow?.makeKeyAndVisible()
+        case let .main(message, window):
+            if #available(iOS 13, *) {
+                window.rootViewController = MainTabbarViewController()
+                window.makeKeyAndVisible()
+            } else {
+                UIApplication.shared.keyWindow?.rootViewController = MainTabbarViewController()
+                UIApplication.shared.keyWindow?.makeKeyAndVisible()
+            }
             completion?()
         default:
             let vc = get(scene: scene)
@@ -154,6 +159,8 @@ extension Coordinator {
 }
 
 extension Coordinator {
+
+    // FIXME: SceneDelegate
     func handleUrl(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         guard url.scheme == "tessercube" else { return false }
         guard let host = url.host else { return false }
