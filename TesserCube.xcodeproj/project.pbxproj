@@ -326,6 +326,7 @@
 		DB6AA3ED2273247C00A7ADDF /* KeyFactory+BCOpenPGP.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6AA3E92273218C00A7ADDF /* KeyFactory+BCOpenPGP.swift */; };
 		DB6AA3F42275B69C00A7ADDF /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE69224A330D00D82704 /* String.swift */; };
 		DB75454B2296A7C400B4E1EF /* CreateKeyOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB75454A2296A7C400B4E1EF /* CreateKeyOption.swift */; };
+		DBA0ACF422F800010088F03B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA0ACF322F800010088F03B /* SceneDelegate.swift */; };
 		DBB81AE1225DFF7A003D63C6 /* UIScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB81AE0225DFF7A003D63C6 /* UIScreen.swift */; };
 		DBBA87F62248B8F500B290AC /* ComposeMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBA87F52248B8F500B290AC /* ComposeMessageViewController.swift */; };
 		DBBBC195224E29D70080790F /* KeychainMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBBC194224E29D70080790F /* KeychainMappable.swift */; };
@@ -602,6 +603,7 @@
 		DB6AA3E92273218C00A7ADDF /* KeyFactory+BCOpenPGP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyFactory+BCOpenPGP.swift"; sourceTree = "<group>"; };
 		DB75454A2296A7C400B4E1EF /* CreateKeyOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateKeyOption.swift; sourceTree = "<group>"; };
 		DB9C11EA2292A36E00801BE0 /* DMSPGPKeyRingFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSPGPKeyRingFactory.swift; sourceTree = "<group>"; };
+		DBA0ACF322F800010088F03B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		DBB81AE0225DFF7A003D63C6 /* UIScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScreen.swift; sourceTree = "<group>"; };
 		DBBA87F52248B8F500B290AC /* ComposeMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeMessageViewController.swift; sourceTree = "<group>"; };
 		DBBBC194224E29D70080790F /* KeychainMappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMappable.swift; sourceTree = "<group>"; };
@@ -1061,6 +1063,7 @@
 			isa = PBXGroup;
 			children = (
 				8304E994221BF10000122637 /* AppDelegate.swift */,
+				DBA0ACF322F800010088F03B /* SceneDelegate.swift */,
 			);
 			path = "Support Files";
 			sourceTree = "<group>";
@@ -1939,6 +1942,7 @@
 				83B93D5D221E6D0B00F556C0 /* UIImage+Color.swift in Sources */,
 				DB1169CE22E1857F0099BA25 /* NotificationName.swift in Sources */,
 				832146E222422024008ECC22 /* TCKey.swift in Sources */,
+				DBA0ACF422F800010088F03B /* SceneDelegate.swift in Sources */,
 				832146F42243ACCE008ECC22 /* KeyFactory.swift in Sources */,
 				8316ADAB22CB4E1000246E5A /* ConfirmContactCell.swift in Sources */,
 				83214684223F3BEE008ECC22 /* Coordinator.swift in Sources */,
