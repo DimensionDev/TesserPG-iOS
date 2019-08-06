@@ -32,6 +32,14 @@ struct Message: Codable, FetchableRecord, MutablePersistableRecord, Equatable {
     }
 }
 
+extension Message: Hashable {
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
+}
+
 /// - Note: keyId is lower 16 hex of primary signature key fingerprint. e.g. 58A8B23FAFB1E5C8
 struct MessageRecipient: Codable, FetchableRecord, MutablePersistableRecord {
     var id: Int64?

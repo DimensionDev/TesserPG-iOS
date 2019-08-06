@@ -121,7 +121,12 @@ class MessagesViewController: TCBaseViewController {
         }
 
         tableView.delegate = self
-        tableView.dataSource = viewModel
+        if #available(iOS 13.0, *) {
+            viewModel.configureDataSource(tableView: tableView)
+            tableView.dataSource = viewModel.diffableDataSource
+        } else {
+            tableView.dataSource = viewModel
+        }
         tableView.tableHeaderView = tableHeaderView
 
         reloadActionsView()
@@ -132,11 +137,24 @@ class MessagesViewController: TCBaseViewController {
             .disposed(by: disposeBag)
 
         viewModel.messages.asDriver()
-            .drive(onNext: { [weak self] _ in
-                // clear cache data when data source changed
-                self?.viewModel.messageExpandedDict = [:]
-                self?.viewModel.messageMaxNumberOfLinesDict = [:]
-                self?.tableView.reloadData()
+            .drive(onNext: { [weak self] messages in
+                if #available(iOS 13.0, *) {
+                    guard let dataSource = self?.viewModel.diffableDataSource as? UITableViewDiffableDataSource<MessagesViewModel.Section, Message> else {
+                        assertionFailure()
+                        return
+                    }
+
+                    let snapsot = NSDiffableDataSourceSnapshot<MessagesViewModel.Section, Message>()
+                    snapsot.appendSections([.main])
+                    snapsot.appendItems(messages)
+                    dataSource.apply(snapsot)
+
+                } else {
+                    // clear cache data when data source changed
+                    self?.viewModel.messageExpandedDict = [:]
+                    self?.viewModel.messageMaxNumberOfLinesDict = [:]
+                    self?.tableView.reloadData()
+                }
             })
             .disposed(by: disposeBag)
 
@@ -507,21 +525,49 @@ extension MessagesViewController {
 extension MessagesViewController: MessageCardCellDelegate {
 
     func messageCardCell(_ cell: MessageCardCell, expandButtonPressed: UIButton) {
-        guard let indexPath = tableView.indexPath(for: cell),
-        let isExpand = viewModel.messageExpandedDict[indexPath],
-        let maxNumberOfLines = viewModel.messageMaxNumberOfLinesDict[indexPath] else {
-            return
+        if #available(iOS 13.0, *) {
+            guard let dataSource = viewModel.diffableDataSource as? UITableViewDiffableDataSource<MessagesViewModel.Section, Message> else {
+                return
+            }
+
+            guard let indexPath = tableView.indexPath(for: cell),
+            let message = dataSource.itemIdentifier(for: indexPath),
+            let id = message.id else {
+                return
+            }
+
+            guard let isExpand = viewModel.messageExpandedIDDict[id],
+            let maxNumberOfLines = viewModel.messageMaxNumberOfLinesIDDict[id] else {
+                return
+            }
+
+            cell.messageLabel.numberOfLines = isExpand ? 4 : 0
+            viewModel.messageExpandedIDDict[id] = !isExpand
+            let title = !isExpand ? L10n.MessageCardCell.Button.Expand.collapse : L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
+            cell.expandButton.setTitle(title, for: .normal)
+
+            tableView.beginUpdates()
+            tableView.endUpdates()
+
+            tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+
+        } else {
+            guard let indexPath = tableView.indexPath(for: cell),
+            let isExpand = viewModel.messageExpandedDict[indexPath],
+            let maxNumberOfLines = viewModel.messageMaxNumberOfLinesDict[indexPath] else {
+                return
+            }
+
+            cell.messageLabel.numberOfLines = isExpand ? 4 : 0
+            viewModel.messageExpandedDict[indexPath] = !isExpand
+            let title = !isExpand ? L10n.MessageCardCell.Button.Expand.collapse : L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
+            cell.expandButton.setTitle(title, for: .normal)
+
+            tableView.beginUpdates()
+            tableView.endUpdates()
+
+            tableView.scrollToRow(at: indexPath, at: .top, animated: true)
         }
-
-        cell.messageLabel.numberOfLines = isExpand ? 4 : 0
-        viewModel.messageExpandedDict[indexPath] = !isExpand
-        let title = !isExpand ? L10n.MessageCardCell.Button.Expand.collapse : L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
-        cell.expandButton.setTitle(title, for: .normal)
-
-        tableView.beginUpdates()
-        tableView.endUpdates()
-
-        tableView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
 
 }
