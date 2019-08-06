@@ -294,8 +294,10 @@ extension MessagesViewController: UITableViewDelegate {
 
                 let isSignedByOthers = signatureKey == nil && message.composedAt == nil
                 if isSignedByOthers {
+                    // Sign by other so message is not editable
                     return SignByOthersMessageAlertController(for: message, didSelectCell: cell)
                 } else {
+                    // Compose on this device and is editable
                     return EncryptedMessageAlertController(for: message, didSelectCell: cell)
                 }
             }
@@ -382,45 +384,43 @@ extension MessagesViewController {
 
 extension MessagesViewController {
 
-    private func SignByOthersMessageAlertController(for message: Message, didSelectCell cell: UITableViewCell) -> UIAlertController {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+    // Misc. for UIAlertController
 
-        let copyMessageContentAction = UIAlertAction(title: L10n.MessagesViewController.Action.Button.copyMessageContent, style: .default) { _ in
-            UIPasteboard.general.string = message.rawMessage
+    private static func editAlertAction(for message: Message, presentingViewController: UIViewController) -> UIAlertAction {
+        return UIAlertAction(title: L10n.Common.Button.edit, style: .default) { _ in
+            Coordinator.main.present(scene: .recomposeMessage(message: message), from: presentingViewController, transition: .modal, completion: nil)
         }
-        alertController.addAction(copyMessageContentAction)
-
-        let copyRawPayLoadAction = UIAlertAction(title: L10n.MessagesViewController.Action.Button.copyRawPayload, style: .default) { _ in
-            UIPasteboard.general.string = message.encryptedMessage
-        }
-        alertController.addAction(copyRawPayLoadAction)
-
-        let deleteAction = UIAlertAction(title: L10n.Common.Button.delete, style: .destructive) { _ in
-            let deleteMessageAlertController = self.DeleteMessageAlertController(for: message, didSelectCell: cell)
-            self.present(deleteMessageAlertController, animated: true, completion: nil)
-        }
-        alertController.addAction(deleteAction)
-
-        let cancelAction = UIAlertAction(title: L10n.Common.Button.cancel, style: .cancel, handler: nil)
-        alertController.addAction(cancelAction)
-
-        if let presenter = alertController.popoverPresentationController {
-            presenter.sourceView = cell
-            presenter.sourceRect = cell.bounds
-        }
-
-        return alertController
     }
 
-    private func DraftMessageAlertController(for message: Message, didSelectCell cell: UITableViewCell) -> UIAlertController {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
-        let editAction = UIAlertAction(title: L10n.Common.Button.edit, style: .default) { _ in
-            Coordinator.main.present(scene: .recomposeMessage(message: message), from: self, transition: .modal, completion: nil)
+    private static func copyPayloadAlertAction(for message: Message) -> UIAlertAction {
+        return UIAlertAction(title: L10n.MessagesViewController.Action.Button.copyRawPayload, style: .default) { _ in
+            UIPasteboard.general.string = message.encryptedMessage
         }
-        alertController.addAction(editAction)
+    }
 
-        let finishAction = UIAlertAction(title: L10n.MessagesViewController.Action.Button.markAsFinished, style: .default) { _ in
+    private static func copyMessageContentAlertAction(for message: Message) -> UIAlertAction {
+        return UIAlertAction(title: L10n.MessagesViewController.Action.Button.copyMessageContent, style: .default) { _ in
+            UIPasteboard.general.string = message.rawMessage
+        }
+    }
+
+    private static func shareArmoredMessageAlertAction(for message: Message, presentingViewController: UIViewController, cell: UITableViewCell) -> UIAlertAction {
+        let isCleartextMessage = DMSPGPClearTextVerifier.verify(armoredMessage: message.encryptedMessage)
+        let shareActionTitle = isCleartextMessage ? L10n.MessagesViewController.Action.Button.shareSignedMessage : L10n.MessagesViewController.Action.Button.shareEncryptedMessage
+
+        return UIAlertAction(title: shareActionTitle, style: .default) { _ in
+            ShareUtil.share(message: message.encryptedMessage, from: presentingViewController, over: cell)
+        }
+    }
+
+    private static func recomposeMessageAlertAction(for message: Message, presentingViewController: UIViewController) -> UIAlertAction {
+        return UIAlertAction(title: L10n.MessagesViewController.Action.Button.reCompose, style: .default) { _ in
+            Coordinator.main.present(scene: .recomposeMessage(message: message), from: presentingViewController, transition: .modal, completion: nil)
+        }
+    }
+
+    private static func finishDraftAlertAction(for message: Message, presentingViewController: UIViewController, disposeBag: DisposeBag) -> UIAlertAction {
+        return UIAlertAction(title: L10n.MessagesViewController.Action.Button.markAsFinished, style: .default) { _ in
             consolePrint(message.senderKeyId)
             let senderKey: TCKey? = ProfileService.default.keys.value.first(where: { key -> Bool in
                 return key.longIdentifier == message.senderKeyId
@@ -431,8 +431,7 @@ extension MessagesViewController {
             ComposeMessageViewModel.composeMessage(message.rawMessage, to: recipientKeys, from: senderKey, password: nil)
                 .subscribeOn(ConcurrentDispatchQueueScheduler.init(qos: .userInitiated))
                 .observeOn(MainScheduler.instance)
-                .subscribe(onSuccess: { [weak self] armored in
-                    guard let `self` = self else { return }
+                .subscribe(onSuccess: { armored in
                     do {
                         var message = message
                         let rawMessage = message.rawMessage
@@ -440,77 +439,98 @@ extension MessagesViewController {
                     } catch {
                         consolePrint(error.localizedDescription)
                     }
-                }, onError: { [weak self] error in
-                    guard let `self` = self else { return }
+                }, onError: { error in
                     let message = (error as? TCError)?.errorDescription ?? error.localizedDescription
-                    self.showSimpleAlert(title: L10n.Common.Alert.error, message: message)
+                    presentingViewController.showSimpleAlert(title: L10n.Common.Alert.error, message: message)
                 })
-                .disposed(by: self.disposeBag)
-                
+                .disposed(by: disposeBag)
         }
-        alertController.addAction(finishAction)
-
-        let deleteAction = UIAlertAction(title: L10n.Common.Button.delete, style: .destructive) { _ in
-            let deleteMessageAlertController = self.DeleteMessageAlertController(for: message, didSelectCell: cell)
-            self.present(deleteMessageAlertController, animated: true, completion: nil)
-        }
-        alertController.addAction(deleteAction)
-
-        let cancelAction = UIAlertAction(title: L10n.Common.Button.cancel, style: .cancel, handler: nil)
-        alertController.addAction(cancelAction)
-
-        if let presenter = alertController.popoverPresentationController {
-            presenter.sourceView = cell
-            presenter.sourceRect = cell.bounds
-        }
-        return alertController
     }
 
-    private func EncryptedMessageAlertController(for message: Message, didSelectCell cell: UITableViewCell) -> UIAlertController {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
-        let isCleartextMessage = DMSPGPClearTextVerifier.verify(armoredMessage: message.encryptedMessage)
-        let shareActionTitle = isCleartextMessage ? L10n.MessagesViewController.Action.Button.shareSignedMessage : L10n.MessagesViewController.Action.Button.shareEncryptedMessage
-        let shareArmoredMessageAction = UIAlertAction(title: shareActionTitle, style: .default) { _ in
-            ShareUtil.share(message: message.encryptedMessage, from: self, over: cell)
+    private static func deleteMessageAction(for message: Message, presentingViewController: UIViewController, cell: UITableViewCell) -> UIAlertAction {
+        return UIAlertAction(title: L10n.Common.Button.delete, style: .destructive) { _ in
+            let deleteMessageAlertController = MessagesViewController.deleteMessageAlertController(for: message, cell: cell)
+            presentingViewController.present(deleteMessageAlertController, animated: true, completion: nil)
         }
-        alertController.addAction(shareArmoredMessageAction)
-
-        let copyMessageContentAction = UIAlertAction(title: L10n.MessagesViewController.Action.Button.copyMessageContent, style: .default) { _ in
-            UIPasteboard.general.string = message.rawMessage
-        }
-        alertController.addAction(copyMessageContentAction)
-
-        let recomposeAction = UIAlertAction(title: L10n.MessagesViewController.Action.Button.reCompose, style: .default) { _ in
-            Coordinator.main.present(scene: .recomposeMessage(message: message), from: self, transition: .modal, completion: nil)
-        }
-        alertController.addAction(recomposeAction)
-
-        let deleteAction = UIAlertAction(title: L10n.Common.Button.delete, style: .destructive) { _ in
-            let deleteMessageAlertController = self.DeleteMessageAlertController(for: message, didSelectCell: cell)
-            self.present(deleteMessageAlertController, animated: true, completion: nil)
-        }
-        alertController.addAction(deleteAction)
-
-        let cancelAction = UIAlertAction(title: L10n.Common.Button.cancel, style: .cancel, handler: nil)
-        alertController.addAction(cancelAction)
-
-        if let presenter = alertController.popoverPresentationController {
-            presenter.sourceView = cell
-            presenter.sourceRect = cell.bounds
-        }
-        return alertController
     }
 
-    private func DeleteMessageAlertController(for message: Message, didSelectCell cell: UITableViewCell) -> UIAlertController {
+    private static func deleteMessageAlertController(for message: Message, cell: UITableViewCell) -> UIAlertController {
         let alertController = UIAlertController(title: L10n.MessagesViewController.Alert.Title.deleteMessage, message: nil, preferredStyle: .actionSheet)
 
         let confirmAction = UIAlertAction(title: L10n.Common.Button.delete, style: .destructive, handler: { _ in
             ProfileService.default.deleteMessage(message)
         })
         alertController.addAction(confirmAction)
+
         let cancelAction = UIAlertAction(title: L10n.Common.Button.cancel, style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
+
+        if let presenter = alertController.popoverPresentationController {
+            presenter.sourceView = cell
+            presenter.sourceRect = cell.bounds
+        }
+        return alertController
+    }
+
+    private static func cancelAlertAction() -> UIAlertAction {
+        return UIAlertAction(title: L10n.Common.Button.cancel, style: .cancel, handler: nil)
+    }
+
+    // Message from others:
+    //  - Copy Message Content
+    //  - COpy Enctyped Message
+    //  - Delete
+    //  - Cancel
+    private func SignByOthersMessageAlertController(for message: Message, didSelectCell cell: UITableViewCell) -> UIAlertController {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        alertController.addAction(MessagesViewController.copyMessageContentAlertAction(for: message))
+        alertController.addAction(MessagesViewController.copyPayloadAlertAction(for: message))
+        alertController.addAction(MessagesViewController.deleteMessageAction(for: message, presentingViewController: self, cell: cell))
+        alertController.addAction(MessagesViewController.cancelAlertAction())
+
+        if let presenter = alertController.popoverPresentationController {
+            presenter.sourceView = cell
+            presenter.sourceRect = cell.bounds
+        }
+
+        return alertController
+    }
+
+    // Draft:
+    //  - Edit
+    //  - Finish Draft (markAsFinished)
+    //  - Delete
+    //  - Cancel
+    private func DraftMessageAlertController(for message: Message, didSelectCell cell: UITableViewCell) -> UIAlertController {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        alertController.addAction(MessagesViewController.editAlertAction(for: message, presentingViewController: self))
+        alertController.addAction(MessagesViewController.finishDraftAlertAction(for: message, presentingViewController: self, disposeBag: self.disposeBag))
+        alertController.addAction(MessagesViewController.deleteMessageAction(for: message, presentingViewController: self, cell: cell))
+        alertController.addAction(MessagesViewController.cancelAlertAction())
+
+        if let presenter = alertController.popoverPresentationController {
+            presenter.sourceView = cell
+            presenter.sourceRect = cell.bounds
+        }
+        return alertController
+    }
+
+    // Message from self:
+    //  - Share Encrypted Message
+    //  - Copy Message Content
+    //  - Re-Compose
+    //  - Delete
+    //  - Cancel
+    private func EncryptedMessageAlertController(for message: Message, didSelectCell cell: UITableViewCell) -> UIAlertController {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        alertController.addAction(MessagesViewController.shareArmoredMessageAlertAction(for: message, presentingViewController: self, cell: cell))
+        alertController.addAction(MessagesViewController.copyMessageContentAlertAction(for: message))
+        alertController.addAction(MessagesViewController.recomposeMessageAlertAction(for: message, presentingViewController: self))
+        alertController.addAction(MessagesViewController.deleteMessageAction(for: message, presentingViewController: self, cell: cell))
+        alertController.addAction(MessagesViewController.cancelAlertAction())
 
         if let presenter = alertController.popoverPresentationController {
             presenter.sourceView = cell
