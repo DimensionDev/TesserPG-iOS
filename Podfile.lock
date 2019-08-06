@@ -14,7 +14,7 @@ PODS:
   - GRDBCipher (3.7.0):
     - SQLCipher (~> 3.4.1)
   - IQKeyboardManagerSwift (6.2.1)
-  - KeychainAccess (3.1.2)
+  - KeychainAccess (3.2.0)
   - MMWormhole (2.0.0):
     - MMWormhole/Core (= 2.0.0)
   - MMWormhole/Core (2.0.0)
@@ -68,7 +68,7 @@ DEPENDENCIES:
   - GRDB.swift (~> 3.7.0)
   - GRDBCipher (~> 3.7.0)
   - IQKeyboardManagerSwift (~> 6.2.0)
-  - KeychainAccess (~> 3.1.2)
+  - KeychainAccess (~> 3.2.0)
   - MMWormhole (~> 2.0.0)
   - RxBlocking (~> 4.0)
   - RxCocoa (~> 4.4.2)
@@ -122,7 +122,7 @@ SPEC CHECKSUMS:
   GRDB.swift: 51cc9e57ae8ff7083a9d674c97925aa1de06aac5
   GRDBCipher: a3066d2953508039ea8fb423a1ba14c7b6d888be
   IQKeyboardManagerSwift: 0f0ae8935360b4003e6ea1ac7c19898f01e2f7c7
-  KeychainAccess: b3816fddcf28aa29d94b10ec305cd52be14c472b
+  KeychainAccess: 3b1bf8a77eb4c6ea1ce9404c292e48f948954c6b
   MMWormhole: 0cd3fd35a9118b2e2d762b499f54eeaace0be791
   OpenSSL-Universal: d10ab08e0b258023e5184f77660b1b9f4ec93926
   RxAtomic: d00e97c10db88c6f08540e0bf2752fc5a2404167
@@ -137,6 +137,6 @@ SPEC CHECKSUMS:
   SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
   "UITextView+Placeholder": f23df8592290d8d06078072ae1a663e11ee07ff4
 
-PODFILE CHECKSUM: c56772f12638cfc9ba0b15567f113753909ff0c4
+PODFILE CHECKSUM: 77ecaa6de5f5d83a1dade3c278f0ee05d49aa16d
 
 COCOAPODS: 1.7.5

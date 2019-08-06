@@ -22,6 +22,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Setup Application
         Application.applicationConfigInit(application, launchOptions: launchOptions)
 
+        #if DEBUG
+        consolePrint(TCDBManager.dbDirectoryUrl)
+        consolePrint(TCDBManager.dbFilePath)
+        #endif
+
         if #available(iOS 13, *) {
 
         } else {
@@ -30,9 +35,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 window?.rootViewController = UIViewController()
                 return true
             }
-
-            consolePrint(TCDBManager.dbDirectoryUrl)
-            consolePrint(TCDBManager.dbFilePath)
             #endif
 
             window = UIWindow(frame: UIScreen.main.bounds)
