@@ -18,7 +18,7 @@ def common_pods
   pod 'RxCocoa', '~> 4.4.2'
 
   pod 'DMSOpenPGP', '~> 0.1.3'
-  pod 'KeychainAccess', '~> 3.1.2'
+  pod 'KeychainAccess', '~> 3.2.0'
 
   pod 'GRDB.swift', '~> 3.7.0'
   pod 'GRDBCipher', '~> 3.7.0'
