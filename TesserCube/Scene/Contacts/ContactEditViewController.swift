@@ -41,6 +41,8 @@ class ContactEditViewController: TCBaseViewController {
         tableView.alwaysBounceVertical = true
         tableView.tableFooterView = UIView()
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
+        tableView.preservesSuperviewLayoutMargins = true
+        tableView.cellLayoutMarginsFollowReadableWidth = true
         return tableView
     }()
     

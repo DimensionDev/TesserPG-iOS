@@ -82,6 +82,8 @@ class MessagesViewController: TCBaseViewController {
         tableView.register(MessageCardCell.self, forCellReuseIdentifier: String(describing: MessageCardCell.self))
         tableView.backgroundColor = .clear
         tableView.keyboardDismissMode = .interactive
+        tableView.preservesSuperviewLayoutMargins = true
+        tableView.cellLayoutMarginsFollowReadableWidth = true
         return tableView
     }()
 
@@ -116,7 +118,7 @@ class MessagesViewController: TCBaseViewController {
         }
 
         bottomActionsView.snp.makeConstraints { maker in
-            maker.leading.trailing.equalTo(view.layoutMarginsGuide)
+            maker.leading.trailing.equalTo(view.readableContentGuide)
             maker.bottom.equalToSuperview().offset(-15)
         }
 
@@ -521,9 +523,9 @@ extension MessagesViewController {
             case .shareArmoredMessage:
                 return UIImage(systemName: "square.and.arrow.up")
             case .copyMessageContent:
-                return UIImage(systemName: "doc.on.doc")
+                return UIImage(systemName: "doc.on.clipboard")
             case .copyPayload:
-                return UIImage(systemName: "doc.on.doc.fill")
+                return UIImage(systemName: "doc.on.clipboard.fill")
             case .edit, .recomposeMessage:
                 return UIImage(systemName: "square.and.pencil")
             case .finishDraft:

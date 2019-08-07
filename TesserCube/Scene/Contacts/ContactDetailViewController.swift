@@ -137,13 +137,13 @@ class ContactDetailViewController: TCBaseViewController {
         view.addSubview(fingerprintTitleLabel)
 
         fingerprintTitleLabel.snp.makeConstraints { maker in
-            maker.leading.equalTo(view.layoutMarginsGuide)
+            maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(topBackgroundView.snp.bottom).offset(15)
         }
 
         view.addSubview(fingerprintlabel)
         fingerprintlabel.snp.makeConstraints { maker in
-            maker.leading.equalTo(view.layoutMarginsGuide)
+            maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(fingerprintTitleLabel.snp.bottom).offset(2)
         }
 
@@ -152,13 +152,13 @@ class ContactDetailViewController: TCBaseViewController {
         view.addSubview(validityTitleLabel)
 
         validityTitleLabel.snp.makeConstraints { maker in
-            maker.leading.equalTo(view.layoutMarginsGuide)
+            maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(fingerprintlabel.snp.bottom).offset(17)
         }
 
         view.addSubview(validitylabel)
         validitylabel.snp.makeConstraints { maker in
-            maker.leading.equalTo(view.layoutMarginsGuide)
+            maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(validityTitleLabel.snp.bottom).offset(2)
         }
 
@@ -167,13 +167,13 @@ class ContactDetailViewController: TCBaseViewController {
         view.addSubview(typeTitleLabel)
 
         typeTitleLabel.snp.makeConstraints { maker in
-            maker.leading.equalTo(view.layoutMarginsGuide)
+            maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(validitylabel.snp.bottom).offset(17)
         }
 
         view.addSubview(typelabel)
         typelabel.snp.makeConstraints { maker in
-            maker.leading.equalTo(view.layoutMarginsGuide)
+            maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(typeTitleLabel.snp.bottom).offset(2)
         }
 
@@ -182,13 +182,13 @@ class ContactDetailViewController: TCBaseViewController {
         view.addSubview(createdAtTitleLabel)
 
         createdAtTitleLabel.snp.makeConstraints { maker in
-            maker.leading.equalTo(view.layoutMarginsGuide)
+            maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(typelabel.snp.bottom).offset(17)
         }
 
         view.addSubview(createdAtlabel)
         createdAtlabel.snp.makeConstraints { maker in
-            maker.leading.equalTo(view.layoutMarginsGuide)
+            maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(createdAtTitleLabel.snp.bottom).offset(2)
         }
 
@@ -197,21 +197,21 @@ class ContactDetailViewController: TCBaseViewController {
         view.addSubview(emailTitlelabel)
 
         emailTitlelabel.snp.makeConstraints { maker in
-            maker.leading.equalTo(view.layoutMarginsGuide)
+            maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(createdAtlabel.snp.bottom).offset(17)
         }
 
         view.addSubview(emailTextView)
         emailTextView.snp.makeConstraints { maker in
-            maker.leading.trailing.equalTo(view.layoutMarginsGuide)
-            maker.top.equalTo(emailTitlelabel.snp.bottom).offset(2)
-            maker.bottom.equalTo(view.safeAreaLayoutGuide).offset(-90)
+            maker.leading.trailing.equalTo(view.readableContentGuide).offset(-5)
+            maker.top.equalTo(emailTitlelabel.snp.bottom)
+            maker.height.equalTo(44)
         }
 
         // 6. Send message button
         view.addSubview(sendMessageButton)
         sendMessageButton.snp.makeConstraints { maker in
-            maker.leading.trailing.equalTo(view.layoutMarginsGuide)
+            maker.leading.trailing.equalTo(view.readableContentGuide)
             maker.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
         }
 
