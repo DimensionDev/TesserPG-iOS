@@ -64,6 +64,8 @@ class ContactsListViewController: TCBaseViewController {
         }
         tableView.allowsMultipleSelectionDuringEditing = true
         tableView.keyboardDismissMode = .interactive
+        tableView.preservesSuperviewLayoutMargins = true
+        tableView.cellLayoutMarginsFollowReadableWidth = true
         return tableView
     }()
     

@@ -46,11 +46,11 @@
 "IntroWizardViewController.Step.createKeyPair" = "Tap \"+\" to create a keypair or import your existing keypairs.";
 "IntroWizardViewController.Step.completeGuide" = "🎉 Guide Completed 🎉\nCreate a keypair right now?";
 
-"ContactDetailViewController.Label.Fingerprint" = "fingerprint";
-"ContactDetailViewController.Label.Validity" = "validity";
-"ContactDetailViewController.Label.Keytype" = "type";
-"ContactDetailViewController.Label.CreatedAt" = "created at";
-"ContactDetailViewController.Label.Email" = "email";
+"ContactDetailViewController.Label.Fingerprint" = "Fingerprint";
+"ContactDetailViewController.Label.Validity" = "Validity";
+"ContactDetailViewController.Label.Keytype" = "Type";
+"ContactDetailViewController.Label.CreatedAt" = "Created at";
+"ContactDetailViewController.Label.Email" = "Email";
 "ContactDetailViewController.Label.InvalidFingerprint" = "Invalid Fingerprint";
 "ContactDetailViewController.Label.Valid" = "Valid";
 "ContactDetailViewController.Label.Invalid" = "Invalid";

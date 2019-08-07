@@ -23,6 +23,8 @@ class MeViewController: TCBaseViewController {
         tableView.alwaysBounceVertical = true
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none
+        tableView.preservesSuperviewLayoutMargins = true
+        tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.register(nibWithCellClass: KeyCardCell.self)
         if #available(iOS 13, *) {
             tableView.backgroundColor = .systemBackground
@@ -66,7 +68,7 @@ class MeViewController: TCBaseViewController {
         navigationItem.rightBarButtonItem = createAddKeyBarButtonItem()
         
         bottomActionsView.snp.makeConstraints { maker in
-            maker.leading.trailing.equalTo(view.layoutMarginsGuide)
+            maker.leading.trailing.equalTo(view.readableContentGuide)
             maker.bottom.equalToSuperview().offset(-15)
         }
         
