@@ -32,9 +32,12 @@ class SuggestHelper {
         let checker = UITextChecker()
         let range = NSRange(location: 0, length: input.count)
         let misspelledRange = checker.rangeOfMisspelledWord(in: input, range: range, startingAt: range.location, wrap: true, language: "en_US")
-        
-        let arrGuessed = checker.guesses(forWordRange: misspelledRange, in: input, language: "en_US")
-        return arrGuessed ?? [input]
+
+        let arrGuessed = checker.guesses(forWordRange: misspelledRange, in: input, language: "en_US") ?? []
+        let completions = checker.completions(forPartialWordRange: range, in: input, language: "en_US") ?? []
+        let result = arrGuessed + completions + [input]
+
+        return result
     }
 }
 
