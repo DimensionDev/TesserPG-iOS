@@ -19,6 +19,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Setup Bouncy Castle
         JavaSecuritySecurity.addProvider(with: OrgBouncycastleJceProviderBouncyCastleProvider())
 
+//        #if DEBUG
+//        let realm = WordSuggestionService.shared.realm
+//        realm.beginWrite()
+//        realm.deleteAll()
+//        try? realm.commitWrite()
+//        #endif
+
+        let wordPredictor = WordSuggestionService.shared.wordPredictor
+        if wordPredictor.needLoadNgramData {
+            wordPredictor.load { error in
+                consolePrint(error?.localizedDescription ?? "NGram realm setup success")
+            }
+        }
+
         #if DEBUG
         if AppDelegate.isRunningTests {
             window?.rootViewController = UIViewController()
