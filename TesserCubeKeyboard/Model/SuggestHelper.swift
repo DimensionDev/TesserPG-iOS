@@ -13,7 +13,7 @@ class SuggestHelper {
     
     class func getSuggestion(_ input: String, lexicon: UILexicon?) -> [String] {
         if input.isEmpty {
-            return defaultSuggestions
+            return []
         }
         var suggesions = [String]()
         if let availableLexicon = lexicon {
@@ -32,8 +32,12 @@ class SuggestHelper {
         let checker = UITextChecker()
         let range = NSRange(location: 0, length: input.count)
         let misspelledRange = checker.rangeOfMisspelledWord(in: input, range: range, startingAt: range.location, wrap: true, language: "en_US")
-        
+
         let arrGuessed = checker.guesses(forWordRange: misspelledRange, in: input, language: "en_US")
+
+        // use WordSuggestion instand of .completions
+        // let completions = checker.completions(forPartialWordRange: range, in: input, language: "en_US") ?? []
+
         return arrGuessed ?? [input]
     }
 }
