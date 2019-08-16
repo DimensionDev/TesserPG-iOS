@@ -9,6 +9,7 @@
 import Foundation
 import DMSOpenPGP
 import ConsolePrint
+import DMSGoPGP
 
 extension KeyFactory {
 
@@ -42,7 +43,13 @@ extension KeyFactory {
     static func key(from generateKeyData: GenerateKeyData) throws -> TCKey {
         do {
             let factory = try DMSPGPKeyRingFactory(generateKeyData: generateKeyData)
-            let key = TCKey(keyRing: factory.keyRing)
+            var key = TCKey(keyRing: factory.keyRing)
+            
+            let goKey = CryptoGetGopenPGP()?.generateKey(generateKeyData.name, email: generateKeyData.email, passphrase: generateKeyData.password, keyType: "rsa", bits: 3072, error: nil)
+            let goKeyRing = try? CryptoGetGopenPGP()?.buildKeyRingArmored(goKey!)
+            key.goKeyRing = goKeyRing
+            key.unlock(passphrase: "123456")
+            
             return key
         } catch let error as DMSPGPError {
             consolePrint(error.localizedDescription)
