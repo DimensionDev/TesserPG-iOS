@@ -26,12 +26,13 @@ enum KeyValue {
         case .mockKey:
             return "****@*****.***"
         case .TCKey(let key):
-            if let userID = key.keyRing.publicKeyRing.primaryKey.primaryUserID {
-                let meta = PGPUserIDTranslator(userID: userID)
-                return meta.name ?? meta.email ?? " " // userID should have one of name and email
-            }
-            
-            return L10n.Common.Label.nameNull
+            return key.userID
+//            if let userID = key.keyRing.publicKeyRing.primaryKey.primaryUserID {
+//                let meta = PGPUserIDTranslator(userID: userID)
+//                return meta.name ?? meta.email ?? " " // userID should have one of name and email
+//            }
+//            
+//            return L10n.Common.Label.nameNull
         }
     }
     

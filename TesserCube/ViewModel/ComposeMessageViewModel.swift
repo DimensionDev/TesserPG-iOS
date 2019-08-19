@@ -38,31 +38,31 @@ final class ComposeMessageViewModel: NSObject {
 
 extension ComposeMessageViewModel {
 
-    static func composeMessage(_ rawMessage: String, to recipients: [TCKey], from sender: TCKey?, password: String? = nil) -> Single<String> {
-        let editingMessage = rawMessage.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !editingMessage.isEmpty else {
-            return Single.error(TCError.composeError(reason: .emptyInput))
-        }
-
-        return Single<String>.create { single in
-            guard !(recipients.isEmpty && sender == nil) else {
-                single(.error(TCError.composeError(reason: .emptySenderAndRecipients)))
-                return Disposables.create()
-            }
-            do {
-                if recipients.isEmpty, let signatureKey = sender {
-                    let signed = try KeyFactory.clearsignMessage(editingMessage, signatureKey: signatureKey)
-                    single(.success(signed))
-                } else {
-                    let encrypted = try KeyFactory.encryptMessage(editingMessage, signatureKey: sender, recipients: recipients)
-                    single(.success(encrypted))
-                }
-            } catch {
-                single(.error(error))
-            }
-
-            return Disposables.create()
-        }
-    }
+//    static func composeMessage(_ rawMessage: String, to recipients: [TCKey], from sender: TCKey?, password: String? = nil) -> Single<String> {
+//        let editingMessage = rawMessage.trimmingCharacters(in: .whitespacesAndNewlines)
+//        guard !editingMessage.isEmpty else {
+//            return Single.error(TCError.composeError(reason: .emptyInput))
+//        }
+//
+//        return Single<String>.create { single in
+//            guard !(recipients.isEmpty && sender == nil) else {
+//                single(.error(TCError.composeError(reason: .emptySenderAndRecipients)))
+//                return Disposables.create()
+//            }
+//            do {
+//                if recipients.isEmpty, let signatureKey = sender {
+//                    let signed = try KeyFactory.clearsignMessage(editingMessage, signatureKey: signatureKey)
+//                    single(.success(signed))
+//                } else {
+//                    let encrypted = try KeyFactory.encryptMessage(editingMessage, signatureKey: sender, recipients: recipients)
+//                    single(.success(encrypted))
+//                }
+//            } catch {
+//                single(.error(error))
+//            }
+//
+//            return Disposables.create()
+//        }
+//    }
     
 }

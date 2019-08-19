@@ -223,13 +223,14 @@ class ImportPrivateKeyConfirmViewController: TCBaseViewController {
 
 extension ImportPrivateKeyConfirmViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return tcKey?.keyRing.publicKeyRing.primaryKey.primaryUserID != nil ? 1 : 0
+        return 0
+//        return tcKey?.goKeyRing.primaryKey.primaryUserID != nil ? 1 : 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withClass: ConfirmContactCell.self, for: indexPath)
         cell.keyValue = .TCKey(value: tcKey!)
-        cell.userID = tcKey?.keyRing.publicKeyRing.primaryKey.primaryUserID
+//        cell.userID = tcKey?.keyRing.publicKeyRing.primaryKey.primaryUserID
         cell.cardView.cardBackgroundColor = Asset.sketchBlue.color
         return cell
     }

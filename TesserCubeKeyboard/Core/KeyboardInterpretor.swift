@@ -78,7 +78,8 @@ class KeyboardInterpretor {
     
     private static func decryptMessage(_ message: String) throws -> Message? {
         do {
-            return try ProfileService.default.decryptMessage(message)
+            return nil
+//            return try ProfileService.default.decryptMessage(message)
         } catch let error {
             throw error
         }

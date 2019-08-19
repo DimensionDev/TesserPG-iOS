@@ -73,81 +73,81 @@ extension ProfileService {
     ///
     /// - Parameter message: raw message
     /// - Returns: Message
-    func encryptMessage(_ message: String, signatureKey: TCKey?, recipients: [TCKey]) throws -> Message {
-        do {
-            guard !message.isEmpty else {
-                throw TCError.interpretError(reason: .emptyMessage)
-            }
-
-            let trimmedMessage = message.trimmingCharacters(in: .whitespacesAndNewlines)
-            let encrypted = try KeyFactory.encryptMessage(message, signatureKey: signatureKey, recipients: recipients)
-
-            var message = Message(id: nil,
-                                  senderKeyId: signatureKey?.longIdentifier ?? "",
-                                  senderKeyUserId: signatureKey?.userID ?? "",
-                                  composedAt: Date(),
-                                  interpretedAt: nil,
-                                  isDraft: false,
-                                  rawMessage: trimmedMessage,
-                                  encryptedMessage: encrypted)
-
-            try ProfileService.default.addMessage(&message, recipientKeys: recipients)
-            return message
-        } catch {
-            consolePrint(error.localizedDescription)
-            throw error
-        }
-    }
+//    func encryptMessage(_ message: String, signatureKey: TCKey?, recipients: [TCKey]) throws -> Message {
+//        do {
+//            guard !message.isEmpty else {
+//                throw TCError.interpretError(reason: .emptyMessage)
+//            }
+//
+//            let trimmedMessage = message.trimmingCharacters(in: .whitespacesAndNewlines)
+//            let encrypted = try KeyFactory.encryptMessage(message, signatureKey: signatureKey, recipients: recipients)
+//
+//            var message = Message(id: nil,
+//                                  senderKeyId: signatureKey?.longIdentifier ?? "",
+//                                  senderKeyUserId: signatureKey?.userID ?? "",
+//                                  composedAt: Date(),
+//                                  interpretedAt: nil,
+//                                  isDraft: false,
+//                                  rawMessage: trimmedMessage,
+//                                  encryptedMessage: encrypted)
+//
+//            try ProfileService.default.addMessage(&message, recipientKeys: recipients)
+//            return message
+//        } catch {
+//            consolePrint(error.localizedDescription)
+//            throw error
+//        }
+//    }
 
 
     /// Decrypt message and store in database
     ///
     /// - Parameter message: armored message
     /// - Returns: Message
-    func decryptMessage(_ message: String) throws -> Message {
-        do {
-            guard !message.isEmpty else {
-                throw TCError.interpretError(reason: .emptyMessage)
-            }
-            
-            let trimmedMessage = message.trimmingCharacters(in: .whitespacesAndNewlines)
-            
-            // Check if message already interpreted
-            if var existMessage = interptedMessage(trimmedMessage) {
-                // If yes, just return the message
-                try existMessage.updateInterpretedDate(Date())
-                return existMessage
-            }
-
-            var senderKeyID = ""
-            var senderKeyUserID = ""
-            let decryptInfo = try KeyFactory.decryptMessage(message)
-            switch decryptInfo.verifyResult {
-            case .noSignature:
-                break
-            case .valid, .invalid:
-                senderKeyID = decryptInfo.signatureKey?.longIdentifier ?? ""
-                senderKeyUserID = decryptInfo.signatureKey?.userID ?? ""
-            case .unknownSigner(let infos):
-                // This is real KeyID of signature key (not long identifier)
-                senderKeyID = infos.first?.keyID ?? ""
-                senderKeyUserID = infos.first?.primaryUserID ?? ""
-            }
-
-            var interpretedMessage = Message(id: nil,
-                                             senderKeyId: senderKeyID,
-                                             senderKeyUserId: senderKeyUserID,
-                                             composedAt: nil,
-                                             interpretedAt: Date(),
-                                             isDraft: false,
-                                             rawMessage: decryptInfo.message,
-                                             encryptedMessage: message)
-            
-            try ProfileService.default.addMessage(&interpretedMessage, recipientKeys: decryptInfo.recipientKeys)
-            return interpretedMessage
-        } catch let error {
-            consolePrint(error.localizedDescription)
-            throw error
-        }
-    }
+//    func decryptMessage(_ message: String) throws -> Message {
+//        do {
+//            guard !message.isEmpty else {
+//                throw TCError.interpretError(reason: .emptyMessage)
+//            }
+//            
+//            let trimmedMessage = message.trimmingCharacters(in: .whitespacesAndNewlines)
+//            
+//            // Check if message already interpreted
+//            if var existMessage = interptedMessage(trimmedMessage) {
+//                // If yes, just return the message
+//                try existMessage.updateInterpretedDate(Date())
+//                return existMessage
+//            }
+//
+//            var senderKeyID = ""
+//            var senderKeyUserID = ""
+//            let decryptInfo = try KeyFactory.decryptMessage(message)
+//            switch decryptInfo.verifyResult {
+//            case .noSignature:
+//                break
+//            case .valid, .invalid:
+//                senderKeyID = decryptInfo.signatureKey?.longIdentifier ?? ""
+//                senderKeyUserID = decryptInfo.signatureKey?.userID ?? ""
+//            case .unknownSigner(let infos):
+//                // This is real KeyID of signature key (not long identifier)
+//                senderKeyID = infos.first?.keyID ?? ""
+//                senderKeyUserID = infos.first?.primaryUserID ?? ""
+//            }
+//
+//            var interpretedMessage = Message(id: nil,
+//                                             senderKeyId: senderKeyID,
+//                                             senderKeyUserId: senderKeyUserID,
+//                                             composedAt: nil,
+//                                             interpretedAt: Date(),
+//                                             isDraft: false,
+//                                             rawMessage: decryptInfo.message,
+//                                             encryptedMessage: message)
+//            
+//            try ProfileService.default.addMessage(&interpretedMessage, recipientKeys: decryptInfo.recipientKeys)
+//            return interpretedMessage
+//        } catch let error {
+//            consolePrint(error.localizedDescription)
+//            throw error
+//        }
+//    }
 }

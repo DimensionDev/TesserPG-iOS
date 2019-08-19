@@ -34,20 +34,20 @@ final class InterpretActionViewModel: NSObject {
 
         super.init()
 
-        armoredMessage.asDriver()
-            .flatMapLatest { message in
-                return Driver.just(message.flatMap { try? ProfileService.default.decryptMessage($0) })
-            }
-            .drive(interpretedMessage)
-            .disposed(by: disposeBag)
-
-        interpretedMessage.asDriver()
-            .skip(1)
-            .drive(onNext: { message in
-                let title = message != nil ? L10n.InterpretActionViewController.Title.messageInterpreted : L10n.InterpretActionViewController.Title.brokenMessage
-                self.title.accept(title)
-            })
-            .disposed(by: disposeBag)
+//        armoredMessage.asDriver()
+//            .flatMapLatest { message in
+//                return Driver.just(message.flatMap { try? ProfileService.default.decryptMessage($0) })
+//            }
+//            .drive(interpretedMessage)
+//            .disposed(by: disposeBag)
+//
+//        interpretedMessage.asDriver()
+//            .skip(1)
+//            .drive(onNext: { message in
+//                let title = message != nil ? L10n.InterpretActionViewController.Title.messageInterpreted : L10n.InterpretActionViewController.Title.brokenMessage
+//                self.title.accept(title)
+//            })
+//            .disposed(by: disposeBag)
 
 
     }   // end init()
