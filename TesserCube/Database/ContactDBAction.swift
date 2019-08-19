@@ -42,12 +42,15 @@ extension Contact {
             })
 
             return keyRecords.compactMap { keyRecord in
-                guard let armored = keyRecord.armored,
-                let keyRing = try? DMSPGPKeyRing(armoredKey: armored) else {
-                    // assertionFailure("KeyRecord should not empty except first time process database migrate")
+                guard let armored = keyRecord.armored, let key = TCKey(armored: armored) else {
                     return nil
                 }
-                return TCKey(keyRing: keyRing)
+                return key
+//                let keyRing = try? DMSPGPKeyRing(armoredKey: armored) else {
+//                    // assertionFailure("KeyRecord should not empty except first time process database migrate")
+//                    return nil
+//                }
+//                return TCKey(keyRing: keyRing)
             }
         } catch {
             consolePrint(error.localizedDescription)

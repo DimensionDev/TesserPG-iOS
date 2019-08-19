@@ -151,7 +151,8 @@ class ProfileService {
                     throw TCError.keysAlreadyExsit
                 }
                 // Only create one Contact from key's primary userID
-                let userID = key.keyRing.publicKeyRing.primaryKey.primaryUserID ?? ""
+                let userID = key.userID
+//                let userID = key.keyRing.publicKeyRing.primaryKey.primaryUserID ?? ""
 
                 // TODO: KeyRecord insert here. Should Refactoring here when we support sub-key feature
                 try self.addNewContact(keyUserID: userID, key: key)
@@ -186,7 +187,7 @@ class ProfileService {
         DispatchQueue.global().async {
             do {
                 // Only create one Contact from key's primary userID
-                let userIDs = tckey.keyRing.publicKeyRing.primaryKey.userIDs
+                let userIDs = tckey.userIDs
                 
                 // TODO: KeyRecord insert here. Should Refactoring here when we support sub-key feature
                 try userIDs.forEach { try self.addNewContact(keyUserID: $0, key: tckey) }

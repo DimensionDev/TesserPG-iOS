@@ -401,25 +401,25 @@ extension MessagesViewController {
             let recipientKeys = message.getRecipients().compactMap { messageRecipient in
                 return ProfileService.default.keys.value.first(where: { key in key.longIdentifier == messageRecipient.keyId })
             }
-            ComposeMessageViewModel.composeMessage(message.rawMessage, to: recipientKeys, from: senderKey, password: nil)
-                .subscribeOn(ConcurrentDispatchQueueScheduler.init(qos: .userInitiated))
-                .observeOn(MainScheduler.instance)
-                .subscribe(onSuccess: { [weak self] armored in
-                    guard let `self` = self else { return }
-                    do {
-                        var message = message
-                        let rawMessage = message.rawMessage
-                        try message.updateDraftMessage(senderKeyID: senderKey?.longIdentifier ?? "", senderKeyUserID: senderKey?.userID ?? "", rawMessage: rawMessage, recipients: recipientKeys, isDraft: false, armoredMessage: armored)
-                    } catch {
-                        consolePrint(error.localizedDescription)
-                    }
-                }, onError: { [weak self] error in
-                    guard let `self` = self else { return }
-                    let message = (error as? TCError)?.errorDescription ?? error.localizedDescription
-                    self.showSimpleAlert(title: L10n.Common.Alert.error, message: message)
-                })
-                .disposed(by: self.disposeBag)
-                
+//            ComposeMessageViewModel.composeMessage(message.rawMessage, to: recipientKeys, from: senderKey, password: nil)
+//                .subscribeOn(ConcurrentDispatchQueueScheduler.init(qos: .userInitiated))
+//                .observeOn(MainScheduler.instance)
+//                .subscribe(onSuccess: { [weak self] armored in
+//                    guard let `self` = self else { return }
+//                    do {
+//                        var message = message
+//                        let rawMessage = message.rawMessage
+//                        try message.updateDraftMessage(senderKeyID: senderKey?.longIdentifier ?? "", senderKeyUserID: senderKey?.userID ?? "", rawMessage: rawMessage, recipients: recipientKeys, isDraft: false, armoredMessage: armored)
+//                    } catch {
+//                        consolePrint(error.localizedDescription)
+//                    }
+//                }, onError: { [weak self] error in
+//                    guard let `self` = self else { return }
+//                    let message = (error as? TCError)?.errorDescription ?? error.localizedDescription
+//                    self.showSimpleAlert(title: L10n.Common.Alert.error, message: message)
+//                })
+//                .disposed(by: self.disposeBag)
+            
         }
         alertController.addAction(finishAction)
 

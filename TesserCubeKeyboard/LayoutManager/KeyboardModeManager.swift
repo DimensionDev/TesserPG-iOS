@@ -300,12 +300,12 @@ extension KeyboardModeManager: ActionsViewDelegate {
                     signatureKey = ProfileService.default.defaultSignatureKey
                 }
 
-                let message = try ProfileService.default.encryptMessage(originContent, signatureKey: signatureKey, recipients: recipientKeys)
-
-                WormholdService.shared.wormhole.passMessageObject(nil, identifier: WormholdService.MessageIdentifier.keyboardDidEncryptMessage.rawValue)
-
-                keyboardVC?.removeAllBeforeContent()
-                keyboardVC?.textDocumentProxy.insertText(message.encryptedMessage)
+//                let message = try ProfileService.default.encryptMessage(originContent, signatureKey: signatureKey, recipients: recipientKeys)
+//
+//                WormholdService.shared.wormhole.passMessageObject(nil, identifier: WormholdService.MessageIdentifier.keyboardDidEncryptMessage.rawValue)
+//
+//                keyboardVC?.removeAllBeforeContent()
+//                keyboardVC?.textDocumentProxy.insertText(message.encryptedMessage)
             } catch {
                 consolePrint(error.localizedDescription)
                 toastAlerter.alert(message: error.localizedDescription, in: keyboardVC!.view)

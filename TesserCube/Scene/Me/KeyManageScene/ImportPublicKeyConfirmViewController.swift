@@ -222,19 +222,19 @@ class ImportPublicKeyConfirmViewController: TCBaseViewController {
 
 extension ImportPublicKeyConfirmViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return tcKey?.keyRing.publicKeyRing.primaryKey.userIDs.count ?? 0
+        return tcKey?.userIDs.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withClass: ConfirmContactCell.self, for: indexPath)
         cell.keyValue = .TCKey(value: tcKey!)
         
-        cell.userID = tcKey?.keyRing.publicKeyRing.primaryKey.userIDs[indexPath.row]
+        cell.userID = tcKey?.userIDs[indexPath.row]
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let count = tcKey?.keyRing.publicKeyRing.primaryKey.userIDs.count ?? 0
+        let count = tcKey?.userIDs.count ?? 0
         if count > 1 {
             return CGSize(width: SwifterSwift.screenWidth - 16 - 66, height: cardHeight)
         } else {

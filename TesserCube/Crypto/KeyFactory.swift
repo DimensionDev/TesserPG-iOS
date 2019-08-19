@@ -33,12 +33,16 @@ class KeyFactory {
         for keyType in TCKeyType.allCases {
             let keyFiles = KeyFactory.loadKeyFiles(keyType: keyType)
             for keyFile in keyFiles {
-                guard let armored = try? String(contentsOfFile: keyFile, encoding: .utf8),
-                let keyRing = try? DMSPGPKeyRing(armoredKey: armored) else {
-                    continue
+                if let armored = try? String(contentsOfFile: keyFile, encoding: .utf8), let key = try? TCKey(armored: armored) {
+                        keys.append(key)
                 }
-
-                keys.append(TCKey(keyRing: keyRing))
+                
+                
+//                let keyRing = try? DMSPGPKeyRing(armoredKey: armored) else {
+//                    continue
+//                }
+//
+//                keys.append(TCKey(keyRing: keyRing))
             }
         }
         return keys
