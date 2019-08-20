@@ -126,7 +126,7 @@ class ProfileService {
                 let newKey = try KeyFactory.key(from: generateKeyData)
 
                 // TODO: KeyRecord insert here. Should Refactoring here when we support sub-key feature
-                try self.addNewContact(keyUserID: userID, key: newKey)
+                try self.addNewContact(keyUserID: userID, key: newKey, passphrase: passphrase)
 
                 // Should be the secret invalidated when passcode is removed? If not then use `.WhenUnlocked`
                 try self.keyChain
@@ -155,7 +155,7 @@ class ProfileService {
 //                let userID = key.keyRing.publicKeyRing.primaryKey.primaryUserID ?? ""
 
                 // TODO: KeyRecord insert here. Should Refactoring here when we support sub-key feature
-                try self.addNewContact(keyUserID: userID, key: key)
+                try self.addNewContact(keyUserID: userID, key: key, passphrase: passphrase)
 
                 try self.keyChain
                     .authenticationPrompt("Authenticate to update your password")
@@ -190,7 +190,7 @@ class ProfileService {
                 let userIDs = tckey.userIDs
                 
                 // TODO: KeyRecord insert here. Should Refactoring here when we support sub-key feature
-                try userIDs.forEach { try self.addNewContact(keyUserID: $0, key: tckey) }
+                try userIDs.forEach { try self.addNewContact(keyUserID: $0, key: tckey, passphrase: passphrase) }
                 
                 try self.keyChain
                     .authenticationPrompt("Authenticate to update your password")
@@ -210,7 +210,7 @@ class ProfileService {
 
 // MARK: Contacts related function
 extension ProfileService {
-    func addNewContact(keyUserID: String, key: TCKey) throws {
+    func addNewContact(keyUserID: String, key: TCKey, passphrase: String?) throws {
         do {
             let userInfo = PGPUserIDTranslator.extractMeta(from: keyUserID)
             let username = userInfo.name
@@ -228,7 +228,8 @@ extension ProfileService {
                         var newEmail = Email(id: nil, address: validMail, contactId: contactId)
                         try newEmail.insert(db)
                     }
-                    var newKeyRecord = KeyRecord(id: nil, longIdentifier: key.longIdentifier, hasSecretKey: key.hasSecretKey, hasPublicKey: key.hasPublicKey, contactId: contactId, armored: key.armored)
+                    let armored = key.hasSecretKey ? try key.getPrivateArmored(passprahse: passphrase ?? "") : key.publicArmored
+                    var newKeyRecord = KeyRecord(id: nil, longIdentifier: key.longIdentifier, hasSecretKey: key.hasSecretKey, hasPublicKey: key.hasPublicKey, contactId: contactId, armored: armored)
                     try newKeyRecord.insert(db)
                 }
                 return newContact
@@ -303,5 +304,20 @@ extension ProfileService {
         return keys.value.contains(where: { key in
             return key.longIdentifier == longIdentifier
         })
+    }
+}
+
+//MARK: Keychain conivience method
+extension ProfileService {
+    func getPasswordDict(keyIdentifiers: [String]) -> [String: String] {
+        var keyPasswordDict = [String: String]()
+        for keyChainItem in ProfileService.default.keyChain.allItems() {
+            if let key = keyChainItem["key"] as? String, let password = keyChainItem["value"] as? String {
+                if keyIdentifiers.contains(key) {
+                    keyPasswordDict[key] = password
+                }
+            }
+        }
+        return keyPasswordDict
     }
 }

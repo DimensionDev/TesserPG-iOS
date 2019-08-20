@@ -24,7 +24,7 @@ def common_pods
   pod 'GRDBCipher', '~> 3.7.0'
   pod 'DeepDiff', '~> 2.0.1'
 
-  pod 'DMSGoPGP', '~> 0.0.5'
+  pod 'DMSGoPGP', '~> 0.0.6'
 
   pod 'WordSuggestion'
 end

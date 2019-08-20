@@ -73,31 +73,31 @@ extension ProfileService {
     ///
     /// - Parameter message: raw message
     /// - Returns: Message
-//    func encryptMessage(_ message: String, signatureKey: TCKey?, recipients: [TCKey]) throws -> Message {
-//        do {
-//            guard !message.isEmpty else {
-//                throw TCError.interpretError(reason: .emptyMessage)
-//            }
-//
-//            let trimmedMessage = message.trimmingCharacters(in: .whitespacesAndNewlines)
-//            let encrypted = try KeyFactory.encryptMessage(message, signatureKey: signatureKey, recipients: recipients)
-//
-//            var message = Message(id: nil,
-//                                  senderKeyId: signatureKey?.longIdentifier ?? "",
-//                                  senderKeyUserId: signatureKey?.userID ?? "",
-//                                  composedAt: Date(),
-//                                  interpretedAt: nil,
-//                                  isDraft: false,
-//                                  rawMessage: trimmedMessage,
-//                                  encryptedMessage: encrypted)
-//
-//            try ProfileService.default.addMessage(&message, recipientKeys: recipients)
-//            return message
-//        } catch {
-//            consolePrint(error.localizedDescription)
-//            throw error
-//        }
-//    }
+    func encryptMessage(_ message: String, signatureKey: TCKey?, recipients: [TCKey]) throws -> Message {
+        do {
+            guard !message.isEmpty else {
+                throw TCError.interpretError(reason: .emptyMessage)
+            }
+
+            let trimmedMessage = message.trimmingCharacters(in: .whitespacesAndNewlines)
+            let encrypted = try KeyFactory.encryptMessage(message, signatureKey: signatureKey, recipients: recipients)
+
+            var message = Message(id: nil,
+                                  senderKeyId: signatureKey?.longIdentifier ?? "",
+                                  senderKeyUserId: signatureKey?.userID ?? "",
+                                  composedAt: Date(),
+                                  interpretedAt: nil,
+                                  isDraft: false,
+                                  rawMessage: trimmedMessage,
+                                  encryptedMessage: encrypted)
+
+            try ProfileService.default.addMessage(&message, recipientKeys: recipients)
+            return message
+        } catch {
+            consolePrint(error.localizedDescription)
+            throw error
+        }
+    }
 
 
     /// Decrypt message and store in database
