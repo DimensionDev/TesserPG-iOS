@@ -12,15 +12,12 @@ import DMSOpenPGP
 import DMSGoPGP
 
 struct TCKey: KeychianMappable {
-
-//    let keyRing: DMSPGPKeyRing
     
     var goKeyRing: CryptoKeyRing?
 
     var userID: String {
         let keyID = try? goKeyRing?.getEntity(0).getIdentity(0).name ?? ""
         return keyID ?? ""
-//        return keyRing.publicKeyRing.primaryKey.primaryUserID ?? ""
     }
     
     var userIDs: [String] {
@@ -39,18 +36,15 @@ struct TCKey: KeychianMappable {
     var keyID: String {
         let keyIdInt = try? goKeyRing?.getEntity(0).primaryKey?.getId() ?? 0
         return String(keyIdInt ?? 0)
-//        return keyRing.publicKeyRing.primaryKey.keyID
     }
     var longIdentifier: String {
         let longId = try? goKeyRing?.getEntity(0).primaryKey?.keyIdString() ?? ""
         return longId ?? ""
-//        return keyRing.publicKeyRing.primaryKey.longIdentifier
     }
     
     var shortIdentifier: String {
         let shortId = try? goKeyRing?.getEntity(0).primaryKey?.keyIdShortString() ?? ""
         return shortId ?? ""
-//        return keyRing.publicKeyRing.primaryKey.shortIdentifier
     }
     
     init?(armored: String) {
@@ -63,10 +57,6 @@ struct TCKey: KeychianMappable {
     init(keyRing: CryptoKeyRing) {
         self.goKeyRing = keyRing
     }
-
-//    init(keyRing: DMSPGPKeyRing) {
-//        self.keyRing = keyRing
-//    }
 
     func unlock(passphrase: String) throws {
         do {
@@ -82,7 +72,6 @@ extension TCKey {
     var name: String {
         let name = try? goKeyRing?.getEntity(0).getIdentity(0).userId?.getName() ?? ""
         return name ?? ""
-//        return PGPUserIDTranslator(userID: userID).name ?? ""
     }
 
     // Should not construct secret only KeyRing
@@ -94,7 +83,6 @@ extension TCKey {
     var hasSecretKey: Bool {
         let privateKey = try? goKeyRing?.getEntity(0).privateKey ?? nil
         return privateKey != nil
-//        return keyRing.secretKeyRing != nil
     }
     
     var publicArmored: String? {
@@ -109,22 +97,29 @@ extension TCKey {
             return nil
         }
     }
-
-    var armored: String {
-        let armoredKeyRing = goKeyRing?.getArmored("123456", error: nil) ?? ""
-        return armoredKeyRing
-//        var armored = keyRing.publicKeyRing.armored()
-//        if let secretKeyArmored = keyRing.secretKeyRing?.armored() {
-//            armored.append(contentsOf: secretKeyArmored)
-//        }
-//
-//        return armored
+    
+    func getPrivateArmored(passprahse: String?) throws -> String? {
+        do {
+            var error: NSError?
+            try? goKeyRing?.unlock(withPassphrase: passprahse)
+            let armoredKeyRing = goKeyRing?.getArmored(passprahse, error: &error) ?? ""
+            if let error = error {
+                throw TCError.pgpKeyError(reason: .invalidPassword)
+            }
+            return armoredKeyRing
+        } catch {
+            return nil
+        }
     }
+
+//    var armored: String {
+//        let armoredKeyRing = goKeyRing?.getArmored("123456", error: nil) ?? ""
+//        return armoredKeyRing
+//    }
 
     var fingerprint: String {
         let fingerprint = try? goKeyRing?.getEntity(0).primaryKey?.getFingerprint().uppercased()
         return fingerprint ?? ""
-//        return keyRing.publicKeyRing.primaryKey.fingerprint
     }
 
     var displayFingerprint: String? {
@@ -145,7 +140,6 @@ extension TCKey {
             return Date(timeIntervalSince1970: TimeInterval(timestamp))
         }
         return nil
-//        return keyRing.publicKeyRing.primaryKey.creationDate
     }
     
     var algorithm: DMSPGPPublicKeyAlgorithm? {
@@ -167,8 +161,6 @@ extension TCKey {
         var expired: ObjCBool = false
         try? CryptoGetGopenPGP()?.isKeyExpired(goKeyRing?.getPublicKey(), ret0_: &expired)
         return !expired.boolValue
-        
-//        return keyRing.publicKeyRing.primaryKey.isValid
     }
 }
 

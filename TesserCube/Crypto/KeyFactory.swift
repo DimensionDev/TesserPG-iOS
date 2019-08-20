@@ -28,13 +28,13 @@ class KeyFactory {
     private init() { }
 
     // @deprecated, only used in database migration
-    static func legacyLoadKeys() -> [TCKey] {
-        var keys: [TCKey] = []
+    static func legacyLoadKeys() -> [String] {
+        var keys: [String] = []
         for keyType in TCKeyType.allCases {
             let keyFiles = KeyFactory.loadKeyFiles(keyType: keyType)
             for keyFile in keyFiles {
-                if let armored = try? String(contentsOfFile: keyFile, encoding: .utf8), let key = try? TCKey(armored: armored) {
-                        keys.append(key)
+                if let armored = try? String(contentsOfFile: keyFile, encoding: .utf8) {
+                        keys.append(armored)
                 }
                 
                 
@@ -73,20 +73,20 @@ private extension KeyFactory {
         return keyFileNames.map { keysDirectoryUrl.appendingPathComponent($0).path }
     }
 
-    @available(*, deprecated, message: "only used in database migration")
-    static func saveNewKeyFile(_ key: TCKey) throws {
-        do {
-            let armorString = key.armored
-            guard !armorString.isEmpty else {
-                throw TCError.pgpKeyError(reason: .failToSave)
-            }
-            let fileName = key.longIdentifier
-            try armorString.write(to: keysDirectoryUrl.appendingPathComponent(fileName).appendingPathExtension("asc"), atomically: true, encoding: .utf8)
-        } catch let error {
-            consolePrint(error.localizedDescription)
-            throw TCError.pgpKeyError(reason: .failToSave)
-        }
-    }
+//    @available(*, deprecated, message: "only used in database migration")
+//    static func saveNewKeyFile(_ key: TCKey) throws {
+//        do {
+//            let armorString = key.armored
+//            guard !armorString.isEmpty else {
+//                throw TCError.pgpKeyError(reason: .failToSave)
+//            }
+//            let fileName = key.longIdentifier
+//            try armorString.write(to: keysDirectoryUrl.appendingPathComponent(fileName).appendingPathExtension("asc"), atomically: true, encoding: .utf8)
+//        } catch let error {
+//            consolePrint(error.localizedDescription)
+//            throw TCError.pgpKeyError(reason: .failToSave)
+//        }
+//    }
 
     @available(*, deprecated, message: "only used in database migration")
     static func deleteKeyFile(_ key: TCKey) {

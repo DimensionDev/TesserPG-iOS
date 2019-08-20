@@ -9,6 +9,7 @@
 import Foundation
 import DMSOpenPGP
 import ConsolePrint
+import DMSGoPGP
 
 // MARK: - Decrypt
 extension KeyFactory {
@@ -171,26 +172,34 @@ extension KeyFactory {
     ///   - signatureKey: signature key
     /// - Returns: cleartext formate message
     /// - Throws: invalid signature key or fail to retrieve password
-//    static func clearsignMessage(_ message: String, signatureKey: TCKey) throws -> String {
-//        guard signatureKey.hasPublicKey, signatureKey.hasSecretKey,
+    static func clearsignMessage(_ message: String, signatureKey: TCKey) throws -> String {
+        guard signatureKey.hasPublicKey, signatureKey.hasSecretKey else {
+            throw TCError.composeError(reason: .invalidSigner)
+        }
 //        let secretKeyRing = signatureKey.keyRing.secretKeyRing else {
 //            throw TCError.composeError(reason: .invalidSigner)
 //        }
-//
-//        guard let password = try? ProfileService.default.keyChain
-//            .authenticationPrompt("Unlock secret key to sign message")
-//            .get(signatureKey.longIdentifier) else {
-//            throw TCError.composeError(reason: .keychainUnlockFail)
-//        }
-//
-//        do {
+
+        guard let password = try? ProfileService.default.keyChain
+            .authenticationPrompt("Unlock secret key to sign message")
+            .get(signatureKey.longIdentifier) else {
+            throw TCError.composeError(reason: .keychainUnlockFail)
+        }
+
+        do {
+            var error: NSError?
+            let signedMessage = HelperSignCleartextMessageArmored(signatureKey.goKeyRing, password, message, &error)
+            if let signError = error {
+                throw signError
+            }
+            return signedMessage
 //            let signer = try DMSPGPSigner(secretKeyRing: secretKeyRing, password: password)
 //            return signer.sign(message: message)
-//        } catch {
-//            consolePrint(error)
-//            throw TCError.composeError(reason: .invalidSigner)
-//        }
-//    }
+        } catch {
+            consolePrint(error)
+            throw TCError.composeError(reason: .invalidSigner)
+        }
+    }
 
     /// Encrypt raw message to armored message. Create signnature if signatureKey not nil
     ///
@@ -201,29 +210,43 @@ extension KeyFactory {
     /// - Returns: armored encrypted message
     /// - Throws: empty recipients encrypt fail or sign fail (if signing)
     /// - Note: this method add signer to recipients when possible to prevent sender could not decrypt message
-//    static func encryptMessage(_ message: String, signatureKey: TCKey?, recipients: [TCKey]) throws -> String {
-//        guard !recipients.isEmpty else {
-//            throw TCError.composeError(reason: .emptyRecipients)
-//        }
-//
-//        // Get password for signature key
-//        var signatureKeyPassword: String?
-//        if let signatureKey = signatureKey {
-//            guard signatureKey.hasPublicKey, signatureKey.hasSecretKey else {
-//                throw TCError.composeError(reason: .invalidSigner)
-//            }
-//
-//            guard let password = try? ProfileService.default.keyChain
-//                .authenticationPrompt("Unlock secret key to sign message")
-//                .get(signatureKey.longIdentifier) else {
-//                throw TCError.composeError(reason: .keychainUnlockFail)
-//            }
-//            signatureKeyPassword = password
-//        }
-//
-//        do {
+    static func encryptMessage(_ message: String, signatureKey: TCKey?, recipients: [TCKey]) throws -> String {
+        guard !recipients.isEmpty else {
+            throw TCError.composeError(reason: .emptyRecipients)
+        }
+
+        // Get password for signature key
+        var signatureKeyPassword: String?
+        if let signatureKey = signatureKey {
+            guard signatureKey.hasPublicKey, signatureKey.hasSecretKey else {
+                throw TCError.composeError(reason: .invalidSigner)
+            }
+
+            guard let password = try? ProfileService.default.keyChain
+                .authenticationPrompt("Unlock secret key to sign message")
+                .get(signatureKey.longIdentifier) else {
+                throw TCError.composeError(reason: .keychainUnlockFail)
+            }
+            signatureKeyPassword = password
+        }
+
+        do {
+            var error: NSError?
+            var encrypted: String?
+            if signatureKey?.hasSecretKey ?? false, let password = signatureKeyPassword {
+                encrypted = HelperEncryptSignMessageArmored(signatureKey?.goKeyRing, signatureKey?.goKeyRing, password, message, &error)
+            } else {
+                encrypted = HelperEncryptMessageArmored(signatureKey?.goKeyRing, message, &error)
+            }
+            if let encryptError = error {
+                throw encryptError
+            }
+            guard let encryptedMessage = encrypted else {
+                throw TCError.composeError(reason: .internal)
+            }
+            return encryptedMessage
 //            var encryptor: DMSPGPEncryptor
-//            // Add encryption key of signer if possible otherwise sender (a.k.a signer) could not decrypt message
+            // Add encryption key of signer if possible otherwise sender (a.k.a signer) could not decrypt message
 //            if let secretKeyRing = signatureKey?.keyRing.secretKeyRing, let senderPublicKeyRing = signatureKey?.keyRing.publicKeyRing, let password = signatureKeyPassword {
 //                let publicKeyDataList = recipients.map { DMSPGPEncryptor.PublicKeyData(publicKeyRing: $0.keyRing.publicKeyRing, isHidden: false)  } + [ DMSPGPEncryptor.PublicKeyData(publicKeyRing: senderPublicKeyRing, isHidden: false)]
 //                encryptor = try DMSPGPEncryptor(publicKeyDataList: publicKeyDataList, secretKeyRing: secretKeyRing, password: password)
@@ -234,10 +257,10 @@ extension KeyFactory {
 //
 //            let encrypted = try encryptor.encrypt(message: message)
 //            return encrypted
-//        } catch {
-//            throw TCError.composeError(reason: .pgpError(error))
-//        }
-//
-//    }
+        } catch {
+            throw TCError.composeError(reason: .pgpError(error))
+        }
+
+    }
 
 }

@@ -33,7 +33,8 @@ class ShareUtil {
     }
 
     static func export(key: TCKey, from viewController: UIViewController, over view: UIView?) {
-        let armoedKeyString = key.armored
+        let passwordDict = ProfileService.default.getPasswordDict(keyIdentifiers: [key.longIdentifier])
+        let armoedKeyString = try? key.getPrivateArmored(passprahse: passwordDict[key.longIdentifier])
 
         let vc = UIActivityViewController(activityItems: [armoedKeyString], applicationActivities: [])
         vc.completionWithItemsHandler = { type, result, items, error in
