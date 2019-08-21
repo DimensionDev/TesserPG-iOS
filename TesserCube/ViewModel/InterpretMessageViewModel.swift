@@ -30,8 +30,8 @@ extension InterpretMessageViewModel {
 
     func interpretMessage() -> Single<Message> {
         do {
-//            let decryptedMessage = try ProfileService.default.decryptMessage(self.message.value)
-//            return .just(decryptedMessage)
+            let decryptedMessage = try ProfileService.default.decryptMessage(self.message.value)
+            return .just(decryptedMessage)
             return .never()
         } catch {
             return .error(error)

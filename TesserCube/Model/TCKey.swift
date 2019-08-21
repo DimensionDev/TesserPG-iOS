@@ -34,8 +34,8 @@ struct TCKey: KeychianMappable {
     }
     
     var keyID: String {
-        let keyIdInt = try? goKeyRing?.getEntity(0).primaryKey?.getId() ?? 0
-        return String(keyIdInt ?? 0)
+        let keyIDString = try? goKeyRing?.getEntity(0).primaryKey?.getId()
+        return keyIDString ?? ""
     }
     var longIdentifier: String {
         let longId = try? goKeyRing?.getEntity(0).primaryKey?.keyIdString() ?? ""
@@ -85,6 +85,15 @@ extension TCKey {
         return privateKey != nil
     }
     
+    var hasPrimaryEncryptionKey: Bool {
+        do {
+            let primaryEncryptionKey = try goKeyRing?.getEncryptionKey()
+            return primaryEncryptionKey != nil
+        } catch {
+            return false
+        }
+    }
+    
     var publicArmored: String? {
         do {
             var error: NSError?
@@ -110,6 +119,18 @@ extension TCKey {
         } catch {
             return nil
         }
+    }
+    
+    func getDecryptingKeyIDs() -> [String] {
+        var keyIds: [String] = []
+        for entityIndex in 0 ..< (goKeyRing?.getEntitiesCount() ?? 0) {
+            if let entity = try? goKeyRing?.getEntity(entityIndex) {
+                if let privateKey = entity.privateKey {
+                    keyIds.append(privateKey.getId())
+                }
+            }
+        }
+        return keyIds
     }
 
 //    var armored: String {
