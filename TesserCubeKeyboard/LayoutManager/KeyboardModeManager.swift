@@ -148,14 +148,31 @@ class KeyboardModeManager: NSObject {
     }
     
     func contextDidChange() {
+        var input = documentContextBeforeInput
         var latestWord = keyboardVC?.lastWord ?? ""
-        if #available(iOSApplicationExtension 11.0, *) {
-            if let selectedText = keyboardVC?.textDocumentProxy.selectedText {
-                latestWord = selectedText
-            }
+        if let selectedText = keyboardVC?.textDocumentProxy.selectedText {
+            latestWord = selectedText
+            input = selectedText
         }
+
+        // Auto-correct and user lexicon
+        // And without default suggestions. Should append manually.
         let suggesions = SuggestHelper.getSuggestion(latestWord, lexicon: keyboardVC?.lexicon)
-        optionsView.suggestionView?.updateSuggesions(suggesions)
+
+        // Aysnc suggestion depend on input string
+        let wordPredictor = WordSuggestionService.shared.wordPredictor
+        if !wordPredictor.needLoadNgramData, let input = input {
+            wordPredictor.suggestWords(for: input) { [weak self] words in
+                let predictWords = suggesions + words.map { $0.0 }
+                let isPeriodSuffix = input.trimmingCharacters(in: .whitespacesAndNewlines).hasSuffix(".")
+                let words = (predictWords.isEmpty && latestWord.isEmpty) || isPeriodSuffix ? SuggestHelper.defaultSuggestions : predictWords
+
+                self?.optionsView.suggestionView?.updateSuggesions(NSOrderedSet(array: words).array as! [String])
+            }
+        } else {
+            let words = suggesions.isEmpty ? SuggestHelper.defaultSuggestions : suggesions
+            optionsView.suggestionView?.updateSuggesions(NSOrderedSet(array: words).array as! [String])
+        }
     }
 }
 

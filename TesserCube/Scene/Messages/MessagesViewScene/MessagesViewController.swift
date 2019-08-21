@@ -138,28 +138,6 @@ class MessagesViewController: TCBaseViewController {
             .bind(to: viewModel._messages)
             .disposed(by: disposeBag)
 
-        viewModel.messages.asDriver()
-            .drive(onNext: { [weak self] messages in
-                if #available(iOS 13.0, *) {
-                    guard let dataSource = self?.viewModel.diffableDataSource as? UITableViewDiffableDataSource<MessagesViewModel.Section, Message> else {
-                        assertionFailure()
-                        return
-                    }
-
-                    let snapsot = NSDiffableDataSourceSnapshot<MessagesViewModel.Section, Message>()
-                    snapsot.appendSections([.main])
-                    snapsot.appendItems(messages)
-                    dataSource.apply(snapsot)
-
-                } else {
-                    // clear cache data when data source changed
-                    self?.viewModel.messageExpandedDict = [:]
-                    self?.viewModel.messageMaxNumberOfLinesDict = [:]
-                    self?.tableView.reloadData()
-                }
-            })
-            .disposed(by: disposeBag)
-
         segmentedControl.rx.selectedSegmentIndex
             .bind(to: viewModel.selectedSegmentIndex)
             .disposed(by: disposeBag)
@@ -234,6 +212,32 @@ extension MessagesViewController {
         viewModel.messageExpandedDict = [:]
         viewModel.messageMaxNumberOfLinesDict = [:]
         self.tableView.reloadData()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        viewModel.messages.asDriver()
+            .drive(onNext: { [weak self] messages in
+                if #available(iOS 13.0, *) {
+                    guard let dataSource = self?.viewModel.diffableDataSource as? UITableViewDiffableDataSource<MessagesViewModel.Section, Message> else {
+                        assertionFailure()
+                        return
+                    }
+
+                    var snapsot = NSDiffableDataSourceSnapshot<MessagesViewModel.Section, Message>()
+                    snapsot.appendSections([.main])
+                    snapsot.appendItems(messages)
+                    dataSource.apply(snapsot)
+
+                } else {
+                    // clear cache data when data source changed
+                    self?.viewModel.messageExpandedDict = [:]
+                    self?.viewModel.messageMaxNumberOfLinesDict = [:]
+                    self?.tableView.reloadData()
+                }
+            })
+            .disposed(by: disposeBag)
     }
 
     override func viewDidLayoutSubviews() {
