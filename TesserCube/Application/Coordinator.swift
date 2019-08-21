@@ -163,7 +163,6 @@ extension Coordinator {
 
 extension Coordinator {
 
-    // FIXME: SceneDelegate
     func handleUrl(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         guard url.scheme == "tessercube" else { return false }
         guard let host = url.host else { return false }
@@ -175,7 +174,8 @@ extension Coordinator {
                 return true
             }
         }
-        
+
+        // FIXME: SceneDelegate
         guard let rootVC = app.keyWindow?.rootViewController else { return false }
         present(scene: urlHost.scene, from: rootVC, transition: .modal, completion: nil)
         return true

@@ -36,6 +36,18 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 @available(iOS 13.0, *)
 extension SceneDelegate {
 
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        guard let url = URLContexts.first?.url else {
+            return
+        }
+        _ = Coordinator.main.handleUrl(UIApplication.shared, open: url)
+    }
+    
+}
+
+@available(iOS 13.0, *)
+extension SceneDelegate {
+
     private func configure(window: UIWindow?, with userActivity: NSUserActivity) {
 
     }
