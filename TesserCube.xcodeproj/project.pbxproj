@@ -334,6 +334,8 @@
 		DBBBC196224E29D70080790F /* KeychainMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBBC194224E29D70080790F /* KeychainMappable.swift */; };
 		DBBBC198224E29E50080790F /* ContactMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBBC197224E29E50080790F /* ContactMappable.swift */; };
 		DBBBC199224E29E50080790F /* ContactMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBBC197224E29E50080790F /* ContactMappable.swift */; };
+		DBC24B1423026BA800A4AE8D /* WordSuggestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC24B1323026BA800A4AE8D /* WordSuggestionService.swift */; };
+		DBC24B1523026BA800A4AE8D /* WordSuggestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC24B1323026BA800A4AE8D /* WordSuggestionService.swift */; };
 		DBC7DEBD2248C7F600DA4C3E /* RecipientContactPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC7DEBC2248C7F600DA4C3E /* RecipientContactPickerView.swift */; };
 		DBC7DEC12248D49E00DA4C3E /* ComposeMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC7DEC02248D49E00DA4C3E /* ComposeMessageViewModel.swift */; };
 		DBD63FDD229682E400E46FDC /* KeyFactory+TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */; };
@@ -604,12 +606,12 @@
 		DB66FE6E224A3CD600D82704 /* SenderContactPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderContactPickerView.swift; sourceTree = "<group>"; };
 		DB6AA3E92273218C00A7ADDF /* KeyFactory+BCOpenPGP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyFactory+BCOpenPGP.swift"; sourceTree = "<group>"; };
 		DB75454A2296A7C400B4E1EF /* CreateKeyOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateKeyOption.swift; sourceTree = "<group>"; };
-		DB9C11EA2292A36E00801BE0 /* DMSPGPKeyRingFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSPGPKeyRingFactory.swift; sourceTree = "<group>"; };
 		DBA0ACF322F800010088F03B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		DBB81AE0225DFF7A003D63C6 /* UIScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScreen.swift; sourceTree = "<group>"; };
 		DBBA87F52248B8F500B290AC /* ComposeMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeMessageViewController.swift; sourceTree = "<group>"; };
 		DBBBC194224E29D70080790F /* KeychainMappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMappable.swift; sourceTree = "<group>"; };
 		DBBBC197224E29E50080790F /* ContactMappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactMappable.swift; sourceTree = "<group>"; };
+		DBC24B1323026BA800A4AE8D /* WordSuggestionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordSuggestionService.swift; sourceTree = "<group>"; };
 		DBC7DEBC2248C7F600DA4C3E /* RecipientContactPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientContactPickerView.swift; sourceTree = "<group>"; };
 		DBC7DEC02248D49E00DA4C3E /* ComposeMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeMessageViewModel.swift; sourceTree = "<group>"; };
 		DBD638E5227EDC6B00E10BF2 /* JRE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JRE.framework; path = "../../../Java/j2objc-2.4/frameworks/JRE.framework"; sourceTree = "<group>"; };
@@ -688,7 +690,6 @@
 				8304E992221BF10000122637 /* Products */,
 				8304E9C5221BF1DD00122637 /* Frameworks */,
 				D1FFF0FDB0B433C2937C6F21 /* Pods */,
-				8315F0F12293C268006F0787 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -787,14 +788,6 @@
 			path = Share;
 			sourceTree = "<group>";
 		};
-		8315F0F12293C268006F0787 /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-				DB9C11EA2292A36E00801BE0 /* DMSPGPKeyRingFactory.swift */,
-			);
-			name = "Recovered References";
-			sourceTree = "<group>";
-		};
 		8320AF4822B64C8D00843FE7 /* Introduction */ = {
 			isa = PBXGroup;
 			children = (
@@ -886,6 +879,7 @@
 			isa = PBXGroup;
 			children = (
 				832146B0223F7D98008ECC22 /* ProfileService.swift */,
+				DBC24B1323026BA800A4AE8D /* WordSuggestionService.swift */,
 				833FF38C224F97BD00EFE0A9 /* ProfileService+Message.swift */,
 				DB3B58E12282929700879834 /* WormholdService.swift */,
 			);
@@ -1921,6 +1915,7 @@
 				83783379224BA43700F2C0BF /* ContactDBAction.swift in Sources */,
 				832146FC2244CD43008ECC22 /* MessagesViewModel.swift in Sources */,
 				832146E7224339EB008ECC22 /* CreateNewKeyViewController.swift in Sources */,
+				DBC24B1423026BA800A4AE8D /* WordSuggestionService.swift in Sources */,
 				83FF06582250D9DA0003BC0D /* MessageDBAction.swift in Sources */,
 				832146BE223F957B008ECC22 /* MeViewModel.swift in Sources */,
 				DB4CBCAA224F962A00ED6BF0 /* InterpretMessageViewModel.swift in Sources */,
@@ -2071,6 +2066,7 @@
 				83B93D3A221D486600F556C0 /* KeyboardModel.swift in Sources */,
 				8325E487222E768500EE9B83 /* Debounce.swift in Sources */,
 				8310B34522325E0C00C35AEC /* String+Compare.swift in Sources */,
+				DBC24B1523026BA800A4AE8D /* WordSuggestionService.swift in Sources */,
 				833FF395224F9D8100EFE0A9 /* KeyboardInterpretor.swift in Sources */,
 				83783369224B32AC00F2C0BF /* PGPUserIDTranslator.swift in Sources */,
 				83DFC73722577B9800993160 /* WormHole.swift in Sources */,

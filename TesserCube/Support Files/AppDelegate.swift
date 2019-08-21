@@ -22,6 +22,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Setup Application
         Application.applicationConfigInit(application, launchOptions: launchOptions)
 
+        let wordPredictor = WordSuggestionService.shared.wordPredictor
+        if wordPredictor.needLoadNgramData {
+            wordPredictor.load { error in
+                consolePrint(error?.localizedDescription ?? "NGram realm setup success")
+            }
+        }
+
         #if DEBUG
         consolePrint(TCDBManager.dbDirectoryUrl)
         consolePrint(TCDBManager.dbFilePath)

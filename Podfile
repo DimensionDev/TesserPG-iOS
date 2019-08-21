@@ -23,6 +23,8 @@ def common_pods
   pod 'GRDB.swift', '~> 3.7.0'
   pod 'GRDBCipher', '~> 3.7.0'
   pod 'DeepDiff', '~> 2.0.1'
+
+  pod 'WordSuggestion'
 end
 
 def common_ui_pods
