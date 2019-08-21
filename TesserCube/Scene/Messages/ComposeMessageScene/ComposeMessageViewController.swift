@@ -279,69 +279,69 @@ private extension ComposeMessageViewController {
         let senderKey = fromContactPickerCellView.viewModel.selectedKey.value
         let recipientKeys = tags.compactMap { $0.key }
 
-//        let invalidKeys = recipientKeys.filter { $0.keyRing.publicKeyRing.primaryEncryptionKey == nil }
-//
-//        if tags.contains(where: { $0.contact == nil }) {
-//            let alertController = UIAlertController(title: L10n.ComposeMessageViewController.Alert.Title.skipInvalidResipients, message: nil, preferredStyle: .actionSheet)
-//            let finishAction = UIAlertAction(title: L10n.ComposeMessageViewController.Alert.Message.skipAndFinish, style: .destructive) { [weak self] _ in
-//                self?.doComposeMessage(rawMessage, to: recipientKeys, from: senderKey)
-//            }
-//            let cancelAction = UIAlertAction(title: L10n.Common.Button.cancel, style: .cancel, handler: nil)
-//            alertController.addAction(finishAction)
-//            alertController.addAction(cancelAction)
-//
-//            if let presenter = alertController.popoverPresentationController {
-//                presenter.barButtonItem = sender
-//                presenter.permittedArrowDirections = []
-//            }
-//
-//            present(alertController, animated: true, completion: nil)
-//        } else if !invalidKeys.isEmpty {
-//            let fingerprints = invalidKeys.map { $0.fingerprint }.joined(separator: ", ")
-//
-//            let alertController = UIAlertController(title: L10n.ComposeMessageViewController.Alert.Title.missingEncryptionKey, message: L10n.ComposeMessageViewController.Alert.Message.missingEncryptionKey(fingerprints), preferredStyle: .alert)
-//            let okAction = UIAlertAction(title: L10n.Common.Button.ok, style: .default, handler: nil)
-//            alertController.addAction(okAction)
-//
-//            present(alertController, animated: true, completion: nil)
-//
-//        } else {
-//            doComposeMessage(rawMessage, to: recipientKeys, from: senderKey)
-//        }
+        let invalidKeys = recipientKeys.filter { !$0.hasPrimaryEncryptionKey }
+
+        if tags.contains(where: { $0.contact == nil }) {
+            let alertController = UIAlertController(title: L10n.ComposeMessageViewController.Alert.Title.skipInvalidResipients, message: nil, preferredStyle: .actionSheet)
+            let finishAction = UIAlertAction(title: L10n.ComposeMessageViewController.Alert.Message.skipAndFinish, style: .destructive) { [weak self] _ in
+                self?.doComposeMessage(rawMessage, to: recipientKeys, from: senderKey)
+            }
+            let cancelAction = UIAlertAction(title: L10n.Common.Button.cancel, style: .cancel, handler: nil)
+            alertController.addAction(finishAction)
+            alertController.addAction(cancelAction)
+
+            if let presenter = alertController.popoverPresentationController {
+                presenter.barButtonItem = sender
+                presenter.permittedArrowDirections = []
+            }
+
+            present(alertController, animated: true, completion: nil)
+        } else if !invalidKeys.isEmpty {
+            let fingerprints = invalidKeys.map { $0.fingerprint }.joined(separator: ", ")
+
+            let alertController = UIAlertController(title: L10n.ComposeMessageViewController.Alert.Title.missingEncryptionKey, message: L10n.ComposeMessageViewController.Alert.Message.missingEncryptionKey(fingerprints), preferredStyle: .alert)
+            let okAction = UIAlertAction(title: L10n.Common.Button.ok, style: .default, handler: nil)
+            alertController.addAction(okAction)
+
+            present(alertController, animated: true, completion: nil)
+
+        } else {
+            doComposeMessage(rawMessage, to: recipientKeys, from: senderKey)
+        }
     }
 
     // Note: Create new message whatever compose or re-compose except for draft.
     private func doComposeMessage(_ rawMessage: String, to recipients: [TCKey], from sender: TCKey?, password: String? = nil) {
-//        ComposeMessageViewModel.composeMessage(rawMessage, to: recipients, from: sender, password: password)
-//            .subscribeOn(ConcurrentDispatchQueueScheduler.init(qos: .userInitiated))
-//            .observeOn(MainScheduler.instance)
-//            .subscribe(onSuccess: { [weak self] armored in
-//                guard let `self` = self else { return }
-//                if var message = self.viewModel.message.value, message.isDraft {
-//                    // TODO: handle error if throw
-//                    do {
-//                        try message.updateDraftMessage(senderKeyID: sender?.longIdentifier ?? "", senderKeyUserID: sender?.userID ?? "", rawMessage: rawMessage, recipients: recipients, isDraft: false, armoredMessage: armored)
-//                    } catch {
-//                        consolePrint(error.localizedDescription)
-//                    }
-//                } else {
-//                    var message = Message(id: nil, senderKeyId: sender?.longIdentifier ?? "", senderKeyUserId: sender?.userID ?? "", composedAt: Date(), interpretedAt: nil, isDraft: false, rawMessage: rawMessage, encryptedMessage: armored)
-//                    // TODO: handle error if throw
-//                    do {
-//                        self.composedMessage = try ProfileService.default.addMessage(&message, recipientKeys: recipients)
-//                    } catch {
-//                        consolePrint(error.localizedDescription)
-//                    }
-//                }
-//
-//                self.self.dismiss()
-//
-//                }, onError: { [weak self] error in
-//                    guard let `self` = self else { return }
-//                    let message = (error as? TCError)?.errorDescription ?? error.localizedDescription
-//                    self.showSimpleAlert(title: L10n.Common.Alert.error, message: message)
-//            })
-//            .disposed(by: self.disposeBag)
+        ComposeMessageViewModel.composeMessage(rawMessage, to: recipients, from: sender, password: password)
+            .subscribeOn(ConcurrentDispatchQueueScheduler.init(qos: .userInitiated))
+            .observeOn(MainScheduler.instance)
+            .subscribe(onSuccess: { [weak self] armored in
+                guard let `self` = self else { return }
+                if var message = self.viewModel.message.value, message.isDraft {
+                    // TODO: handle error if throw
+                    do {
+                        try message.updateDraftMessage(senderKeyID: sender?.longIdentifier ?? "", senderKeyUserID: sender?.userID ?? "", rawMessage: rawMessage, recipients: recipients, isDraft: false, armoredMessage: armored)
+                    } catch {
+                        consolePrint(error.localizedDescription)
+                    }
+                } else {
+                    var message = Message(id: nil, senderKeyId: sender?.longIdentifier ?? "", senderKeyUserId: sender?.userID ?? "", composedAt: Date(), interpretedAt: nil, isDraft: false, rawMessage: rawMessage, encryptedMessage: armored)
+                    // TODO: handle error if throw
+                    do {
+                        self.composedMessage = try ProfileService.default.addMessage(&message, recipientKeys: recipients)
+                    } catch {
+                        consolePrint(error.localizedDescription)
+                    }
+                }
+
+                self.self.dismiss()
+
+                }, onError: { [weak self] error in
+                    guard let `self` = self else { return }
+                    let message = (error as? TCError)?.errorDescription ?? error.localizedDescription
+                    self.showSimpleAlert(title: L10n.Common.Alert.error, message: message)
+            })
+            .disposed(by: self.disposeBag)
     }
 
 }

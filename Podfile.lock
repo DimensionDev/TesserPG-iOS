@@ -5,7 +5,7 @@ PODS:
   - DateToolsSwift (4.0.0)
   - DeepDiff (2.0.1)
   - DeviceKit (1.11.0)
-  - DMSGoPGP (0.0.6)
+  - DMSGoPGP (0.0.10)
   - DMSOpenPGP (0.1.3):
     - BouncyCastle-ObjC (~> 0.1.0)
     - OpenSSL-Universal (~> 1.0.2.17)
@@ -70,7 +70,7 @@ DEPENDENCIES:
   - DateToolsSwift (~> 4.0.0)
   - DeepDiff (~> 2.0.1)
   - DeviceKit (~> 1.11.0)
-  - DMSGoPGP (~> 0.0.6)
+  - DMSGoPGP (~> 0.0.10)
   - DMSOpenPGP (~> 0.1.3)
   - Eureka (~> 4.3.1)
   - FLEX (~> 2.4.0)
@@ -130,7 +130,7 @@ SPEC CHECKSUMS:
   DateToolsSwift: 875d97ff9e3a5d54abdd67a269b3f51c757b71ab
   DeepDiff: 1944bb2c841ab238a66b31de1faa7627f3ca84bd
   DeviceKit: a3a86f8dddbe1317a9a243cdf9646858bf135dce
-  DMSGoPGP: 2cd1986cd106c9759e7d35a0fd65811daa4c791a
+  DMSGoPGP: a8e9504bb152938cd2837711d944a7af3456dd7f
   DMSOpenPGP: d863b4fb6700db9bdf668397a4ce89cbf26b470a
   Eureka: 28ea296f06710f6745266b71f17862048941a32d
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
@@ -155,6 +155,6 @@ SPEC CHECKSUMS:
   "UITextView+Placeholder": 0c3efd97f37ea64bde7f34cc6e90fe02e87b3909
   WordSuggestion: 14528602cdaa4c621dd240736b4e448e75380943
 
-PODFILE CHECKSUM: 66e47dd9b24fa3980339982014924a8ab70ce37c
+PODFILE CHECKSUM: 5f00d9e072ba1637c46619475297a370c0465960
 
 COCOAPODS: 1.7.5

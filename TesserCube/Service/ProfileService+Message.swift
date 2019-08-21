@@ -104,50 +104,50 @@ extension ProfileService {
     ///
     /// - Parameter message: armored message
     /// - Returns: Message
-//    func decryptMessage(_ message: String) throws -> Message {
-//        do {
-//            guard !message.isEmpty else {
-//                throw TCError.interpretError(reason: .emptyMessage)
-//            }
-//            
-//            let trimmedMessage = message.trimmingCharacters(in: .whitespacesAndNewlines)
-//            
-//            // Check if message already interpreted
-//            if var existMessage = interptedMessage(trimmedMessage) {
-//                // If yes, just return the message
-//                try existMessage.updateInterpretedDate(Date())
-//                return existMessage
-//            }
-//
-//            var senderKeyID = ""
-//            var senderKeyUserID = ""
-//            let decryptInfo = try KeyFactory.decryptMessage(message)
-//            switch decryptInfo.verifyResult {
-//            case .noSignature:
-//                break
-//            case .valid, .invalid:
-//                senderKeyID = decryptInfo.signatureKey?.longIdentifier ?? ""
-//                senderKeyUserID = decryptInfo.signatureKey?.userID ?? ""
-//            case .unknownSigner(let infos):
-//                // This is real KeyID of signature key (not long identifier)
-//                senderKeyID = infos.first?.keyID ?? ""
-//                senderKeyUserID = infos.first?.primaryUserID ?? ""
-//            }
-//
-//            var interpretedMessage = Message(id: nil,
-//                                             senderKeyId: senderKeyID,
-//                                             senderKeyUserId: senderKeyUserID,
-//                                             composedAt: nil,
-//                                             interpretedAt: Date(),
-//                                             isDraft: false,
-//                                             rawMessage: decryptInfo.message,
-//                                             encryptedMessage: message)
-//            
-//            try ProfileService.default.addMessage(&interpretedMessage, recipientKeys: decryptInfo.recipientKeys)
-//            return interpretedMessage
-//        } catch let error {
-//            consolePrint(error.localizedDescription)
-//            throw error
-//        }
-//    }
+    func decryptMessage(_ message: String) throws -> Message {
+        do {
+            guard !message.isEmpty else {
+                throw TCError.interpretError(reason: .emptyMessage)
+            }
+            
+            let trimmedMessage = message.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            // Check if message already interpreted
+            if var existMessage = interptedMessage(trimmedMessage) {
+                // If yes, just return the message
+                try existMessage.updateInterpretedDate(Date())
+                return existMessage
+            }
+
+            var senderKeyID = ""
+            var senderKeyUserID = ""
+            let decryptInfo = try KeyFactory.decryptMessage(message)
+            switch decryptInfo.verifyResult {
+            case .noSignature:
+                break
+            case .valid, .invalid:
+                senderKeyID = decryptInfo.signatureKey?.longIdentifier ?? ""
+                senderKeyUserID = decryptInfo.signatureKey?.userID ?? ""
+            case .unknownSigner(let infos):
+                // This is real KeyID of signature key (not long identifier)
+                senderKeyID = infos.first?.keyID ?? ""
+                senderKeyUserID = infos.first?.primaryUserID ?? ""
+            }
+
+            var interpretedMessage = Message(id: nil,
+                                             senderKeyId: senderKeyID,
+                                             senderKeyUserId: senderKeyUserID,
+                                             composedAt: nil,
+                                             interpretedAt: Date(),
+                                             isDraft: false,
+                                             rawMessage: decryptInfo.message,
+                                             encryptedMessage: message)
+            
+            try ProfileService.default.addMessage(&interpretedMessage, recipientKeys: decryptInfo.recipientKeys)
+            return interpretedMessage
+        } catch let error {
+            consolePrint(error.localizedDescription)
+            throw error
+        }
+    }
 }
