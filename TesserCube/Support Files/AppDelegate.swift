@@ -26,8 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        try? realm.commitWrite()
 //        #endif
 
-        let wordPredictor = WordSuggestionService.shared.wordPredictor
-        if wordPredictor.needLoadNgramData {
+        if let wordPredictor = WordSuggestionService.shared.wordPredictor, wordPredictor.needLoadNgramData {
             wordPredictor.load { error in
                 consolePrint(error?.localizedDescription ?? "NGram realm setup success")
             }
