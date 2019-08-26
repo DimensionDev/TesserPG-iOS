@@ -9,28 +9,37 @@
 import Foundation
 import WordSuggestion
 import RealmSwift
+import ConsolePrint
 
 final class WordSuggestionService {
 
     // swiftlint:disable force_try
-    let realm: Realm = {
+    let realm: Realm? = {
         var config = Realm.Configuration()
         let realmName = "WordPredictor_default"
         config.fileURL = TCDBManager.dbDirectoryUrl.appendingPathComponent("\(realmName).realm")
         config.objectTypes = [NGram1.self, NGram2.self, NGram3.self, NGram4.self]
         try? FileManager.default.createDirectory(at: config.fileURL!.deletingLastPathComponent(), withIntermediateDirectories: true, attributes: nil)
 
-        return try! Realm(configuration: config)
+        do {
+            return try Realm(configuration: config)
+        } catch {
+            consolePrint(error.localizedDescription)
+            return nil
+        }
     }()
 
-    lazy private(set) var wordPredictor = WordPredictor(ngramPath: WordPredictor.NgramPath.default!, realm: realm)
+    private(set) var wordPredictor: WordPredictor?
     // swiftlint:enable force_try
 
     // MARK: - Singleton
     public static let shared = WordSuggestionService()
 
     private init() {
-
+        guard let ngramPath = WordPredictor.NgramPath.default, let realm = realm else {
+            return
+        }
+        wordPredictor = WordPredictor(ngramPath: ngramPath, realm: realm)
     }
 
 }
