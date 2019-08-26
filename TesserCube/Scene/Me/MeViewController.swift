@@ -256,15 +256,11 @@ extension MeViewController {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension MeViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 126
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) as? KeyCardCell else { return }
-        viewModel.cellDidClick.accept(cell)
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -275,4 +271,38 @@ extension MeViewController: UITableViewDelegate {
         return 20
     }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) as? KeyCardCell else { return }
+
+        if #available(iOS 13.0, *), case .TCKey = cell.keyValue {
+            // Use MeViewController.tableView(_:contextMenuConfigurationForRowAt:point:) API
+        } else {
+            // Fallback to UIAlertController
+            viewModel.cellDidClick.accept(cell)
+        }
+    }
+
+    @available(iOS 13.0, *)
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        guard let cell = tableView.cellForRow(at: indexPath) as? KeyCardCell,
+        case .TCKey = cell.keyValue else {
+            return nil
+        }
+
+        let action = UIAction(title: "Action") { _ in
+
+        }
+
+        let children = [
+            UIMenu(title: "Title", image: nil, identifier: nil, options: [], children: [action]),
+            UIMenu(title: "Title 2", image: nil, identifier: nil, options: [], children: [action])
+        ]
+
+        return UIContextMenuConfiguration(
+            identifier: indexPath as NSCopying,
+            previewProvider: nil,
+            actionProvider: { suggestedActions in
+                return UIMenu(title: "", image: nil, identifier: nil, options: [], children: children)
+            })
+    }
 }
