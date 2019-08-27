@@ -48,7 +48,6 @@ final class InterpretActionViewModel: NSObject {
             })
             .disposed(by: disposeBag)
 
-
     }   // end init()
 
 }
@@ -65,4 +64,3 @@ extension InterpretActionViewModel {
     }
 
 }
-
