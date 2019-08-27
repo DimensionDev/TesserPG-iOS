@@ -11,6 +11,7 @@ import RxSwift
 import RxCocoa
 import MobileCoreServices
 import ConsolePrint
+import os
 
 final class InterpretActionViewController: UIViewController {
 
@@ -19,8 +20,7 @@ final class InterpretActionViewController: UIViewController {
     private lazy var messageCardViewController = MessageCardViewController()
     private lazy var brokenMessageViewController = BrokenMessageViewController()
 
-    private let viewModel = InterpretActionViewModel()
-
+    let viewModel = InterpretActionViewModel()
 }
 
 extension InterpretActionViewController {
@@ -61,7 +61,7 @@ extension InterpretActionViewController {
                     self.view.addSubview(controller.view)
                     controller.didMove(toParent: self)
 
-                    controller.messageLabel.text = self.viewModel.inputTexts.joined(separator: "\n")
+                    controller.viewModel.message.accept(self.viewModel.inputTexts.joined(separator: "\n"))
                 }
             })
             .disposed(by: disposeBag)
@@ -70,14 +70,21 @@ extension InterpretActionViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
+        #if TARGET_IS_EXTENSION
         extractInputFromExtensionContext()
         NotificationCenter.default.addObserver(self, selector: #selector(InterpretActionViewController.extensionContextCompleteRequest(_:)), name: .extensionContextCompleteRequest, object: nil)
+        #else
+        // delay view model finalize to controller appear
+        // prevent Touch ID & Face ID permission auth alert not display issue
+        viewModel.finalizeInput()
+        #endif
     }
 
 }
 
 extension InterpretActionViewController {
 
+    #if TARGET_IS_EXTENSION
     private func extractInputFromExtensionContext() {
         // check input text
         let providers = extensionContext
@@ -95,12 +102,24 @@ extension InterpretActionViewController {
             let typeIdentifier = kUTTypePlainText as String
             guard provider.hasItemConformingToTypeIdentifier(typeIdentifier) else { continue }
 
+            //swiftlint:disable force_cast
             provider.loadItem(forTypeIdentifier: typeIdentifier, options: nil) { [weak self] text, error in
                 guard let `self` = self else { return }
                 guard error == nil else { return }
-                guard let text = text as? String else { return }
+                switch text {
+                case is String:
+                    os_log("%{public}s[%{public}ld], %{public}s: %{public}s", ((#file as NSString).lastPathComponent), #line, #function, text as! String)
+                    let message = (text as? String) ?? ""
+                    self.viewModel.inputTexts.append(message)
 
-                self.viewModel.inputTexts.append(text)
+                case is URL:
+                    os_log("%{public}s[%{public}ld], %{public}s: %{public}s", ((#file as NSString).lastPathComponent), #line, #function, String(describing: text as! URL))
+                    // Notes: ignore URL if pass in
+                    // [ERROR] Failed to determine whether URL /var/mobile/Containers/Data/Application/78FFF5C0-FDEC-4E26-891B-E525885AD987/Documents/temporary/20190827-170106.txt (s) is managed by a file provider
+                    // InterpretActionViewController.swift[133], extractInputFromExtensionContext(): file:///var/mobile/Containers/Data/Application/BBC162F1-AAF5-431A-AEA1-A1843C24C5C3/Documents/temporary/20190827-165641.txt
+                default:
+                    os_log("%{public}s[%{public}ld], %{public}s: %{public}s", ((#file as NSString).lastPathComponent), #line, #function, String(describing: text))
+                }
 
                 if i == providers.count - 1 {
                     // notify viewModel done
@@ -109,13 +128,16 @@ extension InterpretActionViewController {
                     }
                 }
             }
+            //swiftlint:enable force_cast
         }   // end for … in …
     }
+    #endif
 
 }
 
 extension InterpretActionViewController {
 
+    #if TARGET_IS_EXTENSION
     @objc private func extensionContextCompleteRequest(_ notification: Notification) {
         guard let _ = notification.object as? ComposeMessageViewController,
         let message = notification.userInfo?["message"] as? Message else {
@@ -126,9 +148,14 @@ extension InterpretActionViewController {
         messageCardViewController.viewModel.allowActions.accept([.copy])
         viewModel.composedMessage.accept(message)
     }
+    #endif
 
     @objc private func doneBarButtonItemPressed(_ sender: UIBarButtonItem) {
+        #if TARGET_IS_EXTENSION
         self.extensionContext!.completeRequest(returningItems: self.extensionContext!.inputItems, completionHandler: nil)
+        #else
+        dismiss(animated: true, completion: nil)
+        #endif
     }
 
 }

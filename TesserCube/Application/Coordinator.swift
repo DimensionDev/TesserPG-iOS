@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DMSOpenPGP
 
 class Coordinator {
     
@@ -29,6 +30,7 @@ class Coordinator {
         case interpretMessage
         case importKey
         case pasteKey(needPassphrase: Bool)
+        case pasteKeyWith(armoredKey: String, needPassphrase: Bool)
         case createKey
         case pickContacts(delegate: PickContactsDelegate?, selectedContacts: [Contact])
         case contactDetail(contactId: Int64)
@@ -36,6 +38,8 @@ class Coordinator {
         case settings
         case messageDigitalSignatureSettings(viewModel: MessageDigitalSignatureSettingsViewModel, delegate: MessageDigitalSignatureSettingsViewControllerDelegate)
         case importKeyConfirm(key: TCKey, passphrase: String?)
+        case interpretAction(message: String)
+        case brokenMessage(message: String?)
     }
     
     enum URLHost: String {
@@ -108,6 +112,12 @@ extension Coordinator {
             vc.needPassphrase = needPassphrase
             vc.hidesBottomBarWhenPushed = true
             return vc
+        case let .pasteKeyWith(armoredKey, needPassphrase):
+            let vc = PasteKeyViewController()
+            vc.armoredKey = armoredKey
+            vc.needPassphrase = needPassphrase
+            vc.hidesBottomBarWhenPushed = true
+            return vc
         case .createKey:
             let vc = CreateNewKeyViewController()
             vc.hidesBottomBarWhenPushed = true
@@ -149,25 +159,62 @@ extension Coordinator {
                 vc.hidesBottomBarWhenPushed = true
                 return vc
             }
+        case .interpretAction(let message):
+            let vc = InterpretActionViewController()
+            vc.viewModel.inputTexts = [message]
+            return vc
+        case .brokenMessage(let message):
+            let vc = BrokenMessageViewController()
+            vc.viewModel.message.accept(message)
+            return vc
         }
     }
 }
 
 extension Coordinator {
     func handleUrl(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        guard url.scheme == "tessercube" else { return false }
-        guard let host = url.host else { return false }
-        guard let urlHost = URLHost(rawValue: host) else { return false }
-        
-        if case .fullAccess = urlHost {
-            if app.canOpenURL(URL(string: UIApplication.openSettingsURLString)!) {
-                app.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
+        switch url.scheme {
+        case "file":
+            let plainText = try? String(contentsOf: url, encoding: .utf8)
+            let rootViewController = UIApplication.shared.keyWindow?.rootViewController
+
+            guard let message = plainText, !message.isEmpty else {
+                Coordinator.main.present(scene: .brokenMessage(message: plainText), from: rootViewController, transition: .modal)
                 return true
             }
+
+            let hasSecretKey = DMSPGPKeyRing.extractSecretKeyBlock(from: message) != nil
+            guard !hasSecretKey else {
+                Coordinator.main.present(scene: .pasteKeyWith(armoredKey: message, needPassphrase: true), from: rootViewController, transition: .modal, completion: nil)
+                return true
+            }
+
+            let hasPublicKey = DMSPGPKeyRing.extractPublicKeyBlock(from: message) != nil
+            guard !hasPublicKey else {
+                Coordinator.main.present(scene: .pasteKeyWith(armoredKey: message, needPassphrase: false), from: rootViewController, transition: .modal, completion: nil)
+                return true
+            }
+
+            Coordinator.main.present(scene: .interpretAction(message: message), from: rootViewController, transition: .modal, completion: nil)
+            return true
+
+        case "tessercube":
+            guard let host = url.host, let urlHost = URLHost(rawValue: host) else {
+                return false
+            }
+
+            switch urlHost {
+            case .fullAccess:
+                if app.canOpenURL(URL(string: UIApplication.openSettingsURLString)!) {
+                    app.open(URL(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
+                    return true
+                } else {
+                    return false
+                }
+            }
+
+        default:
+            return false
         }
-        
-        guard let rootVC = app.keyWindow?.rootViewController else { return false }
-        present(scene: urlHost.scene, from: rootVC, transition: .modal, completion: nil)
-        return true
     }
 }
