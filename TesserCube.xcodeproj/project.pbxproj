@@ -230,6 +230,9 @@
 		DB1169E522E1B63D0099BA25 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB1169E722E1B63D0099BA25 /* InfoPlist.strings */; };
 		DB1327152253651C00BD7B98 /* KeyBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1327142253651C00BD7B98 /* KeyBridge.swift */; };
 		DB1327162253651C00BD7B98 /* KeyBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1327142253651C00BD7B98 /* KeyBridge.swift */; };
+		DB1449732313F9CF000FA38E /* BrokenMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB63A10D22DF2A5900C2DDA6 /* BrokenMessageViewController.swift */; };
+		DB1449742314F1E1000FA38E /* InterpretActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB63A10B22DEF75100C2DDA6 /* InterpretActionViewModel.swift */; };
+		DB1449752314F1E4000FA38E /* InterpretActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB63A0D122DD82EE00C2DDA6 /* InterpretActionViewController.swift */; };
 		DB3B58E22282929700879834 /* WormholdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3B58E12282929700879834 /* WormholdService.swift */; };
 		DB3B58E52282930600879834 /* WormholdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3B58E12282929700879834 /* WormholdService.swift */; };
 		DB449989228C038E000B7E8A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB449988228C038E000B7E8A /* SettingsViewController.swift */; };
@@ -561,6 +564,7 @@
 		C0A9D10AB1612B0483E24D78 /* Pods-TesserCube.debug pgp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.debug pgp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.debug pgp.xcconfig"; sourceTree = "<group>"; };
 		DB0758A1224493DB0046FBFD /* PGPUserIDTranslator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGPUserIDTranslator.swift; sourceTree = "<group>"; };
 		DB0758CF224895B40046FBFD /* MessageCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCardCell.swift; sourceTree = "<group>"; };
+		DB0D9F3723152006007C293F /* FileProvider.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FileProvider.framework; path = System/Library/Frameworks/FileProvider.framework; sourceTree = SDKROOT; };
 		DB1169CA22E185640099BA25 /* NotificationName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationName.swift; sourceTree = "<group>"; };
 		DB1169D122E187340099BA25 /* TesserCubeComposeAction.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TesserCubeComposeAction.entitlements; sourceTree = "<group>"; };
 		DB1169D322E19ABF0099BA25 /* MessageCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCardViewController.swift; sourceTree = "<group>"; };
@@ -746,6 +750,7 @@
 		8304E9C5221BF1DD00122637 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DB0D9F3723152006007C293F /* FileProvider.framework */,
 				DBD638E5227EDC6B00E10BF2 /* JRE.framework */,
 				8304E9C6221BF1DD00122637 /* AuthenticationServices.framework */,
 				829EC06ABC2887E5DB724F5B /* Pods_TesserCube.framework */,
@@ -821,6 +826,7 @@
 				832146AC223F7CCA008ECC22 /* Me */,
 				8313F69922476F4800C09C2D /* Share */,
 				832146A3223F6045008ECC22 /* Base */,
+				DB1449762314F1F1000FA38E /* Action */,
 				832146A7223F65CB008ECC22 /* Common */,
 			);
 			path = Scene;
@@ -912,6 +918,7 @@
 				832146BD223F957B008ECC22 /* MeViewModel.swift */,
 				DB44999B228C248D000B7E8A /* SettingsViewModel.swift */,
 				DB44999D228D3353000B7E8A /* MessageDigitalSignatureSettingsViewModel.swift */,
+				DB63A10B22DEF75100C2DDA6 /* InterpretActionViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1286,6 +1293,15 @@
 			path = MessageCardScene;
 			sourceTree = "<group>";
 		};
+		DB1449762314F1F1000FA38E /* Action */ = {
+			isa = PBXGroup;
+			children = (
+				DB63A0D122DD82EE00C2DDA6 /* InterpretActionViewController.swift */,
+				DB63A10D22DF2A5900C2DDA6 /* BrokenMessageViewController.swift */,
+			);
+			path = Action;
+			sourceTree = "<group>";
+		};
 		DB44998C228C0AAE000B7E8A /* SettingsScene */ = {
 			isa = PBXGroup;
 			children = (
@@ -1319,9 +1335,6 @@
 			isa = PBXGroup;
 			children = (
 				DB63A10822DDD1EC00C2DDA6 /* TesserCubeInterpretAction.entitlements */,
-				DB63A10B22DEF75100C2DDA6 /* InterpretActionViewModel.swift */,
-				DB63A0D122DD82EE00C2DDA6 /* InterpretActionViewController.swift */,
-				DB63A10D22DF2A5900C2DDA6 /* BrokenMessageViewController.swift */,
 				DB63A0D322DD82EE00C2DDA6 /* MainInterface.storyboard */,
 				DB63A12F22E163A700C2DDA6 /* InfoPlist.strings */,
 				DB63A0D622DD82EE00C2DDA6 /* Info.plist */,
@@ -1909,6 +1922,7 @@
 				DB4F300122A11F820003804B /* Contact.swift in Sources */,
 				8313F6932247165F00C09C2D /* FloatingActionGroup.swift in Sources */,
 				832146CD2240B135008ECC22 /* TCBaseViewController.swift in Sources */,
+				DB1449732313F9CF000FA38E /* BrokenMessageViewController.swift in Sources */,
 				DB3B58E22282929700879834 /* WormholdService.swift in Sources */,
 				83783383224CB7F500F2C0BF /* strings.swift in Sources */,
 				DB66FE6A224A330D00D82704 /* String.swift in Sources */,
@@ -1921,6 +1935,7 @@
 				83FF06582250D9DA0003BC0D /* MessageDBAction.swift in Sources */,
 				832146BE223F957B008ECC22 /* MeViewModel.swift in Sources */,
 				DB4CBCAA224F962A00ED6BF0 /* InterpretMessageViewModel.swift in Sources */,
+				DB1449752314F1E4000FA38E /* InterpretActionViewController.swift in Sources */,
 				8378335E2248F1DE00F2C0BF /* HUD.swift in Sources */,
 				DB449990228C13CA000B7E8A /* MessageDigitalSignatureSettings.swift in Sources */,
 				DB44999E228D3353000B7E8A /* MessageDigitalSignatureSettingsViewModel.swift in Sources */,
@@ -1954,6 +1969,7 @@
 				83783371224B384000F2C0BF /* ContactCell.swift in Sources */,
 				832146A5223F604F008ECC22 /* BaseNavigationController.swift in Sources */,
 				8378337F224CB06B00F2C0BF /* ContactEditViewController.swift in Sources */,
+				DB1449742314F1E1000FA38E /* InterpretActionViewModel.swift in Sources */,
 				DBD63FDD229682E400E46FDC /* KeyFactory+TCKey.swift in Sources */,
 				832146B3223F8725008ECC22 /* TCCardView.swift in Sources */,
 				8320AF4A22B64D1C00843FE7 /* IntroWizardViewController.swift in Sources */,
