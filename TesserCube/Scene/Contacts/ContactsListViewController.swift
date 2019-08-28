@@ -133,7 +133,7 @@ class ContactsListViewController: TCBaseViewController {
     @objc
     private func addContactButtonDidClicked(_ sender: UIBarButtonItem) {
         #if !TARGET_IS_EXTENSION
-        Coordinator.main.present(scene: .pasteKey(needPassphrase: false), from: self, transition: .modal, completion: nil)
+        Coordinator.main.present(scene: .pasteKey(armoredKey: nil, needPassphrase: false), from: self, transition: .modal, completion: nil)
         #endif
     }
     

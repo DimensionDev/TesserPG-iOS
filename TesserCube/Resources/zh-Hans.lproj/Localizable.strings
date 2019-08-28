@@ -10,6 +10,7 @@
 "Common.Button.Delete" = "删除";
 "Common.Button.Edit" = "编辑";
 "Common.Button.Discard" = "丢弃";
+"Common.Button.Done" = "完成";
 
 "Common.Label.NameUnknown" = "[未知]";
 "Common.Label.NameNone" = "[无]";
