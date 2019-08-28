@@ -26,6 +26,8 @@ internal enum L10n {
       internal static let delete = L10n.tr("Localizable", "Common.Button.Delete")
       /// Discard
       internal static let discard = L10n.tr("Localizable", "Common.Button.Discard")
+      /// Done
+      internal static let done = L10n.tr("Localizable", "Common.Button.Done")
       /// Edit
       internal static let edit = L10n.tr("Localizable", "Common.Button.Edit")
       /// OK
