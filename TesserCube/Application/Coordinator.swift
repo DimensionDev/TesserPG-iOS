@@ -29,8 +29,7 @@ class Coordinator {
         case writeReply(to: [KeyBridge], from: KeyBridge?)
         case interpretMessage
         case importKey
-        case pasteKey(needPassphrase: Bool)
-        case pasteKeyWith(armoredKey: String, needPassphrase: Bool)
+        case pasteKey(armoredKey: String?, needPassphrase: Bool)
         case createKey
         case pickContacts(delegate: PickContactsDelegate?, selectedContacts: [Contact])
         case contactDetail(contactId: Int64)
@@ -107,12 +106,7 @@ extension Coordinator {
             let vc = ImportKeyViewController()
             vc.hidesBottomBarWhenPushed = true
             return vc
-        case .pasteKey(let needPassphrase):
-            let vc = PasteKeyViewController()
-            vc.needPassphrase = needPassphrase
-            vc.hidesBottomBarWhenPushed = true
-            return vc
-        case let .pasteKeyWith(armoredKey, needPassphrase):
+        case let .pasteKey(armoredKey, needPassphrase):
             let vc = PasteKeyViewController()
             vc.armoredKey = armoredKey
             vc.needPassphrase = needPassphrase
@@ -185,13 +179,13 @@ extension Coordinator {
 
             let hasSecretKey = DMSPGPKeyRing.extractSecretKeyBlock(from: message) != nil
             guard !hasSecretKey else {
-                Coordinator.main.present(scene: .pasteKeyWith(armoredKey: message, needPassphrase: true), from: rootViewController, transition: .modal, completion: nil)
+                Coordinator.main.present(scene: .pasteKey(armoredKey: message, needPassphrase: true), from: rootViewController, transition: .modal, completion: nil)
                 return true
             }
 
             let hasPublicKey = DMSPGPKeyRing.extractPublicKeyBlock(from: message) != nil
             guard !hasPublicKey else {
-                Coordinator.main.present(scene: .pasteKeyWith(armoredKey: message, needPassphrase: false), from: rootViewController, transition: .modal, completion: nil)
+                Coordinator.main.present(scene: .pasteKey(armoredKey: message, needPassphrase: false), from: rootViewController, transition: .modal, completion: nil)
                 return true
             }
 
