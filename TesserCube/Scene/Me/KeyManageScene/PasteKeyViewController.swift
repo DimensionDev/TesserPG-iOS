@@ -17,6 +17,7 @@ import ConsolePrint
 class PasteKeyViewController: TCBaseViewController {
     
     var needPassphrase: Bool = false
+    var armoredKey: String? = nil
     
     let disposeBag = DisposeBag()
     
@@ -122,42 +123,13 @@ class PasteKeyViewController: TCBaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        #if STUB
-//        keyTextView.text = {
-//            let date = Date()
-//            let formatter = DateFormatter()
-//            formatter.dateFormat = "'Test'yyyyMMddHHmm"
-//            let name = formatter.string(from: date)
-//            let key = KeyGenerator().generate(for: "\(name) <tesser@cube.com>", passphrase: "Tessercube")
-//            let armored: String = {
-//                guard let data = try? key.export() else {
-//                    return ""
-//                }
-//                if needPassphrase {
-//                    let pri = Armor.armored(data, as: .secretKey)
-//                    let pub = Armor.armored(data, as: .publicKey)
-//                    return [pri, pub].joined(separator: "")
-//                } else {
-//                    // Warning: should export to .public else Armord string contains private key info
-//                    guard let data = try? key.export(keyType: .public) else {
-//                        return ""
-//                    }
-//                    return Armor.armored(data, as: .publicKey)
-//                }
-//
-//            }()
-//            return armored
-//        }()
-//
-//        if needPassphrase {
-//            passwordTextField.text = "Tessercube"
-//        }
-        #else
-        if hasValidKeyInPasteboard(), keyTextView.text.isEmpty {
+        if let armoredKey = armoredKey {
+            keyTextView.text = armoredKey
+        } else if hasValidKeyInPasteboard(), keyTextView.text.isEmpty {
             keyTextView.text = UIPasteboard.general.string
-            //            showPasteboardConfirmAlert()
+            // showPasteboardConfirmAlert()
         }
-        #endif
+
     }
     
     private func hasValidKeyInPasteboard() -> Bool {

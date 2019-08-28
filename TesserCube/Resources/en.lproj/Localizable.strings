@@ -10,6 +10,7 @@
 "Common.Button.Delete" = "Delete";
 "Common.Button.Edit" = "Edit";
 "Common.Button.Discard" = "Discard";
+"Common.Button.Done" = "Done";
 
 "Common.Label.NameUnknown" = "[Unknown]";
 "Common.Label.NameNone" = "[None]";
