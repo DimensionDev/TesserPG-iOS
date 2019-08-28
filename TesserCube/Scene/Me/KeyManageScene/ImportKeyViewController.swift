@@ -105,7 +105,7 @@ class ImportKeyViewController: TCBaseViewController {
         contentStackView.setCustomSpacing(20, after: pasteKeyButton)
 
         pasteKeyButton.rx.tap.bind { [weak self] in
-                Coordinator.main.present(scene: .pasteKey(needPassphrase: true), from: self)
+                Coordinator.main.present(scene: .pasteKey(armoredKey: nil, needPassphrase: true), from: self)
             }
             .disposed(by: disposeBag)
 
