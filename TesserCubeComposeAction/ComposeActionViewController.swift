@@ -11,9 +11,9 @@ import MobileCoreServices
 import BouncyCastle_ObjC
 import DMSOpenPGP
 import ConsolePrint
-
 import RxSwift
 import RxCocoa
+import os
 
 final class ComposeActionViewModel {
 
@@ -127,12 +127,24 @@ extension ComposeActionViewController {
             let typeIdentifier = kUTTypePlainText as String
             guard provider.hasItemConformingToTypeIdentifier(typeIdentifier) else { continue }
 
+            //swiftlint:disable force_cast
             provider.loadItem(forTypeIdentifier: typeIdentifier, options: nil) { [weak self] text, error in
                 guard let `self` = self else { return }
                 guard error == nil else { return }
-                guard let text = text as? String else { return }
+                switch text {
+                case is String:
+                    os_log("%{public}s[%{public}ld], %{public}s: %{public}s", ((#file as NSString).lastPathComponent), #line, #function, text as! String)
+                    let message = (text as? String) ?? ""
+                    self.viewModel.inputTexts.append(message)
 
-                self.viewModel.inputTexts.append(text)
+                case is URL:
+                    os_log("%{public}s[%{public}ld], %{public}s: %{public}s", ((#file as NSString).lastPathComponent), #line, #function, String(describing: text as! URL))
+                    // Notes: ignore URL if pass in
+                    // [ERROR] Failed to determine whether URL /var/mobile/Containers/Data/Application/78FFF5C0-FDEC-4E26-891B-E525885AD987/Documents/temporary/20190827-170106.txt (s) is managed by a file provider
+                // InterpretActionViewController.swift[133], extractInputFromExtensionContext(): file:///var/mobile/Containers/Data/Application/BBC162F1-AAF5-431A-AEA1-A1843C24C5C3/Documents/temporary/20190827-165641.txt
+                default:
+                    os_log("%{public}s[%{public}ld], %{public}s: %{public}s", ((#file as NSString).lastPathComponent), #line, #function, String(describing: text))
+                }
 
                 if i == providers.count - 1 {
                     // notify viewModel done
@@ -141,6 +153,7 @@ extension ComposeActionViewController {
                     }
                 }
             }
+            //swiftlint:enable force_cast
         }   // end for … in …
     }
 
