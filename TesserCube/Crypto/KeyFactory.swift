@@ -21,6 +21,16 @@ enum TCKeyType: CaseIterable {
 }
 
 class KeyFactory {
+    
+    private enum SecretKeyHeader: String {
+        case v1 = "-----BEGIN PGP PRIVATE KEY BLOCK-----"
+        case v2 = "-----BEGIN PGP SECRET KEY BLOCK-----"
+    }
+    
+    private enum SecretKeyFooter: String {
+        case v1 = "-----END PGP PRIVATE KEY BLOCK-----"
+        case v2 = "-----END PGP SECRET KEY BLOCK-----"
+    }
 
     private static let keyDirectoryName = "keys"
 
@@ -95,4 +105,25 @@ private extension KeyFactory {
             try? FileManager.default.removeItem(atPath: filePath)
         }
     }
+}
+
+extension KeyFactory {
+    public static func extractPublicKeyBlock(from armored: String) -> String? {
+        guard let header = armored.range(of: "-----BEGIN PGP PUBLIC KEY BLOCK-----"),
+            let footer = armored.range(of: "-----END PGP PUBLIC KEY BLOCK-----") else {
+                return nil
+        }
+        
+        return String(armored[header.lowerBound..<footer.upperBound])
+    }
+    
+    public static func extractSecretKeyBlock(from armored: String) -> String? {
+        guard let header = armored.range(of: SecretKeyHeader.v1.rawValue) ?? armored.range(of: SecretKeyHeader.v2.rawValue),
+            let footer = armored.range(of: SecretKeyFooter.v1.rawValue) ?? armored.range(of: SecretKeyFooter.v2.rawValue) else {
+                return nil
+        }
+        
+        return String(armored[header.lowerBound..<footer.upperBound])
+    }
+
 }
