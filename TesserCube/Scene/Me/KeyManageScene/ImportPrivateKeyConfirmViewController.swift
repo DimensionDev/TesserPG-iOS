@@ -6,7 +6,6 @@
 //  Copyright © 2019 Sujitech. All rights reserved.
 //
 
-import DMSOpenPGP
 import SnapKit
 import SwifterSwift
 import RxCocoa

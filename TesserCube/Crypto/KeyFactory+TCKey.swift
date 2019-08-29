@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import DMSOpenPGP
 import ConsolePrint
 import DMSGoPGP
 

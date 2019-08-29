@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import DMSOpenPGP
 import RxSwift
 import RxCocoa
 import UITextView_Placeholder
@@ -109,7 +108,7 @@ extension InterpretMessageViewController {
     
     private func hasValidKeyInPasteboard() -> Bool {
         if UIPasteboard.general.hasStrings, let pasteString = UIPasteboard.general.string,
-        DMSPGPDecryptor.verify(armoredMessage: pasteString) {   // FIXME: veriy function not work as expected
+        KeyFactory.verify(armoredMessage: pasteString) {   // FIXME: veriy function not work as expected
             return true
         }
         return false

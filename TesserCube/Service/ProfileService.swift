@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import DMSOpenPGP
 import RxSwift
 import RxCocoa
 import KeychainAccess
@@ -212,7 +211,7 @@ class ProfileService {
 extension ProfileService {
     func addNewContact(keyUserID: String, key: TCKey, passphrase: String?) throws {
         do {
-            let userInfo = PGPUserIDTranslator.extractMeta(from: keyUserID)
+            let userInfo = DMSPGPUserIDTranslator.extractMeta(from: keyUserID)
             let username = userInfo.name
             let email = userInfo.email
             guard username != nil || email != nil else {

@@ -129,9 +129,11 @@ extension ProfileService {
                 senderKeyID = decryptInfo.signatureKey?.longIdentifier ?? ""
                 senderKeyUserID = decryptInfo.signatureKey?.userID ?? ""
             case .unknownSigner(let infos):
+                // TODO: get sender userID
+                senderKeyID = infos.first ?? ""
                 // This is real KeyID of signature key (not long identifier)
-                senderKeyID = infos.first?.keyID ?? ""
-                senderKeyUserID = infos.first?.primaryUserID ?? ""
+//                senderKeyID = infos.first?.keyID ?? ""
+//                senderKeyUserID = infos.first?.primaryUserID ?? ""
             }
 
             var interpretedMessage = Message(id: nil,

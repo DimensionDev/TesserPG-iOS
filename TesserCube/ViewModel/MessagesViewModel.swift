@@ -161,7 +161,7 @@ extension MessagesViewModel {
         // set sender info
         let senderInfoView: MessageContactInfoView = {
             let infoView = MessageContactInfoView()
-            let senderMeta = PGPUserIDTranslator(userID: message.senderKeyUserId)
+            let senderMeta = DMSPGPUserIDTranslator(userID: message.senderKeyUserId)
             let senderIDLabelColor = ProfileService.default.containsKey(longIdentifier: message.senderKeyId) ? Asset.sourceGreen.color : Asset.shortIdBlue.color
 
             infoView.nameLabel.text = MessagesViewModel.retrieveNameBy(longIdentifier: message.senderKeyId, fallbackToMeta: senderMeta)
@@ -176,7 +176,7 @@ extension MessagesViewModel {
         // set recipient(s) info
         let recipeintsInfoViews = message.getRecipients().map { recipient -> MessageContactInfoView in
             let infoView = MessageContactInfoView()
-            let meta = PGPUserIDTranslator(userID: recipient.keyUserId)
+            let meta = DMSPGPUserIDTranslator(userID: recipient.keyUserId)
             infoView.nameLabel.text = MessagesViewModel.retrieveNameBy(longIdentifier: recipient.keyId, fallbackToMeta: meta)
             infoView.emailLabel.text = meta.email.flatMap { "(\($0))"}
             infoView.shortIDLabel.text = String(recipient.keyId.suffix(8))
@@ -215,7 +215,7 @@ extension MessagesViewModel {
 
 extension MessagesViewModel {
 
-    static func retrieveNameBy(longIdentifier: String, fallbackToMeta meta: PGPUserIDTranslator) -> String {
+    static func retrieveNameBy(longIdentifier: String, fallbackToMeta meta: DMSPGPUserIDTranslator) -> String {
         guard !longIdentifier.isEmpty else {
             return L10n.Common.Label.nameNone
         }

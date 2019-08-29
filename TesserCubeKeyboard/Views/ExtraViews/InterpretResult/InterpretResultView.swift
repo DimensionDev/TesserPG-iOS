@@ -277,13 +277,13 @@ class InterpretResultView: UIView, Thematic {
         closeButton.setImage(resultType?.closeButtonImage(theme: theme), for: .normal)
         
         messageLabel.text = message?.rawMessage
-        let senderMeta = PGPUserIDTranslator(userID: messageModel.senderKeyUserId)
+        let senderMeta = DMSPGPUserIDTranslator(userID: messageModel.senderKeyUserId)
         signedUserNameLabel.text = senderMeta.name
         signedUserEmailLabel.text = senderMeta.email.flatMap { "(\($0))"}
         signedUserIdentifierLabel.text = String(messageModel.senderKeyId.suffix(8))
         
         let recipeintsInfoList = messageModel.getRecipients().compactMap { recipient -> String? in
-            let meta = PGPUserIDTranslator(userID: recipient.keyUserId)
+            let meta = DMSPGPUserIDTranslator(userID: recipient.keyUserId)
             return meta.name
         }
         let recipietnsListString = recipeintsInfoList.joined(separator: ",")

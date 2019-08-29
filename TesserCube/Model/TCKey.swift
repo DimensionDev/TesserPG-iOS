@@ -7,11 +7,9 @@
 //
 
 import Foundation
-import BouncyCastle_ObjC
-import DMSOpenPGP
 import DMSGoPGP
 
-struct TCKey: KeychianMappable {
+struct TCKey: KeychianMappable, Equatable {
     
     var goKeyRing: CryptoKeyRing?
 
@@ -65,6 +63,10 @@ struct TCKey: KeychianMappable {
             throw error
         }
     }
+    
+    static func == (lhs: TCKey, rhs: TCKey) -> Bool {
+        return lhs.keyID == rhs.keyID
+    }
 }
 
 extension TCKey {
@@ -91,6 +93,14 @@ extension TCKey {
             return primaryEncryptionKey != nil
         } catch {
             return false
+        }
+    }
+    
+    var encryptionkeyID: String? {
+        do {
+            return try goKeyRing?.getEncryptionKey().keyIdString()
+        } catch {
+            return nil
         }
     }
     
@@ -163,11 +173,12 @@ extension TCKey {
         return nil
     }
     
-    var algorithm: DMSPGPPublicKeyAlgorithm? {
+    var algorithm: KeyAlgorithm? {
         if let algo = try? goKeyRing?.getEncryptionKey().getAlgorithm(), algo == 1 {
-            return .RSA_ENCRYPT
+            return .rsa
         }
-        return .RSA_ENCRYPT
+        // TODO: check algorithm
+        return .rsa
 //        return keyRing.publicKeyRing.primaryEncryptionKey?.algorithm
     }
 
@@ -202,8 +213,8 @@ extension TCKey {
 //        return firstSubkey.keyStrength
     }
     
-    var subkeyAlgorithm: DMSPGPPublicKeyAlgorithm? {
-        return .RSA_ENCRYPT
+    var subkeyAlgorithm: KeyAlgorithm? {
+        return .rsa
 //        guard let firstSubkey = keyRing.publicKeyRing.encryptionKeys.first else {
 //            return nil
 //        }
