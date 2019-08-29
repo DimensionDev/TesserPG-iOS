@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import BouncyCastle_ObjC
 import AudioToolbox
 import SnapKit
 import MMWormhole
@@ -137,7 +136,7 @@ class KeyboardViewController: UIInputViewController {
 //            make.bottom.equalTo(self.forwardingView.snp.top)
 //            make.height.equalTo(metrics[.recipientsBanner]!)
 //        }
-        JavaSecuritySecurity.addProvider(with: BCJceProviderBouncyCastleProvider())
+
         KeyboardModeManager.shared.keyboardVC = self
         KeyboardModeManager.shared.setupSubViews()
         

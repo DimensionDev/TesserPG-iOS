@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import DMSOpenPGP
 
 public enum CreateKeyOption {
 
@@ -23,25 +22,25 @@ public enum CreateKeyOption {
         }
     }
 
-    var dmsPGPPublicKeyAlgorithm: DMSPGPPublicKeyAlgorithm {
+    var dmsPGPPublicKeyAlgorithm: KeyAlgorithm {
         switch self {
         case .ecc:
-            return .ECDSA
+            return .x25519
         case .rsa:
-            return .RSA_ENCRYPT
+            return .rsa
         }
     }
 
-    var dmsSubkeyAlgorithm: DMSPGPPublicKeyAlgorithm {
+    var dmsSubkeyAlgorithm: KeyAlgorithm {
         switch self {
         case .ecc:
-            return .ELGAMAL_ENCRYPT
+            return .x25519
         case .rsa:
-            return .RSA_ENCRYPT
+            return .rsa
         }
     }
 
-    var curve: DMSPGPKeyCurve? {
+    var curve: KeyCurve? {
         switch self {
         case .ecc:
             return .Secp256k1

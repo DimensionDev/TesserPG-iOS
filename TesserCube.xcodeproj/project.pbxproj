@@ -94,6 +94,8 @@
 		833FF394224F9D8100EFE0A9 /* KeyboardInterpretor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FF393224F9D8100EFE0A9 /* KeyboardInterpretor.swift */; };
 		833FF395224F9D8100EFE0A9 /* KeyboardInterpretor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FF393224F9D8100EFE0A9 /* KeyboardInterpretor.swift */; };
 		834CA61922659EE900AC8355 /* FullAccessHintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834CA61822659EE900AC8355 /* FullAccessHintView.swift */; };
+		834DB06E23175B1C004E6F50 /* DMSPGPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F309722A14C0D0003804B /* DMSPGPError.swift */; };
+		834DB06F23175B1C004E6F50 /* DMSPGPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F309722A14C0D0003804B /* DMSPGPError.swift */; };
 		837833552248840600F2C0BF /* TCTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837833542248840600F2C0BF /* TCTypes.swift */; };
 		837833562248840600F2C0BF /* TCTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837833542248840600F2C0BF /* TCTypes.swift */; };
 		837833582248897C00F2C0BF /* KeyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146F32243ACCE008ECC22 /* KeyFactory.swift */; };
@@ -103,7 +105,6 @@
 		837833632249C33B00F2C0BF /* TCDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837833622249C33B00F2C0BF /* TCDBManager.swift */; };
 		837833652249C34400F2C0BF /* TCDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837833622249C33B00F2C0BF /* TCDBManager.swift */; };
 		83783367224B232000F2C0BF /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146DF22421F93008ECC22 /* Contact.swift */; };
-		83783369224B32AC00F2C0BF /* PGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0758A1224493DB0046FBFD /* PGPUserIDTranslator.swift */; };
 		8378336B224B352500F2C0BF /* ContactListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8378336A224B352500F2C0BF /* ContactListViewModel.swift */; };
 		8378336D224B36A400F2C0BF /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8378336C224B36A400F2C0BF /* String+Localization.swift */; };
 		83783371224B384000F2C0BF /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8378336F224B384000F2C0BF /* ContactCell.swift */; };
@@ -149,6 +150,14 @@
 		83B93E882223CCF700F556C0 /* RecipientInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93E872223CCF700F556C0 /* RecipientInputView.swift */; };
 		83B93E8A222411C300F556C0 /* UIView+blinking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93E89222411C300F556C0 /* UIView+blinking.swift */; };
 		83B93ED9222528AD00F556C0 /* RecommendRecipientsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93ED8222528AD00F556C0 /* RecommendRecipientsView.swift */; };
+		83C90B43231678B90048743A /* GenerateKeyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C90B42231678B90048743A /* GenerateKeyData.swift */; };
+		83C90B44231678DE0048743A /* GenerateKeyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C90B42231678B90048743A /* GenerateKeyData.swift */; };
+		83C90B45231678DF0048743A /* GenerateKeyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C90B42231678B90048743A /* GenerateKeyData.swift */; };
+		83C90B46231678DF0048743A /* GenerateKeyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C90B42231678B90048743A /* GenerateKeyData.swift */; };
+		83C90B4823167A020048743A /* PGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C90B4723167A020048743A /* PGPUserIDTranslator.swift */; };
+		83C90B4923167A020048743A /* PGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C90B4723167A020048743A /* PGPUserIDTranslator.swift */; };
+		83C90B4A23167A020048743A /* PGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C90B4723167A020048743A /* PGPUserIDTranslator.swift */; };
+		83C90B4B23167A020048743A /* PGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C90B4723167A020048743A /* PGPUserIDTranslator.swift */; };
 		83DFC72C2252EF3100993160 /* KeyRecordDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFC72B2252EF3100993160 /* KeyRecordDBAction.swift */; };
 		83DFC72D2252EF3100993160 /* KeyRecordDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFC72B2252EF3100993160 /* KeyRecordDBAction.swift */; };
 		83DFC73722577B9800993160 /* WormHole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFC73622577B9800993160 /* WormHole.swift */; };
@@ -166,7 +175,6 @@
 		83FF06592250D9DA0003BC0D /* MessageDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF06572250D9DA0003BC0D /* MessageDBAction.swift */; };
 		A525A0BAED3E0A2C1C06591F /* Pods_TesserCubeComposeAction.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E0EAF428FF778E8B22035F9 /* Pods_TesserCubeComposeAction.framework */; };
 		C5D98E8849B78D615F101C81 /* Pods_TesserCubeKeyboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E62BCA2B022300EA53474B /* Pods_TesserCubeKeyboard.framework */; };
-		DB0758A2224493DB0046FBFD /* PGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0758A1224493DB0046FBFD /* PGPUserIDTranslator.swift */; };
 		DB0758D0224895B40046FBFD /* MessageCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0758CF224895B40046FBFD /* MessageCardCell.swift */; };
 		DB1169A022E182730099BA25 /* strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83783382224CB7F400F2C0BF /* strings.swift */; };
 		DB1169A122E182730099BA25 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83214694223F4CA0008ECC22 /* Assets.swift */; };
@@ -187,7 +195,6 @@
 		DB1169B022E1831E0099BA25 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146DF22421F93008ECC22 /* Contact.swift */; };
 		DB1169B122E183390099BA25 /* ContactMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBBC197224E29E50080790F /* ContactMappable.swift */; };
 		DB1169B222E183440099BA25 /* ContactsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146A1223F5FCE008ECC22 /* ContactsListViewController.swift */; };
-		DB1169B322E1834C0099BA25 /* PGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0758A1224493DB0046FBFD /* PGPUserIDTranslator.swift */; };
 		DB1169B422E183780099BA25 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE69224A330D00D82704 /* String.swift */; };
 		DB1169B522E183800099BA25 /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146B0223F7D98008ECC22 /* ProfileService.swift */; };
 		DB1169B622E183830099BA25 /* ProfileService+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FF38C224F97BD00EFE0A9 /* ProfileService+Message.swift */; };
@@ -277,7 +284,6 @@
 		DB63A0FB22DDCB6500C2DDA6 /* TCErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F6A52247ACC800C09C2D /* TCErrors.swift */; };
 		DB63A0FC22DDCB9100C2DDA6 /* ContactDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83783378224BA43700F2C0BF /* ContactDBAction.swift */; };
 		DB63A0FD22DDCB9700C2DDA6 /* KeyFactory+TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */; };
-		DB63A0FE22DDCBA000C2DDA6 /* PGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0758A1224493DB0046FBFD /* PGPUserIDTranslator.swift */; };
 		DB63A0FF22DDCBB600C2DDA6 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE69224A330D00D82704 /* String.swift */; };
 		DB63A10022DDCBC700C2DDA6 /* ProfileService+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FF38C224F97BD00EFE0A9 /* ProfileService+Message.swift */; };
 		DB63A10122DDCBD700C2DDA6 /* MessageDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF06572250D9DA0003BC0D /* MessageDBAction.swift */; };
@@ -543,6 +549,8 @@
 		83B93E872223CCF700F556C0 /* RecipientInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientInputView.swift; sourceTree = "<group>"; };
 		83B93E89222411C300F556C0 /* UIView+blinking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+blinking.swift"; sourceTree = "<group>"; };
 		83B93ED8222528AD00F556C0 /* RecommendRecipientsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendRecipientsView.swift; sourceTree = "<group>"; };
+		83C90B42231678B90048743A /* GenerateKeyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateKeyData.swift; sourceTree = "<group>"; };
+		83C90B4723167A020048743A /* PGPUserIDTranslator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGPUserIDTranslator.swift; sourceTree = "<group>"; };
 		83DFC72B2252EF3100993160 /* KeyRecordDBAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyRecordDBAction.swift; sourceTree = "<group>"; };
 		83DFC73622577B9800993160 /* WormHole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WormHole.swift; sourceTree = "<group>"; };
 		83DFC73A22578ED800993160 /* InterpretFailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretFailView.swift; sourceTree = "<group>"; };
@@ -560,7 +568,6 @@
 		BEF5E8837849AFC231AC950C /* Pods-TesserCubeComposeAction.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.release.xcconfig"; sourceTree = "<group>"; };
 		C00CE558B320642C1C2EECE7 /* Pods-TesserCubeComposeAction.debug pgp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.debug pgp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.debug pgp.xcconfig"; sourceTree = "<group>"; };
 		C0A9D10AB1612B0483E24D78 /* Pods-TesserCube.debug pgp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.debug pgp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.debug pgp.xcconfig"; sourceTree = "<group>"; };
-		DB0758A1224493DB0046FBFD /* PGPUserIDTranslator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGPUserIDTranslator.swift; sourceTree = "<group>"; };
 		DB0758CF224895B40046FBFD /* MessageCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCardCell.swift; sourceTree = "<group>"; };
 		DB1169CA22E185640099BA25 /* NotificationName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationName.swift; sourceTree = "<group>"; };
 		DB1169D122E187340099BA25 /* TesserCubeComposeAction.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TesserCubeComposeAction.entitlements; sourceTree = "<group>"; };
@@ -940,7 +947,6 @@
 				832146F32243ACCE008ECC22 /* KeyFactory.swift */,
 				DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */,
 				DB6AA3E92273218C00A7ADDF /* KeyFactory+BCOpenPGP.swift */,
-				DB0758A1224493DB0046FBFD /* PGPUserIDTranslator.swift */,
 				DB75454A2296A7C400B4E1EF /* CreateKeyOption.swift */,
 			);
 			path = Crypto;
@@ -957,6 +963,8 @@
 				DBBBC197224E29E50080790F /* ContactMappable.swift */,
 				DBBBC194224E29D70080790F /* KeychainMappable.swift */,
 				DB1327142253651C00BD7B98 /* KeyBridge.swift */,
+				83C90B42231678B90048743A /* GenerateKeyData.swift */,
+				83C90B4723167A020048743A /* PGPUserIDTranslator.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1909,6 +1917,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB4F300122A11F820003804B /* Contact.swift in Sources */,
+				83C90B4823167A020048743A /* PGPUserIDTranslator.swift in Sources */,
 				8313F6932247165F00C09C2D /* FloatingActionGroup.swift in Sources */,
 				832146CD2240B135008ECC22 /* TCBaseViewController.swift in Sources */,
 				DB3B58E22282929700879834 /* WormholdService.swift in Sources */,
@@ -1930,7 +1939,6 @@
 				83B93D1F221CE06100F556C0 /* Application.swift in Sources */,
 				831EC43122B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift in Sources */,
 				DBC7DEBD2248C7F600DA4C3E /* RecipientContactPickerView.swift in Sources */,
-				DB0758A2224493DB0046FBFD /* PGPUserIDTranslator.swift in Sources */,
 				8325E486222E768500EE9B83 /* Debounce.swift in Sources */,
 				DB66FE67224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift in Sources */,
 				DB1327152253651C00BD7B98 /* KeyBridge.swift in Sources */,
@@ -2002,6 +2010,7 @@
 				DB0758D0224895B40046FBFD /* MessageCardCell.swift in Sources */,
 				83FE346222B74E980077C1A5 /* MainTabbarViewController+IntroWizard.swift in Sources */,
 				DB4F300322A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift in Sources */,
+				83C90B43231678B90048743A /* GenerateKeyData.swift in Sources */,
 				DB75454B2296A7C400B4E1EF /* CreateKeyOption.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2036,6 +2045,7 @@
 				8325E47C222D10A500EE9B83 /* SuggestionButton.swift in Sources */,
 				837833652249C34400F2C0BF /* TCDBManager.swift in Sources */,
 				83FF06592250D9DA0003BC0D /* MessageDBAction.swift in Sources */,
+				83C90B4923167A020048743A /* PGPUserIDTranslator.swift in Sources */,
 				834CA61922659EE900AC8355 /* FullAccessHintView.swift in Sources */,
 				8325E47E222D254200EE9B83 /* UIImage+RoundCorners.swift in Sources */,
 				DBD63FE02296864200E46FDC /* KeyFactory+TCKey.swift in Sources */,
@@ -2070,7 +2080,6 @@
 				8310B34522325E0C00C35AEC /* String+Compare.swift in Sources */,
 				DBC24B1523026BA800A4AE8D /* WordSuggestionService.swift in Sources */,
 				833FF395224F9D8100EFE0A9 /* KeyboardInterpretor.swift in Sources */,
-				83783369224B32AC00F2C0BF /* PGPUserIDTranslator.swift in Sources */,
 				83DFC73722577B9800993160 /* WormHole.swift in Sources */,
 				833FF38E224F97BD00EFE0A9 /* ProfileService+Message.swift in Sources */,
 				DB4F300422A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift in Sources */,
@@ -2095,6 +2104,7 @@
 				83B93D58221E570200F556C0 /* RecipientButton.swift in Sources */,
 				837833592248898A00F2C0BF /* TCErrors.swift in Sources */,
 				8325E46D222CBFBC00EE9B83 /* KeyboardLayoutManager.swift in Sources */,
+				83C90B44231678DE0048743A /* GenerateKeyData.swift in Sources */,
 				83B93D5B221E575500F556C0 /* Theme.swift in Sources */,
 				8325E4A5222F8FDA00EE9B83 /* Fonts.swift in Sources */,
 				8325E479222CD48200EE9B83 /* ActionButton.swift in Sources */,
@@ -2125,6 +2135,7 @@
 				DB63A0DF22DD939C00C2DDA6 /* MessageCardCell.swift in Sources */,
 				DB63A0F022DDA2C000C2DDA6 /* strings.swift in Sources */,
 				DB63A0FD22DDCB9700C2DDA6 /* KeyFactory+TCKey.swift in Sources */,
+				83C90B4A23167A020048743A /* PGPUserIDTranslator.swift in Sources */,
 				DB63A11822E065A800C2DDA6 /* ComposeMessageViewController.swift in Sources */,
 				DB63A0F922DDCB2000C2DDA6 /* TCDBManager.swift in Sources */,
 				DB63A10A22DEF4D300C2DDA6 /* ImageUtil.swift in Sources */,
@@ -2132,13 +2143,13 @@
 				DB63A12522E06E0900C2DDA6 /* String+Localization.swift in Sources */,
 				DB63A0E422DD9B5600C2DDA6 /* CALayer+Shadow.swift in Sources */,
 				DB63A11E22E0687C00C2DDA6 /* ContactPickerTagCollectionViewCell.swift in Sources */,
-				DB63A0FE22DDCBA000C2DDA6 /* PGPUserIDTranslator.swift in Sources */,
 				DB1169DE22E19CA00099BA25 /* MessageCardTableViewController.swift in Sources */,
 				DB63A11F22E0688C00C2DDA6 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */,
 				DB63A11D22E0672400C2DDA6 /* SenderContactPickerView.swift in Sources */,
 				DB63A10622DDD0EF00C2DDA6 /* InterpretActionViewController.swift in Sources */,
 				DB63A11522E0605800C2DDA6 /* KeyBridge.swift in Sources */,
 				DB1169CC22E185640099BA25 /* NotificationName.swift in Sources */,
+				83C90B45231678DF0048743A /* GenerateKeyData.swift in Sources */,
 				DB63A12322E0691900C2DDA6 /* UIViewController+Alert.swift in Sources */,
 				DB63A0F322DDCAB400C2DDA6 /* Message.swift in Sources */,
 				DB63A10E22DF2A5900C2DDA6 /* BrokenMessageViewController.swift in Sources */,
@@ -2146,6 +2157,7 @@
 				DB63A0E022DD9AFF00C2DDA6 /* TCCardView.swift in Sources */,
 				DB63A11B22E0670200C2DDA6 /* TCBaseViewController.swift in Sources */,
 				DB63A10C22DEF75100C2DDA6 /* InterpretActionViewModel.swift in Sources */,
+				834DB06E23175B1C004E6F50 /* DMSPGPError.swift in Sources */,
 				DB63A0FB22DDCB6500C2DDA6 /* TCErrors.swift in Sources */,
 				DB63A11C22E0671B00C2DDA6 /* RecipientContactPickerView.swift in Sources */,
 				DB1169D422E19ABF0099BA25 /* MessageCardViewController.swift in Sources */,
@@ -2170,6 +2182,7 @@
 				DB1169C322E184C30099BA25 /* UIViewController+Alert.swift in Sources */,
 				DB1169A222E182730099BA25 /* Fonts.swift in Sources */,
 				DB1169C722E185020099BA25 /* ContactCell.swift in Sources */,
+				834DB06F23175B1C004E6F50 /* DMSPGPError.swift in Sources */,
 				DB1169D922E19C0F0099BA25 /* MessageCardCell.swift in Sources */,
 				DB1169DF22E19CA00099BA25 /* MessageCardTableViewController.swift in Sources */,
 				DB1169B122E183390099BA25 /* ContactMappable.swift in Sources */,
@@ -2190,9 +2203,9 @@
 				DB63A14F22E180E100C2DDA6 /* TCBaseViewController.swift in Sources */,
 				DB1169C422E184CB0099BA25 /* ContactPickerTagCollectionViewCell.swift in Sources */,
 				DB1169E222E1A2620099BA25 /* ImageUtil.swift in Sources */,
-				DB1169B322E1834C0099BA25 /* PGPUserIDTranslator.swift in Sources */,
 				DB1169C922E185350099BA25 /* ListEmptyView.swift in Sources */,
 				DB1169C022E184310099BA25 /* ComposeMessageViewModel.swift in Sources */,
+				83C90B4B23167A020048743A /* PGPUserIDTranslator.swift in Sources */,
 				DB1169B822E183990099BA25 /* ContactDBAction.swift in Sources */,
 				DB1169D822E19BD80099BA25 /* MessagesViewModel.swift in Sources */,
 				DB1169AF22E1830A0099BA25 /* Message.swift in Sources */,
@@ -2209,6 +2222,7 @@
 				DB1169CD22E185640099BA25 /* NotificationName.swift in Sources */,
 				DB63A14E22E180DE00C2DDA6 /* ComposeMessageViewController.swift in Sources */,
 				DB1169C522E184D00099BA25 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */,
+				83C90B46231678DF0048743A /* GenerateKeyData.swift in Sources */,
 				DB1169B622E183830099BA25 /* ProfileService+Message.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2451,6 +2465,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TesserCube/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2482,6 +2497,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TesserCube/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2596,6 +2612,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
@@ -2624,6 +2641,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
@@ -2714,6 +2732,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TesserCube/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2784,6 +2803,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
@@ -2810,6 +2830,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2834,6 +2855,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeInterpretAction/TesserCubeInterpretAction.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2859,6 +2881,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2884,6 +2907,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2909,6 +2933,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2933,6 +2958,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeComposeAction/TesserCubeComposeAction.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2958,6 +2984,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2983,6 +3010,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -3072,6 +3100,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TesserCube/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3144,6 +3173,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";

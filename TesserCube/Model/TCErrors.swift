@@ -7,6 +7,28 @@
 //
 
 import Foundation
+import DMSGoPGP
+
+enum DMSPGPError: Error {
+    case `internal`
+    
+    case notArmoredInput
+    case invalidArmored
+    
+    case invalidKeyID
+    case invalidCleartext
+    case invalidMessage
+    case invalidPublicKeyRing
+    case invalidSecretKeyRing
+    case invalidPrivateKey
+    case invalidSecrectKeyPassword
+    case invalidCurve
+    case invalidKeyLength
+    case notSupportAlgorithm(KeyAlgorithm)
+    
+    case missingEncryptionKey(keyRings: [CryptoKeyRing])
+}
+
 
 enum TCError: Error {
     

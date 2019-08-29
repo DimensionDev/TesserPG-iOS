@@ -7,25 +7,46 @@
 //
 
 import Foundation
-import DMSOpenPGP
 import ConsolePrint
 import DMSGoPGP
 
 // MARK: - Decrypt
 extension KeyFactory {
+    
+    enum VerifyResult {
+        case noSignature
+        case valid
+        case invalid
+        case unknownSigner([String])    // unknown signer
+    }
 
     struct DecryptResult {
         let message: String
         let signatureKey: TCKey?
         let recipientKeys: [TCKey]
 
-        let verifyResult: DMSPGPSignatureVerifier.VerifyResult
+        let verifyResult: VerifyResult
         let unknownRecipientKeyIDs: [String]
 
     }
 
     static var keys: [TCKey] {
         return ProfileService.default.keys.value
+    }
+    
+    static func verify(armoredMessage: String) -> Bool {
+        var verifyPGPMsgError: NSError?
+        let _ = CryptoNewPGPMessageFromArmored(armoredMessage, &verifyPGPMsgError)
+        if verifyPGPMsgError == nil {
+            return true
+        }
+        
+        var verifyClearTextError: NSError?
+        let _ = CryptoNewClearTextMessageFromArmored(armoredMessage, &verifyClearTextError)
+        if verifyClearTextError == nil {
+            return true
+        }
+        return false
     }
 
     /// Decrypt and verify the armored message & cleartext message.
@@ -38,7 +59,7 @@ extension KeyFactory {
         // TODO: return signature
         var error: NSError?
         let clearMessage = CryptoNewClearTextMessageFromArmored(armoredMessage, &error)
-        if error == nil, let clearMessage = clearMessage {
+        if error == nil, clearMessage != nil {
             // Armored message is a clear text message
             for key in keys {
                 let originMessage = HelperVerifyCleartextMessage(key.goKeyRing, armoredMessage, CryptoGetGopenPGP()!.getUnixTime(), &error)
@@ -64,7 +85,7 @@ extension KeyFactory {
 //        }
 
         do {
-            var message: String?
+//            var message: String?
             let armoredMessage = armoredMessage.trimmingCharacters(in: .whitespacesAndNewlines)
 //            let decryptor = try DMSPGPDecryptor(armoredMessage: armoredMessage)
 
@@ -78,38 +99,16 @@ extension KeyFactory {
 //                    // should has common key if we want to decrypt it
 //                    return !decryptingKeyIDSet.isDisjoint(with: encryptingKeyIDSet)
 //            }
-            var secretKeys = keys
+            let secretKeys = keys
                 .filter { $0.hasSecretKey }
             
             guard let pgpMessage = CryptoNewPGPMessageFromArmored(armoredMessage, &error) else {
                 throw TCError.interpretError(reason: .badPayload)
             }
             
-            // 1. Try to get all recipient IDs
-            var recipientKeyIDs: [String] = []
-            var recipientKeys: [TCKey] = []
-            var signatureKey: TCKey?
-            for secretKey in secretKeys {
-                var getMessageDetailError: NSError?
-                if let messageDetail = try? pgpMessage.getDetails(secretKey.goKeyRing) {
-                    if messageDetail.isSigned {
-                        if messageDetail.signedByKeyId.uppercased() == secretKey.longIdentifier {
-                            signatureKey = secretKey
-                        }
-                    }
-                    for recipientIndex in 0 ..< messageDetail.getEncryptedToKeyIdsCount() {
-                        let keyID = messageDetail.getEncryptedToKeyId(recipientIndex, error: &getMessageDetailError)
-                        if getMessageDetailError == nil {
-                            recipientKeyIDs.append(keyID)
-                            recipientKeys.append(secretKey)
-                        }
-                    }
-                }
-            }
-            
-            // 2. Collect a keyID-password dict from KeyChain
+            // 5. Collect a keyID-password dict from KeyChain
             var keyPasswordDict = [String: String]()
-            let possibleKeyIDs = recipientKeys.compactMap { $0.longIdentifier }
+            let possibleKeyIDs = secretKeys.compactMap { $0.longIdentifier }
             
             for keyChainItem in ProfileService.default.keyChain.allItems() {
                 if let key = keyChainItem["key"] as? String, let password = keyChainItem["value"] as? String {
@@ -119,21 +118,88 @@ extension KeyFactory {
                 }
             }
             
+            // 1. Try to get all recipient IDs
+            var allRecipientKeyIDs: [String] = []
+            
+            var signatureVerifyResult: VerifyResult = .invalid
+            var signatureKey: TCKey?
+            var signatureKeyID: String?
+            for secretKey in secretKeys {
+                if let passphrase = keyPasswordDict[secretKey.longIdentifier] {
+                    try? secretKey.unlock(passphrase: passphrase)
+                }
+                var getMessageDetailError: NSError?
+                do {
+                    let messageDetail = try pgpMessage.getDetails(secretKey.goKeyRing)
+                    if !messageDetail.isSigned {
+                        signatureVerifyResult = .noSignature
+                    } else {
+                        signatureKeyID = messageDetail.signedByKeyId
+                        if signatureKey == nil {
+                            // Check the signature key
+                            for pubkey in keys {
+                                if pubkey.longIdentifier == messageDetail.signedByKeyId.uppercased() {
+                                    signatureKey = pubkey
+                                }
+                            }
+                        }
+                    }
+                    for recipientIndex in 0 ..< messageDetail.getEncryptedToKeyIdsCount() {
+                        let keyID = messageDetail.getEncryptedToKeyId(recipientIndex, error: &getMessageDetailError).uppercased()
+                        if getMessageDetailError == nil {
+                            allRecipientKeyIDs.append(keyID)
+                        }
+                    }
+                    
+                } catch {
+                    print("Fail to get msg detail!, keyID: " + secretKey.userID)
+                    print(error.localizedDescription)
+                }
+            }
+            
+            let allRecipientKeyIDSet = Set(allRecipientKeyIDs)
+            
+            // 2. Collect all encryptionKeyIDs
+            let encryptionIDs = secretKeys.compactMap { $0.encryptionkeyID }
+            
+            // 3. If a keyRing's encryptionKeyID is equal to a receipientKeyID, add the TCKey to receipientKeys
+            let recipientKeys = secretKeys.filter { allRecipientKeyIDSet.contains($0.encryptionkeyID ?? "") }
+            
+            // 4. All rest recipient key IDs are unknown
+            let unknownRecipientKeyIDs = Array(allRecipientKeyIDSet.subtracting(encryptionIDs))
+            
+            
+            
             guard !recipientKeys.isEmpty else {
                 throw TCError.pgpKeyError(reason: .noAvailableDecryptKey)
             }
             
+            // 6. Decryption message using any recipient key
             var decryptedMessage: String?
-            for recipientKey in recipientKeys {
-                decryptedMessage = HelperDecryptMessageArmored(recipientKey.goKeyRing, keyPasswordDict[recipientKey.longIdentifier], armoredMessage, &error)
+            let decryptKey = recipientKeys.first
+
+            decryptedMessage = HelperDecryptMessageArmored(decryptKey!.goKeyRing, keyPasswordDict[decryptKey!.longIdentifier], armoredMessage, &error)
+            
+            var signatureVerifyError: NSError?
+            let _ = HelperDecryptVerifyMessageArmored(signatureKey?.goKeyRing, decryptKey!.goKeyRing, keyPasswordDict[decryptKey!.longIdentifier], armoredMessage, &signatureVerifyError)
+
+            if signatureVerifyError != nil {
+                signatureVerifyResult = .invalid
+            } else {
+                if signatureKey == nil {
+                    // TODO: return unknown signature keyID
+                    signatureVerifyResult = .valid
+                } else {
+                    signatureVerifyResult = .valid
+                }
             }
             
             if let decryptedMsg = decryptedMessage {
                 return DecryptResult(message: decryptedMsg,
                                      signatureKey: signatureKey,
                                      recipientKeys: recipientKeys,
-                                     verifyResult: .valid,
-                                     unknownRecipientKeyIDs: [])
+                                     verifyResult: signatureVerifyResult,
+                                     unknownRecipientKeyIDs: unknownRecipientKeyIDs)
             } else {
                 throw TCError.pgpKeyError(reason: .noAvailableDecryptKey)
             }
@@ -221,27 +287,6 @@ extension KeyFactory {
     }
 }
 
-fileprivate extension DMSPGPSignatureVerifier {
-
-//    func verifySignature(use keys: [TCKey]) -> (VerifyResult, TCKey?)  {
-//        let infos = signatureListKeyInfos
-//        if infos.isEmpty {
-//            return (.noSignature, nil)
-//        }
-//
-//        let verifyKey = keys.first { key -> Bool in
-//            return infos.contains(where: { $0.keyID == key.keyRing.publicKeyRing.primarySignatureKey?.keyID })
-//        }
-//
-//        guard let key = verifyKey else {
-//            return (.unknownSigner(infos), nil)
-//        }
-//
-//        return (verifySignature(use: key.keyRing.publicKeyRing), key)
-//    }
-
-}
-
 // MARK: - Clearsign & Encrypt
 extension KeyFactory {
 
@@ -313,10 +358,14 @@ extension KeyFactory {
         do {
             var error: NSError?
             var encrypted: String?
+            var allRecipientsKeyRing = recipients.first?.goKeyRing
+            for i in 1 ..< recipients.count {
+                allRecipientsKeyRing = CryptoGopenPGP().combineKeyRing(allRecipientsKeyRing, keyRing2: recipients[i].goKeyRing)
+            }
             if signatureKey?.hasSecretKey ?? false, let password = signatureKeyPassword {
-                encrypted = HelperEncryptSignMessageArmored(signatureKey?.goKeyRing, signatureKey?.goKeyRing, password, message, &error)
+                encrypted = HelperEncryptSignMessageArmored(allRecipientsKeyRing, signatureKey?.goKeyRing, password, message, &error)
             } else {
-                encrypted = HelperEncryptMessageArmored(signatureKey?.goKeyRing, message, &error)
+                encrypted = HelperEncryptMessageArmored(allRecipientsKeyRing, message, &error)
             }
             if let encryptError = error {
                 throw encryptError

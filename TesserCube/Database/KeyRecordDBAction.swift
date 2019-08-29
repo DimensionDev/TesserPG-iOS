@@ -7,18 +7,19 @@
 //
 
 import Foundation
-import DMSOpenPGP
+import DMSGoPGP
 import GRDB
 
 extension KeyRecord {
 
     mutating func removeKeySecretPart() throws {
         guard let armored = armored else { return }
-        guard let keyRing = try? DMSPGPKeyRing(armoredKey: armored) else {
+        guard let keyRing = try? CryptoGopenPGP().buildKeyRingArmored(armored) else {
             assertionFailure()
             return
         }
-        let publicKeyArmored = keyRing.publicKeyRing.armored()
+        
+        let publicKeyArmored = keyRing.getArmoredPublicKey(nil)
 
         do {
             try TCDBManager.default.dbQueue.write { db in

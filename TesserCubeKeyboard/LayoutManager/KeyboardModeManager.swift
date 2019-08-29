@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import DMSOpenPGP
 import ConsolePrint
 
 enum KeyboardMode {
@@ -329,7 +328,7 @@ extension KeyboardModeManager: SuggesionViewDelegate {
 // MARK: Copy
 extension KeyboardModeManager {
     func checkPasteboard() {
-        if let pastedString = UIPasteboard.general.string, DMSPGPDecryptor.verify(armoredMessage: pastedString) {
+        if let pastedString = UIPasteboard.general.string, KeyFactory.verify(armoredMessage: pastedString) {
             KeyboardInterpretor.interpretMessage(pastedString) { (success, error, result) in
                 KeyboardModeManager.shared.handleInterpretResult(success: success, error: error, result: result)
                 

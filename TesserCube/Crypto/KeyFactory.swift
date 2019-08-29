@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import DMSOpenPGP
 import ConsolePrint
 
 enum TCKeyType: CaseIterable {

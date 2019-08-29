@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import DMSOpenPGP
 import SwifterSwift
 import SnapKit
 import RxCocoa
@@ -442,7 +441,7 @@ extension MessagesViewController {
     private func EncryptedMessageAlertController(for message: Message, didSelectCell cell: UITableViewCell) -> UIAlertController {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
-        let isCleartextMessage = DMSPGPClearTextVerifier.verify(armoredMessage: message.encryptedMessage)
+        let isCleartextMessage = KeyFactory.verify(armoredMessage: message.encryptedMessage)
         let shareActionTitle = isCleartextMessage ? L10n.MessagesViewController.Action.Button.shareSignedMessage : L10n.MessagesViewController.Action.Button.shareEncryptedMessage
         let shareArmoredMessageAction = UIAlertAction(title: shareActionTitle, style: .default) { _ in
             ShareUtil.share(message: message.encryptedMessage, from: self, over: cell)

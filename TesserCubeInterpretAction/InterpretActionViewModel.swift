@@ -9,7 +9,6 @@
 import Foundation
 import RxSwift
 import RxCocoa
-import DMSOpenPGP
 
 final class InterpretActionViewModel: NSObject {
 
@@ -61,7 +60,7 @@ extension InterpretActionViewModel {
         let latestMessages = ProfileService.default.loadMessages()
         ProfileService.default.messages.accept(latestMessages)
 
-        let message = inputTexts.first { DMSPGPDecryptor.verify(armoredMessage: $0) }
+        let message = inputTexts.first { KeyFactory.verify(armoredMessage: $0) }
         armoredMessage.accept(message)
     }
 

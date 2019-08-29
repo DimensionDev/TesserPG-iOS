@@ -10,8 +10,6 @@ import UIKit
 import RxSwift
 import RxCocoa
 import MobileCoreServices
-import BouncyCastle_ObjC
-import DMSOpenPGP
 import ConsolePrint
 
 final class InterpretActionViewController: UIViewController {
@@ -22,21 +20,6 @@ final class InterpretActionViewController: UIViewController {
     private lazy var brokenMessageViewController = BrokenMessageViewController()
 
     private let viewModel = InterpretActionViewModel()
-
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        _init()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        _init()
-    }
-
-    private func _init() {
-        // Setup Bouncy Castle
-        JavaSecuritySecurity.addProvider(with: OrgBouncycastleJceProviderBouncyCastleProvider())
-    }
 
 }
 
