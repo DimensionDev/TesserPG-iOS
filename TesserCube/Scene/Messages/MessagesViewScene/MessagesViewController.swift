@@ -289,22 +289,17 @@ extension MessagesViewController: UITableViewDelegate {
             return
         }
 
-        if #available(iOS 13.0, *) {
-            // Use MessagesViewController.tableView(_:contextMenuConfigurationForRowAt:point:) API
-        } else {
-            // Fallback to UIAlertController
-            let message = viewModel.messages.value[indexPath.row]
-            let actions = self.actions(for: message, selectCell: cell)
-            let alertController = self.alertController(for: actions)
-
-            if let presenter = alertController.popoverPresentationController {
-                presenter.sourceView = cell
-                presenter.sourceRect = cell.bounds
-            }
-
-            DispatchQueue.main.async {
-                self.present(alertController, animated: true, completion: nil)
-            }
+        let message = viewModel.messages.value[indexPath.row]
+        let actions = self.actions(for: message, selectCell: cell)
+        let alertController = self.alertController(for: actions)
+        
+        if let presenter = alertController.popoverPresentationController {
+            presenter.sourceView = cell
+            presenter.sourceRect = cell.bounds
+        }
+        
+        DispatchQueue.main.async {
+            self.present(alertController, animated: true, completion: nil)
         }
     }
 
