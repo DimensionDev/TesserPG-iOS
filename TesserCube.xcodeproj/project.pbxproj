@@ -330,6 +330,7 @@
 		DB6AA3ED2273247C00A7ADDF /* KeyFactory+BCOpenPGP.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6AA3E92273218C00A7ADDF /* KeyFactory+BCOpenPGP.swift */; };
 		DB6AA3F42275B69C00A7ADDF /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE69224A330D00D82704 /* String.swift */; };
 		DB75454B2296A7C400B4E1EF /* CreateKeyOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB75454A2296A7C400B4E1EF /* CreateKeyOption.swift */; };
+		DB8D730F231E0EF0005D15DD /* MeViewModel+ContextMenuActionTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D730E231E0EF0005D15DD /* MeViewModel+ContextMenuActionTableViewDelegate.swift */; };
 		DB97AD162317BCD9007594E9 /* MessagesViewModel+ContextMenuActionTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB97AD152317BCD9007594E9 /* MessagesViewModel+ContextMenuActionTableViewDelegate.swift */; };
 		DBA0ACF422F800010088F03B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA0ACF322F800010088F03B /* SceneDelegate.swift */; };
 		DBB81AE1225DFF7A003D63C6 /* UIScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB81AE0225DFF7A003D63C6 /* UIScreen.swift */; };
@@ -612,6 +613,7 @@
 		DB66FE6E224A3CD600D82704 /* SenderContactPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderContactPickerView.swift; sourceTree = "<group>"; };
 		DB6AA3E92273218C00A7ADDF /* KeyFactory+BCOpenPGP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyFactory+BCOpenPGP.swift"; sourceTree = "<group>"; };
 		DB75454A2296A7C400B4E1EF /* CreateKeyOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateKeyOption.swift; sourceTree = "<group>"; };
+		DB8D730E231E0EF0005D15DD /* MeViewModel+ContextMenuActionTableViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MeViewModel+ContextMenuActionTableViewDelegate.swift"; sourceTree = "<group>"; };
 		DB97AD152317BCD9007594E9 /* MessagesViewModel+ContextMenuActionTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessagesViewModel+ContextMenuActionTableViewDelegate.swift"; sourceTree = "<group>"; };
 		DBA0ACF322F800010088F03B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		DBB81AE0225DFF7A003D63C6 /* UIScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScreen.swift; sourceTree = "<group>"; };
@@ -917,6 +919,7 @@
 				DBC7DEC02248D49E00DA4C3E /* ComposeMessageViewModel.swift */,
 				DB4CBCA9224F962A00ED6BF0 /* InterpretMessageViewModel.swift */,
 				832146BD223F957B008ECC22 /* MeViewModel.swift */,
+				DB8D730E231E0EF0005D15DD /* MeViewModel+ContextMenuActionTableViewDelegate.swift */,
 				DB44999B228C248D000B7E8A /* SettingsViewModel.swift */,
 				DB44999D228D3353000B7E8A /* MessageDigitalSignatureSettingsViewModel.swift */,
 				DB63A10B22DEF75100C2DDA6 /* InterpretActionViewModel.swift */,
@@ -1961,6 +1964,7 @@
 				832146E222422024008ECC22 /* TCKey.swift in Sources */,
 				DBA0ACF422F800010088F03B /* SceneDelegate.swift in Sources */,
 				832146F42243ACCE008ECC22 /* KeyFactory.swift in Sources */,
+				DB8D730F231E0EF0005D15DD /* MeViewModel+ContextMenuActionTableViewDelegate.swift in Sources */,
 				8316ADAB22CB4E1000246E5A /* ConfirmContactCell.swift in Sources */,
 				83214684223F3BEE008ECC22 /* Coordinator.swift in Sources */,
 				DBBBC198224E29E50080790F /* ContactMappable.swift in Sources */,
