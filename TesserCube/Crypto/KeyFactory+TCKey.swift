@@ -48,16 +48,13 @@ extension KeyFactory {
 
     static func key(from generateKeyData: GenerateKeyData) throws -> TCKey {
         do {
-//            let factory = try DMSPGPKeyRingFactory(generateKeyData: generateKeyData)
-//            var key = TCKey(keyRing: factory.keyRing)
-            
-            let goKey = CryptoGetGopenPGP()?.generateKey(generateKeyData.name, email: generateKeyData.email, passphrase: generateKeyData.password, keyType: "rsa", bits: 3072, error: nil)
+            let goKey = CryptoGetGopenPGP()?.generateKey(generateKeyData.name, email: generateKeyData.email, passphrase: generateKeyData.password, keyType: generateKeyData.masterKey.algorithm.rawValue, bits: generateKeyData.masterKey.strength, error: nil)
             guard let goKeyRing = try? CryptoGetGopenPGP()?.buildKeyRingArmored(goKey!) else {
                 throw TCError.pgpKeyError(reason: .failToGenerate)
             }
             var key = TCKey(keyRing: goKeyRing)
             key.goKeyRing = goKeyRing
-            try key.unlock(passphrase: "123456")
+            try key.unlock(passphrase: generateKeyData.password)
             
             return key
         } catch let error as DMSPGPError {
