@@ -16,7 +16,7 @@ class TCDBManager {
     private static let dbDirectoryName = "db"
     private static let dbFileName = "tc.sqlite"
     
-    private static let dbVersion = "2019052301"
+    private static let dbVersion = "2019090201"
     
     let dbQueue: DatabaseQueue
     

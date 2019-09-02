@@ -143,11 +143,6 @@ extension TCKey {
         return keyIds
     }
 
-//    var armored: String {
-//        let armoredKeyRing = goKeyRing?.getArmored("123456", error: nil) ?? ""
-//        return armoredKeyRing
-//    }
-
     var fingerprint: String {
         let fingerprint = try? goKeyRing?.getEntity(0).primaryKey?.getFingerprint().uppercased()
         return fingerprint ?? ""
