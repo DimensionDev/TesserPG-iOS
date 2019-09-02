@@ -263,40 +263,36 @@ extension MeViewController: UITableViewDelegate {
         return 126
     }
 
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return UIView()
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 20 - KeyCardCell.cardVerticalMargin
+    }
+
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return UIView()
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 20
+        return 20 - KeyCardCell.cardVerticalMargin
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) as? KeyCardCell else { return }
 
-        if #available(iOS 13.0, *), case .TCKey = cell.keyValue {
-            // Use MeViewController.tableView(_:contextMenuConfigurationForRowAt:point:) API
-        } else {
-            // Fallback to UIAlertController
-            viewModel.cellDidClick.accept(cell)
-        }
+        viewModel.cellDidClick.accept(cell)
     }
 
     @available(iOS 13.0, *)
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        guard let cell = tableView.cellForRow(at: indexPath) as? KeyCardCell,
-        case .TCKey = cell.keyValue else {
+        let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath)
+        guard !actions.isEmpty else {
             return nil
         }
 
-        let action = UIAction(title: "Action") { _ in
-
-        }
-
-        let children = [
-            UIMenu(title: "Title", image: nil, identifier: nil, options: [], children: [action]),
-            UIMenu(title: "Title 2", image: nil, identifier: nil, options: [], children: [action])
-        ]
+        let children = actions.compactMap { $0.menuElement }
 
         return UIContextMenuConfiguration(
             identifier: indexPath as NSCopying,
@@ -305,4 +301,17 @@ extension MeViewController: UITableViewDelegate {
                 return UIMenu(title: "", image: nil, identifier: nil, options: [], children: children)
             })
     }
+
+    @available(iOS 13.0, *)
+    func tableView(_ tableView: UITableView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+        guard let indexPath = configuration.identifier as? IndexPath,
+        let cell = tableView.cellForRow(at: indexPath) as? KeyCardCell else {
+            return nil
+        }
+
+        let center = CGPoint(x: cell.bounds.midX, y: cell.bounds.midY)
+        let previewTarget = UIPreviewTarget(container: cell, center: center)
+        return UITargetedPreview(view: cell.cardView, parameters: UIPreviewParameters(), target: previewTarget)
+    }
+
 }
