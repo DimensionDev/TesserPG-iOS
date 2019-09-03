@@ -2465,7 +2465,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TesserCube/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2497,7 +2497,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TesserCube/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2612,7 +2612,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
@@ -2641,7 +2641,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
@@ -2732,7 +2732,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TesserCube/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2803,7 +2803,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
@@ -2830,7 +2830,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2855,7 +2855,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeInterpretAction/TesserCubeInterpretAction.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2881,7 +2881,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2907,7 +2907,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2933,7 +2933,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2958,7 +2958,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeComposeAction/TesserCubeComposeAction.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2984,7 +2984,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -3010,7 +3010,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -3100,7 +3100,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TesserCube/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3173,7 +3173,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
-				ENABLE_BITCODE = NO;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
