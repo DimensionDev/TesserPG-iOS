@@ -61,7 +61,6 @@ extension MeViewModel {
             default:
                 return []
             }
-
         }
 
         @available(iOS 13.0, *)
@@ -70,7 +69,11 @@ extension MeViewModel {
         }
 
         var style: UIAlertAction.Style {
-            return .default
+            switch self {
+            case .delete:   return .destructive
+            case .cancel:   return .cancel
+            default:        return .default
+            }
         }
 
         var handler: () -> Void {
@@ -81,28 +84,25 @@ extension MeViewModel {
                 case let .exportPrivate(key, presentingViewController, cell):
                     ShareUtil.export(key: key, from: presentingViewController, over: cell)
                 case let .delete(key, presentingViewController, cell):
-                    if #available(iOS 13.0, *) {
-
-                    } else {
-//                        let deleteConfirmAlertController: UIAlertController = {
-//                            let confirmMessage = L10n.MeViewController.Action.Button.confirmDeleteKey + key.shortIdentifier
-//                            let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-//                            alertVC.addAction(title: confirmMessage, style: .destructive, isEnabled: true) { [weak self] _ in
-//                                guard let `self` = self else { return }
-//                                self.deleteKey(key, completion: { error in
-//                                    consolePrint(error?.localizedDescription)
-//                                })
-//                            }
-//                            alertVC.addAction(title: L10n.Common.Button.cancel, style: .cancel, isEnabled: true)
-//                            if let presenter = alertVC.popoverPresentationController {
-//                                presenter.sourceView = self.view
-//                                presenter.sourceRect = CGRect(origin: self.view.center, size: .zero)
-//                                presenter.permittedArrowDirections = []
-//                            }
-//                            return alertVC
-//                        }()
-//                        presentingViewController.present(deleteConfirmAlertController, animated: true, completion: nil)
+                    guard let keyRecord = key.keyRecord else {
+                        return
                     }
+
+                    let deleteConfirmAlertController: UIAlertController = {
+                        let confirmMessage = L10n.MeViewController.Action.Button.confirmDeleteKey + key.shortIdentifier
+                        let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                        alertVC.addAction(title: confirmMessage, style: .destructive, isEnabled: true) { _ in
+                            try? ProfileService.deleteKeyRecord(keyRecord: keyRecord)
+                        }
+                        alertVC.addAction(title: L10n.Common.Button.cancel, style: .cancel, isEnabled: true)
+                        if let presenter = alertVC.popoverPresentationController {
+                            presenter.sourceView = cell
+                            presenter.sourceRect = cell.bounds
+                        }
+                        return alertVC
+                    }()
+                    presentingViewController.present(deleteConfirmAlertController, animated: true, completion: nil)
+
                 case .cancel:
                     break
                 }
