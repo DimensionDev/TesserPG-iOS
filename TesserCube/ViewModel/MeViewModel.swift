@@ -17,9 +17,7 @@ class MeViewModel: NSObject {
 
     let hasKey: Driver<Bool>
     let keys = BehaviorRelay<[TCKey]>(value: [])
-    
-    let cellDidClick = PublishRelay<KeyCardCell>()
-    
+        
     override init() {
         hasKey = keys.asDriver().map { !$0.isEmpty }
 
@@ -28,22 +26,6 @@ class MeViewModel: NSObject {
             .drive(keys)
             .disposed(by: disposeBag)
     }
-}
-
-extension MeViewModel {
-
-    func deleteKey(_ key: TCKey, completion: @escaping (Error?) -> Void) {
-        // TODO: group contact's keys as one section in tableView
-        for pair in ProfileService.default.contactKeyPairs.value where pair.1.contains(where: { $0.longIdentifier == key.longIdentifier}) {
-            do {
-                try pair.0.removeKey(key)
-            } catch {
-                consolePrint(error)
-                return
-            }
-        }
-    }
-
 }
 
 extension MeViewModel: UITableViewDataSource {
