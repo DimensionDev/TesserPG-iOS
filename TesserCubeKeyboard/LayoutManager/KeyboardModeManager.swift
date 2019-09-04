@@ -299,12 +299,12 @@ extension KeyboardModeManager: ActionsViewDelegate {
                     signatureKey = ProfileService.default.defaultSignatureKey
                 }
 
-//                let message = try ProfileService.default.encryptMessage(originContent, signatureKey: signatureKey, recipients: recipientKeys)
-//
-//                WormholdService.shared.wormhole.passMessageObject(nil, identifier: WormholdService.MessageIdentifier.keyboardDidEncryptMessage.rawValue)
-//
-//                keyboardVC?.removeAllBeforeContent()
-//                keyboardVC?.textDocumentProxy.insertText(message.encryptedMessage)
+                let message = try ProfileService.default.encryptMessage(originContent, signatureKey: signatureKey, recipients: recipientKeys)
+
+                WormholdService.shared.wormhole.passMessageObject(nil, identifier: WormholdService.MessageIdentifier.keyboardDidEncryptMessage.rawValue)
+
+                keyboardVC?.removeAllBeforeContent()
+                keyboardVC?.textDocumentProxy.insertText(message.encryptedMessage)
             } catch {
                 consolePrint(error.localizedDescription)
                 toastAlerter.alert(message: error.localizedDescription, in: keyboardVC!.view)
@@ -346,23 +346,23 @@ extension KeyboardModeManager {
             mode = .interpretResult
         } else {
             consolePrint(error?.localizedDescription)
-//            switch error {
-//            case (let tcError as TCError):
-//                switch tcError {
-//                case .pgpKeyError(let reason):
-//                    switch reason {
-//                    case .invalidKeyFormat:
-//                        self.toastAlerter.alert(message: L10n.Keyboard.Alert.noEncryptedText, in: keyboardVC.view)
-//                    default:
-//                        break
-//                    }
-//                default:
-//                    toastAlerter.alert(message: tcError.localizedDescription, in: keyboardVC.view)
-//                    return
-//                }
-//            default:
-//                toastAlerter.alert(message: error?.localizedDescription ?? L10n.Common.Alert.unknownError, in: keyboardVC.view)
-//            }
+            switch error {
+            case (let tcError as TCError):
+                switch tcError {
+                case .pgpKeyError(let reason):
+                    switch reason {
+                    case .invalidKeyFormat:
+                        self.toastAlerter.alert(message: L10n.Keyboard.Alert.noEncryptedText, in: keyboardVC.view)
+                    default:
+                        break
+                    }
+                default:
+                    toastAlerter.alert(message: tcError.localizedDescription, in: keyboardVC.view)
+                    return
+                }
+            default:
+                toastAlerter.alert(message: error?.localizedDescription ?? L10n.Common.Alert.unknownError, in: keyboardVC.view)
+            }
         }
     }
 }
