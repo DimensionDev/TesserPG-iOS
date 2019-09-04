@@ -250,6 +250,7 @@
 		DB4F309822A14C0D0003804B /* DMSPGPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F309722A14C0D0003804B /* DMSPGPError.swift */; };
 		DB4F309922A14C0D0003804B /* DMSPGPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F309722A14C0D0003804B /* DMSPGPError.swift */; };
 		DB548D5722F931DC005E7EE4 /* KeychainAccessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB548D5622F931DC005E7EE4 /* KeychainAccessTests.swift */; };
+		DB550D382313CF73000660AD /* ContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB550D372313CF73000660AD /* ContextMenu.swift */; };
 		DB616C0922A4CBB4002768B4 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB616C0822A4CBB4002768B4 /* UILabel.swift */; };
 		DB63A0D522DD82EE00C2DDA6 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB63A0D322DD82EE00C2DDA6 /* MainInterface.storyboard */; };
 		DB63A0D922DD82EE00C2DDA6 /* TesserCubeInterpretAction.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = DB63A0CD22DD82EE00C2DDA6 /* TesserCubeInterpretAction.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -329,6 +330,17 @@
 		DB6AA3ED2273247C00A7ADDF /* KeyFactory+BCOpenPGP.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6AA3E92273218C00A7ADDF /* KeyFactory+BCOpenPGP.swift */; };
 		DB6AA3F42275B69C00A7ADDF /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE69224A330D00D82704 /* String.swift */; };
 		DB75454B2296A7C400B4E1EF /* CreateKeyOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB75454A2296A7C400B4E1EF /* CreateKeyOption.swift */; };
+		DB8D730F231E0EF0005D15DD /* MeViewModel+ContextMenuActionTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D730E231E0EF0005D15DD /* MeViewModel+ContextMenuActionTableViewDelegate.swift */; };
+		DB8D7311231E2791005D15DD /* ProfileService+KeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D7310231E2791005D15DD /* ProfileService+KeyRecord.swift */; };
+		DB8D7313231E38FD005D15DD /* KeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D7312231E38FD005D15DD /* KeyRecord.swift */; };
+		DB8D7315231E3920005D15DD /* Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D7314231E3920005D15DD /* Email.swift */; };
+		DB8D7316231E393D005D15DD /* Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D7314231E3920005D15DD /* Email.swift */; };
+		DB8D7317231E393D005D15DD /* Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D7314231E3920005D15DD /* Email.swift */; };
+		DB8D7318231E393E005D15DD /* Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D7314231E3920005D15DD /* Email.swift */; };
+		DB8D7319231E394E005D15DD /* KeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D7312231E38FD005D15DD /* KeyRecord.swift */; };
+		DB8D731A231E394E005D15DD /* KeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D7312231E38FD005D15DD /* KeyRecord.swift */; };
+		DB8D731B231E394E005D15DD /* KeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D7312231E38FD005D15DD /* KeyRecord.swift */; };
+		DB97AD162317BCD9007594E9 /* MessagesViewModel+ContextMenuActionTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB97AD152317BCD9007594E9 /* MessagesViewModel+ContextMenuActionTableViewDelegate.swift */; };
 		DBA0ACF422F800010088F03B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA0ACF322F800010088F03B /* SceneDelegate.swift */; };
 		DBB81AE1225DFF7A003D63C6 /* UIScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB81AE0225DFF7A003D63C6 /* UIScreen.swift */; };
 		DBBA87F62248B8F500B290AC /* ComposeMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBA87F52248B8F500B290AC /* ComposeMessageViewController.swift */; };
@@ -587,6 +599,7 @@
 		DB4F300222A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSPGPPublicKeyAlgorithm.swift; sourceTree = "<group>"; };
 		DB4F309722A14C0D0003804B /* DMSPGPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSPGPError.swift; sourceTree = "<group>"; };
 		DB548D5622F931DC005E7EE4 /* KeychainAccessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainAccessTests.swift; sourceTree = "<group>"; };
+		DB550D372313CF73000660AD /* ContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenu.swift; sourceTree = "<group>"; };
 		DB616C0822A4CBB4002768B4 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		DB63A0CD22DD82EE00C2DDA6 /* TesserCubeInterpretAction.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TesserCubeInterpretAction.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB63A0D122DD82EE00C2DDA6 /* InterpretActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretActionViewController.swift; sourceTree = "<group>"; };
@@ -609,6 +622,11 @@
 		DB66FE6E224A3CD600D82704 /* SenderContactPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderContactPickerView.swift; sourceTree = "<group>"; };
 		DB6AA3E92273218C00A7ADDF /* KeyFactory+BCOpenPGP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyFactory+BCOpenPGP.swift"; sourceTree = "<group>"; };
 		DB75454A2296A7C400B4E1EF /* CreateKeyOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateKeyOption.swift; sourceTree = "<group>"; };
+		DB8D730E231E0EF0005D15DD /* MeViewModel+ContextMenuActionTableViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MeViewModel+ContextMenuActionTableViewDelegate.swift"; sourceTree = "<group>"; };
+		DB8D7310231E2791005D15DD /* ProfileService+KeyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileService+KeyRecord.swift"; sourceTree = "<group>"; };
+		DB8D7312231E38FD005D15DD /* KeyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyRecord.swift; sourceTree = "<group>"; };
+		DB8D7314231E3920005D15DD /* Email.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Email.swift; sourceTree = "<group>"; };
+		DB97AD152317BCD9007594E9 /* MessagesViewModel+ContextMenuActionTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessagesViewModel+ContextMenuActionTableViewDelegate.swift"; sourceTree = "<group>"; };
 		DBA0ACF322F800010088F03B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		DBB81AE0225DFF7A003D63C6 /* UIScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScreen.swift; sourceTree = "<group>"; };
 		DBBA87F52248B8F500B290AC /* ComposeMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeMessageViewController.swift; sourceTree = "<group>"; };
@@ -717,7 +735,7 @@
 				83214685223F4011008ECC22 /* Scene */,
 				832146D12240CB42008ECC22 /* Crypto */,
 				8378335C22488A8A00F2C0BF /* Database */,
-				8313F69422475A9000C09C2D /* Share */,
+				8313F69422475A9000C09C2D /* Helper */,
 				8321462F223F30AE008ECC22 /* Vendor */,
 				83B93D1D221CE05300F556C0 /* Application */,
 				83B93D20221CEB8500F556C0 /* Extension */,
@@ -774,13 +792,14 @@
 			path = FloatingActionSheetController;
 			sourceTree = "<group>";
 		};
-		8313F69422475A9000C09C2D /* Share */ = {
+		8313F69422475A9000C09C2D /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				DB550D372313CF73000660AD /* ContextMenu.swift */,
 				8313F69522475AC600C09C2D /* SharePublicKeyActivity.swift */,
 				8313F69722476ADD00C09C2D /* ShareUtil.swift */,
 			);
-			path = Share;
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		8313F69922476F4800C09C2D /* Share */ = {
@@ -883,8 +902,9 @@
 			isa = PBXGroup;
 			children = (
 				832146B0223F7D98008ECC22 /* ProfileService.swift */,
-				DBC24B1323026BA800A4AE8D /* WordSuggestionService.swift */,
+				DB8D7310231E2791005D15DD /* ProfileService+KeyRecord.swift */,
 				833FF38C224F97BD00EFE0A9 /* ProfileService+Message.swift */,
+				DBC24B1323026BA800A4AE8D /* WordSuggestionService.swift */,
 				DB3B58E12282929700879834 /* WormholdService.swift */,
 			);
 			path = Service;
@@ -908,9 +928,11 @@
 			children = (
 				8378336A224B352500F2C0BF /* ContactListViewModel.swift */,
 				832146FB2244CD43008ECC22 /* MessagesViewModel.swift */,
+				DB97AD152317BCD9007594E9 /* MessagesViewModel+ContextMenuActionTableViewDelegate.swift */,
 				DBC7DEC02248D49E00DA4C3E /* ComposeMessageViewModel.swift */,
 				DB4CBCA9224F962A00ED6BF0 /* InterpretMessageViewModel.swift */,
 				832146BD223F957B008ECC22 /* MeViewModel.swift */,
+				DB8D730E231E0EF0005D15DD /* MeViewModel+ContextMenuActionTableViewDelegate.swift */,
 				DB44999B228C248D000B7E8A /* SettingsViewModel.swift */,
 				DB44999D228D3353000B7E8A /* MessageDigitalSignatureSettingsViewModel.swift */,
 				DB63A10B22DEF75100C2DDA6 /* InterpretActionViewModel.swift */,
@@ -950,6 +972,8 @@
 			isa = PBXGroup;
 			children = (
 				832146DF22421F93008ECC22 /* Contact.swift */,
+				DB8D7314231E3920005D15DD /* Email.swift */,
+				DB8D7312231E38FD005D15DD /* KeyRecord.swift */,
 				833FF390224F97D900EFE0A9 /* Message.swift */,
 				832146E122422024008ECC22 /* TCKey.swift */,
 				8313F6A52247ACC800C09C2D /* TCErrors.swift */,
@@ -1096,6 +1120,7 @@
 		83B93D20221CEB8500F556C0 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				DB4F300522A120F50003804B /* DMSOpenPGP */,
 				DB66FE69224A330D00D82704 /* String.swift */,
 				8378336C224B36A400F2C0BF /* String+Localization.swift */,
 				DB616C0822A4CBB4002768B4 /* UILabel.swift */,
@@ -1105,7 +1130,6 @@
 				8313F69C22477CA000C09C2D /* UIViewController+Alert.swift */,
 				83B93D21221CEB9800F556C0 /* UserDefaults+AppGroup.swift */,
 				DB1169CA22E185640099BA25 /* NotificationName.swift */,
-				DB4F300522A120F50003804B /* DMSOpenPGP */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1917,6 +1941,7 @@
 			files = (
 				DB4F300122A11F820003804B /* Contact.swift in Sources */,
 				8313F6932247165F00C09C2D /* FloatingActionGroup.swift in Sources */,
+				DB8D7313231E38FD005D15DD /* KeyRecord.swift in Sources */,
 				832146CD2240B135008ECC22 /* TCBaseViewController.swift in Sources */,
 				DB1449732313F9CF000FA38E /* BrokenMessageViewController.swift in Sources */,
 				DB3B58E22282929700879834 /* WormholdService.swift in Sources */,
@@ -1955,6 +1980,8 @@
 				832146E222422024008ECC22 /* TCKey.swift in Sources */,
 				DBA0ACF422F800010088F03B /* SceneDelegate.swift in Sources */,
 				832146F42243ACCE008ECC22 /* KeyFactory.swift in Sources */,
+				DB8D730F231E0EF0005D15DD /* MeViewModel+ContextMenuActionTableViewDelegate.swift in Sources */,
+				DB8D7311231E2791005D15DD /* ProfileService+KeyRecord.swift in Sources */,
 				8316ADAB22CB4E1000246E5A /* ConfirmContactCell.swift in Sources */,
 				83214684223F3BEE008ECC22 /* Coordinator.swift in Sources */,
 				DBBBC198224E29E50080790F /* ContactMappable.swift in Sources */,
@@ -1983,8 +2010,10 @@
 				DB616C0922A4CBB4002768B4 /* UILabel.swift in Sources */,
 				832146CB2240AEC0008ECC22 /* ImageUtil.swift in Sources */,
 				83783387224CC23400F2C0BF /* ContactEditTextCell.swift in Sources */,
+				DB8D7315231E3920005D15DD /* Email.swift in Sources */,
 				DB66FE6F224A3CD600D82704 /* SenderContactPickerView.swift in Sources */,
 				DB4F309822A14C0D0003804B /* DMSPGPError.swift in Sources */,
+				DB550D382313CF73000660AD /* ContextMenu.swift in Sources */,
 				83DFC72C2252EF3100993160 /* KeyRecordDBAction.swift in Sources */,
 				832146B1223F7D98008ECC22 /* ProfileService.swift in Sources */,
 				DB66FE6D224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */,
@@ -1992,6 +2021,7 @@
 				83FE345C22B72DEC0077C1A5 /* IntroSpotlight.swift in Sources */,
 				832146D82241D980008ECC22 /* ImportKeyViewController.swift in Sources */,
 				832146C5223FC9E4008ECC22 /* TCActionButton.swift in Sources */,
+				DB97AD162317BCD9007594E9 /* MessagesViewModel+ContextMenuActionTableViewDelegate.swift in Sources */,
 				837833552248840600F2C0BF /* TCTypes.swift in Sources */,
 				83783375224B544100F2C0BF /* ListEmptyView.swift in Sources */,
 				DB44999C228C248D000B7E8A /* SettingsViewModel.swift in Sources */,
@@ -2049,6 +2079,7 @@
 				837833652249C34400F2C0BF /* TCDBManager.swift in Sources */,
 				83FF06592250D9DA0003BC0D /* MessageDBAction.swift in Sources */,
 				834CA61922659EE900AC8355 /* FullAccessHintView.swift in Sources */,
+				DB8D7316231E393D005D15DD /* Email.swift in Sources */,
 				8325E47E222D254200EE9B83 /* UIImage+RoundCorners.swift in Sources */,
 				DBD63FE02296864200E46FDC /* KeyFactory+TCKey.swift in Sources */,
 				837833582248897C00F2C0BF /* KeyFactory.swift in Sources */,
@@ -2106,6 +2137,7 @@
 				831EC43222B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift in Sources */,
 				83B93D58221E570200F556C0 /* RecipientButton.swift in Sources */,
 				837833592248898A00F2C0BF /* TCErrors.swift in Sources */,
+				DB8D7319231E394E005D15DD /* KeyRecord.swift in Sources */,
 				8325E46D222CBFBC00EE9B83 /* KeyboardLayoutManager.swift in Sources */,
 				83B93D5B221E575500F556C0 /* Theme.swift in Sources */,
 				8325E4A5222F8FDA00EE9B83 /* Fonts.swift in Sources */,
@@ -2135,12 +2167,14 @@
 				DB63A0F822DDCB0E00C2DDA6 /* WormholdService.swift in Sources */,
 				DB63A11A22E066ED00C2DDA6 /* ComposeMessageViewModel.swift in Sources */,
 				DB63A0DF22DD939C00C2DDA6 /* MessageCardCell.swift in Sources */,
+				DB8D7317231E393D005D15DD /* Email.swift in Sources */,
 				DB63A0F022DDA2C000C2DDA6 /* strings.swift in Sources */,
 				DB63A0FD22DDCB9700C2DDA6 /* KeyFactory+TCKey.swift in Sources */,
 				DB63A11822E065A800C2DDA6 /* ComposeMessageViewController.swift in Sources */,
 				DB63A0F922DDCB2000C2DDA6 /* TCDBManager.swift in Sources */,
 				DB63A10A22DEF4D300C2DDA6 /* ImageUtil.swift in Sources */,
 				DB63A10522DDCF1600C2DDA6 /* UILabel.swift in Sources */,
+				DB8D731A231E394E005D15DD /* KeyRecord.swift in Sources */,
 				DB63A12522E06E0900C2DDA6 /* String+Localization.swift in Sources */,
 				DB63A0E422DD9B5600C2DDA6 /* CALayer+Shadow.swift in Sources */,
 				DB63A11E22E0687C00C2DDA6 /* ContactPickerTagCollectionViewCell.swift in Sources */,
@@ -2189,6 +2223,7 @@
 				DB1169B222E183440099BA25 /* ContactsListViewController.swift in Sources */,
 				DB1169DA22E19C360099BA25 /* UILabel.swift in Sources */,
 				DB63A14D22E1809200C2DDA6 /* ComposeActionViewController.swift in Sources */,
+				DB8D7318231E393E005D15DD /* Email.swift in Sources */,
 				DB1169CF22E1859A0099BA25 /* UIViewController+EmptyView.swift in Sources */,
 				DB1169C622E184F40099BA25 /* ContactListViewModel.swift in Sources */,
 				DB1169A122E182730099BA25 /* Assets.swift in Sources */,
@@ -2215,6 +2250,7 @@
 				DB1169BE22E183E50099BA25 /* TCErrors.swift in Sources */,
 				DB1169AC22E182A60099BA25 /* TCKey.swift in Sources */,
 				DB1169C122E184350099BA25 /* RecipientContactPickerView.swift in Sources */,
+				DB8D731B231E394E005D15DD /* KeyRecord.swift in Sources */,
 				DB1169B422E183780099BA25 /* String.swift in Sources */,
 				DB1169BA22E183C30099BA25 /* MessageDBAction.swift in Sources */,
 				DB1169BC22E183CB0099BA25 /* KeyFactory+TCKey.swift in Sources */,

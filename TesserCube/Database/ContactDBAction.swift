@@ -47,7 +47,7 @@ extension Contact {
                     // assertionFailure("KeyRecord should not empty except first time process database migrate")
                     return nil
                 }
-                return TCKey(keyRing: keyRing)
+                return TCKey(keyRing: keyRing, from: keyRecord)
             }
         } catch {
             consolePrint(error.localizedDescription)

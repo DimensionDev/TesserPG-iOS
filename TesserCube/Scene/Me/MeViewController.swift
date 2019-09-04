@@ -88,18 +88,6 @@ class MeViewController: TCBaseViewController {
                 self?.tableView.reloadData()
             })
             .disposed(by: disposeBag)
-        
-        viewModel.cellDidClick
-            .subscribe(onNext: { [weak self] cell in
-                switch cell.keyValue {
-                case .mockKey:
-                    self?.showCreateKeyAlert(onCell: cell)
-                case .TCKey(let keyValue):
-                    self?.showKeyActions(key: keyValue, onCell: cell)
-                }
-            })
-            .disposed(by: disposeBag)
-        
     }
     
     private func createAddKeyBarButtonItem() -> UIBarButtonItem {
@@ -213,58 +201,21 @@ extension MeViewController {
         }
     }
     
-    private func showKeyActions(key: TCKey, onCell cell: UITableViewCell) {
-        DispatchQueue.main.async {
-            let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            alertVC.addAction(title: L10n.MeViewController.Action.Button.share, style: .default, isEnabled: true) { _ in
-                ShareUtil.share(key: key, from: self, over: cell)
-            }
-            alertVC.addAction(title: L10n.MeViewController.Action.Button.export, style: .destructive, isEnabled: true) { _ in
-                // TODO: or input password manually?
-                ShareUtil.export(key: key, from: self, over: cell)
-            }
-            alertVC.addAction(title: L10n.Common.Button.delete, style: .destructive, isEnabled: true) { _ in
-                self.showDeleteConfirmAlert(key: key)
-            }
-            alertVC.addAction(UIAlertAction(title: L10n.Common.Button.cancel, style: .cancel, handler: nil))
-            if let presenter = alertVC.popoverPresentationController {
-                presenter.sourceView = cell
-                presenter.sourceRect = cell.bounds
-            }
-            self.present(alertVC, animated: true)
-        }
-    }
-    
-    private func showDeleteConfirmAlert(key: TCKey) {
-        DispatchQueue.main.async {
-            let confirmMessage = L10n.MeViewController.Action.Button.confirmDeleteKey + key.shortIdentifier
-            let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            alertVC.addAction(title: confirmMessage, style: .destructive, isEnabled: true) { [weak self] _ in
-                guard let `self` = self else { return }
-                self.viewModel.deleteKey(key, completion: { error in
-                    consolePrint(error?.localizedDescription)
-                })
-            }
-            alertVC.addAction(title: L10n.Common.Button.cancel, style: .cancel, isEnabled: true)
-            if let presenter = alertVC.popoverPresentationController {
-                presenter.sourceView = self.view
-                presenter.sourceRect = CGRect(origin: self.view.center, size: .zero)
-                presenter.permittedArrowDirections = []
-            }
-            self.present(alertVC, animated: true)
-        }
-    }
 }
 
+// MARK: - UITableViewDelegate
 extension MeViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 126
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) as? KeyCardCell else { return }
-        viewModel.cellDidClick.accept(cell)
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return UIView()
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 20 - KeyCardCell.cardVerticalMargin
     }
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -272,7 +223,62 @@ extension MeViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 20
+        return 20 - KeyCardCell.cardVerticalMargin
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) as? KeyCardCell else {
+            return
+        }
+
+        switch cell.keyValue {
+        case .mockKey:
+            showCreateKeyAlert(onCell: cell)
+        case .TCKey:
+            let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath)
+                let alertController: UIAlertController = {
+                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                let alertActions = actions.map { $0.alertAction }
+                for alertAction in alertActions {
+                    alertController.addAction(alertAction)
+                }
+                return alertController
+            }()
+            if let presenter = alertController.popoverPresentationController {
+               presenter.sourceView = cell
+               presenter.sourceRect = cell.bounds
+            }
+            present(alertController, animated: true, completion: nil)
+        }
+    }
+
+    @available(iOS 13.0, *)
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath)
+        guard !actions.isEmpty else {
+            return nil
+        }
+
+        let children = actions.compactMap { $0.menuElement }
+
+        return UIContextMenuConfiguration(
+            identifier: indexPath as NSCopying,
+            previewProvider: nil,
+            actionProvider: { suggestedActions in
+                return UIMenu(title: "", image: nil, identifier: nil, options: [], children: children)
+            })
+    }
+
+    @available(iOS 13.0, *)
+    func tableView(_ tableView: UITableView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+        guard let indexPath = configuration.identifier as? IndexPath,
+        let cell = tableView.cellForRow(at: indexPath) as? KeyCardCell else {
+            return nil
+        }
+
+        let center = CGPoint(x: cell.bounds.midX, y: cell.bounds.midY)
+        let previewTarget = UIPreviewTarget(container: cell, center: center)
+        return UITargetedPreview(view: cell.cardView, parameters: UIPreviewParameters(), target: previewTarget)
     }
 
 }
