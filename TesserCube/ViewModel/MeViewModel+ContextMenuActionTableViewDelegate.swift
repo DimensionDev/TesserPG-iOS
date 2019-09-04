@@ -70,9 +70,9 @@ extension MeViewModel {
 
         var style: UIAlertAction.Style {
             switch self {
-            case .delete:   return .destructive
-            case .cancel:   return .cancel
-            default:        return .default
+            case .delete, .exportPrivate:   return .destructive
+            case .cancel:                   return .cancel
+            default:                        return .default
             }
         }
 
