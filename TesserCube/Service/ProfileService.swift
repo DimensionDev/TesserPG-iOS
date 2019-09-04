@@ -17,8 +17,7 @@ import ConsolePrint
 class ProfileService {
     
     public static let `default` = ProfileService()
-    
-    let contactKeyPairs = BehaviorRelay<[(Contact, [TCKey])]>(value: [])
+
     let keys: BehaviorRelay<[TCKey]>
     let contacts: BehaviorRelay<[Contact]>
     let messages: BehaviorRelay<[Message]>
@@ -28,7 +27,7 @@ class ProfileService {
     
     private var contactsObervation: TransactionObserver?
     private var messagesObervation: TransactionObserver?
-    private var keysObervation: TransactionObserver?
+    private var keyRecordsObervation: TransactionObserver?
     
     let keyChain = Keychain(service: "com.Sujitech.TesserCube", accessGroup: "7LFDZ96332.com.Sujitech.TesserCube").accessibility(.afterFirstUnlock, authenticationPolicy: .userPresence)
     
@@ -38,11 +37,6 @@ class ProfileService {
         keys = BehaviorRelay(value: [])
         messages = BehaviorRelay(value: [])
         contacts = BehaviorRelay(value: [])
-
-        contactKeyPairs.asDriver()
-            .map { pairs in pairs.flatMap { $0.1 } }
-            .drive(keys)
-            .disposed(by: disposeBag)
 
         keys.asDriver()
             .drive(onNext: { _ in
@@ -77,14 +71,18 @@ class ProfileService {
             NSLog("WormholdService.MessageIdentifier.interpretActionExtensionDidUpdateMessage")
         }
         #endif
-        
-        keysObervation = try! ValueObservation.trackingAll(KeyRecord.all())
+
+        keyRecordsObervation = try! ValueObservation.trackingAll(KeyRecord.all())
             .start(in: TCDBManager.default.dbQueue, onChange: { latestKeyRecords in
-                let contacts = self.contacts.value
-                let pairs = contacts.map { contact in
-                    return (contact, contact.getKeys())
+                let keys = latestKeyRecords.compactMap { record -> TCKey? in
+                    guard let armored = record.armored,
+                    let keyRing = try? DMSPGPKeyRing(armoredKey: armored) else {
+                        return nil
+                    }
+
+                    return TCKey(keyRing: keyRing, from: record)
                 }
-                self.contactKeyPairs.accept(pairs)
+                self.keys.accept(keys)
             })
         // swiftlint:enable force_try
         
@@ -194,10 +192,11 @@ class ProfileService {
                 try self.keyChain
                     .authenticationPrompt("Authenticate to update your password")
                     .set(passphrase ?? "", key: tckey.longIdentifier)
-                
-                var currentKeys = self.keys.value
-                currentKeys.append(tckey)
-                self.keys.accept(currentKeys)
+
+                // Should not reload keys manually. Observe KeyRocrd change and update from top of source
+//                var currentKeys = self.keys.value
+//                currentKeys.append(tckey)
+//                self.keys.accept(currentKeys)
                 
                 completion(nil)
             } catch let error {

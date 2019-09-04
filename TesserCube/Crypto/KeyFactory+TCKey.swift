@@ -17,7 +17,7 @@ extension KeyFactory {
             guard let keyRing = try? DMSPGPKeyRing(armoredKey: armoredKey, password: passphrase) else {
                 throw TCError.pgpKeyError(reason: .invalidKeyFormat)
             }
-            let key = TCKey(keyRing: keyRing)
+            let key = TCKey(keyRing: keyRing, from: nil)
 
             // Check passphrase if there is secret key within
             if let secretKeyRing = key.keyRing.secretKeyRing {
@@ -42,7 +42,7 @@ extension KeyFactory {
     static func key(from generateKeyData: GenerateKeyData) throws -> TCKey {
         do {
             let factory = try DMSPGPKeyRingFactory(generateKeyData: generateKeyData)
-            let key = TCKey(keyRing: factory.keyRing)
+            let key = TCKey(keyRing: factory.keyRing, from: nil)
             return key
         } catch let error as DMSPGPError {
             consolePrint(error.localizedDescription)

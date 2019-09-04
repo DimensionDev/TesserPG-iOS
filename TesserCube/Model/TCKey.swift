@@ -12,6 +12,9 @@ import DMSOpenPGP
 
 struct TCKey: KeychianMappable {
 
+    // Not databae detached key should set keyRecord
+    let keyRecord: KeyRecord?
+
     let keyRing: DMSPGPKeyRing
 
     var userID: String {
@@ -28,7 +31,8 @@ struct TCKey: KeychianMappable {
         return keyRing.publicKeyRing.primaryKey.shortIdentifier
     }
 
-    init(keyRing: DMSPGPKeyRing) {
+    init(keyRing: DMSPGPKeyRing, from keyRecord: KeyRecord?) {
+        self.keyRecord = keyRecord
         self.keyRing = keyRing
     }
 
