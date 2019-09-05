@@ -22,9 +22,18 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
 
+
+
+
         window = UIWindow(windowScene: windowScene)
         window?.makeKeyAndVisible()
-        Coordinator.main.present(scene: .main(message: nil, window: window!), from: nil)
+        Coordinator.main.present(scene: .main(message: nil, window: window!), from: nil, completion: {
+            guard let url = connectionOptions.urlContexts.first?.url else {
+                return
+            }
+            
+            _ = Coordinator.main.handleUrl(UIApplication.shared, open: url)
+        })
     }
 
     func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
