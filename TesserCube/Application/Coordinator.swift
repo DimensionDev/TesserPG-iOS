@@ -181,7 +181,7 @@ extension Coordinator {
             let plainText = try? String(contentsOf: url, encoding: .utf8)
 
             // FIXME: SceneDelegate
-            let rootViewController = UIApplication.shared.keyWindow?.rootViewController
+            let rootViewController = app.keyWindow?.rootViewController
 
             guard let message = plainText, !message.isEmpty else {
                 Coordinator.main.present(scene: .brokenMessage(message: plainText), from: rootViewController, transition: .modal)
