@@ -12,6 +12,13 @@ import Foundation
 // swiftlint:disable nesting type_body_length type_name
 internal enum L10n {
 
+  internal enum BrokenMessageViewController {
+    internal enum Label {
+      /// The following text was passed in.\nHowever, it can't be interpreted.
+      internal static let prompt = L10n.tr("Localizable", "BrokenMessageViewController.Label.prompt")
+    }
+  }
+
   internal enum Common {
     internal enum Alert {
       /// Error

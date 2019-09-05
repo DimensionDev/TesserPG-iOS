@@ -185,6 +185,8 @@
 "ComposeActionViewController.Title.Composing" = "撰写中...";
 "ComposeActionViewController.Title.MessageComposed" = "撰写完成";
 
+"BrokenMessageViewController.Label.prompt" = "接收到以下文本\n但未能成功解密";
+
 "Keyboard.Prompt.EnableFullAccess" = "请点击此处 开启 \"允许完全访问\"";
 "Keyboard.Button.Interpret" = "解密";
 "Keyboard.Button.Encrypt" = "加密";

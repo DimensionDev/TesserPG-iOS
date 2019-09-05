@@ -34,7 +34,7 @@ final class BrokenMessageViewController: UIViewController {
         label.font = FontFamily.SFProDisplay.regular.font(size: 16)
         label.textAlignment = .center
         label.textColor = .black
-        label.text = "The following text was passed in.\nHowever, it seems not to be a PGP message."
+        label.text = L10n.BrokenMessageViewController.Label.prompt
         return label
     }()
 

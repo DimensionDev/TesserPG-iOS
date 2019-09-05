@@ -193,6 +193,8 @@
 "ComposeActionViewController.Title.Composing" = "Composing";
 "ComposeActionViewController.Title.MessageComposed" = "Message Composed";
 
+"BrokenMessageViewController.Label.prompt" = "The following text was passed in.\nHowever, it can't be interpreted.";
+
 "Keyboard.Prompt.EnableFullAccess" = "Click to enable \"Full Access\" please";
 "Keyboard.Button.Interpret" = "Interpret";
 "Keyboard.Button.Encrypt" = "Encrypt";
