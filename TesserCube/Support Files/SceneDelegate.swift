@@ -23,8 +23,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
 
 
-
-
         window = UIWindow(windowScene: windowScene)
         window?.makeKeyAndVisible()
         Coordinator.main.present(scene: .main(message: nil, window: window!), from: nil, completion: {

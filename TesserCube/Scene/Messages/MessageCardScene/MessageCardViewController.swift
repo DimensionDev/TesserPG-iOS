@@ -37,8 +37,9 @@ final class MessageCardViewModel {
         }.asDriver()
 
         messages.asDriver()
-            .drive(onNext: { [weak self] message in
-                guard let message = message.last, let `self` = self else { return }
+            .drive(onNext: { [weak self] messages in
+                // skip if not last
+                guard let message = messages.last, let `self` = self else { return }
 
                 // set available actions
                 if ProfileService.default.containsKey(longIdentifier: message.senderKeyId) {

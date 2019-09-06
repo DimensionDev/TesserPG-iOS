@@ -103,7 +103,7 @@ extension ComposeActionViewController {
             didPresentComposeMessageViewController = true
 
             extractInputFromExtensionContext()
-            NotificationCenter.default.addObserver(self, selector: #selector(ComposeActionViewController.extensionContextCompleteRequest(_:)), name: .extensionContextCompleteRequest, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(ComposeActionViewController.extensionContextCompleteRequest(_:)), name: .messageComposeComplete, object: nil)
             return
         }
     }
