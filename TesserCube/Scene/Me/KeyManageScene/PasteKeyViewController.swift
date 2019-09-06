@@ -55,9 +55,9 @@ class PasteKeyViewController: TCBaseViewController {
         title = needPassphrase ? L10n.PasteKeyViewController.Title.pastePrivateKey : L10n.PasteKeyViewController.Title.importPublicKey
 
         navigationItem.largeTitleDisplayMode = .never
-        if !needPassphrase {
+        if navigationItem.leftBarButtonItem == nil {
             navigationItem.leftBarButtonItem = UIBarButtonItem(title: L10n.Common.Button.cancel, style: .plain, target: self, action: #selector(PasteKeyViewController.cancelBarButtonItemPressed(_:)))
-        }
+        }            
 
         let separator1 = createSeparator()
         let separator2 = createSeparator()
