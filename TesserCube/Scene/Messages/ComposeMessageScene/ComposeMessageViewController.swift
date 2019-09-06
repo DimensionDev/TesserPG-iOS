@@ -52,7 +52,7 @@ final class ComposeMessageViewController: TCBaseViewController {
 
     lazy var cancelBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: L10n.Common.Button.cancel, style: .plain, target: self, action: #selector(ComposeMessageViewController.cancelBarButtonItemPressed(_:)))
 
-    // for callee
+    // for callee (a.k.a InterpretActionViewController)
     var composedMessage: Message?
 
     override func configUI() {
@@ -194,12 +194,11 @@ extension ComposeMessageViewController {
 
     // use dismiss proxy for app extension post CompleteRequest safe
     private func dismiss() {
-        dismiss(animated: true, completion: nil)
-
-        #if TARGET_IS_EXTENSION
+        // Post notification in App Extension & App. Due to in-app open URL not trigger Swift condition flag (TARGET_IS_EXTENSION)
         let userInfo = ["message": composedMessage]
-        NotificationCenter.default.post(name: .extensionContextCompleteRequest, object: self, userInfo: userInfo as [AnyHashable : Any])
-        #endif
+        NotificationCenter.default.post(name: .messageComposeComplete, object: self, userInfo: userInfo as [AnyHashable : Any])
+
+        dismiss(animated: true, completion: nil)
     }
 
 }
@@ -345,7 +344,7 @@ private extension ComposeMessageViewController {
                     }
                 }
 
-                self.self.dismiss()
+                self.dismiss()
 
                 }, onError: { [weak self] error in
                     guard let `self` = self else { return }
