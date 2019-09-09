@@ -14,9 +14,11 @@ class ShareUtil {
     static func share(key: TCKey, from viewController: UIViewController, over view: UIView?) {
         let armoredKeyString = key.keyRing.publicKeyRing.armored()
 
-        var items: [Any] = [armoredKeyString]
+        var items: [Any] = []
         if let armoredKeyFileURL = createTempFile(for: armoredKeyString) {
             items.append(armoredKeyFileURL)
+        } else {
+            items.append(armoredKeyString)
         }
 
         let vc = UIActivityViewController(activityItems: items, applicationActivities: [])
@@ -40,9 +42,11 @@ class ShareUtil {
     static func export(key: TCKey, from viewController: UIViewController, over view: UIView?) {
         let armoredKeyString = key.armored
 
-        var items: [Any] = [armoredKeyString]
+        var items: [Any] = []
         if let armoredKeyFileURL = createTempFile(for: armoredKeyString) {
             items.append(armoredKeyFileURL)
+        } else {
+            items.append(armoredKeyString)
         }
 
         let vc = UIActivityViewController(activityItems: items, applicationActivities: [])
@@ -64,9 +68,11 @@ class ShareUtil {
     }
     
     static func share(message: String, from viewController: UIViewController, over view: UIView?) {
-        var items: [Any] = [message]
+        var items: [Any] = []
         if let armoredKeyFileURL = createTempFile(for: message) {
             items.append(armoredKeyFileURL)
+        } else {
+            items.append(message)
         }
 
         let vc = UIActivityViewController(activityItems: items, applicationActivities: [])
