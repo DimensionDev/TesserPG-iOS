@@ -80,11 +80,11 @@ extension TCKey {
     }
     
     var algorithm: DMSPGPPublicKeyAlgorithm? {
-        return keyRing.publicKeyRing.primaryEncryptionKey?.algorithm
+        return keyRing.publicKeyRing.primarySignatureKey?.algorithm
     }
 
     var keyStrength: Int? {
-        return keyRing.publicKeyRing.primaryEncryptionKey?.keyStrength
+        return keyRing.publicKeyRing.primarySignatureKey?.keyStrength
     }
     
     var isValid: Bool {
