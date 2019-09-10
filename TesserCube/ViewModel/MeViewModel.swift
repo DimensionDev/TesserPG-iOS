@@ -39,7 +39,12 @@ extension MeViewModel: UITableViewDataSource {
         if keys.value.isEmpty {
             cell.keyValue = .mockKey
         } else {
-            cell.keyValue = .TCKey(value: keys.value[indexPath.row])
+            guard indexPath.row < keys.value.count else {
+                assertionFailure()
+                return cell
+            }
+            let key = keys.value[indexPath.row]
+            cell.keyValue = .TCKey(value: key)
         }
         return cell
     }

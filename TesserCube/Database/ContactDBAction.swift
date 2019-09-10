@@ -12,8 +12,20 @@ import GRDB
 import ConsolePrint
 
 extension Contact {
+
+//    static func all() -> [Contact] {
+//        do {
+//            let contacts = try TCDBManager.default.dbQueue.read({ db in
+//                try Contact.fetchAll(db)
+//            })
+//            return contacts
+//        } catch let error {
+//            consolePrint(error.localizedDescription)
+//            return []
+//        }
+//    }
     
-    static func loadContact(id: Int64) -> Contact? {
+    static func find(id: Int64) -> Contact? {
         do {
             return try TCDBManager.default.dbQueue.read { db in
                 try Contact.fetchOne(db, key: id)
@@ -99,31 +111,31 @@ extension Contact {
 
 extension Contact {
 
-    func removeKey(_ key: TCKey) throws {
-        do {
-            let keyRecords = try TCDBManager.default.dbQueue.read({ db in
-                return try self.keys.fetchAll(db)
-            })
-
-            guard let keyRecordNeedsRemove = keyRecords.first(where: { $0.longIdentifier == key.longIdentifier }) else {
-                // nothing needs write
-                return
-            }
-
-            let shouldRemoveContact = keyRecords.count == 1
-            try TCDBManager.default.dbQueue.write { db in
-                if shouldRemoveContact {
-                    try self.delete(db)
-                    // cascade delete key record
-                } else {
-                    try keyRecordNeedsRemove.delete(db)
-                }
-            }
-
-        } catch {
-            consolePrint(error.localizedDescription)
-            throw error
-        }
-    }
+//    func removeKey(_ key: TCKey) throws {
+//        do {
+//            let keyRecords = try TCDBManager.default.dbQueue.read({ db in
+//                return try self.keys.fetchAll(db)
+//            })
+//
+//            guard let keyRecordNeedsRemove = keyRecords.first(where: { $0.longIdentifier == key.longIdentifier }) else {
+//                // nothing needs write
+//                return
+//            }
+//
+//            let shouldRemoveContact = keyRecords.count == 1
+//            try TCDBManager.default.dbQueue.write { db in
+//                if shouldRemoveContact {
+//                    try self.delete(db)
+//                    // cascade delete key record
+//                } else {
+//                    try keyRecordNeedsRemove.delete(db)
+//                }
+//            }
+//
+//        } catch {
+//            consolePrint(error.localizedDescription)
+//            throw error
+//        }
+//    }
 
 }
