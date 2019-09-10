@@ -45,3 +45,34 @@ extension KeyRecord {
     }
 
 }
+
+extension KeyRecord {
+
+    /// Delete key record from database
+    /// And also remove contact if the owner contact.keys has no other key record
+    @discardableResult
+    func delete() -> Bool {
+        do {
+            return try TCDBManager.default.dbQueue.write { db -> Bool in
+                guard let contact = try? Contact.fetchOne(db, key: contactId) else {
+                    assertionFailure()      // key should belong to one contact
+                    return try delete(db)
+                }
+
+                let keysCount = try contact.keys.fetchCount(db)
+                let shouldRemoveContact = keysCount == 1
+
+                if shouldRemoveContact {
+                    return try contact.delete(db)
+                    // cascade delete keyrecord
+                } else {
+                    return try delete(db)
+                }
+            }
+
+        } catch {
+            return false
+        }
+    }
+
+}
