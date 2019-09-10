@@ -123,6 +123,7 @@
 		83783388224CC23400F2C0BF /* ContactEditTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83783386224CC23400F2C0BF /* ContactEditTextCell.xib */; };
 		8378338C224DFED100F2C0BF /* SubKeyCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8378338A224DFED100F2C0BF /* SubKeyCardCell.swift */; };
 		8378338D224DFED100F2C0BF /* SubKeyCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8378338B224DFED100F2C0BF /* SubKeyCardCell.xib */; };
+		839E647B23320751005C21FA /* MeViewModel+ContextMenuActionTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 839E647A23320750005C21FA /* MeViewModel+ContextMenuActionTableViewDelegate.swift */; };
 		83B93D1F221CE06100F556C0 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D1E221CE06100F556C0 /* Application.swift */; };
 		83B93D22221CEB9800F556C0 /* UserDefaults+AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D21221CEB9800F556C0 /* UserDefaults+AppGroup.swift */; };
 		83B93D2D221D22FA00F556C0 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D2C221D22FA00F556C0 /* KeyboardViewController.swift */; };
@@ -523,6 +524,7 @@
 		83783386224CC23400F2C0BF /* ContactEditTextCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactEditTextCell.xib; sourceTree = "<group>"; };
 		8378338A224DFED100F2C0BF /* SubKeyCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubKeyCardCell.swift; sourceTree = "<group>"; };
 		8378338B224DFED100F2C0BF /* SubKeyCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SubKeyCardCell.xib; sourceTree = "<group>"; };
+		839E647A23320750005C21FA /* MeViewModel+ContextMenuActionTableViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MeViewModel+ContextMenuActionTableViewDelegate.swift"; sourceTree = "<group>"; };
 		83B93D0D221CDC0200F556C0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		83B93D0E221CDC0200F556C0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		83B93D1E221CE06100F556C0 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
@@ -920,6 +922,7 @@
 		832146BC223F955D008ECC22 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				839E647A23320750005C21FA /* MeViewModel+ContextMenuActionTableViewDelegate.swift */,
 				8378336A224B352500F2C0BF /* ContactListViewModel.swift */,
 				832146FB2244CD43008ECC22 /* MessagesViewModel.swift */,
 				DBC7DEC02248D49E00DA4C3E /* ComposeMessageViewModel.swift */,
@@ -1991,6 +1994,7 @@
 				DB449995228C1CEF000B7E8A /* SettingsTableViewCell.swift in Sources */,
 				DB1169D722E19B100099BA25 /* MessageCardViewController.swift in Sources */,
 				8325E4A4222F8FDA00EE9B83 /* Fonts.swift in Sources */,
+				839E647B23320751005C21FA /* MeViewModel+ContextMenuActionTableViewDelegate.swift in Sources */,
 				DBB81AE1225DFF7A003D63C6 /* UIScreen.swift in Sources */,
 				DB44999A228C244F000B7E8A /* MessageDigitalSignatureSettingsViewController.swift in Sources */,
 				DB616C0922A4CBB4002768B4 /* UILabel.swift in Sources */,
