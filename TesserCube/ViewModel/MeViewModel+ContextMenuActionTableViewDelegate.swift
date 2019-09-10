@@ -92,7 +92,7 @@ extension MeViewModel {
                         let confirmMessage = L10n.MeViewController.Action.Button.confirmDeleteKey + key.shortIdentifier
                         let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                         alertVC.addAction(title: confirmMessage, style: .destructive, isEnabled: true) { _ in
-                            try? ProfileService.deleteKeyRecord(keyRecord: keyRecord)
+                            keyRecord.delete()
                         }
                         alertVC.addAction(title: L10n.Common.Button.cancel, style: .cancel, isEnabled: true)
                         if let presenter = alertVC.popoverPresentationController {
