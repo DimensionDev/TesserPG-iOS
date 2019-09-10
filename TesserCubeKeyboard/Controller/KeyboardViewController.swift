@@ -141,16 +141,6 @@ class KeyboardViewController: UIInputViewController {
         KeyboardModeManager.shared.setupSubViews()
         
         setupLayout()
-
-        WormholdService.shared.listeningWormhole.listenForMessage(withIdentifier: WormholdService.MessageIdentifier.appDidUpdateKeys.rawValue) { any in
-            guard let _ = any as? String else {
-                NSLog("Failed WormholdService.MessageIdentifier.appDidUpdateKeys")
-                return
-            }
-            let contacts = ProfileService.default.loadContacts()
-            ProfileService.default.contacts.accept(contacts)    // update contact to drive key update
-            NSLog("WormholdService.MessageIdentifier.appDidUpdateKeys")
-        }
     }
     
     // without this here kludge, the height constraint for the keyboard does not work for some reason

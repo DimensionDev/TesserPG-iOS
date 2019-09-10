@@ -270,7 +270,7 @@ extension ContactDetailViewController {
     }
 
     private func updateData() {
-        contact = Contact.loadContact(id: contactId)
+        contact = Contact.find(id: contactId)
         let keys = contact?.getKeys()
         let emails = contact?.getEmails()
 

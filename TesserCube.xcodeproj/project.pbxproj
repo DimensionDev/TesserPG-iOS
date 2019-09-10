@@ -243,6 +243,14 @@
 		DB1449732313F9CF000FA38E /* BrokenMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB63A10D22DF2A5900C2DDA6 /* BrokenMessageViewController.swift */; };
 		DB1449742314F1E1000FA38E /* InterpretActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB63A10B22DEF75100C2DDA6 /* InterpretActionViewModel.swift */; };
 		DB1449752314F1E4000FA38E /* InterpretActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB63A0D122DD82EE00C2DDA6 /* InterpretActionViewController.swift */; };
+		DB15695923277FD900220926 /* ProfileService+Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB15695823277FD900220926 /* ProfileService+Contact.swift */; };
+		DB15695A23277FD900220926 /* ProfileService+Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB15695823277FD900220926 /* ProfileService+Contact.swift */; };
+		DB15695B23277FD900220926 /* ProfileService+Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB15695823277FD900220926 /* ProfileService+Contact.swift */; };
+		DB15695C23277FD900220926 /* ProfileService+Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB15695823277FD900220926 /* ProfileService+Contact.swift */; };
+		DB15695E23278EA200220926 /* FetchableRecord+all.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB15695D23278EA200220926 /* FetchableRecord+all.swift */; };
+		DB15695F23278EA200220926 /* FetchableRecord+all.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB15695D23278EA200220926 /* FetchableRecord+all.swift */; };
+		DB15696023278EA200220926 /* FetchableRecord+all.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB15695D23278EA200220926 /* FetchableRecord+all.swift */; };
+		DB15696123278EA200220926 /* FetchableRecord+all.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB15695D23278EA200220926 /* FetchableRecord+all.swift */; };
 		DB3B58E22282929700879834 /* WormholdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3B58E12282929700879834 /* WormholdService.swift */; };
 		DB3B58E52282930600879834 /* WormholdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3B58E12282929700879834 /* WormholdService.swift */; };
 		DB449989228C038E000B7E8A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB449988228C038E000B7E8A /* SettingsViewController.swift */; };
@@ -584,6 +592,8 @@
 		DB1169E822E1B63E0099BA25 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		DB1169E922E1B6420099BA25 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		DB1327142253651C00BD7B98 /* KeyBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBridge.swift; sourceTree = "<group>"; };
+		DB15695823277FD900220926 /* ProfileService+Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileService+Contact.swift"; sourceTree = "<group>"; };
+		DB15695D23278EA200220926 /* FetchableRecord+all.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FetchableRecord+all.swift"; sourceTree = "<group>"; };
 		DB3B58E12282929700879834 /* WormholdService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WormholdService.swift; sourceTree = "<group>"; };
 		DB449988228C038E000B7E8A /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		DB44998F228C13CA000B7E8A /* MessageDigitalSignatureSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDigitalSignatureSettings.swift; sourceTree = "<group>"; };
@@ -899,6 +909,9 @@
 			isa = PBXGroup;
 			children = (
 				832146B0223F7D98008ECC22 /* ProfileService.swift */,
+				DB15695823277FD900220926 /* ProfileService+Contact.swift */,
+				DB8D7310231E2791005D15DD /* ProfileService+KeyRecord.swift */,
+				833FF38C224F97BD00EFE0A9 /* ProfileService+Message.swift */,
 				DBC24B1323026BA800A4AE8D /* WordSuggestionService.swift */,
 				833FF38C224F97BD00EFE0A9 /* ProfileService+Message.swift */,
 				DB3B58E12282929700879834 /* WormholdService.swift */,
@@ -1061,6 +1074,7 @@
 			isa = PBXGroup;
 			children = (
 				837833622249C33B00F2C0BF /* TCDBManager.swift */,
+				DB15695D23278EA200220926 /* FetchableRecord+all.swift */,
 				83783378224BA43700F2C0BF /* ContactDBAction.swift */,
 				83FF06572250D9DA0003BC0D /* MessageDBAction.swift */,
 				83DFC72B2252EF3100993160 /* KeyRecordDBAction.swift */,
@@ -2003,11 +2017,13 @@
 				DB66FE6F224A3CD600D82704 /* SenderContactPickerView.swift in Sources */,
 				DB4F309822A14C0D0003804B /* DMSPGPError.swift in Sources */,
 				83DFC72C2252EF3100993160 /* KeyRecordDBAction.swift in Sources */,
+				DB15695923277FD900220926 /* ProfileService+Contact.swift in Sources */,
 				832146B1223F7D98008ECC22 /* ProfileService.swift in Sources */,
 				DB66FE6D224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */,
 				832146AA223F6756008ECC22 /* UIViewController+EmptyView.swift in Sources */,
 				83FE345C22B72DEC0077C1A5 /* IntroSpotlight.swift in Sources */,
 				832146D82241D980008ECC22 /* ImportKeyViewController.swift in Sources */,
+				DB15695E23278EA200220926 /* FetchableRecord+all.swift in Sources */,
 				832146C5223FC9E4008ECC22 /* TCActionButton.swift in Sources */,
 				837833552248840600F2C0BF /* TCTypes.swift in Sources */,
 				83783375224B544100F2C0BF /* ListEmptyView.swift in Sources */,
@@ -2107,6 +2123,7 @@
 				8378335A224889B100F2C0BF /* ProfileService.swift in Sources */,
 				837833562248840600F2C0BF /* TCTypes.swift in Sources */,
 				DB4F309922A14C0D0003804B /* DMSPGPError.swift in Sources */,
+				DB15695A23277FD900220926 /* ProfileService+Contact.swift in Sources */,
 				83B93ED9222528AD00F556C0 /* RecommendRecipientsView.swift in Sources */,
 				83DFC7402259F0EC00993160 /* CALayer+Shadow.swift in Sources */,
 				83B93D47221D7E7200F556C0 /* KeyboardKey.swift in Sources */,
@@ -2116,6 +2133,7 @@
 				DBBBC196224E29D70080790F /* KeychainMappable.swift in Sources */,
 				DB3B58E52282930600879834 /* WormholdService.swift in Sources */,
 				DB1327162253651C00BD7B98 /* KeyBridge.swift in Sources */,
+				DB15695F23278EA200220926 /* FetchableRecord+all.swift in Sources */,
 				83783367224B232000F2C0BF /* Contact.swift in Sources */,
 				83B93D45221D7E5700F556C0 /* KeyboardConnector.swift in Sources */,
 				8325E470222CC11800EE9B83 /* OptionFieldView.swift in Sources */,
@@ -2153,6 +2171,8 @@
 				DB63A0F822DDCB0E00C2DDA6 /* WormholdService.swift in Sources */,
 				DB63A11A22E066ED00C2DDA6 /* ComposeMessageViewModel.swift in Sources */,
 				DB63A0DF22DD939C00C2DDA6 /* MessageCardCell.swift in Sources */,
+				DB15695B23277FD900220926 /* ProfileService+Contact.swift in Sources */,
+				DB8D7317231E393D005D15DD /* Email.swift in Sources */,
 				DB63A0F022DDA2C000C2DDA6 /* strings.swift in Sources */,
 				DB63A0FD22DDCB9700C2DDA6 /* KeyFactory+TCKey.swift in Sources */,
 				83C90B4A23167A020048743A /* PGPUserIDTranslator.swift in Sources */,
@@ -2164,6 +2184,8 @@
 				DB63A12522E06E0900C2DDA6 /* String+Localization.swift in Sources */,
 				DB63A0E422DD9B5600C2DDA6 /* CALayer+Shadow.swift in Sources */,
 				DB63A11E22E0687C00C2DDA6 /* ContactPickerTagCollectionViewCell.swift in Sources */,
+				DB63A0FE22DDCBA000C2DDA6 /* PGPUserIDTranslator.swift in Sources */,
+				DB15696023278EA200220926 /* FetchableRecord+all.swift in Sources */,
 				DB1169DE22E19CA00099BA25 /* MessageCardTableViewController.swift in Sources */,
 				DB63A11F22E0688C00C2DDA6 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */,
 				DB63A11D22E0672400C2DDA6 /* SenderContactPickerView.swift in Sources */,
@@ -2213,6 +2235,7 @@
 				DB1169DA22E19C360099BA25 /* UILabel.swift in Sources */,
 				DB63A14D22E1809200C2DDA6 /* ComposeActionViewController.swift in Sources */,
 				DB1169CF22E1859A0099BA25 /* UIViewController+EmptyView.swift in Sources */,
+				DB15696123278EA200220926 /* FetchableRecord+all.swift in Sources */,
 				DB1169C622E184F40099BA25 /* ContactListViewModel.swift in Sources */,
 				DB1169A122E182730099BA25 /* Assets.swift in Sources */,
 				DB1169BD22E183CD0099BA25 /* KeyFactory+BCOpenPGP.swift in Sources */,
@@ -2226,6 +2249,7 @@
 				DB1169C422E184CB0099BA25 /* ContactPickerTagCollectionViewCell.swift in Sources */,
 				DB1169E222E1A2620099BA25 /* ImageUtil.swift in Sources */,
 				DB1169C922E185350099BA25 /* ListEmptyView.swift in Sources */,
+				DB15695C23277FD900220926 /* ProfileService+Contact.swift in Sources */,
 				DB1169C022E184310099BA25 /* ComposeMessageViewModel.swift in Sources */,
 				83C90B4B23167A020048743A /* PGPUserIDTranslator.swift in Sources */,
 				DB1169B822E183990099BA25 /* ContactDBAction.swift in Sources */,

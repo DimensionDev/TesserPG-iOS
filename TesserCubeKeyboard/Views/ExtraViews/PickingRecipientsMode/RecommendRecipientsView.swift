@@ -166,7 +166,7 @@ class RecommendRecipientsView: UIView, Thematic {
     private func bindData() {
         searchText.asObservable()
             .map { [weak self] searchString -> [FullContactInfo]? in
-                let allContacts = ProfileService.default.loadContacts()
+                let allContacts = Contact.all()
                 return self?.filterAvailableContacts(allContacts, searchText: searchString)
             }
             .observeOn(MainScheduler.asyncInstance)
