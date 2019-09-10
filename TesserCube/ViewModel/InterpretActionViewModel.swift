@@ -56,8 +56,7 @@ extension InterpretActionViewModel {
 
     func finalizeInput() {
         // Prevent user change messages database in main app cause database not sync between app and extension.
-        let latestMessages = ProfileService.default.loadMessages()
-        ProfileService.default.messages.accept(latestMessages)
+        ProfileService.default.messages.accept(Message.all())
 
         let message = inputTexts.first { KeyFactory.verify(armoredMessage: $0) }
         armoredMessage.accept(message)

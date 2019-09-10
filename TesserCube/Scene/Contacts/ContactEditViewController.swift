@@ -98,7 +98,7 @@ class ContactEditViewController: TCBaseViewController {
     }
     
     private func bindData() {
-        contact = Contact.loadContact(id: contactId)
+        contact = Contact.find(id: contactId)
         
         keys = contact?.getKeys() ?? []
         emails = contact?.getEmails() ?? []

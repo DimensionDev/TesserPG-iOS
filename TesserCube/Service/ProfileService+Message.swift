@@ -13,17 +13,6 @@ import KeychainAccess
 import ConsolePrint
 
 extension ProfileService {
-    func loadMessages() -> [Message] {
-        do {
-            let messages = try TCDBManager.default.dbQueue.read({ db in
-                try Message.fetchAll(db)
-            })
-            return messages
-        } catch let error {
-            consolePrint(error.localizedDescription)
-            return []
-        }
-    }
     
     func interptedMessage(_ encryptedMessage: String) -> Message? {
         return messages.value.first { $0.encryptedMessage.trimmingCharacters(in: .whitespacesAndNewlines) == encryptedMessage }
