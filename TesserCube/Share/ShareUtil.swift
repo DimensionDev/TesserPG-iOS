@@ -12,11 +12,13 @@ class ShareUtil {
 
     // share public key
     static func share(key: TCKey, from viewController: UIViewController, over view: UIView?) {
-        let armoedKeyString = key.publicArmored
-        
-        let vc = UIActivityViewController(activityItems: [armoedKeyString], applicationActivities: [])
+
+        let armoredKeyString = key.publicArmored
+        let items: [Any] = [armoredKeyString]
+
+        let vc = UIActivityViewController(activityItems: items, applicationActivities: [])
         vc.completionWithItemsHandler = { type, result, items, error in
-            
+            // do nothing
         }
 
         if let presenter = vc.popoverPresentationController {
@@ -43,7 +45,7 @@ class ShareUtil {
 
         let vc = UIActivityViewController(activityItems: items, applicationActivities: [])
         vc.completionWithItemsHandler = { type, result, items, error in
-
+            // do nothing
         }
 
         if let presenter = vc.popoverPresentationController {
@@ -60,14 +62,12 @@ class ShareUtil {
     }
     
     static func share(message: String, from viewController: UIViewController, over view: UIView?) {
-        var items: [Any] = [message]
-        if let armoredKeyFileURL = createTempFile(for: message) {
-            items.append(armoredKeyFileURL)
-        }
+
+        let items: [Any] = [message]
 
         let vc = UIActivityViewController(activityItems: items, applicationActivities: [])
         vc.completionWithItemsHandler = { type, result, items, error in
-            
+            // do nothing
         }
 
         if let presenter = vc.popoverPresentationController {
