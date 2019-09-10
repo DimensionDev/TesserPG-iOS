@@ -195,10 +195,6 @@ class ProfileService {
                     .authenticationPrompt("Authenticate to update your password")
                     .set(passphrase ?? "", key: tckey.longIdentifier)
                 
-                var currentKeys = self.keys.value
-                currentKeys.append(tckey)
-                self.keys.accept(currentKeys)
-                
                 completion(nil)
             } catch let error {
                 completion(error)
