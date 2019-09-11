@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import DMSOpenPGP
 
 class Coordinator {
     
@@ -182,18 +181,18 @@ extension Coordinator {
                 Coordinator.main.present(scene: .brokenMessage(message: plainText), from: rootViewController, transition: .modal)
                 return true
             }
-
-            let hasSecretKey = DMSPGPKeyRing.extractSecretKeyBlock(from: message) != nil
-            guard !hasSecretKey else {
-                Coordinator.main.present(scene: .pasteKeyWith(armoredKey: message, needPassphrase: true), from: rootViewController, transition: .modal, completion: nil)
-                return true
-            }
-
-            let hasPublicKey = DMSPGPKeyRing.extractPublicKeyBlock(from: message) != nil
-            guard !hasPublicKey else {
-                Coordinator.main.present(scene: .pasteKeyWith(armoredKey: message, needPassphrase: false), from: rootViewController, transition: .modal, completion: nil)
-                return true
-            }
+            //TODO: check the content block type of coming message
+//            let hasSecretKey = DMSPGPKeyRing.extractSecretKeyBlock(from: message) != nil
+//            guard !hasSecretKey else {
+//                Coordinator.main.present(scene: .pasteKeyWith(armoredKey: message, needPassphrase: true), from: rootViewController, transition: .modal, completion: nil)
+//                return true
+//            }
+//
+//            let hasPublicKey = DMSPGPKeyRing.extractPublicKeyBlock(from: message) != nil
+//            guard !hasPublicKey else {
+//                Coordinator.main.present(scene: .pasteKeyWith(armoredKey: message, needPassphrase: false), from: rootViewController, transition: .modal, completion: nil)
+//                return true
+//            }
 
             Coordinator.main.present(scene: .interpretAction(message: message), from: rootViewController, transition: .modal, completion: nil)
             return true
