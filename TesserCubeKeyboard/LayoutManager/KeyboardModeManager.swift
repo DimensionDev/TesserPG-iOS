@@ -159,8 +159,8 @@ class KeyboardModeManager: NSObject {
         let suggesions = SuggestHelper.getSuggestion(latestWord, lexicon: keyboardVC?.lexicon)
 
         // Aysnc suggestion depend on input string
-        let wordPredictor = WordSuggestionService.shared.wordPredictor
-        if !wordPredictor.needLoadNgramData, let input = input {
+        if let wordPredictor = WordSuggestionService.shared.wordPredictor,
+        !wordPredictor.needLoadNgramData, let input = input {
             wordPredictor.suggestWords(for: input) { [weak self] words in
                 let predictWords = suggesions + words.map { $0.0 }
                 let isPeriodSuffix = input.trimmingCharacters(in: .whitespacesAndNewlines).hasSuffix(".")
