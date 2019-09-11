@@ -49,6 +49,7 @@ extension KeyFactory {
         return false
     }
 
+    // swiftlint:disable cyclomatic_complexity
     /// Decrypt and verify the armored message & cleartext message.
     ///
     /// - Parameter armoredMessage: encrypted message
@@ -56,7 +57,6 @@ extension KeyFactory {
     static func decryptMessage(_ armoredMessage: String) throws -> DecryptResult {
         // Message is cleartext signed message
         // Do not need decrypt, just return the body and signature
-        // TODO: return signature
         var error: NSError?
         let clearMessage = CryptoNewClearTextMessageFromArmored(armoredMessage, &error)
         if error == nil, clearMessage != nil {
@@ -73,32 +73,9 @@ extension KeyFactory {
             }
         }
 
-//        if DMSPGPClearTextVerifier.verify(armoredMessage: armoredMessage), let verifer = try? DMSPGPClearTextVerifier(cleartext: armoredMessage) {
-//            let signatureVerifier = verifer.signatureVerifier
-//            let (verifyResult, signatureKey) = signatureVerifier.verifySignature(use: keys)
-//
-//            return DecryptResult(message: verifer.message,
-//                                 signatureKey: signatureKey,
-//                                 recipientKeys: [],
-//                                 verifyResult: verifyResult,
-//                                 unknownRecipientKeyIDs: [])
-//        }
-
         do {
-//            var message: String?
             let armoredMessage = armoredMessage.trimmingCharacters(in: .whitespacesAndNewlines)
-//            let decryptor = try DMSPGPDecryptor(armoredMessage: armoredMessage)
 
-//            let encryptingKeyIDSet = Set(decryptor.encryptingKeyIDs)
-//            var recipientKeys = keys
-//                .filter { $0.hasSecretKey }
-//                .filter { key in
-//                    let decryptingKeyIDs: [String] = key.getDecryptingKeyIDs().map { String($0) }
-//                    let decryptingKeyIDSet = Set(decryptingKeyIDs)
-//
-//                    // should has common key if we want to decrypt it
-//                    return !decryptingKeyIDSet.isDisjoint(with: encryptingKeyIDSet)
-//            }
             let secretKeys = keys
                 .filter { $0.hasSecretKey }
             
@@ -119,7 +96,8 @@ extension KeyFactory {
             }
             
             // 1. Try to get all recipient IDs
-            var allRecipientKeyIDs: [String] = []
+            var knownRecipientKeyIDs: [String] = []
+            var hiddenRecipientKeyIDs: [String] = []
             
             var signatureVerifyResult: VerifyResult = .invalid
             var signatureKey: TCKey?
@@ -147,7 +125,11 @@ extension KeyFactory {
                     for recipientIndex in 0 ..< messageDetail.getEncryptedToKeyIdsCount() {
                         let keyID = messageDetail.getEncryptedToKeyId(recipientIndex, error: &getMessageDetailError).uppercased()
                         if getMessageDetailError == nil {
-                            allRecipientKeyIDs.append(keyID)
+                            if keyID.isHiddenRecipientID {
+                                hiddenRecipientKeyIDs.append(keyID)
+                            } else {
+                                knownRecipientKeyIDs.append(keyID)
+                            }
                         }
                     }
                     
@@ -157,22 +139,39 @@ extension KeyFactory {
                 }
             }
             
-            let allRecipientKeyIDSet = Set(allRecipientKeyIDs)
+            let knownRecipientKeyIDSet = Set(knownRecipientKeyIDs)
             
             // 2. Collect all encryptionKeyIDs
             let encryptionIDs = secretKeys.compactMap { $0.encryptionkeyID }
             
             // 3. If a keyRing's encryptionKeyID is equal to a receipientKeyID, add the TCKey to receipientKeys
-            let recipientKeys = secretKeys.filter { allRecipientKeyIDSet.contains($0.encryptionkeyID ?? "") }
+            var recipientKeys = secretKeys.filter { knownRecipientKeyIDSet.contains($0.encryptionkeyID ?? "") }
+            
+            let availableRecipientKeyIDs = recipientKeys.compactMap { $0.encryptionkeyID }
             
             // 4. All rest recipient key IDs are unknown
-            let unknownRecipientKeyIDs = Array(allRecipientKeyIDSet.subtracting(encryptionIDs))
+            let unknownRecipientKeyIDs = Array(knownRecipientKeyIDSet.subtracting(encryptionIDs))
             
+            if !hiddenRecipientKeyIDs.isEmpty {
+                // For each hidden recipient encrypted data, check all possible keys to decrypt
+                for _ in hiddenRecipientKeyIDs {
+                    for possibleKey in secretKeys {
+                        var attemptDecryptError: NSError?
+                        _ = HelperDecryptMessageArmored(possibleKey.goKeyRing, keyPasswordDict[possibleKey.longIdentifier], armoredMessage, &attemptDecryptError)
+                        if attemptDecryptError == nil, !availableRecipientKeyIDs.contains(possibleKey.encryptionkeyID ?? "") {
+                            // If we find a new valid key ID, append the key to the recipientKeys
+                            recipientKeys.append(possibleKey)
+                        }
+                    }
+                }
+                
+            }
             
-            
-            guard !recipientKeys.isEmpty else {
+            if recipientKeys.isEmpty {
+                // No valid keys found for either known or hidden recipient
                 throw TCError.pgpKeyError(reason: .noAvailableDecryptKey)
             }
+            
             
             // 6. Decryption message using any recipient key
             var decryptedMessage: String?
@@ -206,85 +205,8 @@ extension KeyFactory {
         } catch {
             throw error
         }
-            
-            
-            
-//            let unknownRecipientKeyIDs = Array(encryptingKeyIDSet.subtracting(recipientKeys.map { $0.keyID } ))
-
-//            let hiddenRecipientIDCount = decryptor.hiddenRecipientsDataList.count
-
-//            if hiddenRecipientIDCount > 0 {
-//                var detectedRecipients = [TCKey]()
-//                // 1. Filter out all keypairs with secret keys inside
-//                let possibleKeys = keys
-//                    .filter { $0.hasSecretKey }
-//
-//                // 2. Collect a keyID-password dict from KeyChain
-//                var keyPasswordDict = [String: String]()
-//                let possibleKeyIDs = possibleKeys.compactMap { $0.longIdentifier }
-//
-//                for keyChainItem in ProfileService.default.keyChain.allItems() {
-//                    if let key = keyChainItem["key"] as? String, let password = keyChainItem["value"] as? String {
-//                        if possibleKeyIDs.contains(key) {
-//                            keyPasswordDict[key] = password
-//                        }
-//                    }
-//                }
-//
-//                for hiddenRecipientEncryptedData in decryptor.hiddenRecipientsDataList {
-//                    // For each hidden recipient encrypted data, check all possible keys to decrypt
-//                    for possibleKey in possibleKeys {
-//                        let possibleDecryptKeyIDs = possibleKey.keyRing.secretKeyRing?.getDecryptingKeyIDs() ?? []
-//                        for perKeyID in possibleDecryptKeyIDs {
-//                            if let privateKey = possibleKey.keyRing.secretKeyRing?.getDecryptingPrivateKey(keyID: perKeyID, password: keyPasswordDict[possibleKey.longIdentifier] ?? "") {
-//                                do {
-//                                    message = try decryptor.decrypt(privateKey: privateKey, encryptedData: hiddenRecipientEncryptedData)
-//                                    detectedRecipients.append(possibleKey)
-//                                } catch {
-//                                    continue
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//                recipientKeys.append(contentsOf: detectedRecipients)
-//            }
-//
-//            if message == nil {
-//                // Now we known all recipients. Use one available key to decryt
-//                guard let decryptKey = recipientKeys.first,
-//                    let password = try? ProfileService.default.keyChain.get(decryptKey.longIdentifier) else {
-//                        throw TCError.pgpKeyError(reason: .noAvailableDecryptKey)
-//                }
-//
-//                let decryptKeyIDs = decryptKey.keyRing.secretKeyRing?.getDecryptingKeyIDs() ?? []
-//                guard let keyID = decryptor.encryptingKeyIDs.first(where: { decryptKeyIDs.contains($0) }),
-//                    let privateKey = decryptKey.keyRing.secretKeyRing?.getDecryptingPrivateKey(keyID: keyID, password: password) else {
-//                        assertionFailure()
-//                        throw TCError.pgpKeyError(reason: .noAvailableDecryptKey)        // not found secret key to decrypt
-//                }
-//
-//                message = try decryptor.decrypt(privateKey: privateKey, keyID: keyID)
-//            }
-//
-//            guard let decryptedMessage = message else {
-//                throw TCError.pgpKeyError(reason: .noAvailableDecryptKey)
-//            }
-//
-//            let signatureVerifier = DMSPGPSignatureVerifier(message: decryptedMessage, onePassSignatureList: decryptor.onePassSignatureList, signatureList: decryptor.signatureList)
-//            let (verifyResult, signatureKey) = signatureVerifier.verifySignature(use: keys)
-//
-//            // TODO: Display if there is any hidden recipients
-//            return DecryptResult(message: decryptedMessage,
-//                                 signatureKey: signatureKey,
-//                                 recipientKeys: recipientKeys,
-//                                 verifyResult: verifyResult,
-//                                 unknownRecipientKeyIDs: unknownRecipientKeyIDs)
-//        } catch {
-//            throw error
-//        }
-//    }
     }
+    // swiftlint:enable cyclomatic_complexity
 }
 
 // MARK: - Clearsign & Encrypt
