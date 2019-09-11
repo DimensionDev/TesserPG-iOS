@@ -26,7 +26,7 @@ def common_pods
 
   pod 'DMSGoPGP', '~> 0.0.15'
 
-  pod 'WordSuggestion'
+  pod 'WordSuggestion', '~> 0.2.1'
 end
 
 def common_ui_pods

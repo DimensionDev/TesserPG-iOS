@@ -35,6 +35,8 @@
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+    <key>LSSupportsOpeningDocumentsInPlace</key>
+    <false/>
 	<key>NSContactsUsageDescription</key>
 	<string>We need to read your contacts records as the recipients of your encrypted messages</string>
 	<key>NSFaceIDUsageDescription</key>
