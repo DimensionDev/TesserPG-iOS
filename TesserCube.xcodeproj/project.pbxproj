@@ -13,7 +13,6 @@
 		8304E99F221BF10100122637 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8304E99D221BF10100122637 /* LaunchScreen.storyboard */; };
 		8304E9AA221BF10200122637 /* TesserCubeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8304E9A9221BF10200122637 /* TesserCubeTests.swift */; };
 		8304E9B5221BF10200122637 /* TesserCubeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8304E9B4221BF10200122637 /* TesserCubeUITests.swift */; };
-		8304E9C7221BF1DD00122637 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8304E9C6221BF1DD00122637 /* AuthenticationServices.framework */; };
 		8310B34522325E0C00C35AEC /* String+Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8310B34422325E0C00C35AEC /* String+Compare.swift */; };
 		8313F6912247164000C09C2D /* FloatingAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F6902247164000C09C2D /* FloatingAction.swift */; };
 		8313F6932247165F00C09C2D /* FloatingActionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F6922247165F00C09C2D /* FloatingActionGroup.swift */; };
@@ -641,7 +640,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8304E9C7221BF1DD00122637 /* AuthenticationServices.framework in Frameworks */,
 				E1274EE8AEE0608EE39A1F31 /* Pods_TesserCube.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -34,7 +34,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.1.5</string>
+	<string>1.1.6</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -47,13 +47,13 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>27</string>
+	<string>30</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-    <key>LSSupportsOpeningDocumentsInPlace</key>
-    <false/>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<false/>
 	<key>NSContactsUsageDescription</key>
 	<string>We need to read your contacts records as the recipients of your encrypted messages</string>
 	<key>NSFaceIDUsageDescription</key>
