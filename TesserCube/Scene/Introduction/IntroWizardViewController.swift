@@ -192,7 +192,7 @@ class IntroWizardViewController: UIViewController {
         skipButton.isHidden = true
         
         let createKeyButton = TCActionButton(frame: .zero)
-        createKeyButton.color = Asset.sketchBlue.color
+        createKeyButton.color = .systemBlue
         createKeyButton.setTitleColor(.white, for: .normal)
         createKeyButton.setTitle(L10n.MeViewController.Action.Button.createKey, for: .normal)
         createKeyButton.addTarget(self, action: #selector(createKeyButtonDidClicked), for: .touchUpInside)

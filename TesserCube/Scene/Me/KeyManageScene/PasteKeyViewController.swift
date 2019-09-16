@@ -36,7 +36,7 @@ class PasteKeyViewController: TCBaseViewController {
     
     private lazy var importButton: TCActionButton = {
         let button = TCActionButton(frame: .zero)
-        button.color = Asset.sketchBlue.color
+        button.color = .systemBlue
         button.setTitleColor(.white, for: .normal)
         button.setTitle(L10n.MeViewController.Action.Button.importKey, for: .normal)
         return button
@@ -44,7 +44,7 @@ class PasteKeyViewController: TCBaseViewController {
     
     private func createSeparator() -> UIView {
         let view = UIView(frame: .zero)
-        view.backgroundColor = Asset.separator.color
+        view.backgroundColor = .separator
         return view
     }
     

@@ -46,10 +46,11 @@ class FullAccessHintView: UIView, Thematic {
         switch theme {
         case .light:
             hintLabel.textColor = .darkGray
-            backgroundColor = UIColor(hex: 0xD1D3D9)!
+            backgroundColor = .keyboardBackgroundLight
         case .dark:
             hintLabel.textColor = .white
-            backgroundColor = Asset.keyboardBackgroundDark.color
+            backgroundColor = .keyboardBackgroundDark
         }
     }
 }
+

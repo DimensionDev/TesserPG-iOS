@@ -90,7 +90,7 @@ extension MessageCardTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = Asset.sceneBackground.color
+        view.backgroundColor = ._systemBackground
 
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)

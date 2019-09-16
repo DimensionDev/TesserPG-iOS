@@ -56,7 +56,12 @@ class ContactsListViewController: TCBaseViewController {
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none
         tableView.register(UINib(nibName: "ContactCell", bundle: nil), forCellReuseIdentifier: String(describing: ContactCell.self))
-        tableView.backgroundColor = Asset.sceneBackground.color
+        if #available(iOS 13.0, *) {
+            tableView.backgroundColor = .systemBackground
+        } else {
+            // Fallback on earlier versions
+            tableView.backgroundColor = ._systemBackground
+        }
         tableView.allowsMultipleSelectionDuringEditing = true
         tableView.keyboardDismissMode = .interactive
         return tableView

@@ -93,7 +93,7 @@ class InterpretResultView: UIView, Thematic {
     let signedByLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SFProDisplay.regular.font(size: 14)
-        label.textColor = Asset.darkTextGrey.color
+        label.textColor = ._systemGray
         label.text = L10n.MessageCardCell.Label.signedBy
         return label
     }()
@@ -108,21 +108,21 @@ class InterpretResultView: UIView, Thematic {
     let signedUserEmailLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SFProDisplay.regular.font(size: 14)
-        label.textColor = Asset.lightTextGrey.color
+        label.textColor = ._systemGray
         return label
     }()
     
     let signedUserIdentifierLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SourceCodeProMedium.regular.font(size: 12)
-        label.textColor = Asset.sourceGreen.color
+        label.textColor = .systemGreen
         return label
     }()
     
     let recipeintsLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SFProDisplay.regular.font(size: 14)
-        label.textColor = Asset.darkTextGrey.color
+        label.textColor = ._secondaryLabel
         label.text = L10n.MessageCardCell.Label.recipeints
         return label
     }()
@@ -145,14 +145,14 @@ class InterpretResultView: UIView, Thematic {
     let leftFooterLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SFProDisplay.regular.font(size: 14)
-        label.textColor = Asset.lightTextGrey.color
+        label.textColor = ._systemGray
 //        label.text = "Left Footer"
         return label
     }()
     let rightFooterLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SFProDisplay.regular.font(size: 14)
-        label.textColor = Asset.lightTextGrey.color
+        label.textColor = ._systemGray
 //        label.text = "Right Footer"
         label.textAlignment = .right
         return label

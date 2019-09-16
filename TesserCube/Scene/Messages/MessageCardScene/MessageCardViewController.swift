@@ -128,7 +128,7 @@ extension MessageCardViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = Asset.sceneBackground.color
+        view.backgroundColor = ._systemBackground
 
         addChild(messageCardTableViewController)
         view.addSubview(messageCardTableViewController.view)
@@ -179,7 +179,7 @@ extension MessageCardViewController {
 
         if actions.contains(.reply) {
             let replyButton = TCActionButton(frame: .zero)
-            replyButton.color = Asset.sketchBlue.color
+            replyButton.color = .systemBlue
             replyButton.setTitleColor(.white, for: .normal)
             replyButton.setTitle(L10n.InterpretActionViewController.Action.Button.writeReply, for: .normal)
             replyButton.addTarget(self, action: #selector(MessageCardViewController.replyButtonPressed(_:)), for: .touchUpInside)

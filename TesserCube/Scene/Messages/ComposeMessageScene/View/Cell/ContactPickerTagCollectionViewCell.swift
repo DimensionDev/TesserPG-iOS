@@ -37,7 +37,7 @@ final class ContactPickerTagCollectionViewCell: UICollectionViewCell {
 
     let corneredBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = Asset.tagBackgroundGrey.color
+        view.backgroundColor = ._secondarySystemBackground
         return view
     }()
 
@@ -74,11 +74,16 @@ final class ContactPickerTagCollectionViewCell: UICollectionViewCell {
     var isInvalid = false {
         didSet {
             if isInvalid {
-                corneredBackgroundView.backgroundColor = Asset.tagBackgroundPink.color
-                shortIDLabel.textColor = Asset.tagIdRed.color
+                if #available(iOS 13, *) {
+                    corneredBackgroundView.backgroundColor = traitCollection.userInterfaceStyle == .dark ? .systemRed : .tagBackgroundPink
+                    shortIDLabel.textColor = traitCollection.userInterfaceStyle == .dark ? .tagBackgroundPink : .systemRed
+                } else {
+                    corneredBackgroundView.backgroundColor = .tagBackgroundPink
+                    shortIDLabel.textColor = .systemRed
+                }
             } else {
-                corneredBackgroundView.backgroundColor = Asset.tagBackgroundGrey.color
-                shortIDLabel.textColor = Asset.tagIdGreen.color
+                corneredBackgroundView.backgroundColor = ._secondarySystemBackground
+                shortIDLabel.textColor = .systemGreen
             }
         }
     }
@@ -166,9 +171,10 @@ extension ContactPickerTagCollectionViewCell {
             } else {
                 if isFirstResponder { resignFirstResponder() }
                 UIView.animate(withDuration: 0.33) {
-                    self.corneredBackgroundView.backgroundColor = Asset.tagBackgroundGrey.color
-                    self.nameLabel.textColor = .black
-                    self.shortIDLabel.textColor = Asset.tagIdGreen.color
+                    self.corneredBackgroundView.backgroundColor = ._secondarySystemBackground
+                    self.nameLabel.textColor = ._label
+
+                    self.shortIDLabel.textColor = .systemGreen
                     let isInvalid = self.isInvalid
                     self.isInvalid = isInvalid
                 }
@@ -197,4 +203,12 @@ extension ContactPickerTagCollectionViewCell: UIKeyInput {
         get { return .no }
         set { /* do nothing */ }
     }
+}
+
+fileprivate extension UIColor {
+
+    static let tagBackgroundPink: UIColor = {
+        return UIColor(displayP3Red: 240.0/255.0, green: 181.0/255.0, blue: 179.0/255.0, alpha: 1.0)
+    }()
+
 }
