@@ -40,7 +40,7 @@ target 'TesserCube' do
   
   # UI
   pod 'SVProgressHUD', '~> 2.2.5'
-  pod 'IQKeyboardManagerSwift', '~> 6.2.0'
+  pod 'IQKeyboardManagerSwift', '~> 6.4.2'
   pod 'Eureka', '~> 4.3.1'
 
   # DEBUG
