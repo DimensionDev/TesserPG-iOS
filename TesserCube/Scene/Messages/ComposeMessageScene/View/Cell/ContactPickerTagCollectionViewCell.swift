@@ -37,12 +37,7 @@ final class ContactPickerTagCollectionViewCell: UICollectionViewCell {
 
     let corneredBackgroundView: UIView = {
         let view = UIView()
-        if #available(iOS 13.0, *) {
-            view.backgroundColor = .secondarySystemBackground
-        } else {
-            // Fallback on earlier versions
-            view.backgroundColor = Asset.tagBackgroundGrey.color
-        }
+        view.backgroundColor = ._secondarySystemBackground
         return view
     }()
 
@@ -86,19 +81,14 @@ final class ContactPickerTagCollectionViewCell: UICollectionViewCell {
         didSet {
             if isInvalid {
                 if #available(iOS 13, *) {
-                    corneredBackgroundView.backgroundColor = traitCollection.userInterfaceStyle == .dark ? .systemRed : Asset.tagBackgroundPink.color
-                    shortIDLabel.textColor = traitCollection.userInterfaceStyle == .dark ? Asset.tagBackgroundPink.color : .systemRed
+                    corneredBackgroundView.backgroundColor = traitCollection.userInterfaceStyle == .dark ? .systemRed : .tagBackgroundPink
+                    shortIDLabel.textColor = traitCollection.userInterfaceStyle == .dark ? .tagBackgroundPink : .systemRed
                 } else {
-                    corneredBackgroundView.backgroundColor = Asset.tagBackgroundPink.color
+                    corneredBackgroundView.backgroundColor = .tagBackgroundPink
                     shortIDLabel.textColor = .systemRed
                 }
             } else {
-                if #available(iOS 13.0, *) {
-                    corneredBackgroundView.backgroundColor = .secondarySystemBackground
-                } else {
-                    // Fallback on earlier versions
-                    corneredBackgroundView.backgroundColor = Asset.tagBackgroundGrey.color
-                }
+                corneredBackgroundView.backgroundColor = ._secondarySystemBackground
                 shortIDLabel.textColor = .systemGreen
             }
         }
@@ -197,14 +187,8 @@ extension ContactPickerTagCollectionViewCell {
             } else {
                 if isFirstResponder { resignFirstResponder() }
                 UIView.animate(withDuration: 0.33) {
-                    if #available(iOS 13.0, *) {
-                        self.corneredBackgroundView.backgroundColor = .secondarySystemBackground
-                        self.nameLabel.textColor = .label
-                    } else {
-                        // Fallback on earlier versions
-                        self.corneredBackgroundView.backgroundColor = Asset.tagBackgroundGrey.color
-                        self.nameLabel.textColor = .black
-                    }
+                    self.corneredBackgroundView.backgroundColor = ._secondarySystemBackground
+                    self.nameLabel.textColor = ._label
 
                     self.shortIDLabel.textColor = .systemGreen
                     let isInvalid = self.isInvalid
@@ -235,4 +219,12 @@ extension ContactPickerTagCollectionViewCell: UIKeyInput {
         get { return .no }
         set { /* do nothing */ }
     }
+}
+
+fileprivate extension UIColor {
+
+    static let tagBackgroundPink: UIColor = {
+        return UIColor(displayP3Red: 240.0/255.0, green: 181.0/255.0, blue: 179.0/255.0, alpha: 1.0)
+    }()
+
 }

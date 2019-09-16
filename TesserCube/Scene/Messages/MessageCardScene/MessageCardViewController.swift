@@ -129,11 +129,7 @@ extension MessageCardViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if #available(iOS 13, *) {
-            view.backgroundColor = .systemBackground
-        } else {
-            view.backgroundColor = Asset.sceneBackground.color
-        }
+        view.backgroundColor = ._systemBackground
 
         addChild(messageCardTableViewController)
         view.addSubview(messageCardTableViewController.view)
@@ -189,11 +185,7 @@ extension MessageCardViewController {
 
         if actions.contains(.reply) {
             let replyButton = TCActionButton(frame: .zero)
-            if #available(iOS 13, *) {
-                replyButton.color = .systemBlue
-            } else {
-                replyButton.color = Asset.sketchBlue.color
-            }
+            replyButton.color = .systemBlue
             replyButton.setTitleColor(.white, for: .normal)
             replyButton.setTitle(L10n.InterpretActionViewController.Action.Button.writeReply, for: .normal)
             replyButton.addTarget(self, action: #selector(MessageCardViewController.replyButtonPressed(_:)), for: .touchUpInside)

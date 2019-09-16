@@ -78,7 +78,7 @@ class TCBaseViewController: UIViewController {
             view.backgroundColor = .systemBackground
         } else {
             // Fallback on earlier versions
-            view.backgroundColor = Asset.sceneBackground.color
+            view.backgroundColor = ._systemBackground
         }
     }
     

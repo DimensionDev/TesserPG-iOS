@@ -72,7 +72,7 @@ final class SenderContactPickerView: UIView {
 
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Asset.lightTextGrey.color
+        label.textColor = ._secondaryLabel
         label.font = FontFamily.SFProText.regular.font(size: 15)
         return label
     }()
@@ -92,7 +92,7 @@ final class SenderContactPickerView: UIView {
     let shortIDLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SourceCodeProMedium.regular.font(size: 14)
-        label.textColor = Asset.shortIdBlue.color
+        label.textColor = .systemGreen     // signer key is trustable Key
         label.textAlignment = .right
         return label
     }()
@@ -152,7 +152,7 @@ final class SenderContactPickerView: UIView {
             maker.height.equalTo(0.3)
         }
 
-        separatorView.backgroundColor = Asset.separator.color
+        separatorView.backgroundColor = .separator
         senderPickerView.delegate = self
         senderPickerView.dataSource = viewModel
         

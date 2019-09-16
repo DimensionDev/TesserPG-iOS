@@ -34,7 +34,7 @@ class ContactDetailViewController: TCBaseViewController {
             view.backgroundColor = .secondarySystemBackground
         } else {
             // Fallback on earlier versions
-            view.backgroundColor = Asset.sceneBackground.color
+            view.backgroundColor = ._systemBackground
         }
         return view
     }()
@@ -79,6 +79,7 @@ class ContactDetailViewController: TCBaseViewController {
     private lazy var createdAtlabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = FontFamily.SFProText.regular.font(size: 17)
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
 
@@ -94,7 +95,7 @@ class ContactDetailViewController: TCBaseViewController {
 
     private lazy var sendMessageButton: TCActionButton = {
         let button = TCActionButton(frame: .zero)
-        button.color = Asset.sketchBlue.color
+        button.color = .systemBlue
         button.setTitleColor(.white, for: .normal)
         button.setTitle(L10n.ContactDetailViewController.Button.sendMessage, for: .normal)
         return button
@@ -188,7 +189,7 @@ class ContactDetailViewController: TCBaseViewController {
 
         view.addSubview(createdAtlabel)
         createdAtlabel.snp.makeConstraints { maker in
-            maker.leading.equalTo(view.readableContentGuide)
+            maker.leading.trailing.equalTo(view.readableContentGuide)
             maker.top.equalTo(createdAtTitleLabel.snp.bottom).offset(2)
         }
 
@@ -203,7 +204,8 @@ class ContactDetailViewController: TCBaseViewController {
 
         view.addSubview(emailTextView)
         emailTextView.snp.makeConstraints { maker in
-            maker.leading.trailing.equalTo(view.readableContentGuide).offset(-5)
+            maker.leading.equalTo(view.readableContentGuide).offset(-5)
+            maker.trailing.equalTo(view.readableContentGuide)
             maker.top.equalTo(emailTitlelabel.snp.bottom)
             maker.height.equalTo(44)
         }

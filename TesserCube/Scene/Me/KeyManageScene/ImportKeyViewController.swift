@@ -36,11 +36,7 @@ class ImportKeyViewController: TCBaseViewController {
     private lazy var fromPGPLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = FontFamily.SFProDisplay.regular.font(size: 17)
-        if #available(iOS 13, *) {
-            label.textColor = .secondaryLabel
-        } else {
-            label.textColor = Asset.promptLabel.color
-        }
+        label.textColor = ._secondaryLabel
         label.textAlignment = .center
         label.text = L10n.ImportKeyController.Prompt.fromPGP
         return label
@@ -104,7 +100,7 @@ class ImportKeyViewController: TCBaseViewController {
         }
 
         let pasteKeyButton = TCActionButton(frame: .zero)
-        pasteKeyButton.color = Asset.sketchBlue.color
+        pasteKeyButton.color = .systemBlue
         pasteKeyButton.setTitleColor(.white, for: .normal)
         pasteKeyButton.setTitle(L10n.ImportKeyController.Action.Button.pastePrivateKey, for: .normal)
 
