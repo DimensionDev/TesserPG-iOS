@@ -22,7 +22,7 @@ class Coordinator {
     }
     
     enum Scene {
-        case main(message: String?)
+        case main(message: String?, window: UIWindow)
         case composeMessage
         case composeMessageTo(keyBridges: [KeyBridge])
         case recomposeMessage(message: Message)
@@ -54,9 +54,14 @@ class Coordinator {
     
     func present(scene: Scene, from sender: UIViewController?, transition: Transition = .detail, completion: (() -> Void)? = nil) {
         switch scene {
-        case .main(let message):
-            UIApplication.shared.keyWindow?.rootViewController = MainTabbarViewController()
-            UIApplication.shared.keyWindow?.makeKeyAndVisible()
+        case let .main(message, window):
+            if #available(iOS 13, *) {
+                window.rootViewController = MainTabbarViewController()
+                window.makeKeyAndVisible()
+            } else {
+                UIApplication.shared.keyWindow?.rootViewController = MainTabbarViewController()
+                UIApplication.shared.keyWindow?.makeKeyAndVisible()
+            }
             completion?()
         default:
             let vc = get(scene: scene)
@@ -69,6 +74,9 @@ class Coordinator {
                 }
             case .modal:
                 let navigationController = UINavigationController(rootViewController: vc)
+                if let adaptivePresentationControllerDelegate = vc as? UIAdaptivePresentationControllerDelegate {
+                    navigationController.presentationController?.delegate = adaptivePresentationControllerDelegate
+                }
                 (sender?.navigationController ?? sender)?.present(navigationController, animated: true, completion: completion)
             default:
                 return
@@ -166,11 +174,14 @@ extension Coordinator {
 }
 
 extension Coordinator {
+     
     func handleUrl(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         switch url.scheme {
         case "file":
             let plainText = try? String(contentsOf: url, encoding: .utf8)
-            let rootViewController = UIApplication.shared.keyWindow?.rootViewController
+
+            // FIXME: SceneDelegate
+            let rootViewController = app.keyWindow?.rootViewController
 
             guard let message = plainText, !message.isEmpty else {
                 Coordinator.main.present(scene: .brokenMessage(message: plainText), from: rootViewController, transition: .modal)
@@ -211,4 +222,5 @@ extension Coordinator {
             return false
         }
     }
+    
 }

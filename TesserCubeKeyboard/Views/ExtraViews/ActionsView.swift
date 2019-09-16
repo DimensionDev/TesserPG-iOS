@@ -154,9 +154,9 @@ class ActionsView: UIView, Thematic {
     func updateColor(theme: Theme) {
         switch theme {
         case .light:
-            backgroundColor = Asset.keyboardBackgroundLight.color
+            backgroundColor = .keyboardBackgroundLight
         case .dark:
-            backgroundColor = Asset.keyboardBackgroundDark.color
+            backgroundColor = .keyboardBackgroundDark
         }
     }
     

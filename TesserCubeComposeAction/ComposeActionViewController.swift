@@ -74,7 +74,7 @@ extension ComposeActionViewController {
         super.viewDidLoad()
 
         title = L10n.ComposeActionViewController.Title.composing
-        view.backgroundColor = Asset.sceneBackground.color
+        view.backgroundColor = ._systemBackground
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(ComposeActionViewController.doneBarButtonItemPressed(_:)))
 
         addChild(messageCardViewController)
@@ -97,11 +97,13 @@ extension ComposeActionViewController {
         super.viewWillAppear(animated)
 
         guard didPresentComposeMessageViewController else {
-            present(UINavigationController(rootViewController: composeMessageViewController!), animated: false, completion: nil)
+            let navigationController = UINavigationController(rootViewController: composeMessageViewController!)
+            navigationController.modalPresentationStyle = .currentContext
+            present(navigationController, animated: false, completion: nil)
             didPresentComposeMessageViewController = true
 
             extractInputFromExtensionContext()
-            NotificationCenter.default.addObserver(self, selector: #selector(ComposeActionViewController.extensionContextCompleteRequest(_:)), name: .extensionContextCompleteRequest, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(ComposeActionViewController.extensionContextCompleteRequest(_:)), name: .messageComposeComplete, object: nil)
             return
         }
     }

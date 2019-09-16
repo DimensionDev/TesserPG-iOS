@@ -15,6 +15,7 @@ class ContactCell: UITableViewCell {
     var contact: Contact? {
         didSet {
             updateModel()
+
         }
     }
 
@@ -35,6 +36,28 @@ class ContactCell: UITableViewCell {
         let hasSecretKey = contact?.getKeys().reduce(false, { (hasSecretKey, key) -> Bool in
             return hasSecretKey || key.hasSecretKey
         }) ?? false
-        contactNameLabel.font = hasSecretKey ? FontFamily.SFProText.semibold.font(size: 17) : FontFamily.SFProText.regular.font(size: 17)
+
+
+        if #available(iOS 13.0, *) {
+            switch traitCollection.userInterfaceStyle {
+            case .dark:
+                contactNameLabel.font = hasSecretKey ? FontFamily.SFProText.semibold.font(size: 17) : FontFamily.SFProText.light.font(size: 17)
+            default:
+                contactNameLabel.font = hasSecretKey ? FontFamily.SFProText.semibold.font(size: 17) : FontFamily.SFProText.regular.font(size: 17)
+            }
+        } else {
+            contactNameLabel.font = hasSecretKey ? FontFamily.SFProText.semibold.font(size: 17) : FontFamily.SFProText.regular.font(size: 17)
+        }
     }
+
+}
+
+extension ContactCell {
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        updateModel()
+    }
+
 }

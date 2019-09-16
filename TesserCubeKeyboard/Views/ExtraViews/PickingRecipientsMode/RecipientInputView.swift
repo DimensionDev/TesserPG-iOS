@@ -164,7 +164,7 @@ class RecipientInputView: UIView, Thematic {
             inputTextField.backgroundColor = .white
             inputTextField.textColor = .black
         case .dark:
-            inputTextField.backgroundColor = Asset.keyboardCharkeyBackgroundDark.color
+            inputTextField.backgroundColor = .keyboardCharKeyBackgroundDark
             inputTextField.textColor = .white
         }
         

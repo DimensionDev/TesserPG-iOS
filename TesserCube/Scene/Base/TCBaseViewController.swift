@@ -74,7 +74,12 @@ class TCBaseViewController: UIViewController {
     }
     
     func configUI() {
-        view.backgroundColor = Asset.sceneBackground.color
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = .systemBackground
+        } else {
+            // Fallback on earlier versions
+            view.backgroundColor = ._systemBackground
+        }
     }
     
     override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {

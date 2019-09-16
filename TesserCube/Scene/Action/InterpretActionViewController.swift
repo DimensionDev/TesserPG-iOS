@@ -48,7 +48,7 @@ extension InterpretActionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = Asset.sceneBackground.color
+        view.backgroundColor = ._systemBackground
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(InterpretActionViewController.doneBarButtonItemPressed(_:)))
 
         addChild(messageCardViewController)
@@ -76,9 +76,17 @@ extension InterpretActionViewController {
                     return
                 }
 
+                // message is nil. So income text can not be interpreted
                 if controller.parent == nil {
                     self.addChild(controller)
+                    controller.view.translatesAutoresizingMaskIntoConstraints = false
                     self.view.addSubview(controller.view)
+                    NSLayoutConstraint.activate([
+                        controller.view.topAnchor.constraint(equalTo: self.view.topAnchor),
+                        controller.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+                        controller.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+                        controller.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+                    ])
                     controller.didMove(toParent: self)
 
                     controller.viewModel.message.accept(self.viewModel.inputTexts.joined(separator: "\n"))
@@ -92,12 +100,14 @@ extension InterpretActionViewController {
 
         #if TARGET_IS_EXTENSION
         extractInputFromExtensionContext()
-        NotificationCenter.default.addObserver(self, selector: #selector(InterpretActionViewController.extensionContextCompleteRequest(_:)), name: .extensionContextCompleteRequest, object: nil)
         #else
         // delay view model finalize to controller appear
         // prevent Touch ID & Face ID permission auth alert not display issue
         viewModel.finalizeInput()
         #endif
+
+        // always recive compose view controller notificition due to openURL not happen in App Extension
+        NotificationCenter.default.addObserver(self, selector: #selector(InterpretActionViewController.extensionContextCompleteRequest(_:)), name: .messageComposeComplete, object: nil)
     }
 
 }
@@ -157,7 +167,6 @@ extension InterpretActionViewController {
 
 extension InterpretActionViewController {
 
-    #if TARGET_IS_EXTENSION
     @objc private func extensionContextCompleteRequest(_ notification: Notification) {
         guard let _ = notification.object as? ComposeMessageViewController,
         let message = notification.userInfo?["message"] as? Message else {
@@ -168,7 +177,6 @@ extension InterpretActionViewController {
         messageCardViewController.viewModel.allowActions.accept([.copy])
         viewModel.composedMessage.accept(message)
     }
-    #endif
 
     @objc private func doneBarButtonItemPressed(_ sender: UIBarButtonItem) {
         #if TARGET_IS_EXTENSION

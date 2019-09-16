@@ -22,7 +22,7 @@ final class BrokenMessageViewController: UIViewController {
 
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.backgroundColor = Asset.sceneBackground.color
+        scrollView.backgroundColor = ._systemBackground
         scrollView.contentInsetAdjustmentBehavior = .automatic
         scrollView.alwaysBounceVertical = true
         return scrollView
@@ -34,7 +34,7 @@ final class BrokenMessageViewController: UIViewController {
         label.font = FontFamily.SFProDisplay.regular.font(size: 16)
         label.textAlignment = .center
         label.textColor = .black
-        label.text = "The following text was passed in.\nHowever, it seems not to be a PGP message."
+        label.text = L10n.BrokenMessageViewController.Label.prompt
         return label
     }()
 
@@ -57,6 +57,13 @@ extension BrokenMessageViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: L10n.Common.Button.done, style: .done, target: self, action: #selector(BrokenMessageViewController.doneBarButtonPressed(_:)))
         #endif
 
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = .systemBackground
+            scrollView.backgroundColor = .systemBackground
+            promptLabel.textColor = .secondaryLabel
+            messageLabel.textColor = .label
+        }
+
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(scrollView)
         NSLayoutConstraint.activate([
@@ -78,7 +85,7 @@ extension BrokenMessageViewController {
             stackView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor, constant: 16),
             stackView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
-            scrollView.contentLayoutGuide.bottomAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 16),
+            scrollView.contentLayoutGuide.bottomAnchor.constraint(equalTo: stackView.bottomAnchor),
         ])
 
         stackView.addArrangedSubview(promptLabel)
@@ -90,7 +97,7 @@ extension BrokenMessageViewController {
             .drive(messageLabel.rx.text)
             .disposed(by: disposeBag)
     }
-
+ 
 }
 
 extension BrokenMessageViewController {

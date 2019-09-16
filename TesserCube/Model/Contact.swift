@@ -22,29 +22,6 @@ struct Contact: Codable, FetchableRecord, MutablePersistableRecord {
     }
 }
 
-struct Email: Codable, FetchableRecord, MutablePersistableRecord {
-    var id: Int64?
-    var address: String
-    var contactId: Int64
-    
-    mutating func didInsert(with rowID: Int64, for column: String?) {
-        id = rowID
-    }
-}
-
-struct KeyRecord: Codable, FetchableRecord, MutablePersistableRecord {
-    var id: Int64?
-    var longIdentifier: String
-    var hasSecretKey: Bool
-    var hasPublicKey: Bool
-    var contactId: Int64
-    var armored: String?
-    
-    mutating func didInsert(with rowID: Int64, for column: String?) {
-        id = rowID
-    }
-}
-
 extension Contact {
     static let emails = hasMany(Email.self)
     var emails: QueryInterfaceRequest<Email> {
