@@ -2535,6 +2535,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -2545,6 +2546,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2567,6 +2569,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -2577,6 +2580,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2682,6 +2686,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
@@ -2692,6 +2697,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2711,6 +2717,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
@@ -2721,6 +2728,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2802,6 +2810,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -2812,6 +2821,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
@@ -2873,6 +2883,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
@@ -2883,6 +2894,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2900,6 +2912,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeInterpretAction/TesserCubeInterpretAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
@@ -2909,6 +2922,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeInterpretAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2925,6 +2939,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_interpret;
 				CODE_SIGN_ENTITLEMENTS = TesserCubeInterpretAction/TesserCubeInterpretAction.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
@@ -2934,6 +2949,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeInterpretAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2951,6 +2967,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeInterpretAction/TesserCubeInterpretAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
@@ -2960,6 +2977,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeInterpretAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2977,6 +2995,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeInterpretAction/TesserCubeInterpretAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
@@ -2986,6 +3005,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeInterpretAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -3003,6 +3023,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeComposeAction/TesserCubeComposeAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
@@ -3012,6 +3033,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeComposeAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -3028,6 +3050,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_compose;
 				CODE_SIGN_ENTITLEMENTS = TesserCubeComposeAction/TesserCubeComposeAction.entitlements;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
@@ -3037,6 +3060,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeComposeAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -3054,6 +3078,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeComposeAction/TesserCubeComposeAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
@@ -3063,6 +3088,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeComposeAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -3080,6 +3106,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeComposeAction/TesserCubeComposeAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
@@ -3089,6 +3116,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeComposeAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -3170,6 +3198,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -3180,6 +3209,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3243,6 +3273,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 31;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
@@ -3253,6 +3284,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
+				MARKETING_VERSION = 1.2.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
