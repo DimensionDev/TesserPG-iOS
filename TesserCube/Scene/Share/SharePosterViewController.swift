@@ -33,7 +33,7 @@ class SharePosterViewController: TCBaseViewController {
     
     private lazy var saveImageButton: TCActionButton = {
         let button = TCActionButton(frame: .zero)
-        button.color = Asset.sketchBlue.color
+        button.color = .systemBlue
         button.setTitleColor(.white, for: .normal)
         button.setTitle(L10n.SharePosterController.Action.Button.saveImage, for: .normal)
         return button
@@ -70,7 +70,7 @@ class SharePosterViewController: TCBaseViewController {
         saveImageButton.addTarget(self, action: #selector(saveImageButtonClicked(_:)), for: .touchUpInside)
         
         let shareImageButton = TCActionButton(frame: .zero)
-        shareImageButton.color = Asset.sketchBlue.color
+        shareImageButton.color = .systemBlue
         shareImageButton.setTitleColor(.white, for: .normal)
         shareImageButton.setTitle(L10n.SharePosterController.Action.Button.shareImage, for: .normal)
         shareImageButton.addTarget(self, action: #selector(shareImageButtonClicked(_:)), for: .touchUpInside)

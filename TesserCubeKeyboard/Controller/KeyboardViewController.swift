@@ -521,7 +521,7 @@ class KeyboardViewController: UIInputViewController {
             self.forwardingView?.backgroundColor = UIColor(displayP3Red: (203.0/255.0), green: (206.0/255.0), blue: (226.0/255.0), alpha: 0.1)
         }else{
 //            self.forwardingView?.backgroundColor = UIColor(displayP3Red: (42.0/255.0), green: (43.0/255.0), blue: (53.0/255.0), alpha: 0.1)
-            self.forwardingView?.backgroundColor = Asset.keyboardBackgroundDark.color
+            self.forwardingView?.backgroundColor = .keyboardBackgroundDark
         }
         
         updateSubviewTheme(toUpdateView: view, appearanceIsDark)

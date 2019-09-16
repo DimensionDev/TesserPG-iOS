@@ -24,18 +24,14 @@ final class InterpretMessageViewController: TCBaseViewController {
         if #available(iOS 13, *) {
             scrollView.backgroundColor = .systemBackground
         } else {
-            scrollView.backgroundColor = Asset.sceneBackground.color
+            scrollView.backgroundColor = ._systemBackground
         }
         return scrollView
     }()
     
     let messageTextView: UITextView = {
         let textView = UITextView()
-        if #available(iOS 13, *) {
-            textView.placeholderColor = .placeholderText
-        } else {
-            textView.placeholderColor = Asset.lightTextGrey.color
-        }
+        textView.placeholderColor = ._secondaryLabel
         textView.placeholder = L10n.ComposeMessageViewController.TextView.Message.placeholder
         textView.isScrollEnabled = false
         textView.font = FontFamily.SFProText.regular.font(size: 15)

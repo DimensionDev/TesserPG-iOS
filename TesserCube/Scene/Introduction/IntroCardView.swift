@@ -27,7 +27,7 @@ class IntroCardView: UIView {
     
     var cardView: TCCardView = {
         let cardView = TCCardView()
-        cardView.cardBackgroundColor = Asset.sketchBlue.color
+        cardView.cardBackgroundColor = .systemBlue
         return cardView
     }()
     

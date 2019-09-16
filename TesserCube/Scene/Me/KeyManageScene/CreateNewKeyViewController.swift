@@ -143,7 +143,7 @@ class CreateNewKeyViewController: FormViewController {
         view.preservesSuperviewLayoutMargins = true
 
         let button = TCActionButton(frame: .zero)
-        button.color = Asset.sketchBlue.color
+        button.color = .systemBlue
         button.setTitleColor(.white, for: .normal)
         button.setTitle(L10n.MeViewController.Action.Button.createKey, for: .normal)
         view.addSubview(button)

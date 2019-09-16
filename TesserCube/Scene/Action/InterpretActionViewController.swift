@@ -47,11 +47,8 @@ extension InterpretActionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if #available(iOS 13, *) {
-            view.backgroundColor = .systemBackground
-        } else {
-            view.backgroundColor = Asset.sceneBackground.color
-        }
+
+        view.backgroundColor = ._systemBackground
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(InterpretActionViewController.doneBarButtonItemPressed(_:)))
 
         addChild(messageCardViewController)

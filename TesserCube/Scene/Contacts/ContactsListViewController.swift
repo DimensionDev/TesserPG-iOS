@@ -60,7 +60,7 @@ class ContactsListViewController: TCBaseViewController {
             tableView.backgroundColor = .systemBackground
         } else {
             // Fallback on earlier versions
-            tableView.backgroundColor = Asset.sceneBackground.color
+            tableView.backgroundColor = ._systemBackground
         }
         tableView.allowsMultipleSelectionDuringEditing = true
         tableView.keyboardDismissMode = .interactive
