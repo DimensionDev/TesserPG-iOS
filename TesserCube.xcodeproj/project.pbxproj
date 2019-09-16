@@ -142,7 +142,7 @@
 		83B93D5B221E575500F556C0 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D5A221E575500F556C0 /* Theme.swift */; };
 		83B93D5D221E6D0B00F556C0 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D5C221E6D0B00F556C0 /* UIImage+Color.swift */; };
 		83B93D5E221E6D1E00F556C0 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D5C221E6D0B00F556C0 /* UIImage+Color.swift */; };
-		83B93D61221E710300F556C0 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D60221E710300F556C0 /* UIColorExtension.swift */; };
+		83B93D61221E710300F556C0 /* UIColor+SwifterSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D60221E710300F556C0 /* UIColor+SwifterSwift.swift */; };
 		83B93D63221E71CC00F556C0 /* SelectedRecipientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D62221E71CC00F556C0 /* SelectedRecipientView.swift */; };
 		83B93D65221E825300F556C0 /* DoneActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D64221E825300F556C0 /* DoneActionButton.swift */; };
 		83B93E882223CCF700F556C0 /* RecipientInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93E872223CCF700F556C0 /* RecipientInputView.swift */; };
@@ -363,6 +363,11 @@
 		DBD63FDD229682E400E46FDC /* KeyFactory+TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */; };
 		DBD63FE02296864200E46FDC /* KeyFactory+TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */; };
 		DBE13D79224CCC0B004850A6 /* TCDBManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE13D78224CCC0B004850A6 /* TCDBManagerTests.swift */; };
+		DBF6B2A9232F43C7008F83AE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6B2A8232F43C7008F83AE /* UIColor.swift */; };
+		DBF6B2AA232F5479008F83AE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6B2A8232F43C7008F83AE /* UIColor.swift */; };
+		DBF6B2AB232F5479008F83AE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6B2A8232F43C7008F83AE /* UIColor.swift */; };
+		DBF6B2AC232F5479008F83AE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6B2A8232F43C7008F83AE /* UIColor.swift */; };
+		DBF6B2AE232F6950008F83AE /* UIColor+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6B2AD232F6950008F83AE /* UIColor+Keyboard.swift */; };
 		DBFC72A72272DEA300860C34 /* TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146E122422024008ECC22 /* TCKey.swift */; };
 		E1274EE8AEE0608EE39A1F31 /* Pods_TesserCube.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 829EC06ABC2887E5DB724F5B /* Pods_TesserCube.framework */; };
 		E605970E17096EDED17503F3 /* Pods_TesserCubeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F203D9B4CDFBB0FD0E45FB6D /* Pods_TesserCubeTests.framework */; };
@@ -561,7 +566,7 @@
 		83B93D57221E570200F556C0 /* RecipientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientButton.swift; sourceTree = "<group>"; };
 		83B93D5A221E575500F556C0 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		83B93D5C221E6D0B00F556C0 /* UIImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Color.swift"; sourceTree = "<group>"; };
-		83B93D60221E710300F556C0 /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		83B93D60221E710300F556C0 /* UIColor+SwifterSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+SwifterSwift.swift"; sourceTree = "<group>"; };
 		83B93D62221E71CC00F556C0 /* SelectedRecipientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedRecipientView.swift; sourceTree = "<group>"; };
 		83B93D64221E825300F556C0 /* DoneActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneActionButton.swift; sourceTree = "<group>"; };
 		83B93E872223CCF700F556C0 /* RecipientInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientInputView.swift; sourceTree = "<group>"; };
@@ -650,6 +655,8 @@
 		DBE13D78224CCC0B004850A6 /* TCDBManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCDBManagerTests.swift; sourceTree = "<group>"; };
 		DBF01ECD22A53BEE004711F1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		DBF01ECE22A53BEE004711F1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		DBF6B2A8232F43C7008F83AE /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		DBF6B2AD232F6950008F83AE /* UIColor+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Keyboard.swift"; sourceTree = "<group>"; };
 		DDADE9070E9C7B3A44C27B2D /* Pods-TesserCubeInterpretAction.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeInterpretAction.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeInterpretAction/Pods-TesserCubeInterpretAction.debug stub.xcconfig"; sourceTree = "<group>"; };
 		ED5112F3F342C6B4F96019B9 /* Pods-TesserCubeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F0EC992A1DF4CED75A30F54D /* Pods-TesserCubeComposeAction.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.debug stub.xcconfig"; sourceTree = "<group>"; };
@@ -1133,11 +1140,12 @@
 			isa = PBXGroup;
 			children = (
 				DB4F300522A120F50003804B /* DMSOpenPGP */,
+				832146B5223F89A8008ECC22 /* CALayer+Shadow.swift */,
 				DB66FE69224A330D00D82704 /* String.swift */,
 				8378336C224B36A400F2C0BF /* String+Localization.swift */,
+				DBF6B2A8232F43C7008F83AE /* UIColor.swift */,
 				DB616C0822A4CBB4002768B4 /* UILabel.swift */,
 				DBB81AE0225DFF7A003D63C6 /* UIScreen.swift */,
-				832146B5223F89A8008ECC22 /* CALayer+Shadow.swift */,
 				83B93D5C221E6D0B00F556C0 /* UIImage+Color.swift */,
 				8313F69C22477CA000C09C2D /* UIViewController+Alert.swift */,
 				83B93D21221CEB9800F556C0 /* UserDefaults+AppGroup.swift */,
@@ -1235,12 +1243,13 @@
 		83B93D5F221E70F400F556C0 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				83B93D60221E710300F556C0 /* UIColorExtension.swift */,
+				8325E485222E768500EE9B83 /* Debounce.swift */,
+				8310B34422325E0C00C35AEC /* String+Compare.swift */,
+				DBF6B2AD232F6950008F83AE /* UIColor+Keyboard.swift */,
+				83B93D60221E710300F556C0 /* UIColor+SwifterSwift.swift */,
 				83B93E89222411C300F556C0 /* UIView+blinking.swift */,
 				8325E47D222D254200EE9B83 /* UIImage+RoundCorners.swift */,
-				8325E485222E768500EE9B83 /* Debounce.swift */,
 				8325E4A72230FEC500EE9B83 /* UIInputViewController+TextProxy.swift */,
-				8310B34422325E0C00C35AEC /* String+Compare.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -2000,6 +2009,7 @@
 				DB1169DD22E19CA00099BA25 /* MessageCardTableViewController.swift in Sources */,
 				DB4CBCA8224F932B00ED6BF0 /* InterpretMessageViewController.swift in Sources */,
 				8313F69822476ADD00C09C2D /* ShareUtil.swift in Sources */,
+				DBF6B2A9232F43C7008F83AE /* UIColor.swift in Sources */,
 				8378336D224B36A400F2C0BF /* String+Localization.swift in Sources */,
 				833FF394224F9D8100EFE0A9 /* KeyboardInterpretor.swift in Sources */,
 				83783371224B384000F2C0BF /* ContactCell.swift in Sources */,
@@ -2099,7 +2109,7 @@
 				837833582248897C00F2C0BF /* KeyFactory.swift in Sources */,
 				83DFC73B22578ED800993160 /* InterpretFailView.swift in Sources */,
 				833FF389224E3CBC00EFE0A9 /* ToastAlerter.swift in Sources */,
-				83B93D61221E710300F556C0 /* UIColorExtension.swift in Sources */,
+				83B93D61221E710300F556C0 /* UIColor+SwifterSwift.swift in Sources */,
 				83B93D3C221D4AC900F556C0 /* DefaultKeyboard.swift in Sources */,
 				83B93D4D221D844900F556C0 /* LayoutMetrics.swift in Sources */,
 				DBBBC199224E29E50080790F /* ContactMappable.swift in Sources */,
@@ -2131,6 +2141,7 @@
 				83DFC73722577B9800993160 /* WormHole.swift in Sources */,
 				833FF38E224F97BD00EFE0A9 /* ProfileService+Message.swift in Sources */,
 				DB4F300422A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift in Sources */,
+				DBF6B2AE232F6950008F83AE /* UIColor+Keyboard.swift in Sources */,
 				83B93D4B221D7EB000F556C0 /* Shapes.swift in Sources */,
 				8378335A224889B100F2C0BF /* ProfileService.swift in Sources */,
 				837833562248840600F2C0BF /* TCTypes.swift in Sources */,
@@ -2144,6 +2155,7 @@
 				8325E472222CCD4F00EE9B83 /* SuggestionStackView.swift in Sources */,
 				DBBBC196224E29D70080790F /* KeychainMappable.swift in Sources */,
 				DB3B58E52282930600879834 /* WormholdService.swift in Sources */,
+				DBF6B2AA232F5479008F83AE /* UIColor.swift in Sources */,
 				DB1327162253651C00BD7B98 /* KeyBridge.swift in Sources */,
 				DB15695F23278EA200220926 /* FetchableRecord+all.swift in Sources */,
 				83783367224B232000F2C0BF /* Contact.swift in Sources */,
@@ -2216,6 +2228,7 @@
 				DB63A12022E068A400C2DDA6 /* ContactsListViewController.swift in Sources */,
 				DB63A10122DDCBD700C2DDA6 /* MessageDBAction.swift in Sources */,
 				DB63A0F622DDCAEB00C2DDA6 /* TCKey.swift in Sources */,
+				DBF6B2AB232F5479008F83AE /* UIColor.swift in Sources */,
 				DB63A10322DDCD0300C2DDA6 /* KeyRecordDBAction.swift in Sources */,
 				DB63A12822E06F8200C2DDA6 /* ContactListViewModel.swift in Sources */,
 				DB63A11622E0607C00C2DDA6 /* ContactMappable.swift in Sources */,
@@ -2236,6 +2249,7 @@
 				DB1169C722E185020099BA25 /* ContactCell.swift in Sources */,
 				DB1169D922E19C0F0099BA25 /* MessageCardCell.swift in Sources */,
 				DB1169DF22E19CA00099BA25 /* MessageCardTableViewController.swift in Sources */,
+				DBF6B2AC232F5479008F83AE /* UIColor.swift in Sources */,
 				DB1169B122E183390099BA25 /* ContactMappable.swift in Sources */,
 				DB1169BF22E183F90099BA25 /* KeyRecordDBAction.swift in Sources */,
 				DB1169B222E183440099BA25 /* ContactsListViewController.swift in Sources */,
