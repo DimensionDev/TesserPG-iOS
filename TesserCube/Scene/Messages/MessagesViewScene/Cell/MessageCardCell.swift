@@ -250,6 +250,22 @@ final class MessageCardCell: UITableViewCell {
         }
     }
 
+    func setupColor() {
+        // Set background color to clear to prevent shadow clipped
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
+
+        cardView.cardBackgroundColor = .cardBackground
+        headerBackgroundView.backgroundColor = .cardHeaderBackground
+
+        signedByLabel.textColor = ._secondaryLabel
+        recipeintsLabel.textColor = ._secondaryLabel
+
+        leftFooterLabel.textColor = ._tertiaryLabel
+        rightFooterLabel.textColor = ._tertiaryLabel
+
+        extraBackgroundView.backgroundColor = .cardExtraBackground
+    }
 }
 
 extension MessageCardCell {
@@ -257,6 +273,57 @@ extension MessageCardCell {
     @objc func expandButtonPressed(_ sender: UIButton) {
         delegate?.messageCardCell(self, expandButtonPressed: sender)
     }
+
+}
+
+fileprivate extension UIColor {
+
+    static let cardBackground: UIColor = {
+        // use white in light mode
+        let color: UIColor = .white
+
+        if #available(iOS 13.0, *) {
+            return UIColor { trait -> UIColor in
+                switch trait.userInterfaceStyle {
+                case .dark:     return .secondarySystemBackground   // use 2nd background color in dark mode
+                default:        return color
+                }
+            }
+        } else {
+            return color
+        }
+    }()
+
+    static let cardHeaderBackground: UIColor = {
+        // use systemGray6 in light mode
+        let _systemGray6 = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 247.0/255.0, alpha: 1.0)
+
+        if #available(iOS 13, *) {
+            return UIColor { trait -> UIColor in
+                switch trait.userInterfaceStyle {
+                case .dark:     return .tertiarySystemBackground    // use 3rd background color in dark mode
+                default:        return _systemGray6
+                }
+            }
+        } else {
+            return _systemGray6
+        }
+    }()
+
+    static let cardExtraBackground: UIColor = {
+        let _systemGray6 = UIColor(red: 242.0/255.0, green: 242.0/255.0, blue: 247.0/255.0, alpha: 1.0)
+
+        if #available(iOS 13, *) {
+            return UIColor { trait -> UIColor in
+                switch trait.userInterfaceStyle {
+                case .dark:     return .tertiarySystemBackground
+                default:        return _systemGray6
+                }
+            }
+        } else {
+            return _systemGray6
+        }
+    }()
 
 }
 
@@ -271,14 +338,14 @@ final class MessageContactInfoView: UIView {
     let emailLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SFProText.regular.font(size: 14)
-        label.textColor = Asset.lightTextGrey.color
+        label.textColor = ._secondaryLabel
         return label
     }()
     
     let shortIDLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SourceCodeProMedium.regular.font(size: 14)
-        label.textColor = Asset.sourceGreen.color
+        label.textColor = .systemGreen
         label.textAlignment = .right
         return label
     }()

@@ -77,7 +77,7 @@ class ImportPrivateKeyConfirmViewController: TCBaseViewController {
     
     private lazy var importButton: TCActionButton = {
         let button = TCActionButton(frame: .zero)
-        button.color = Asset.sketchBlue.color
+        button.color = .systemBlue
         button.setTitleColor(.white, for: .normal)
         button.setTitle(L10n.MeViewController.Action.Button.importKey, for: .normal)
         return button
@@ -229,8 +229,8 @@ extension ImportPrivateKeyConfirmViewController: UICollectionViewDataSource, UIC
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withClass: ConfirmContactCell.self, for: indexPath)
         cell.keyValue = .TCKey(value: tcKey!)
-//        cell.userID = tcKey?.keyRing.publicKeyRing.primaryKey.primaryUserID
-        cell.cardView.cardBackgroundColor = Asset.sketchBlue.color
+        cell.userID = tcKey?.keyRing.publicKeyRing.primaryKey.primaryUserID
+        cell.cardView.cardBackgroundColor = .systemBlue
         return cell
     }
     

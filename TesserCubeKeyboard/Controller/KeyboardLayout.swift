@@ -163,8 +163,8 @@ class GlobalColors: NSObject {
 //    class var darkModeRegularKey: UIColor { get { return UIColor.white.withAlphaComponent(CGFloat(0.3)) }}
 //    class var darkModeSolidColorRegularKey: UIColor { get { return UIColor(red: CGFloat(83)/CGFloat(255), green: CGFloat(83)/CGFloat(255), blue: CGFloat(83)/CGFloat(255), alpha: 1) }}
     
-    class var darkModeRegularKey: UIColor { get { return Asset.keyboardCharkeyBackgroundDark.color.withAlphaComponent(CGFloat(0.3)) }}
-    class var darkModeSolidColorRegularKey: UIColor { get { return Asset.keyboardCharkeyBackgroundDark.color }}
+    class var darkModeRegularKey: UIColor { get { return UIColor.keyboardCharKeyBackgroundDark.withAlphaComponent(CGFloat(0.3)) }}
+    class var darkModeSolidColorRegularKey: UIColor { get { return UIColor.keyboardCharKeyBackgroundDark }}
     
     class var lightModeSpecialKey: UIColor { get { return GlobalColors.lightModeSolidColorSpecialKey }}
     class var lightModeSolidColorSpecialKey: UIColor { get { return UIColor(red: CGFloat(167)/CGFloat(255), green: CGFloat(176)/CGFloat(255), blue: CGFloat(187)/CGFloat(255), alpha: 1) }}
@@ -172,8 +172,8 @@ class GlobalColors: NSObject {
 //    class var darkModeSpecialKey: UIColor { get { return UIColor.gray.withAlphaComponent(CGFloat(0.3)) }}
 //    class var darkModeSolidColorSpecialKey: UIColor { get { return UIColor(red: CGFloat(45)/CGFloat(255), green: CGFloat(45)/CGFloat(255), blue: CGFloat(45)/CGFloat(255), alpha: 1) }}
     
-    class var darkModeSpecialKey: UIColor { get { return Asset.keyboardFunckeyBackgroundDark.color.withAlphaComponent(CGFloat(0.3)) }}
-    class var darkModeSolidColorSpecialKey: UIColor { get { return Asset.keyboardFunckeyBackgroundDark.color }}
+    class var darkModeSpecialKey: UIColor { get { return UIColor.keyboardFuncKeyBackgroundDark.withAlphaComponent(CGFloat(0.3)) }}
+    class var darkModeSolidColorSpecialKey: UIColor { get { return UIColor.keyboardFuncKeyBackgroundDark }}
     
     class var darkModeShiftKeyDown: UIColor { get { return UIColor(red: CGFloat(214)/CGFloat(255), green: CGFloat(220)/CGFloat(255), blue: CGFloat(208)/CGFloat(255), alpha: 1) }}
     class var lightModePopup: UIColor { get { return GlobalColors.lightModeRegularKey }}

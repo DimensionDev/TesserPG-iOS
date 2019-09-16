@@ -25,7 +25,7 @@ class MeViewController: TCBaseViewController {
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none
         tableView.register(nibWithCellClass: KeyCardCell.self)
-        tableView.backgroundColor = Asset.sceneBackground.color
+        tableView.backgroundColor = ._systemBackground
         return tableView
     }()
     
@@ -108,7 +108,7 @@ class MeViewController: TCBaseViewController {
         
         if !hasKey {
             let createKeyButton = TCActionButton(frame: .zero)
-            createKeyButton.color = Asset.sketchBlue.color
+            createKeyButton.color = .systemBlue
             createKeyButton.setTitleColor(.white, for: .normal)
             createKeyButton.setTitle(L10n.MeViewController.Action.Button.createKey, for: .normal)
             createKeyButton.rx.tap.bind {

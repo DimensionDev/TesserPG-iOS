@@ -22,7 +22,7 @@ final class BrokenMessageViewController: UIViewController {
 
     let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.backgroundColor = Asset.sceneBackground.color
+        scrollView.backgroundColor = ._systemBackground
         scrollView.contentInsetAdjustmentBehavior = .automatic
         scrollView.alwaysBounceVertical = true
         return scrollView

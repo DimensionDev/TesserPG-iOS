@@ -99,7 +99,8 @@ class MessagesViewController: TCBaseViewController {
         view.addSubview(tableView)
         view.addSubview(bottomActionsView)
         addEmptyStateView(emptyView)
-        view.backgroundColor = Asset.sceneBackground.color
+
+        view.backgroundColor = ._systemBackground
 
         tableView.snp.makeConstraints { maker in
             maker.leading.trailing.top.bottom.equalToSuperview()
@@ -168,13 +169,13 @@ class MessagesViewController: TCBaseViewController {
         var actionViews = [UIView]()
 
         let composeButton = TCActionButton(frame: .zero)
-        composeButton.color = Asset.sketchBlue.color
+        composeButton.color = .systemBlue
         composeButton.setTitleColor(.white, for: .normal)
         composeButton.setTitle(L10n.MessagesViewController.Action.Button.compose, for: .normal)
         composeButton.addTarget(self, action: #selector(MessagesViewController.composeButtonPressed(_:)), for: .touchUpInside)
 
         let interpretButton = TCActionButton(frame: .zero)
-        interpretButton.color = Asset.sketchBlue.color
+        interpretButton.color = .systemBlue
         interpretButton.setTitleColor(.white, for: .normal)
         interpretButton.setTitle(L10n.MessagesViewController.Action.Button.interpret, for: .normal)
         interpretButton.addTarget(self, action: #selector(MessagesViewController.interpretButtonPressed(_:)), for: .touchUpInside)

@@ -147,7 +147,8 @@ class RecommendRecipientsView: UIView, Thematic {
         
         bindData()
     }
-    
+
+    // TODO: color
     func updateColor(theme: Theme) {
         switch theme {
         case .light:
@@ -156,9 +157,9 @@ class RecommendRecipientsView: UIView, Thematic {
             titleLabelView.addShadow(ofColor: UIColor(hex: 0xDDDDDD)!, radius: 0, offset: CGSize(width: 0, height: 1), opacity: 1)
             titleLabel.textColor = .black
         case .dark:
-            backgroundColor = Asset.keyboardCharkeyBackgroundDark.color
-            titleLabelView.backgroundColor = Asset.keyboardFunckeyBackgroundDark.color
-            titleLabelView.addShadow(ofColor: Asset.keyboardBackgroundDark.color, radius: 0, offset: CGSize(width: 0, height: 1), opacity: 1)
+            backgroundColor = .keyboardCharKeyBackgroundDark
+            titleLabelView.backgroundColor = .keyboardFuncKeyBackgroundDark
+            titleLabelView.addShadow(ofColor: .keyboardBackgroundDark, radius: 0, offset: CGSize(width: 0, height: 1), opacity: 1)
             titleLabel.textColor = .white
         }
     }

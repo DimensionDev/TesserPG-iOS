@@ -16,6 +16,8 @@ class ContactEditTextCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+
+        contentView.backgroundColor = .cellBackground
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -23,4 +25,24 @@ class ContactEditTextCell: UITableViewCell {
         
     }
     
+}
+
+
+fileprivate extension UIColor {
+
+    static let cellBackground: UIColor = {
+        let color = UIColor.white
+
+        if #available(iOS 13, *) {
+            return UIColor { trait -> UIColor in
+                switch trait.userInterfaceStyle {
+                case .dark:     return .secondarySystemBackground
+                default:        return color
+                }
+            }
+        } else {
+            return color
+        }
+    }()
+
 }
