@@ -118,11 +118,8 @@ class KeyboardViewController: UIInputViewController {
             // Fallback on earlier versions
         }
         
-        if #available(iOSApplicationExtension 11.0, *) {
-            self.keyboard = defaultKeyboard(needInputSwitchKey: needsInputModeSwitchKey)
-        } else {
-            self.keyboard = defaultKeyboard(needInputSwitchKey: true)
-        }
+        //self.keyboard = defaultKeyboard(needInputSwitchKey: needsInputModeSwitchKey)
+        self.keyboard = defaultKeyboard(needInputSwitchKey: true)
         self.shiftState = .disabled
         self.currentMode = 0
         
@@ -142,16 +139,6 @@ class KeyboardViewController: UIInputViewController {
         KeyboardModeManager.shared.setupSubViews()
         
         setupLayout()
-
-        WormholdService.shared.listeningWormhole.listenForMessage(withIdentifier: WormholdService.MessageIdentifier.appDidUpdateKeys.rawValue) { any in
-            guard let _ = any as? String else {
-                NSLog("Failed WormholdService.MessageIdentifier.appDidUpdateKeys")
-                return
-            }
-            let contacts = ProfileService.default.loadContacts()
-            ProfileService.default.contacts.accept(contacts)    // update contact to drive key update
-            NSLog("WormholdService.MessageIdentifier.appDidUpdateKeys")
-        }
     }
     
     // without this here kludge, the height constraint for the keyboard does not work for some reason
@@ -534,7 +521,7 @@ class KeyboardViewController: UIInputViewController {
             self.forwardingView?.backgroundColor = UIColor(displayP3Red: (203.0/255.0), green: (206.0/255.0), blue: (226.0/255.0), alpha: 0.1)
         }else{
 //            self.forwardingView?.backgroundColor = UIColor(displayP3Red: (42.0/255.0), green: (43.0/255.0), blue: (53.0/255.0), alpha: 0.1)
-            self.forwardingView?.backgroundColor = Asset.keyboardBackgroundDark.color
+            self.forwardingView?.backgroundColor = .keyboardBackgroundDark
         }
         
         updateSubviewTheme(toUpdateView: view, appearanceIsDark)

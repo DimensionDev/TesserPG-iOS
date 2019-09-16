@@ -37,8 +37,9 @@ final class MessageCardViewModel {
         }.asDriver()
 
         messages.asDriver()
-            .drive(onNext: { [weak self] message in
-                guard let message = message.last, let `self` = self else { return }
+            .drive(onNext: { [weak self] messages in
+                // skip if not last
+                guard let message = messages.last, let `self` = self else { return }
 
                 // set available actions
                 if ProfileService.default.containsKey(longIdentifier: message.senderKeyId) {
@@ -128,7 +129,7 @@ extension MessageCardViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = Asset.sceneBackground.color
+        view.backgroundColor = ._systemBackground
 
         addChild(messageCardTableViewController)
         view.addSubview(messageCardTableViewController.view)
@@ -169,8 +170,13 @@ extension MessageCardViewController {
 
         if actions.contains(.copy) {
             let copyButton = TCActionButton(frame: .zero)
-            copyButton.color = .white
-            copyButton.setTitleColor(.black, for: .normal)
+            if #available(iOS 13, *) {
+                copyButton.color = .secondarySystemBackground
+                copyButton.setTitleColor(.label, for: .normal)
+            } else {
+                copyButton.color = .white
+                copyButton.setTitleColor(.black, for: .normal)
+            }
             copyButton.setTitle(L10n.InterpretActionViewController.Action.Button.copyContent, for: .normal)
             copyButton.addTarget(self, action: #selector(MessageCardViewController.composeButtonPressed(_:)), for: .touchUpInside)
 
@@ -179,7 +185,7 @@ extension MessageCardViewController {
 
         if actions.contains(.reply) {
             let replyButton = TCActionButton(frame: .zero)
-            replyButton.color = Asset.sketchBlue.color
+            replyButton.color = .systemBlue
             replyButton.setTitleColor(.white, for: .normal)
             replyButton.setTitle(L10n.InterpretActionViewController.Action.Button.writeReply, for: .normal)
             replyButton.addTarget(self, action: #selector(MessageCardViewController.replyButtonPressed(_:)), for: .touchUpInside)

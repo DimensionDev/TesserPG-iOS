@@ -38,8 +38,9 @@ class SuggestionButton: UIButton, Thematic {
             setBackgroundImage(UIImage.placeholder(color: UIColor(hex: 0xF5F5F5)!), for: .selected)
         case .dark:
             setTitleColor(.white, for: .normal)
-            setBackgroundImage(UIImage.placeholder(color: Asset.lightTextGrey.color), for: .highlighted)
-            setBackgroundImage(UIImage.placeholder(color: Asset.lightTextGrey.color), for: .selected)
+            setBackgroundImage(UIImage.placeholder(color: ._systemGray), for: .highlighted)
+            setBackgroundImage(UIImage.placeholder(color: ._systemGray), for: .selected)
         }
     }
 }
+
