@@ -214,7 +214,7 @@ extension MessagesViewModel {
         let senderInfoView: MessageContactInfoView = {
             let infoView = MessageContactInfoView()
             let senderMeta = PGPUserIDTranslator(userID: message.senderKeyUserId)
-            let senderIDLabelColor = ProfileService.default.containsKey(longIdentifier: message.senderKeyId) ? Asset.sourceGreen.color : Asset.shortIdBlue.color
+            let senderIDLabelColor: UIColor = ProfileService.default.containsKey(longIdentifier: message.senderKeyId) ? .systemGreen : .systemBlue
 
             infoView.nameLabel.text = MessagesViewModel.retrieveNameBy(longIdentifier: message.senderKeyId, fallbackToMeta: senderMeta)
             infoView.emailLabel.text = senderMeta.email.flatMap { "(\($0))"}

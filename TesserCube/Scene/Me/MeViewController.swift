@@ -26,11 +26,7 @@ class MeViewController: TCBaseViewController {
         tableView.preservesSuperviewLayoutMargins = true
         tableView.cellLayoutMarginsFollowReadableWidth = true
         tableView.register(nibWithCellClass: KeyCardCell.self)
-        if #available(iOS 13, *) {
-            tableView.backgroundColor = .systemBackground
-        } else {
-            tableView.backgroundColor = Asset.sceneBackground.color
-        }
+        tableView.backgroundColor = ._systemBackground
         return tableView
     }()
     
@@ -105,7 +101,7 @@ class MeViewController: TCBaseViewController {
         
         if !hasKey {
             let createKeyButton = TCActionButton(frame: .zero)
-            createKeyButton.color = Asset.sketchBlue.color
+            createKeyButton.color = .systemBlue
             createKeyButton.setTitleColor(.white, for: .normal)
             createKeyButton.setTitle(L10n.MeViewController.Action.Button.createKey, for: .normal)
             createKeyButton.rx.tap.bind {
