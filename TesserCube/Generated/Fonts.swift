@@ -31,9 +31,10 @@ internal enum FontFamily {
     internal static let all: [FontConvertible] = [bold, light, medium, regular]
   }
   internal enum SFProText {
+    internal static let light = FontConvertible(name: "SFProText-Light", family: "SF Pro Text", path: "SF-Pro-Text-Light.otf")
     internal static let regular = FontConvertible(name: "SFProText-Regular", family: "SF Pro Text", path: "SF-Pro-Text-Regular.otf")
     internal static let semibold = FontConvertible(name: "SFProText-Semibold", family: "SF Pro Text", path: "SF-Pro-Text-Semibold.otf")
-    internal static let all: [FontConvertible] = [regular, semibold]
+    internal static let all: [FontConvertible] = [light, regular, semibold]
   }
   internal enum SourceCodePro {
     internal static let regular = FontConvertible(name: "SourceCodePro-Regular", family: "Source Code Pro", path: "SourceCodePro-Regular.otf")

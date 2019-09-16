@@ -14,7 +14,7 @@ class ListEmptyView: UIView {
     lazy var textLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = FontFamily.SFProDisplay.regular.font(size: 17)
-        label.textColor = Asset.emptyLabel.color
+        label.textColor = ._tertiaryLabel
         label.numberOfLines = 0
         label.textAlignment = .center
         return label

@@ -81,7 +81,7 @@ final class RecipientContactPickerView: UIView {
 
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Asset.lightTextGrey.color
+        label.textColor = ._secondaryLabel
         label.font = FontFamily.SFProText.regular.font(size: 15)
         return label
     }()
@@ -165,7 +165,7 @@ final class RecipientContactPickerView: UIView {
             maker.height.equalTo(0.3)
         }
 
-        separatorView.backgroundColor = Asset.separator.color
+        separatorView.backgroundColor = .separator
         addButton.addTarget(self, action: #selector(RecipientContactPickerView.addButtonPressed(_:)), for: .touchUpInside)
         contactCollectionView.delegate = self
         contactCollectionView.dataSource = viewModel

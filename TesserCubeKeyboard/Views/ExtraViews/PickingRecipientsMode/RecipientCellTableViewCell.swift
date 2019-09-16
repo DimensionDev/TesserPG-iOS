@@ -44,10 +44,11 @@ class RecipientCellTableViewCell: UITableViewCell {
         
         updateColor(theme: KeyboardModeManager.shared.currentTheme)
     }
-    
+
+    // TODO: color
     private func updateColor(theme: Theme) {
-        let backgroundColor = (theme == .light ? .white : Asset.keyboardBackgroundDark.color)
-        let shadowColor = (theme == .light ? UIColor(hex: 0xDDDDDD)! : Asset.keyboardFunckeyBackgroundDark.color)
+        let backgroundColor: UIColor = theme == .light ? .white : .keyboardBackgroundDark
+        let shadowColor: UIColor = theme == .light ? UIColor(hex: 0xDDDDDD)! : .keyboardFuncKeyBackgroundDark
         
         let usernameLabelColor = (theme == .light ? UIColor.black : UIColor.white)
         let addressLabelColor = (theme == .light ? UIColor(hex: 0x999999)! : UIColor.white.withAlphaComponent(0.5))
