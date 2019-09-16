@@ -368,6 +368,10 @@
 		DBF6B2AB232F5479008F83AE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6B2A8232F43C7008F83AE /* UIColor.swift */; };
 		DBF6B2AC232F5479008F83AE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6B2A8232F43C7008F83AE /* UIColor.swift */; };
 		DBF6B2AE232F6950008F83AE /* UIColor+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6B2AD232F6950008F83AE /* UIColor+Keyboard.swift */; };
+		DBF6B2D4232F9113008F83AE /* SF-Pro-Text-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = DBF6B2D3232F9112008F83AE /* SF-Pro-Text-Light.otf */; };
+		DBF6B2D5232F9113008F83AE /* SF-Pro-Text-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = DBF6B2D3232F9112008F83AE /* SF-Pro-Text-Light.otf */; };
+		DBF6B2D6232F9113008F83AE /* SF-Pro-Text-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = DBF6B2D3232F9112008F83AE /* SF-Pro-Text-Light.otf */; };
+		DBF6B2D7232F9113008F83AE /* SF-Pro-Text-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = DBF6B2D3232F9112008F83AE /* SF-Pro-Text-Light.otf */; };
 		DBFC72A72272DEA300860C34 /* TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146E122422024008ECC22 /* TCKey.swift */; };
 		E1274EE8AEE0608EE39A1F31 /* Pods_TesserCube.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 829EC06ABC2887E5DB724F5B /* Pods_TesserCube.framework */; };
 		E605970E17096EDED17503F3 /* Pods_TesserCubeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F203D9B4CDFBB0FD0E45FB6D /* Pods_TesserCubeTests.framework */; };
@@ -657,6 +661,7 @@
 		DBF01ECE22A53BEE004711F1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		DBF6B2A8232F43C7008F83AE /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		DBF6B2AD232F6950008F83AE /* UIColor+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Keyboard.swift"; sourceTree = "<group>"; };
+		DBF6B2D3232F9112008F83AE /* SF-Pro-Text-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Light.otf"; sourceTree = "<group>"; };
 		DDADE9070E9C7B3A44C27B2D /* Pods-TesserCubeInterpretAction.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeInterpretAction.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeInterpretAction/Pods-TesserCubeInterpretAction.debug stub.xcconfig"; sourceTree = "<group>"; };
 		ED5112F3F342C6B4F96019B9 /* Pods-TesserCubeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F0EC992A1DF4CED75A30F54D /* Pods-TesserCubeComposeAction.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.debug stub.xcconfig"; sourceTree = "<group>"; };
@@ -1065,6 +1070,7 @@
 				8325E48F222F8FBC00EE9B83 /* SF-Pro-Display-Light.otf */,
 				8325E493222F8FBD00EE9B83 /* SF-Pro-Display-Medium.otf */,
 				8325E490222F8FBC00EE9B83 /* SF-Pro-Display-Regular.otf */,
+				DBF6B2D3232F9112008F83AE /* SF-Pro-Text-Light.otf */,
 				8325E48E222F8FBC00EE9B83 /* SF-Pro-Text-Regular.otf */,
 				8325E492222F8FBD00EE9B83 /* SF-Pro-Text-Semibold.otf */,
 				8325E494222F8FBD00EE9B83 /* SourceCodePro-Medium.ttf */,
@@ -1679,6 +1685,7 @@
 				8325E495222F8FBD00EE9B83 /* SF-Pro-Text-Regular.otf in Resources */,
 				8378337C224C990100F2C0BF /* SourceCodePro-Regular.otf in Resources */,
 				8325E49D222F8FBD00EE9B83 /* SF-Pro-Text-Semibold.otf in Resources */,
+				DBF6B2D4232F9113008F83AE /* SF-Pro-Text-Light.otf in Resources */,
 				8316ADAC22CB4E1000246E5A /* ConfirmContactCell.xib in Resources */,
 				832146BB223F8AA1008ECC22 /* KeyCardCell.xib in Resources */,
 				8321469C223F5113008ECC22 /* InfoPlist.strings in Resources */,
@@ -1727,6 +1734,7 @@
 				8325E48C222F6D4500EE9B83 /* RecipientCellTableViewCell.xib in Resources */,
 				8378337D224C990100F2C0BF /* SourceCodePro-Regular.otf in Resources */,
 				8325E49E222F8FBD00EE9B83 /* SF-Pro-Text-Semibold.otf in Resources */,
+				DBF6B2D5232F9113008F83AE /* SF-Pro-Text-Light.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1748,6 +1756,7 @@
 				DB63A11222DF2CBB00C2DDA6 /* Menlo.ttc in Resources */,
 				DB63A0EB22DDA2AF00C2DDA6 /* SF-Pro-Text-Regular.otf in Resources */,
 				DB63A0D522DD82EE00C2DDA6 /* MainInterface.storyboard in Resources */,
+				DBF6B2D6232F9113008F83AE /* SF-Pro-Text-Light.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1769,6 +1778,7 @@
 				DB1169AB22E1827B0099BA25 /* Menlo.ttc in Resources */,
 				DB1169A722E1827B0099BA25 /* SF-Pro-Display-Regular.otf in Resources */,
 				DB63A13E22E17D3300C2DDA6 /* MainInterface.storyboard in Resources */,
+				DBF6B2D7232F9113008F83AE /* SF-Pro-Text-Light.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
