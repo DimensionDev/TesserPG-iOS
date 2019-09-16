@@ -73,6 +73,7 @@ class MeViewController: TCBaseViewController {
         }
         
         viewModel.hasKey
+            .distinctUntilChanged()
             .drive(onNext: { [weak self] result in
                 self?.reloadActionsView(hasKey: result)
             })
@@ -148,7 +149,7 @@ class MeViewController: TCBaseViewController {
 
         actionViews.append(bottomStackView)
         bottomActionsView.addArrangedSubviews(actionViews)
-        view.layoutIfNeeded()
+        bottomActionsView.setNeedsLayout()
     }
 
 }
