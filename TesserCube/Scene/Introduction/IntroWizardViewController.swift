@@ -63,7 +63,11 @@ class IntroWizardViewController: UIViewController {
     
     private var skipButton: UIButton = {
         let button = UIButton(frame: .zero)
-        button.setTitleColor(.black, for: .normal)
+        if #available(iOS 13.0, *) {
+            button.setTitleColor(.label, for: .normal)
+        } else {
+            button.setTitleColor(.black, for: .normal)
+        }
         button.titleLabel?.font = FontFamily.SFProDisplay.regular.font(size: 17)
         button.setTitle(L10n.IntroWizardViewController.Action.Button.skipGuides, for: .normal)
         return button
@@ -192,7 +196,7 @@ class IntroWizardViewController: UIViewController {
         skipButton.isHidden = true
         
         let createKeyButton = TCActionButton(frame: .zero)
-        createKeyButton.color = Asset.sketchBlue.color
+        createKeyButton.color = .systemBlue
         createKeyButton.setTitleColor(.white, for: .normal)
         createKeyButton.setTitle(L10n.MeViewController.Action.Button.createKey, for: .normal)
         createKeyButton.addTarget(self, action: #selector(createKeyButtonDidClicked), for: .touchUpInside)

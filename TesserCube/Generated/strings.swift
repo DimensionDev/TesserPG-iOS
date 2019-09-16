@@ -12,6 +12,13 @@ import Foundation
 // swiftlint:disable nesting type_body_length type_name
 internal enum L10n {
 
+  internal enum BrokenMessageViewController {
+    internal enum Label {
+      /// The following text was passed in.\nHowever, it can't be interpreted.
+      internal static let prompt = L10n.tr("Localizable", "BrokenMessageViewController.Label.prompt")
+    }
+  }
+
   internal enum Common {
     internal enum Alert {
       /// Error
@@ -119,21 +126,21 @@ internal enum L10n {
       internal static let sendMessage = L10n.tr("Localizable", "ContactDetailViewController.Button.SendMessage")
     }
     internal enum Label {
-      /// created at
+      /// Created at
       internal static let createdAt = L10n.tr("Localizable", "ContactDetailViewController.Label.CreatedAt")
-      /// email
+      /// Email
       internal static let email = L10n.tr("Localizable", "ContactDetailViewController.Label.Email")
-      /// fingerprint
+      /// Fingerprint
       internal static let fingerprint = L10n.tr("Localizable", "ContactDetailViewController.Label.Fingerprint")
       /// Invalid
       internal static let invalid = L10n.tr("Localizable", "ContactDetailViewController.Label.Invalid")
       /// Invalid Fingerprint
       internal static let invalidFingerprint = L10n.tr("Localizable", "ContactDetailViewController.Label.InvalidFingerprint")
-      /// type
+      /// Type
       internal static let keytype = L10n.tr("Localizable", "ContactDetailViewController.Label.Keytype")
       /// Valid
       internal static let valid = L10n.tr("Localizable", "ContactDetailViewController.Label.Valid")
-      /// validity
+      /// Validity
       internal static let validity = L10n.tr("Localizable", "ContactDetailViewController.Label.Validity")
     }
   }

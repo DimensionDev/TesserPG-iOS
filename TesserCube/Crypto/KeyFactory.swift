@@ -38,7 +38,7 @@ class KeyFactory {
                     continue
                 }
 
-                keys.append(TCKey(keyRing: keyRing))
+                keys.append(TCKey(keyRing: keyRing, from: nil))
             }
         }
         return keys

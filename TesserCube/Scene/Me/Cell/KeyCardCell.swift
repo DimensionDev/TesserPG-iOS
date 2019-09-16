@@ -59,10 +59,13 @@ enum KeyValue {
 }
 
 class KeyCardCell: UITableViewCell {
-    
+
+    @IBOutlet weak var cardView: TCCardView!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var codeLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
+
+    static let cardVerticalMargin: CGFloat = 8.0
     
     var keyValue: KeyValue = .mockKey {
         didSet {

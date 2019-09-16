@@ -9,5 +9,5 @@
 import UIKit
 
 extension Notification.Name {
-    static let extensionContextCompleteRequest = Notification.Name(rawValue: "extensionContextCompleteRequest")
+    static let messageComposeComplete = Notification.Name(rawValue: "messageComposeComplete")
 }
