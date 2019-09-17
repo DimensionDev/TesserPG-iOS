@@ -28,9 +28,11 @@ class ProfileService {
     private var keyRecordsObervation: TransactionObserver?
     private var contactsObervation: TransactionObserver?
     private var messagesObervation: TransactionObserver?
-    
+
     let keyChain = Keychain(service: "com.Sujitech.TesserCube", accessGroup: "7LFDZ96332.com.Sujitech.TesserCube").accessibility(.afterFirstUnlock, authenticationPolicy: .userPresence)
-    
+    // For simulator
+    // let keyChain = Keychain(service: "com.Sujitech.TesserCube", accessGroup: "7LFDZ96332.com.Sujitech.TesserCube")
+
     private let disposeBag = DisposeBag()
     
     init() {

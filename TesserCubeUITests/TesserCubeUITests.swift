@@ -25,14 +25,186 @@ class TesserCubeUITests: XCTestCase {
 //        print(app.debugDescription)
     }
 
-    func test() {
-        //createKey(name: "Alice", email: "alice@pgp.org", password: "Alice")
-        //
-        //let alicePrivateKeyArmor = copyPrivateKey(name: "Alice")
-        //print(alicePrivateKeyArmor)
-        //
-        //let bobPrivateKeyArmor = copyPrivateKey(name: "Bob")
-        //print(bobPrivateKeyArmor)
+    func testSnapshotPrepare() {
+//        skipWizard()
+//        createKey(name: "Alice", email: "alice@tessercube.com", password: "Alice")
+//        createKey(name: "Bob", email: "bob@tessercube.com", password: "Bob")
+//
+//        testAliceComposeMessage()
+        testBobComposeMessage()
+
+        let messageFromBob = copyFirstMessagePGPArmor()
+        deleteFirstMessage()
+        deleteKeySecretPart(name: "Bob")
+        interpretMessage(message: messageFromBob)
+
+        createKeyThenDeleteSecretPart(name: "Carol")
+        createKeyThenDeleteSecretPart(name: "Dan")
+        createKeyThenDeleteSecretPart(name: "Erin")
+    }
+
+    func deleteFirstMessage() {
+        let app = XCUIApplication()
+        app.launch()
+
+        // Check name exists
+        let card = app.tables.cells.element(boundBy: 0)
+        XCTAssert(card.waitForExistence(timeout: 5.0))
+
+        card.tap()
+        app.buttons["Delete"].tap()
+    }
+
+    func interpretMessage(message: String) {
+        let app = XCUIApplication()
+        app.launch()
+
+        UIPasteboard.general.string = message
+
+        XCTAssert(app.buttons["Interpret"].waitForExistence(timeout: 5.0))
+        app.buttons["Interpret"].tap()
+
+        // Wait 5s
+        let sleep = expectation(description: "Sleep")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+            sleep.fulfill()
+        }
+        waitForExpectations(timeout: 5.0, handler: nil)
+
+        app.buttons["Finish"].tap()
+
+        // Wait 5s
+        let sleep2 = expectation(description: "Sleep")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+            sleep2.fulfill()
+        }
+        wait(for: [sleep2], timeout: 5.0)
+    }
+
+    func copyFirstMessagePGPArmor() -> String {
+        let app = XCUIApplication()
+        app.launch()
+
+        // Check card exists
+        let card = app.tables.cells.element(boundBy: 0)
+        XCTAssert(card.waitForExistence(timeout: 5.0))
+
+        // Copy
+        card.tap()
+        XCTAssert(app.sheets.buttons["Share Encrypted Message"].exists)
+        app.sheets.buttons["Share Encrypted Message"].tap()
+
+        // Wait 5s
+        let sleep = expectation(description: "Sleep")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+            sleep.fulfill()
+        }
+        waitForExpectations(timeout: 5.0, handler: nil)
+
+        // Tap Copy
+        print(app.collectionViews.cells.firstMatch.exists)
+        app.collectionViews.cells.firstMatch.tap()
+
+        return UIPasteboard.general.string!
+    }
+
+    func createKeyThenDeleteSecretPart(name: String) {
+        createKey(name: name, email: name + "@tessercube.com", password: name)
+        deleteKeySecretPart(name: name)
+    }
+
+    func deleteKeySecretPart(name: String) {
+        let app = XCUIApplication()
+        app.launch()
+
+        XCTAssert(app.tabBars.buttons["Contacts"].exists)
+        app.tabBars.buttons["Contacts"].tap()
+
+        let cell = app.tables.cells.containing(.staticText, identifier: name).firstMatch
+        XCTAssert(cell.waitForExistence(timeout: 5.0))
+        cell.tap()
+
+        XCTAssert(app.buttons["Edit"].waitForExistence(timeout: 5.0))
+        app.buttons["Edit"].tap()
+
+        XCTAssert(app.buttons["Delete Contact"].waitForExistence(timeout: 5.0))
+        app.buttons["Delete Contact"].tap()
+
+        XCTAssert(app.buttons["Delete"].waitForExistence(timeout: 5.0))
+        app.buttons["Delete"].tap()
+
+        XCTAssert(app.buttons["Keep Public Key"].waitForExistence(timeout: 5.0))
+        app.buttons["Keep Public Key"].tap()
+
+        print(app.debugDescription)
+    }
+
+    func testAliceComposeMessage() {
+        let app = XCUIApplication()
+        app.launch()
+
+        // compose
+        app.buttons["Compose"].tap()
+
+        // select bob
+        XCTAssert(app.buttons["plus.circle"].waitForExistence(timeout: 5.0))
+        app.buttons["plus.circle"].tap()
+        let cell = app.tables.cells.containing(.staticText, identifier: "Bob").firstMatch
+        XCTAssert(cell.waitForExistence(timeout: 5.0))
+        cell.tap()
+        app.buttons["Done"].tap()
+
+        // type compose message
+        let textView = app.textViews.firstMatch
+        XCTAssert(textView.waitForExistence(timeout: 5.0))
+        textView.tap()
+        textView.typeText("Hi, Bob. What time shall we meet tonight for a drink?")
+        app.buttons["Finish"].tap()
+
+        print(app.debugDescription)
+    }
+
+    func testBobComposeMessage() {
+        let app = XCUIApplication()
+        app.launch()
+
+        // Compose
+        app.buttons["Compose"].tap()
+
+        // Select bob
+        XCTAssert(app.buttons["plus.circle"].waitForExistence(timeout: 5.0))
+        app.buttons["plus.circle"].tap()
+
+        print(app.debugDescription)
+
+        let cell = app.tables["ContactsTableView"].cells.containing(.staticText, identifier: "Alice").firstMatch
+        XCTAssert(cell.waitForExistence(timeout: 5.0))
+        cell.tap()
+        app.buttons["Done"].tap()
+
+        // select Bob as sender
+        let window = app.windows.element(boundBy: 0)
+        let appWindowHeight = window.frame.height
+        print(appWindowHeight)
+
+        let textField = app.textFields["Alice"].firstMatch
+        XCTAssert(textField.waitForExistence(timeout: 5.0))
+        textField.tap()
+
+        // Tap to select Bob
+        let pickerWheel = app.pickerWheels.firstMatch
+        XCTAssert(pickerWheel.waitForExistence(timeout: 5.0))
+        pickerWheel.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: pickerWheel.frame.midX, dy: pickerWheel.frame.height * 0.5 + 20)).tap()
+        app.buttons["Done"].tap()
+
+        // Type compose message
+        let textView = app.textViews.firstMatch
+        XCTAssert(textView.waitForExistence(timeout: 5.0))
+        textView.tap()
+        textView.typeText("Meet at eight in the evening.")
+        app.buttons["Finish"].tap()
+
+        print(app.debugDescription)
     }
 
     func testKeyCreateAndRemove() {
