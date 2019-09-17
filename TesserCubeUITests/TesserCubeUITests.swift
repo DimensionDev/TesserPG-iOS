@@ -26,11 +26,11 @@ class TesserCubeUITests: XCTestCase {
     }
 
     func testSnapshotPrepare() {
-//        skipWizard()
-//        createKey(name: "Alice", email: "alice@tessercube.com", password: "Alice")
-//        createKey(name: "Bob", email: "bob@tessercube.com", password: "Bob")
-//
-//        testAliceComposeMessage()
+        skipWizard()
+        createKey(name: "Alice", email: "alice@tessercube.com", password: "Alice")
+        createKey(name: "Bob", email: "bob@tessercube.com", password: "Bob")
+
+        testAliceComposeMessage()
         testBobComposeMessage()
 
         let messageFromBob = copyFirstMessagePGPArmor()
@@ -42,6 +42,87 @@ class TesserCubeUITests: XCTestCase {
         createKeyThenDeleteSecretPart(name: "Dan")
         createKeyThenDeleteSecretPart(name: "Erin")
     }
+
+    func testAliceComposeMessage() {
+        let app = XCUIApplication()
+        app.launch()
+
+        // compose
+        app.buttons["Compose"].tap()
+
+        // select bob
+        XCTAssert(app.buttons["plus.circle"].waitForExistence(timeout: 5.0))
+        app.buttons["plus.circle"].tap()
+        let cell = app.tables.cells.containing(.staticText, identifier: "Bob").firstMatch
+        XCTAssert(cell.waitForExistence(timeout: 5.0))
+        cell.tap()
+        app.buttons["Done"].tap()
+
+        // type compose message
+        let textView = app.textViews.firstMatch
+        XCTAssert(textView.waitForExistence(timeout: 5.0))
+        textView.tap()
+        textView.typeText("Hi, Bob. What time shall we meet tonight for a drink?")
+        app.buttons["Finish"].tap()
+
+        print(app.debugDescription)
+    }
+
+    func testBobComposeMessage() {
+        let app = XCUIApplication()
+        app.launch()
+
+        // Compose
+        app.buttons["Compose"].tap()
+
+        // Select bob
+        XCTAssert(app.buttons["plus.circle"].waitForExistence(timeout: 5.0))
+        app.buttons["plus.circle"].tap()
+
+        print(app.debugDescription)
+
+        let cell = app.tables["ContactsTableView"].cells.containing(.staticText, identifier: "Alice").firstMatch
+        XCTAssert(cell.waitForExistence(timeout: 5.0))
+        cell.tap()
+        app.buttons["Done"].tap()
+
+        // select Bob as sender
+        let window = app.windows.element(boundBy: 0)
+        let appWindowHeight = window.frame.height
+        print(appWindowHeight)
+
+        let textField = app.textFields["Alice"].firstMatch
+        XCTAssert(textField.waitForExistence(timeout: 5.0))
+        textField.tap()
+
+        // Tap to select Bob
+        let pickerWheel = app.pickerWheels.firstMatch
+        XCTAssert(pickerWheel.waitForExistence(timeout: 5.0))
+        pickerWheel.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: pickerWheel.frame.midX, dy: pickerWheel.frame.height * 0.5 + 20)).tap()
+        app.buttons["Done"].tap()
+
+        // Type compose message
+        let textView = app.textViews.firstMatch
+        XCTAssert(textView.waitForExistence(timeout: 5.0))
+        textView.tap()
+        textView.typeText("Meet at eight in the evening.")
+        app.buttons["Finish"].tap()
+
+        print(app.debugDescription)
+    }
+
+    func testKeyCreateAndRemove() {
+        skipWizard()
+        checkExist(name: "Bob", isExist: false)
+        createKey(name: "Bob", email: "bob@pgp.org", password: "Bob")
+        checkExist(name: "Bob", isExist: true)
+        deleteKey(name: "Bob")
+        checkExist(name: "Bob", isExist: false)
+    }
+
+}
+
+extension TesserCubeUITests {
 
     func deleteFirstMessage() {
         let app = XCUIApplication()
@@ -137,83 +218,6 @@ class TesserCubeUITests: XCTestCase {
         app.buttons["Keep Public Key"].tap()
 
         print(app.debugDescription)
-    }
-
-    func testAliceComposeMessage() {
-        let app = XCUIApplication()
-        app.launch()
-
-        // compose
-        app.buttons["Compose"].tap()
-
-        // select bob
-        XCTAssert(app.buttons["plus.circle"].waitForExistence(timeout: 5.0))
-        app.buttons["plus.circle"].tap()
-        let cell = app.tables.cells.containing(.staticText, identifier: "Bob").firstMatch
-        XCTAssert(cell.waitForExistence(timeout: 5.0))
-        cell.tap()
-        app.buttons["Done"].tap()
-
-        // type compose message
-        let textView = app.textViews.firstMatch
-        XCTAssert(textView.waitForExistence(timeout: 5.0))
-        textView.tap()
-        textView.typeText("Hi, Bob. What time shall we meet tonight for a drink?")
-        app.buttons["Finish"].tap()
-
-        print(app.debugDescription)
-    }
-
-    func testBobComposeMessage() {
-        let app = XCUIApplication()
-        app.launch()
-
-        // Compose
-        app.buttons["Compose"].tap()
-
-        // Select bob
-        XCTAssert(app.buttons["plus.circle"].waitForExistence(timeout: 5.0))
-        app.buttons["plus.circle"].tap()
-
-        print(app.debugDescription)
-
-        let cell = app.tables["ContactsTableView"].cells.containing(.staticText, identifier: "Alice").firstMatch
-        XCTAssert(cell.waitForExistence(timeout: 5.0))
-        cell.tap()
-        app.buttons["Done"].tap()
-
-        // select Bob as sender
-        let window = app.windows.element(boundBy: 0)
-        let appWindowHeight = window.frame.height
-        print(appWindowHeight)
-
-        let textField = app.textFields["Alice"].firstMatch
-        XCTAssert(textField.waitForExistence(timeout: 5.0))
-        textField.tap()
-
-        // Tap to select Bob
-        let pickerWheel = app.pickerWheels.firstMatch
-        XCTAssert(pickerWheel.waitForExistence(timeout: 5.0))
-        pickerWheel.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: pickerWheel.frame.midX, dy: pickerWheel.frame.height * 0.5 + 20)).tap()
-        app.buttons["Done"].tap()
-
-        // Type compose message
-        let textView = app.textViews.firstMatch
-        XCTAssert(textView.waitForExistence(timeout: 5.0))
-        textView.tap()
-        textView.typeText("Meet at eight in the evening.")
-        app.buttons["Finish"].tap()
-
-        print(app.debugDescription)
-    }
-
-    func testKeyCreateAndRemove() {
-        skipWizard()
-        checkExist(name: "Bob", isExist: false)
-        createKey(name: "Bob", email: "bob@pgp.org", password: "Bob")
-        checkExist(name: "Bob", isExist: true)
-        deleteKey(name: "Bob")
-        checkExist(name: "Bob", isExist: false)
     }
 
     func skipWizard() {
