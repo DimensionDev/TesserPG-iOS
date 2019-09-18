@@ -442,6 +442,7 @@
 		54E62BCA2B022300EA53474B /* Pods_TesserCubeKeyboard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesserCubeKeyboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		55827FE378FDFCA0E1177DDA /* Pods-TesserCubeKeyboard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeKeyboard.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeKeyboard/Pods-TesserCubeKeyboard.debug.xcconfig"; sourceTree = "<group>"; };
 		56E1EFCC71897BBD7440742B /* Pods-TesserCubeComposeAction.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.debug.xcconfig"; sourceTree = "<group>"; };
+		5836A11F534936E25D0543C8 /* Pods-TesserCubeKeyboard.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeKeyboard.xctest.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeKeyboard/Pods-TesserCubeKeyboard.xctest.xcconfig"; sourceTree = "<group>"; };
 		6AAD1C52FBF55BCAC977EEFC /* Pods-TesserCube.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.release.xcconfig"; sourceTree = "<group>"; };
 		6C37B876F4476EE0FA92731A /* Pods-TesserCubeInterpretAction.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeInterpretAction.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeInterpretAction/Pods-TesserCubeInterpretAction.release.xcconfig"; sourceTree = "<group>"; };
 		829EC06ABC2887E5DB724F5B /* Pods_TesserCube.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesserCube.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -588,6 +589,8 @@
 		84957C7609515FCFA95F42A3 /* Pods-TesserCubeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.release.xcconfig"; sourceTree = "<group>"; };
 		9B17EDD1F3A38E5966DCBA34 /* Pods-TesserCubeTests.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.debug stub.xcconfig"; sourceTree = "<group>"; };
 		9C1A99D94821B29F622B677D /* Pods-TesserCube.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.debug stub.xcconfig"; sourceTree = "<group>"; };
+		AC77612245CA0D2E11ECCE70 /* Pods-TesserCube.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.xctest.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.xctest.xcconfig"; sourceTree = "<group>"; };
+		B639829F9F1E75874A6F4CC4 /* Pods-TesserCubeComposeAction.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.xctest.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.xctest.xcconfig"; sourceTree = "<group>"; };
 		B9140FA57B00A5B2BD89FABF /* Pods-TesserCube.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.debug.xcconfig"; sourceTree = "<group>"; };
 		BA307858963D472080CE0E2A /* Pods-TesserCubeKeyboard.debug pgp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeKeyboard.debug pgp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeKeyboard/Pods-TesserCubeKeyboard.debug pgp.xcconfig"; sourceTree = "<group>"; };
 		BEF5E8837849AFC231AC950C /* Pods-TesserCubeComposeAction.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.release.xcconfig"; sourceTree = "<group>"; };
@@ -654,6 +657,8 @@
 		DBC24B1323026BA800A4AE8D /* WordSuggestionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordSuggestionService.swift; sourceTree = "<group>"; };
 		DBC7DEBC2248C7F600DA4C3E /* RecipientContactPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientContactPickerView.swift; sourceTree = "<group>"; };
 		DBC7DEC02248D49E00DA4C3E /* ComposeMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeMessageViewModel.swift; sourceTree = "<group>"; };
+		DBCE91DE23320EE30000A9F3 /* UnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitTests.xctestplan; sourceTree = "<group>"; };
+		DBCE91DF23320EF30000A9F3 /* UITests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UITests.xctestplan; sourceTree = "<group>"; };
 		DBD638E5227EDC6B00E10BF2 /* JRE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JRE.framework; path = "../../../Java/j2objc-2.4/frameworks/JRE.framework"; sourceTree = "<group>"; };
 		DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyFactory+TCKey.swift"; sourceTree = "<group>"; };
 		DBE13D78224CCC0B004850A6 /* TCDBManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCDBManagerTests.swift; sourceTree = "<group>"; };
@@ -662,11 +667,13 @@
 		DBF6B2A8232F43C7008F83AE /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		DBF6B2AD232F6950008F83AE /* UIColor+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Keyboard.swift"; sourceTree = "<group>"; };
 		DBF6B2D3232F9112008F83AE /* SF-Pro-Text-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Light.otf"; sourceTree = "<group>"; };
+		DCB938676101FF1A21579C50 /* Pods-TesserCubeInterpretAction.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeInterpretAction.xctest.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeInterpretAction/Pods-TesserCubeInterpretAction.xctest.xcconfig"; sourceTree = "<group>"; };
 		DDADE9070E9C7B3A44C27B2D /* Pods-TesserCubeInterpretAction.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeInterpretAction.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeInterpretAction/Pods-TesserCubeInterpretAction.debug stub.xcconfig"; sourceTree = "<group>"; };
 		ED5112F3F342C6B4F96019B9 /* Pods-TesserCubeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F0EC992A1DF4CED75A30F54D /* Pods-TesserCubeComposeAction.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.debug stub.xcconfig"; sourceTree = "<group>"; };
 		F14CF0BD6C2C55A0BFF1B2B0 /* Pods_TesserCubeInterpretAction.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesserCubeInterpretAction.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F203D9B4CDFBB0FD0E45FB6D /* Pods_TesserCubeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesserCubeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F68C7284388FF0277EBF3184 /* Pods-TesserCubeTests.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.xctest.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.xctest.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -765,6 +772,8 @@
 				83B93D12221CDC3D00F556C0 /* Resources */,
 				83B93D11221CDC3400F556C0 /* Support Files */,
 				8304E9C4221BF1CD00122637 /* TesserCube.entitlements */,
+				DBCE91DE23320EE30000A9F3 /* UnitTests.xctestplan */,
+				DBCE91DF23320EF30000A9F3 /* UITests.xctestplan */,
 				8304E9A0221BF10100122637 /* Info.plist */,
 			);
 			path = TesserCube;
@@ -784,8 +793,8 @@
 		8304E9B3221BF10200122637 /* TesserCubeUITests */ = {
 			isa = PBXGroup;
 			children = (
-				8304E9B4221BF10200122637 /* TesserCubeUITests.swift */,
 				8304E9B6221BF10200122637 /* Info.plist */,
+				8304E9B4221BF10200122637 /* TesserCubeUITests.swift */,
 			);
 			path = TesserCubeUITests;
 			sourceTree = "<group>";
@@ -1311,6 +1320,11 @@
 				C00CE558B320642C1C2EECE7 /* Pods-TesserCubeComposeAction.debug pgp.xcconfig */,
 				F0EC992A1DF4CED75A30F54D /* Pods-TesserCubeComposeAction.debug stub.xcconfig */,
 				BEF5E8837849AFC231AC950C /* Pods-TesserCubeComposeAction.release.xcconfig */,
+				AC77612245CA0D2E11ECCE70 /* Pods-TesserCube.xctest.xcconfig */,
+				B639829F9F1E75874A6F4CC4 /* Pods-TesserCubeComposeAction.xctest.xcconfig */,
+				DCB938676101FF1A21579C50 /* Pods-TesserCubeInterpretAction.xctest.xcconfig */,
+				5836A11F534936E25D0543C8 /* Pods-TesserCubeKeyboard.xctest.xcconfig */,
+				F68C7284388FF0277EBF3184 /* Pods-TesserCubeTests.xctest.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -2708,6 +2722,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
 				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2738,175 +2753,12 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
 				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
-		};
-		DB3F5B9C226833BD00998F67 /* Debug PGP */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_BITCODE = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "FLEX DEBUG DEBUGPGP";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-			};
-			name = "Debug PGP";
-		};
-		DB3F5B9D226833BD00998F67 /* Debug PGP */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C0A9D10AB1612B0483E24D78 /* Pods-TesserCube.debug pgp.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 32;
-				DEVELOPMENT_TEAM = 7LFDZ96332;
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = TesserCube/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
-				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
-				SYSTEM_HEADER_SEARCH_PATHS = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "";
-			};
-			name = "Debug PGP";
-		};
-		DB3F5B9E226833BD00998F67 /* Debug PGP */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 433A84EFFA67237E885331BD /* Pods-TesserCubeTests.debug pgp.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7LFDZ96332;
-				INFOPLIST_FILE = TesserCubeTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCubeTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TesserCube.app/TesserCube";
-			};
-			name = "Debug PGP";
-		};
-		DB3F5B9F226833BD00998F67 /* Debug PGP */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7LFDZ96332;
-				INFOPLIST_FILE = TesserCubeUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCubeUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = TesserCube;
-			};
-			name = "Debug PGP";
-		};
-		DB3F5BA0226833BD00998F67 /* Debug PGP */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BA307858963D472080CE0E2A /* Pods-TesserCubeKeyboard.debug pgp.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 32;
-				DEVELOPMENT_TEAM = 7LFDZ96332;
-				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeKeyboard;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Debug PGP";
 		};
 		DB63A0DA22DD82EE00C2DDA6 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -2929,64 +2781,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeInterpretAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TARGET_IS_EXTENSION";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
-		};
-		DB63A0DB22DD82EE00C2DDA6 /* Debug PGP */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 47231CE0AB21C16DA6B3C73E /* Pods-TesserCubeInterpretAction.debug pgp.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_interpret;
-				CODE_SIGN_ENTITLEMENTS = TesserCubeInterpretAction/TesserCubeInterpretAction.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 32;
-				DEVELOPMENT_TEAM = 7LFDZ96332;
-				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeInterpretAction;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TARGET_IS_EXTENSION";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Debug PGP";
-		};
-		DB63A0DC22DD82EE00C2DDA6 /* Debug Stub */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = DDADE9070E9C7B3A44C27B2D /* Pods-TesserCubeInterpretAction.debug stub.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_interpret;
-				CODE_SIGN_ENTITLEMENTS = TesserCubeInterpretAction/TesserCubeInterpretAction.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 32;
-				DEVELOPMENT_TEAM = 7LFDZ96332;
-				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeInterpretAction;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TARGET_IS_EXTENSION";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Debug Stub";
 		};
 		DB63A0DD22DD82EE00C2DDA6 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -3009,7 +2808,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeInterpretAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TARGET_IS_EXTENSION";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3036,64 +2835,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeComposeAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TARGET_IS_EXTENSION";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
-		};
-		DB63A14522E17D3300C2DDA6 /* Debug PGP */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C00CE558B320642C1C2EECE7 /* Pods-TesserCubeComposeAction.debug pgp.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_compose;
-				CODE_SIGN_ENTITLEMENTS = TesserCubeComposeAction/TesserCubeComposeAction.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 32;
-				DEVELOPMENT_TEAM = 7LFDZ96332;
-				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeComposeAction;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TARGET_IS_EXTENSION";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Debug PGP";
-		};
-		DB63A14622E17D3300C2DDA6 /* Debug Stub */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = F0EC992A1DF4CED75A30F54D /* Pods-TesserCubeComposeAction.debug stub.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_compose;
-				CODE_SIGN_ENTITLEMENTS = TesserCubeComposeAction/TesserCubeComposeAction.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 32;
-				DEVELOPMENT_TEAM = 7LFDZ96332;
-				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeComposeAction;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TARGET_IS_EXTENSION";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Debug Stub";
 		};
 		DB63A14722E17D3300C2DDA6 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -3116,13 +2862,13 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeComposeAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TARGET_IS_EXTENSION";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
-		DBD3BCB82254C3FE00A74920 /* Debug Stub */ = {
+		DBCE91E0233212D90000A9F3 /* XCTest */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -3180,14 +2926,14 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "FLEX DEBUG STUB";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "XCTEST DEBUG";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
-			name = "Debug Stub";
+			name = XCTest;
 		};
-		DBD3BCB92254C3FE00A74920 /* Debug Stub */ = {
+		DBCE91E1233212D90000A9F3 /* XCTest */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9C1A99D94821B29F622B677D /* Pods-TesserCube.debug stub.xcconfig */;
+			baseConfigurationReference = AC77612245CA0D2E11ECCE70 /* Pods-TesserCube.xctest.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -3216,53 +2962,11 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
-			name = "Debug Stub";
+			name = XCTest;
 		};
-		DBD3BCBA2254C3FE00A74920 /* Debug Stub */ = {
+		DBCE91E2233212D90000A9F3 /* XCTest */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9B17EDD1F3A38E5966DCBA34 /* Pods-TesserCubeTests.debug stub.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7LFDZ96332;
-				INFOPLIST_FILE = TesserCubeTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCubeTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TesserCube.app/TesserCube";
-			};
-			name = "Debug Stub";
-		};
-		DBD3BCBB2254C3FE00A74920 /* Debug Stub */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7LFDZ96332;
-				INFOPLIST_FILE = TesserCubeUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCubeUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = TesserCube;
-			};
-			name = "Debug Stub";
-		};
-		DBD3BCBC2254C3FE00A74920 /* Debug Stub */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 34254D2B33B9D38AA6A8B02B /* Pods-TesserCubeKeyboard.debug stub.xcconfig */;
+			baseConfigurationReference = 5836A11F534936E25D0543C8 /* Pods-TesserCubeKeyboard.xctest.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CLANG_ENABLE_MODULES = YES;
@@ -3284,11 +2988,108 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
 				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = "Debug Stub";
+			name = XCTest;
+		};
+		DBCE91E3233212D90000A9F3 /* XCTest */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DCB938676101FF1A21579C50 /* Pods-TesserCubeInterpretAction.xctest.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_interpret;
+				CODE_SIGN_ENTITLEMENTS = TesserCubeInterpretAction/TesserCubeInterpretAction.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 32;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeInterpretAction;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = XCTest;
+		};
+		DBCE91E4233212D90000A9F3 /* XCTest */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B639829F9F1E75874A6F4CC4 /* Pods-TesserCubeComposeAction.xctest.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_compose;
+				CODE_SIGN_ENTITLEMENTS = TesserCubeComposeAction/TesserCubeComposeAction.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 32;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.2.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeComposeAction;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = XCTest;
+		};
+		DBCE91E5233212D90000A9F3 /* XCTest */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F68C7284388FF0277EBF3184 /* Pods-TesserCubeTests.xctest.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCubeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TesserCube.app/TesserCube";
+			};
+			name = XCTest;
+		};
+		DBCE91E6233212D90000A9F3 /* XCTest */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCubeUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TesserCube;
+			};
+			name = XCTest;
 		};
 /* End XCBuildConfiguration section */
 
@@ -3297,8 +3098,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8304E9B7221BF10200122637 /* Debug */,
-				DB3F5B9C226833BD00998F67 /* Debug PGP */,
-				DBD3BCB82254C3FE00A74920 /* Debug Stub */,
+				DBCE91E0233212D90000A9F3 /* XCTest */,
 				8304E9B8221BF10200122637 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -3308,8 +3108,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8304E9BA221BF10200122637 /* Debug */,
-				DB3F5B9D226833BD00998F67 /* Debug PGP */,
-				DBD3BCB92254C3FE00A74920 /* Debug Stub */,
+				DBCE91E1233212D90000A9F3 /* XCTest */,
 				8304E9BB221BF10200122637 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -3319,8 +3118,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8304E9BD221BF10200122637 /* Debug */,
-				DB3F5B9E226833BD00998F67 /* Debug PGP */,
-				DBD3BCBA2254C3FE00A74920 /* Debug Stub */,
+				DBCE91E5233212D90000A9F3 /* XCTest */,
 				8304E9BE221BF10200122637 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -3330,8 +3128,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8304E9C0221BF10200122637 /* Debug */,
-				DB3F5B9F226833BD00998F67 /* Debug PGP */,
-				DBD3BCBB2254C3FE00A74920 /* Debug Stub */,
+				DBCE91E6233212D90000A9F3 /* XCTest */,
 				8304E9C1221BF10200122637 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -3341,8 +3138,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83B93D33221D22FA00F556C0 /* Debug */,
-				DB3F5BA0226833BD00998F67 /* Debug PGP */,
-				DBD3BCBC2254C3FE00A74920 /* Debug Stub */,
+				DBCE91E2233212D90000A9F3 /* XCTest */,
 				83B93D34221D22FA00F556C0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -3352,8 +3148,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DB63A0DA22DD82EE00C2DDA6 /* Debug */,
-				DB63A0DB22DD82EE00C2DDA6 /* Debug PGP */,
-				DB63A0DC22DD82EE00C2DDA6 /* Debug Stub */,
+				DBCE91E3233212D90000A9F3 /* XCTest */,
 				DB63A0DD22DD82EE00C2DDA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -3363,8 +3158,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DB63A14422E17D3300C2DDA6 /* Debug */,
-				DB63A14522E17D3300C2DDA6 /* Debug PGP */,
-				DB63A14622E17D3300C2DDA6 /* Debug Stub */,
+				DBCE91E4233212D90000A9F3 /* XCTest */,
 				DB63A14722E17D3300C2DDA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
