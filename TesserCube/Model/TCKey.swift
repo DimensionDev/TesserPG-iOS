@@ -144,7 +144,7 @@ extension TCKey {
     }
 
     var fingerprint: String {
-        let fingerprint = try? goKeyRing?.getEntity(0).primaryKey?.getFingerprint().uppercased()
+        let fingerprint = try? goKeyRing?.getEntity(0).primaryKey?.getFingerprint()
         return fingerprint ?? ""
     }
 
