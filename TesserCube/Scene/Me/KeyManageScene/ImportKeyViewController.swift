@@ -45,9 +45,12 @@ class ImportKeyViewController: TCBaseViewController {
     private lazy var laterButton: UIButton = {
         let button = UIButton(type: .system)
         button.titleLabel?.font = FontFamily.SFProDisplay.medium.font(size: 17)
-        button.setTitleColor(.black, for: .normal)
+        if #available(iOS 13, *) {
+            button.setTitleColor(.label, for: .normal)
+        } else {
+            button.setTitleColor(.black, for: .normal)
+        }
         button.setTitle(L10n.ImportKeyController.Action.Button.maybeLater, for: .normal)
-        button.tintColor = .white
         button.titleLabel?.textAlignment = .center
 
         return button
@@ -82,9 +85,9 @@ class ImportKeyViewController: TCBaseViewController {
         let imageView = UIImageView(image: Asset.sceneMeImportKey.image)
         contentScrollView.addSubview(imageView)
         imageView.snp.makeConstraints { maker in
-            maker.top.equalTo(contentScrollView.contentLayoutGuide.snp.top).offset(30)
+            maker.top.equalTo(contentScrollView.contentLayoutGuide.snp.top).offset(41)
             maker.centerX.equalToSuperview()
-            maker.width.height.equalTo(161)
+            maker.width.height.equalTo(143)
         }
         imageView.contentMode = .scaleAspectFit
 

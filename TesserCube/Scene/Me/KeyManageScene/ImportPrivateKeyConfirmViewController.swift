@@ -47,7 +47,7 @@ class ImportPrivateKeyConfirmViewController: TCBaseViewController {
     private lazy var validitylabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = FontFamily.SFProText.regular.font(size: 17)
-        label.textColor = Asset.sourceGreen.color
+        label.textColor = .systemGreen
         return label
     }()
     
@@ -171,7 +171,7 @@ class ImportPrivateKeyConfirmViewController: TCBaseViewController {
     func updateStatus() {
         let isValid = tcKey?.isValid ?? false
         validitylabel.text = isValid ? L10n.ContactDetailViewController.Label.valid : L10n.ContactDetailViewController.Label.invalid
-        validitylabel.textColor = isValid ? Asset.sourceGreen.color : Asset.tagIdRed.color
+        validitylabel.textColor = isValid ? .systemGreen : .systemRed
 
         let isAvailable = isKeyAvailable()
         availabilitylabel.text = isAvailable ? L10n.ImportPrivateKeyConfirmViewController.Label.isAvailable : L10n.ImportPrivateKeyConfirmViewController.Label.isUnavailable
@@ -180,8 +180,13 @@ class ImportPrivateKeyConfirmViewController: TCBaseViewController {
         successlabel.isHidden = isAvailable
         
         if !isAvailable {
-            importButton.color = .white
-            importButton.setTitleColor(.black, for: .normal)
+            if #available(iOS 13, *) {
+                importButton.color = .secondarySystemBackground
+                importButton.setTitleColor(.label, for: .normal)
+            } else {
+                importButton.color = .white
+                importButton.setTitleColor(.black, for: .normal)
+            }
             importButton.setTitle(L10n.ImportPrivateKeyConfirmViewController.Button.close, for: .normal)
             
             importButton.removeTarget(self, action: #selector(importButtonDidClicked), for: .touchUpInside)
@@ -222,14 +227,15 @@ class ImportPrivateKeyConfirmViewController: TCBaseViewController {
 
 extension ImportPrivateKeyConfirmViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        // TODO: get primary userid
         return 0
-//        return tcKey?.goKeyRing.primaryKey.primaryUserID != nil ? 1 : 0
+//        return tcKey?.keyRing.publicKeyRing.primaryKey.primaryUserID != nil ? 1 : 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withClass: ConfirmContactCell.self, for: indexPath)
         cell.keyValue = .TCKey(value: tcKey!)
-        cell.userID = tcKey?.keyRing.publicKeyRing.primaryKey.primaryUserID
+//        cell.userID = tcKey?.keyRing.publicKeyRing.primaryKey.primaryUserID
         cell.cardView.cardBackgroundColor = .systemBlue
         return cell
     }

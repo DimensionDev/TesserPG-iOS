@@ -18,7 +18,7 @@ def common_pods
   pod 'RxCocoa', '~> 4.4.2'
 
 #  pod 'DMSOpenPGP', '~> 0.1.3'
-  pod 'KeychainAccess', '~> 3.1.2'
+  pod 'KeychainAccess', '~> 3.2.0'
 
   pod 'GRDB.swift', '~> 3.7.0'
   pod 'GRDBCipher', '~> 3.7.0'
@@ -30,7 +30,7 @@ def common_pods
 end
 
 def common_ui_pods
-  pod 'UITextView+Placeholder', '~> 1.2.1'
+  pod 'UITextView+Placeholder', '~> 1.3.1'
   pod "AlignedCollectionViewFlowLayout", '~> 1.1.2'
 end
 

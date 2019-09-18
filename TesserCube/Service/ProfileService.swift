@@ -16,8 +16,7 @@ import ConsolePrint
 class ProfileService {
     
     public static let `default` = ProfileService()
-    
-    let contactKeyPairs = BehaviorRelay<[(Contact, [TCKey])]>(value: [])
+
     let keys: BehaviorRelay<[TCKey]>
     let contacts: BehaviorRelay<[Contact]>
     let messages: BehaviorRelay<[Message]>
@@ -43,9 +42,11 @@ class ProfileService {
         // swiftlint:disable force_try
         keyRecordsObervation = try! ValueObservation.trackingAll(KeyRecord.all())
             .start(in: TCDBManager.default.dbQueue, onChange: { latestKeyRecords in
-                let contacts = self.contacts.value
-                let pairs = contacts.map { contact in
-                    return (contact, contact.getKeys())
+                let keys = latestKeyRecords.compactMap { record -> TCKey? in
+                    guard let armored = record.armored else {
+                        return nil
+                    }
+                    return TCKey(armored: armored)
                 }
 
                 self.keys.accept(keys)
@@ -69,12 +70,10 @@ class ProfileService {
         WormholdService.shared.listeningWormhole.listenForMessage(withIdentifier: keysUpdateIdentifier.rawValue) { [weak self] _ in
             guard let `self` = self else { return }
             let keys = KeyRecord.all().compactMap { record -> TCKey? in
-                guard let armored = record.armored,
-                let keyRing = try? DMSPGPKeyRing(armoredKey: armored) else {
+                guard let armored = record.armored else {
                     return nil
                 }
-
-                return TCKey(keyRing: keyRing, from: record)
+                return TCKey(armored: armored)
             }
             self.keys.accept(keys)
         }
@@ -158,6 +157,7 @@ class ProfileService {
             })
             .disposed(by: disposeBag)
     }
+
 }
 
 extension ProfileService {

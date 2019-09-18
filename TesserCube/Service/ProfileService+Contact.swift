@@ -10,9 +10,9 @@ import Foundation
 
 extension ProfileService {
 
-    func addNewContact(keyUserID: String, key: TCKey) throws {
+    func addNewContact(keyUserID: String, key: TCKey, passphrase: String?) throws {
         do {
-            let userInfo = PGPUserIDTranslator.extractMeta(from: keyUserID)
+            let userInfo = DMSPGPUserIDTranslator.extractMeta(from: keyUserID)
             let username = userInfo.name
             let email = userInfo.email
             guard username != nil || email != nil else {
@@ -28,7 +28,8 @@ extension ProfileService {
                         var newEmail = Email(id: nil, address: validMail, contactId: contactId)
                         try newEmail.insert(db)
                     }
-                    var newKeyRecord = KeyRecord(id: nil, longIdentifier: key.longIdentifier, hasSecretKey: key.hasSecretKey, hasPublicKey: key.hasPublicKey, contactId: contactId, armored: key.armored)
+                    let armored = key.hasSecretKey ? try key.getPrivateArmored(passprahse: passphrase ?? "") : key.publicArmored
+                    var newKeyRecord = KeyRecord(id: nil, longIdentifier: key.longIdentifier, hasSecretKey: key.hasSecretKey, hasPublicKey: key.hasPublicKey, contactId: contactId, armored: armored)
                     try newKeyRecord.insert(db)
                 }
                 return newContact

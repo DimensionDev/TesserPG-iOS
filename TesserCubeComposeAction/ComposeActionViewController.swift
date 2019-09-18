@@ -79,11 +79,13 @@ extension ComposeActionViewController {
         super.viewWillAppear(animated)
 
         guard didPresentComposeMessageViewController else {
-            present(UINavigationController(rootViewController: composeMessageViewController!), animated: false, completion: nil)
+            let navigationController = UINavigationController(rootViewController: composeMessageViewController!)
+            navigationController.modalPresentationStyle = .currentContext
+            present(navigationController, animated: false, completion: nil)
             didPresentComposeMessageViewController = true
 
             extractInputFromExtensionContext()
-            NotificationCenter.default.addObserver(self, selector: #selector(ComposeActionViewController.extensionContextCompleteRequest(_:)), name: .extensionContextCompleteRequest, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(ComposeActionViewController.extensionContextCompleteRequest(_:)), name: .messageComposeComplete, object: nil)
             return
         }
     }
@@ -114,10 +116,11 @@ extension ComposeActionViewController {
                 guard let `self` = self else { return }
                 guard error == nil else { return }
                 switch text {
-                    case is String:
+                case is String:
                     os_log("%{public}s[%{public}ld], %{public}s: %{public}s", ((#file as NSString).lastPathComponent), #line, #function, text as! String)
                     let message = (text as? String) ?? ""
                     self.viewModel.inputTexts.append(message)
+
                 case is URL:
                     os_log("%{public}s[%{public}ld], %{public}s: %{public}s", ((#file as NSString).lastPathComponent), #line, #function, String(describing: text as! URL))
                     // Notes: ignore URL if pass in

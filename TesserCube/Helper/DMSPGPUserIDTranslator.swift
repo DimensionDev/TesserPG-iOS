@@ -1,11 +1,10 @@
 //
-//  PGPUserIDTranslator.swift
+//  DMSPGPUserIDTranslator.swift
 //  TesserCube
 //
-//  Created by jk234ert on 8/28/19.
+//  Created by jk234ert on 9/18/19.
 //  Copyright © 2019 Sujitech. All rights reserved.
 //
-
 
 import Foundation
 

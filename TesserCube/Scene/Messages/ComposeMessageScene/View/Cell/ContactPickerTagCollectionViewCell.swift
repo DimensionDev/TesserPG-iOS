@@ -47,13 +47,19 @@ final class ContactPickerTagCollectionViewCell: UICollectionViewCell {
         label.font = FontFamily.SFProDisplay.regular.font(size: 16)
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.8
+        if #available(iOS 13.0, *) {
+            label.textColor = .label
+        } else {
+            // Fallback on earlier versions
+            label.textColor = .black
+        }
         return label
     }()
 
     let shortIDLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SourceCodeProMedium.regular.font(size: 11)
-        label.textColor = Asset.tagIdGreen.color
+        label.textColor = .systemGreen
         label.numberOfLines = 2
         return label
     }()
@@ -134,6 +140,16 @@ final class ContactPickerTagCollectionViewCell: UICollectionViewCell {
         corneredBackgroundView.layer.cornerRadius = ContactPickerTagCollectionViewCell.tagHeight * 0.5
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        if isInvalid {
+            // reload color
+            let value = isInvalid
+            isInvalid = value
+        }
+    }
+
 }
 
 extension ContactPickerTagCollectionViewCell {
@@ -164,7 +180,7 @@ extension ContactPickerTagCollectionViewCell {
             if isSelected {
                 if !isFirstResponder { becomeFirstResponder() }
                 UIView.animate(withDuration: 0.33) {
-                    self.corneredBackgroundView.backgroundColor = Asset.sketchBlue.color
+                    self.corneredBackgroundView.backgroundColor = .systemBlue
                     self.nameLabel.textColor = .white
                     self.shortIDLabel.textColor = .white
                 }

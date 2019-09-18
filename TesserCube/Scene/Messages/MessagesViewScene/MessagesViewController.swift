@@ -46,17 +46,21 @@ class MessagesViewController: TCBaseViewController {
     private lazy var tableHeaderView: UIView = {
         let headerView = UIView()
 
-        let toolbar = UIToolbar()
-        toolbar.translatesAutoresizingMaskIntoConstraints = false
-        toolbar.delegate = self
+        if #available(iOS 13, *) {
+            // iOS 13 changed the navigation bar bottom hairline appearance
+            // so only add tool bar in iOS 12 and previous
+        } else {
+            let toolbar = UIToolbar()
+            toolbar.translatesAutoresizingMaskIntoConstraints = false
+            toolbar.delegate = self
 
-        headerView.addSubview(toolbar)
-        toolbar.snp.makeConstraints { maker in
-            maker.top.equalTo(headerView.snp.top)
-            maker.leading.trailing.equalTo(headerView)
-            maker.bottom.equalTo(headerView.snp.bottom)
+            headerView.addSubview(toolbar)
+            toolbar.snp.makeConstraints { maker in
+                maker.top.equalTo(headerView.snp.top)
+                maker.leading.trailing.equalTo(headerView)
+                maker.bottom.equalTo(headerView.snp.bottom)
+            }
         }
-
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         headerView.addSubview(segmentedControl)
         segmentedControl.snp.makeConstraints { maker in
@@ -77,6 +81,8 @@ class MessagesViewController: TCBaseViewController {
         tableView.register(MessageCardCell.self, forCellReuseIdentifier: String(describing: MessageCardCell.self))
         tableView.backgroundColor = .clear
         tableView.keyboardDismissMode = .interactive
+        tableView.preservesSuperviewLayoutMargins = true
+        tableView.cellLayoutMarginsFollowReadableWidth = true
         return tableView
     }()
 
@@ -99,7 +105,6 @@ class MessagesViewController: TCBaseViewController {
         view.addSubview(tableView)
         view.addSubview(bottomActionsView)
         addEmptyStateView(emptyView)
-
         view.backgroundColor = ._systemBackground
 
         tableView.snp.makeConstraints { maker in
@@ -107,12 +112,17 @@ class MessagesViewController: TCBaseViewController {
         }
 
         bottomActionsView.snp.makeConstraints { maker in
-            maker.leading.trailing.equalTo(view.layoutMarginsGuide)
+            maker.leading.trailing.equalTo(view.readableContentGuide)
             maker.bottom.equalToSuperview().offset(-15)
         }
 
         tableView.delegate = self
-        tableView.dataSource = viewModel
+        if #available(iOS 13.0, *) {
+            viewModel.configureDataSource(tableView: tableView)
+            tableView.dataSource = viewModel.diffableDataSource
+        } else {
+            tableView.dataSource = viewModel
+        }
         tableView.tableHeaderView = tableHeaderView
 
         reloadActionsView()
@@ -120,15 +130,6 @@ class MessagesViewController: TCBaseViewController {
         // Bind data
         ProfileService.default.messages
             .bind(to: viewModel._messages)
-            .disposed(by: disposeBag)
-
-        viewModel.messages.asDriver()
-            .drive(onNext: { [weak self] _ in
-                // clear cache data when data source changed
-                self?.viewModel.messageExpandedDict = [:]
-                self?.viewModel.messageMaxNumberOfLinesDict = [:]
-                self?.tableView.reloadData()
-            })
             .disposed(by: disposeBag)
 
         segmentedControl.rx.selectedSegmentIndex
@@ -207,6 +208,32 @@ extension MessagesViewController {
         self.tableView.reloadData()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        viewModel.messages.asDriver()
+            .drive(onNext: { [weak self] messages in
+                if #available(iOS 13.0, *) {
+                    guard let dataSource = self?.viewModel.diffableDataSource as? UITableViewDiffableDataSource<MessagesViewModel.Section, Message> else {
+                        assertionFailure()
+                        return
+                    }
+
+                    var snapsot = NSDiffableDataSourceSnapshot<MessagesViewModel.Section, Message>()
+                    snapsot.appendSections([.main])
+                    snapsot.appendItems(messages)
+                    dataSource.apply(snapsot)
+
+                } else {
+                    // clear cache data when data source changed
+                    self?.viewModel.messageExpandedDict = [:]
+                    self?.viewModel.messageMaxNumberOfLinesDict = [:]
+                    self?.tableView.reloadData()
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
@@ -256,27 +283,60 @@ extension MessagesViewController: UITableViewDelegate {
             return
         }
 
-        let message = viewModel.messages.value[indexPath.row]
+        let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath)
         let alertController: UIAlertController = {
-            if message.isDraft {
-                return DraftMessageAlertController(for: message, didSelectCell: cell)
-            } else {
-                let signatureKey = ProfileService.default.keys.value
-                    .filter { $0.hasSecretKey }
-                    .first(where: { key in key.longIdentifier == message.senderKeyId })
-
-                let isSignedByOthers = signatureKey == nil && message.composedAt == nil
-                if isSignedByOthers {
-                    return SignByOthersMessageAlertController(for: message, didSelectCell: cell)
-                } else {
-                    return EncryptedMessageAlertController(for: message, didSelectCell: cell)
-                }
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let alertActions = actions.map { $0.alertAction }
+            for alertAction in alertActions {
+                alertController.addAction(alertAction)
             }
+            return alertController
         }()
-
+        
+        if let presenter = alertController.popoverPresentationController {
+            presenter.sourceView = cell
+            presenter.sourceRect = cell.bounds
+        }
+        
         DispatchQueue.main.async {
             self.present(alertController, animated: true, completion: nil)
         }
+    }
+
+    @available(iOS 13.0, *)
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let message = viewModel.messages.value[indexPath.row]
+        guard let cell = tableView.cellForRow(at: indexPath) as? MessageCardCell,
+        let id = message.id else {
+            return nil
+        }
+
+        // collapse cell before display context menu
+        if viewModel.messageExpandedIDDict[id] == true {
+            self.messageCardCell(cell, expandButtonPressed: cell.expandButton)
+        }
+
+        let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath)
+        let children = actions.compactMap { $0.menuElement }
+
+        return UIContextMenuConfiguration(
+            identifier: indexPath as NSCopying,
+            previewProvider: nil,
+            actionProvider: { suggestedActions in
+                return UIMenu(title: "", image: nil, identifier: nil, options: [], children: children)
+            })
+    }
+
+    @available(iOS 13.0, *)
+    func tableView(_ tableView: UITableView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+        guard let indexPath = configuration.identifier as? IndexPath,
+        let cell = tableView.cellForRow(at: indexPath) as? MessageCardCell else {
+            return nil
+        }
+
+        let center = CGPoint(x: cell.bounds.midX, y: cell.bounds.midY)
+        let previewTarget = UIPreviewTarget(container: cell, center: center)
+        return UITargetedPreview(view: cell.cardView, parameters: UIPreviewParameters(), target: previewTarget)
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -284,7 +344,6 @@ extension MessagesViewController: UITableViewDelegate {
 
         cell.delegate = self
     }
-
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let headerView = tableView.tableHeaderView else {
@@ -353,171 +412,58 @@ extension MessagesViewController {
 
 }
 
-extension MessagesViewController {
-
-    private func SignByOthersMessageAlertController(for message: Message, didSelectCell cell: UITableViewCell) -> UIAlertController {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
-        let copyMessageContentAction = UIAlertAction(title: L10n.MessagesViewController.Action.Button.copyMessageContent, style: .default) { _ in
-            UIPasteboard.general.string = message.rawMessage
-        }
-        alertController.addAction(copyMessageContentAction)
-
-        let copyRawPayLoadAction = UIAlertAction(title: L10n.MessagesViewController.Action.Button.copyRawPayload, style: .default) { _ in
-            UIPasteboard.general.string = message.encryptedMessage
-        }
-        alertController.addAction(copyRawPayLoadAction)
-
-        let deleteAction = UIAlertAction(title: L10n.Common.Button.delete, style: .destructive) { _ in
-            let deleteMessageAlertController = self.DeleteMessageAlertController(for: message, didSelectCell: cell)
-            self.present(deleteMessageAlertController, animated: true, completion: nil)
-        }
-        alertController.addAction(deleteAction)
-
-        let cancelAction = UIAlertAction(title: L10n.Common.Button.cancel, style: .cancel, handler: nil)
-        alertController.addAction(cancelAction)
-
-        if let presenter = alertController.popoverPresentationController {
-            presenter.sourceView = cell
-            presenter.sourceRect = cell.bounds
-        }
-
-        return alertController
-    }
-
-    private func DraftMessageAlertController(for message: Message, didSelectCell cell: UITableViewCell) -> UIAlertController {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
-        let editAction = UIAlertAction(title: L10n.Common.Button.edit, style: .default) { _ in
-            Coordinator.main.present(scene: .recomposeMessage(message: message), from: self, transition: .modal, completion: nil)
-        }
-        alertController.addAction(editAction)
-
-        let finishAction = UIAlertAction(title: L10n.MessagesViewController.Action.Button.markAsFinished, style: .default) { _ in
-            consolePrint(message.senderKeyId)
-            let senderKey: TCKey? = ProfileService.default.keys.value.first(where: { key -> Bool in
-                return key.longIdentifier == message.senderKeyId
-            })
-            let recipientKeys = message.getRecipients().compactMap { messageRecipient in
-                return ProfileService.default.keys.value.first(where: { key in key.longIdentifier == messageRecipient.keyId })
-            }
-//            ComposeMessageViewModel.composeMessage(message.rawMessage, to: recipientKeys, from: senderKey, password: nil)
-//                .subscribeOn(ConcurrentDispatchQueueScheduler.init(qos: .userInitiated))
-//                .observeOn(MainScheduler.instance)
-//                .subscribe(onSuccess: { [weak self] armored in
-//                    guard let `self` = self else { return }
-//                    do {
-//                        var message = message
-//                        let rawMessage = message.rawMessage
-//                        try message.updateDraftMessage(senderKeyID: senderKey?.longIdentifier ?? "", senderKeyUserID: senderKey?.userID ?? "", rawMessage: rawMessage, recipients: recipientKeys, isDraft: false, armoredMessage: armored)
-//                    } catch {
-//                        consolePrint(error.localizedDescription)
-//                    }
-//                }, onError: { [weak self] error in
-//                    guard let `self` = self else { return }
-//                    let message = (error as? TCError)?.errorDescription ?? error.localizedDescription
-//                    self.showSimpleAlert(title: L10n.Common.Alert.error, message: message)
-//                })
-//                .disposed(by: self.disposeBag)
-            
-        }
-        alertController.addAction(finishAction)
-
-        let deleteAction = UIAlertAction(title: L10n.Common.Button.delete, style: .destructive) { _ in
-            let deleteMessageAlertController = self.DeleteMessageAlertController(for: message, didSelectCell: cell)
-            self.present(deleteMessageAlertController, animated: true, completion: nil)
-        }
-        alertController.addAction(deleteAction)
-
-        let cancelAction = UIAlertAction(title: L10n.Common.Button.cancel, style: .cancel, handler: nil)
-        alertController.addAction(cancelAction)
-
-        if let presenter = alertController.popoverPresentationController {
-            presenter.sourceView = cell
-            presenter.sourceRect = cell.bounds
-        }
-        return alertController
-    }
-
-    private func EncryptedMessageAlertController(for message: Message, didSelectCell cell: UITableViewCell) -> UIAlertController {
-        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
-        let isCleartextMessage = KeyFactory.verify(armoredMessage: message.encryptedMessage)
-        let shareActionTitle = isCleartextMessage ? L10n.MessagesViewController.Action.Button.shareSignedMessage : L10n.MessagesViewController.Action.Button.shareEncryptedMessage
-        let shareArmoredMessageAction = UIAlertAction(title: shareActionTitle, style: .default) { _ in
-            ShareUtil.share(message: message.encryptedMessage, from: self, over: cell)
-        }
-        alertController.addAction(shareArmoredMessageAction)
-
-        let copyMessageContentAction = UIAlertAction(title: L10n.MessagesViewController.Action.Button.copyMessageContent, style: .default) { _ in
-            UIPasteboard.general.string = message.rawMessage
-        }
-        alertController.addAction(copyMessageContentAction)
-
-        let recomposeAction = UIAlertAction(title: L10n.MessagesViewController.Action.Button.reCompose, style: .default) { _ in
-            Coordinator.main.present(scene: .recomposeMessage(message: message), from: self, transition: .modal, completion: nil)
-        }
-        alertController.addAction(recomposeAction)
-
-        let deleteAction = UIAlertAction(title: L10n.Common.Button.delete, style: .destructive) { _ in
-            let deleteMessageAlertController = self.DeleteMessageAlertController(for: message, didSelectCell: cell)
-            self.present(deleteMessageAlertController, animated: true, completion: nil)
-        }
-        alertController.addAction(deleteAction)
-
-        let cancelAction = UIAlertAction(title: L10n.Common.Button.cancel, style: .cancel, handler: nil)
-        alertController.addAction(cancelAction)
-
-        if let presenter = alertController.popoverPresentationController {
-            presenter.sourceView = cell
-            presenter.sourceRect = cell.bounds
-        }
-        return alertController
-    }
-
-    private func DeleteMessageAlertController(for message: Message, didSelectCell cell: UITableViewCell) -> UIAlertController {
-        let alertController = UIAlertController(title: L10n.MessagesViewController.Alert.Title.deleteMessage, message: nil, preferredStyle: .actionSheet)
-
-        let confirmAction = UIAlertAction(title: L10n.Common.Button.delete, style: .destructive, handler: { _ in
-            ProfileService.default.deleteMessage(message)
-        })
-        alertController.addAction(confirmAction)
-        let cancelAction = UIAlertAction(title: L10n.Common.Button.cancel, style: .cancel, handler: nil)
-        alertController.addAction(cancelAction)
-
-        if let presenter = alertController.popoverPresentationController {
-            presenter.sourceView = cell
-            presenter.sourceRect = cell.bounds
-        }
-        return alertController
-    }
-
-}
-
 // MARK: - MessageCardCellDelegate
 extension MessagesViewController: MessageCardCellDelegate {
 
     func messageCardCell(_ cell: MessageCardCell, expandButtonPressed: UIButton) {
-        guard let indexPath = tableView.indexPath(for: cell),
-        let isExpand = viewModel.messageExpandedDict[indexPath],
-        let maxNumberOfLines = viewModel.messageMaxNumberOfLinesDict[indexPath] else {
-            return
+        if #available(iOS 13.0, *) {
+            guard let dataSource = viewModel.diffableDataSource as? UITableViewDiffableDataSource<MessagesViewModel.Section, Message> else {
+                return
+            }
+
+            guard let indexPath = tableView.indexPath(for: cell),
+            let message = dataSource.itemIdentifier(for: indexPath),
+            let id = message.id else {
+                return
+            }
+
+            guard let isExpand = viewModel.messageExpandedIDDict[id],
+            let maxNumberOfLines = viewModel.messageMaxNumberOfLinesIDDict[id] else {
+                return
+            }
+
+            cell.messageLabel.numberOfLines = isExpand ? 4 : 0
+            viewModel.messageExpandedIDDict[id] = !isExpand
+            let title = !isExpand ? L10n.MessageCardCell.Button.Expand.collapse : L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
+            cell.expandButton.setTitle(title, for: .normal)
+
+            tableView.beginUpdates()
+            tableView.endUpdates()
+
+            tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+
+        } else {
+            guard let indexPath = tableView.indexPath(for: cell),
+            let isExpand = viewModel.messageExpandedDict[indexPath],
+            let maxNumberOfLines = viewModel.messageMaxNumberOfLinesDict[indexPath] else {
+                return
+            }
+
+            cell.messageLabel.numberOfLines = isExpand ? 4 : 0
+            viewModel.messageExpandedDict[indexPath] = !isExpand
+            let title = !isExpand ? L10n.MessageCardCell.Button.Expand.collapse : L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
+            cell.expandButton.setTitle(title, for: .normal)
+
+            tableView.beginUpdates()
+            tableView.endUpdates()
+
+            tableView.scrollToRow(at: indexPath, at: .top, animated: true)
         }
-
-        cell.messageLabel.numberOfLines = isExpand ? 4 : 0
-        viewModel.messageExpandedDict[indexPath] = !isExpand
-        let title = !isExpand ? L10n.MessageCardCell.Button.Expand.collapse : L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
-        cell.expandButton.setTitle(title, for: .normal)
-
-        tableView.beginUpdates()
-        tableView.endUpdates()
-
-        tableView.scrollToRow(at: indexPath, at: .top, animated: true)
     }
 
 }
 
-// MARK: For introduction wizard
+// MARK: - For introduction wizard
 extension MessagesViewController {
     func getComposeButtonFrame() -> CGRect {
         if let actionsStackView = bottomActionsView.arrangedSubviews.last as? UIStackView, let composeButton = actionsStackView.arrangedSubviews.first {
