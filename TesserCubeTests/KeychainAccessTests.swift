@@ -24,7 +24,8 @@ class KeychainAccessTests: XCTestCase {
     }
 
     func testAuthentication() {
-        keychain = Keychain(service: "com.Sujitech.TesserCube.Tests", accessGroup: "7LFDZ96332.com.Sujitech.TesserCube").accessibility(.afterFirstUnlock, authenticationPolicy: .userPresence)
+        keychain = Keychain(service: "com.Sujitech.TesserCube.Tests", accessGroup: "7LFDZ96332.com.Sujitech.TesserCube")
+        // keychain = Keychain(service: "com.Sujitech.TesserCube.Tests", accessGroup: "7LFDZ96332.com.Sujitech.TesserCube").accessibility(.afterFirstUnlock, authenticationPolicy: .userPresence)
         try! keychain.removeAll()
 
         try! keychain

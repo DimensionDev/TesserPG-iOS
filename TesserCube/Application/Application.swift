@@ -8,14 +8,15 @@
 
 import Foundation
 import DMSOpenPGP
+import SwifterSwift
+import IQKeyboardManagerSwift
+import SVProgressHUD
+import ConsolePrint
 #if DEBUG
 #if FLEX
 import FLEX
 #endif
 #endif
-import SwifterSwift
-import IQKeyboardManagerSwift
-import SVProgressHUD
 
 class Application: NSObject {
     
@@ -44,6 +45,12 @@ class Application: NSObject {
             #endif
         } else {
             
+        }
+
+        if let wordPredictor = WordSuggestionService.shared.wordPredictor, wordPredictor.needLoadNgramData {
+            wordPredictor.load { error in
+                consolePrint(error?.localizedDescription ?? "NGram realm setup success")
+            }
         }
 
         IQKeyboardManager.shared.enable = true
