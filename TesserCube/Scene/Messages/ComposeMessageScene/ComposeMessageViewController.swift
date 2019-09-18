@@ -27,7 +27,7 @@ final class ComposeMessageViewController: TCBaseViewController {
         textView.placeholder = L10n.ComposeMessageViewController.TextView.Message.placeholder
         textView.isScrollEnabled = false
         textView.font = FontFamily.SFProText.regular.font(size: 15)
-        textView.contentInset.left = RecipientContactPickerView.leadingMargin - 4
+        textView.textContainerInset.left = RecipientContactPickerView.leadingMargin - 4
         textView.backgroundColor = .clear
         return textView
     }()
@@ -45,16 +45,17 @@ final class ComposeMessageViewController: TCBaseViewController {
         return scrollView
     }()
 
-    // for callee
+    lazy var cancelBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: L10n.Common.Button.cancel, style: .plain, target: self, action: #selector(ComposeMessageViewController.cancelBarButtonItemPressed(_:)))
+
+    // for callee (a.k.a InterpretActionViewController)
     var composedMessage: Message?
 
     override func configUI() {
         super.configUI()
-
+        
         // MARK: - setup layout
-
         title = L10n.ComposeMessageViewController.title
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: L10n.Common.Button.cancel, style: .plain, target: self, action: #selector(ComposeMessageViewController.cancelBarButtonItemPressed(_:)))
+        navigationItem.leftBarButtonItem = cancelBarButtonItem
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: L10n.ComposeMessageViewController.BarButtonItem.finish, style: .done, target: self, action: #selector(ComposeMessageViewController.doneBarButtonItemPressed(_:)))
 
         #if !TARGET_IS_EXTENSION
@@ -188,12 +189,11 @@ extension ComposeMessageViewController {
 
     // use dismiss proxy for app extension post CompleteRequest safe
     private func dismiss() {
-        dismiss(animated: true, completion: nil)
-
-        #if TARGET_IS_EXTENSION
+        // Post notification in App Extension & App. Due to in-app open URL not trigger Swift condition flag (TARGET_IS_EXTENSION)
         let userInfo = ["message": composedMessage]
-        NotificationCenter.default.post(name: .extensionContextCompleteRequest, object: self, userInfo: userInfo as [AnyHashable : Any])
-        #endif
+        NotificationCenter.default.post(name: .messageComposeComplete, object: self, userInfo: userInfo as [AnyHashable : Any])
+
+        dismiss(animated: true, completion: nil)
     }
 
 }
@@ -339,7 +339,7 @@ private extension ComposeMessageViewController {
                     }
                 }
 
-                self.self.dismiss()
+                self.dismiss()
 
                 }, onError: { [weak self] error in
                     guard let `self` = self else { return }
@@ -386,6 +386,44 @@ extension ComposeMessageViewController: ContactPickerTagCollectionViewCellDelega
         var keyBridges = self.viewModel.keyBridges.value
         keyBridges.remove(at: indexPath.item)
         self.viewModel.keyBridges.accept(keyBridges)
+    }
+
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+extension ComposeMessageViewController: UIAdaptivePresentationControllerDelegate {
+
+    @available(iOS 13.0, *)
+    func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
+        let rawMessage = viewModel.rawMessage.value.trimmingCharacters(in: .whitespacesAndNewlines)
+        let tags = toContactPickerCellView.viewModel.tags.value
+        let senderKey = fromContactPickerCellView.viewModel.selectedKey.value
+        let recipientKeys = tags.compactMap { $0.key }
+
+        guard !rawMessage.isEmpty else {
+            return true
+        }
+
+        let isMessageChanged: Bool = {
+            guard let message = viewModel.message.value else {
+                return true
+            }
+            if message.senderKeyId == senderKey?.longIdentifier,
+            message.senderKeyUserId == senderKey?.userID,
+            Set(message.getRecipients().map { $0.keyId }) == Set(recipientKeys.map { $0.longIdentifier }),
+            message.rawMessage == rawMessage {
+                return false
+            } else {
+                return true
+            }
+        }()
+
+        return !isMessageChanged
+    }
+
+    @available(iOS 13.0, *)
+    func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
+        cancelBarButtonItemPressed(cancelBarButtonItem)
     }
 
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 import SnapKit
-import SwifterSwift
+//import SwifterSwift
 
 class ContactDetailViewController: TCBaseViewController {
     
@@ -50,7 +50,7 @@ class ContactDetailViewController: TCBaseViewController {
     private lazy var userIdentifierLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = FontFamily.SourceCodeProMedium.regular.font(size: 17)
-        label.textColor = Asset.sourceGreen.color
+        label.textColor = .systemGreen
         label.textAlignment = .center
         label.numberOfLines = 1
         return label
@@ -66,7 +66,7 @@ class ContactDetailViewController: TCBaseViewController {
     private lazy var validitylabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = FontFamily.SFProText.regular.font(size: 17)
-        label.textColor = Asset.sourceGreen.color
+        label.textColor = .systemGreen
         return label
     }()
 
@@ -104,7 +104,12 @@ class ContactDetailViewController: TCBaseViewController {
     override func configUI() {
         super.configUI()
 
-        view.backgroundColor = .white
+        if #available(iOS 13.0, *) {
+            view.backgroundColor = .systemBackground
+        } else {
+            // Fallback on earlier versions
+            view.backgroundColor = .white
+        }
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: L10n.Common.Button.edit, style: .plain, target: self, action: #selector(ContactDetailViewController.editButtonDidClicked(_:)))
         
         view.addSubview(topBackgroundView)
@@ -133,13 +138,13 @@ class ContactDetailViewController: TCBaseViewController {
         view.addSubview(fingerprintTitleLabel)
 
         fingerprintTitleLabel.snp.makeConstraints { maker in
-            maker.leading.equalTo(view.layoutMarginsGuide)
+            maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(topBackgroundView.snp.bottom).offset(15)
         }
 
         view.addSubview(fingerprintlabel)
         fingerprintlabel.snp.makeConstraints { maker in
-            maker.leading.equalTo(view.layoutMarginsGuide)
+            maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(fingerprintTitleLabel.snp.bottom).offset(2)
         }
 
@@ -148,13 +153,13 @@ class ContactDetailViewController: TCBaseViewController {
         view.addSubview(validityTitleLabel)
 
         validityTitleLabel.snp.makeConstraints { maker in
-            maker.leading.equalTo(view.layoutMarginsGuide)
+            maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(fingerprintlabel.snp.bottom).offset(17)
         }
 
         view.addSubview(validitylabel)
         validitylabel.snp.makeConstraints { maker in
-            maker.leading.equalTo(view.layoutMarginsGuide)
+            maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(validityTitleLabel.snp.bottom).offset(2)
         }
 
@@ -163,13 +168,13 @@ class ContactDetailViewController: TCBaseViewController {
         view.addSubview(typeTitleLabel)
 
         typeTitleLabel.snp.makeConstraints { maker in
-            maker.leading.equalTo(view.layoutMarginsGuide)
+            maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(validitylabel.snp.bottom).offset(17)
         }
 
         view.addSubview(typelabel)
         typelabel.snp.makeConstraints { maker in
-            maker.leading.equalTo(view.layoutMarginsGuide)
+            maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(typeTitleLabel.snp.bottom).offset(2)
         }
 
@@ -178,7 +183,7 @@ class ContactDetailViewController: TCBaseViewController {
         view.addSubview(createdAtTitleLabel)
 
         createdAtTitleLabel.snp.makeConstraints { maker in
-            maker.leading.equalTo(view.layoutMarginsGuide)
+            maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(typelabel.snp.bottom).offset(17)
         }
 
@@ -193,7 +198,7 @@ class ContactDetailViewController: TCBaseViewController {
         view.addSubview(emailTitlelabel)
 
         emailTitlelabel.snp.makeConstraints { maker in
-            maker.leading.equalTo(view.layoutMarginsGuide)
+            maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(createdAtlabel.snp.bottom).offset(17)
         }
 
@@ -208,7 +213,7 @@ class ContactDetailViewController: TCBaseViewController {
         // 6. Send message button
         view.addSubview(sendMessageButton)
         sendMessageButton.snp.makeConstraints { maker in
-            maker.leading.trailing.equalTo(view.layoutMarginsGuide)
+            maker.leading.trailing.equalTo(view.readableContentGuide)
             maker.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
         }
 
@@ -287,7 +292,7 @@ extension ContactDetailViewController {
 
         let isValid = keys?.first?.isValid ?? false
         validitylabel.text = isValid ? L10n.ContactDetailViewController.Label.valid : L10n.ContactDetailViewController.Label.invalid
-        validitylabel.textColor = isValid ? Asset.sourceGreen.color : Asset.tagIdRed.color
+        validitylabel.textColor = isValid ? .systemGreen : .systemRed
 
         let keyTypeString = keys?.first?.algorithm?.rawValue ?? L10n.Common.Label.nameUnknown
         let keySizeString = keys?.first?.keyStrength?.string ?? L10n.Common.Label.nameUnknown

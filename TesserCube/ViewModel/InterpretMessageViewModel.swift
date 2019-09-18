@@ -32,7 +32,6 @@ extension InterpretMessageViewModel {
         do {
             let decryptedMessage = try ProfileService.default.decryptMessage(self.message.value)
             return .just(decryptedMessage)
-            return .never()
         } catch {
             return .error(error)
         }

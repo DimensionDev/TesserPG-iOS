@@ -41,31 +41,43 @@ class CreateNewKeyViewController: FormViewController {
                 row.placeholder = L10n.CreateNewKeyViewController.Label.name
                 row.add(rule: RuleRequired(msg: L10n.CreateNewKeyViewController.Alert.Title.nameRequired, id: "Name_Required"))
                 row.validationOptions = .validatesOnChange
+            }.cellUpdate { cell, row in
+                cell.textField.font = FontFamily.SFProText.regular.font(size: 17)
+                if #available(iOS 13, *) {
+                    cell.textField.textColor = .label
                 }
-                .cellUpdate { cell, row in
-                    cell.textField.font = FontFamily.SFProText.regular.font(size: 17)
-                }
+            }
             <<< EmailRow("email") { row in
                 row.placeholder = L10n.CreateNewKeyViewController.Label.email
                 row.add(rule: RuleRequired(msg: L10n.CreateNewKeyViewController.Alert.Title.emailRequired, id: "Email_Required"))
                 row.add(rule: RuleEmail(msg: L10n.CreateNewKeyViewController.Alert.Title.emailInvalid, id: "Email_Invalid"))
                 row.validationOptions = .validatesOnChangeAfterBlurred
+            }.cellUpdate { cell, row in
+                cell.textField.font = FontFamily.SFProText.regular.font(size: 17)
+                if #available(iOS 13, *) {
+                    cell.textField.textColor = .label
                 }
-                .cellUpdate { cell, row in
-                    cell.textField.font = FontFamily.SFProText.regular.font(size: 17)
-                }
+            }
             <<< PasswordRow("Password") { row in
                 row.placeholder = L10n.CreateNewKeyViewController.Label.password
 //                row.add(ruleSet: passwordRules)
-                }.cellUpdate { cell, row in
-                    cell.textField.font = FontFamily.SFProText.regular.font(size: 17)
+            }.cellUpdate { cell, row in
+                cell.textField.font = FontFamily.SFProText.regular.font(size: 17)
+                if #available(iOS 13, *) {
+                    cell.textField.textColor = .label
+                } else {
+                    // do nothing
                 }
+            }
             <<< PasswordRow() { row in
                 row.placeholder = L10n.CreateNewKeyViewController.Label.confirmPassword
                 row.add(rule: RuleEqualsToRow(form: form, tag: "Password", msg: L10n.CreateNewKeyViewController.Alert.Title.passwordNotMatch, id: nil))
-                }.cellUpdate { cell, row in
-                    cell.textField.font = FontFamily.SFProText.regular.font(size: 17)
+            }.cellUpdate { cell, row in
+                cell.textField.font = FontFamily.SFProText.regular.font(size: 17)
+                if #available(iOS 13, *) {
+                    cell.textField.textColor = .label
                 }
+            }
             <<< SwitchRow("easyMode") { row in
                 row.cellProvider = CellProvider<SwitchCell>(nibName: "SwitchCell", bundle: Bundle.main)
                 row.cell.height = { 43 }
@@ -78,7 +90,7 @@ class CreateNewKeyViewController: FormViewController {
                     row.cell.switchControl = switchWidget
                 }
                 row.value = true
-                }
+            }
             <<< PickerInlineRow<CreateKeyOption>("Algorithm") { (row : PickerInlineRow<CreateKeyOption>) -> Void in
                 row.title = L10n.CreateNewKeyViewController.Label.algorithm
                 row.displayValueFor = { (rowValue: CreateKeyOption?) in
@@ -90,26 +102,30 @@ class CreateNewKeyViewController: FormViewController {
                     let row: RowOf<Bool>! = form.rowBy(tag: self.easyModeRowTag)
                     return row.value ?? true == true
                 })
+            }.cellUpdate{ cell, row in
+                if #available(iOS 13, *) {
+                    cell.textLabel?.textColor = .label
+                }
             }
             <<< PickerInlineRow<Int>("KeyLength") { (row : PickerInlineRow<Int>) -> Void in
                 row.title = L10n.CreateNewKeyViewController.Label.keyLength
-                
                 row.displayValueFor = { (rowValue: Int?) in
                     return "\(rowValue ?? 0)"
                 }
-                
                 row.options = availableCreateKeyLength
                 row.value = availableCreateKeyLength[0]
-                
                 row.hidden = .function([easyModeRowTag, "Algorithm"], { form -> Bool in
                     let algorithmRow: RowOf<CreateKeyOption>! = form.rowBy(tag: "Algorithm")
                     let easyModeRow: RowOf<Bool>! = form.rowBy(tag: self.easyModeRowTag)
                     let selectedAlgorithm = algorithmRow.value ?? .rsa
                     return (easyModeRow.value ?? true == true) || selectedAlgorithm != .rsa
                 })
-        }
-        
-    }
+            }.cellUpdate{ cell, row in
+                if #available(iOS 13, *) {
+                    cell.textLabel?.textColor = .label
+                }
+            }
+    }   // end viewDidLoad
     
     private func setupFormStyle() {
         

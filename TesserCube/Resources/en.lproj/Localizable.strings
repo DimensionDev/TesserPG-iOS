@@ -47,11 +47,11 @@
 "IntroWizardViewController.Step.createKeyPair" = "Tap \"+\" to create a keypair or import your existing keypairs.";
 "IntroWizardViewController.Step.completeGuide" = "🎉 Guide Completed 🎉\nCreate a keypair right now?";
 
-"ContactDetailViewController.Label.Fingerprint" = "fingerprint";
-"ContactDetailViewController.Label.Validity" = "validity";
-"ContactDetailViewController.Label.Keytype" = "type";
-"ContactDetailViewController.Label.CreatedAt" = "created at";
-"ContactDetailViewController.Label.Email" = "email";
+"ContactDetailViewController.Label.Fingerprint" = "Fingerprint";
+"ContactDetailViewController.Label.Validity" = "Validity";
+"ContactDetailViewController.Label.Keytype" = "Type";
+"ContactDetailViewController.Label.CreatedAt" = "Created at";
+"ContactDetailViewController.Label.Email" = "Email";
 "ContactDetailViewController.Label.InvalidFingerprint" = "Invalid Fingerprint";
 "ContactDetailViewController.Label.Valid" = "Valid";
 "ContactDetailViewController.Label.Invalid" = "Invalid";
@@ -192,6 +192,8 @@
 
 "ComposeActionViewController.Title.Composing" = "Composing";
 "ComposeActionViewController.Title.MessageComposed" = "Message Composed";
+
+"BrokenMessageViewController.Label.prompt" = "The following text was passed in.\nHowever, it can't be interpreted.";
 
 "Keyboard.Prompt.EnableFullAccess" = "Click to enable \"Full Access\" please";
 "Keyboard.Button.Interpret" = "Interpret";

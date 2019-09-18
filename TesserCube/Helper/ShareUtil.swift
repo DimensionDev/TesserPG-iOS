@@ -12,7 +12,6 @@ class ShareUtil {
 
     // share public key
     static func share(key: TCKey, from viewController: UIViewController, over view: UIView?) {
-
         let armoredKeyString = key.publicArmored
         let items: [Any] = [armoredKeyString]
 
@@ -38,9 +37,11 @@ class ShareUtil {
         let passwordDict = ProfileService.default.getPasswordDict(keyIdentifiers: [key.longIdentifier])
         let armoredKeyString = try? key.getPrivateArmored(passprahse: passwordDict[key.longIdentifier]) ?? ""
 
-        var items: [Any] = [armoredKeyString]
+        var items: [Any] = []
         if let armoredKeyFileURL = createTempFile(for: armoredKeyString ?? "") {
             items.append(armoredKeyFileURL)
+        } else {
+            items.append(armoredKeyString)
         }
 
         let vc = UIActivityViewController(activityItems: items, applicationActivities: [])
@@ -62,7 +63,6 @@ class ShareUtil {
     }
     
     static func share(message: String, from viewController: UIViewController, over view: UIView?) {
-
         let items: [Any] = [message]
 
         let vc = UIActivityViewController(activityItems: items, applicationActivities: [])

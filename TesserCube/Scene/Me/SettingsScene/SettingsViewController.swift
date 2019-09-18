@@ -15,6 +15,7 @@ class SettingsViewController: TCBaseViewController {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNonzeroMagnitude))
         tableView.tableFooterView = UIView()
+        tableView.cellLayoutMarginsFollowReadableWidth = true
         return tableView
     }()
 

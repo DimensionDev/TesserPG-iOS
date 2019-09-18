@@ -41,6 +41,8 @@ class ContactEditViewController: TCBaseViewController {
         tableView.alwaysBounceVertical = true
         tableView.tableFooterView = UIView()
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
+        tableView.preservesSuperviewLayoutMargins = true
+        tableView.cellLayoutMarginsFollowReadableWidth = true
         return tableView
     }()
     
@@ -198,11 +200,24 @@ extension ContactEditViewController: UITableViewDataSource {
                 cell.inputTextField.text = "true"
             }
             cell.selectionStyle = .none
+
+            // Note: It's should automatically adopting dark mode due to cell.traitCollection is .dark
+            // However it's still light mode. Mannully set color as workaround. (Xcode 11 Beta 5)
+            if #available(iOS 13.0, *) {
+                cell.contentView.backgroundColor = .secondarySystemBackground
+                cell.titleLabel.textColor = .secondaryLabel
+                cell.inputTextField.textColor = .label
+            } else {
+                // Fallback on earlier versions
+                cell.contentView.backgroundColor = .white
+                cell.titleLabel.textColor = .lightGray
+                cell.inputTextField.textColor = .black
+            }
             return cell
         } else {
             let cell = UITableViewCell(style: .default, reuseIdentifier: "deleteButton")
             let deleteButton = UIButton(type: .system)
-            deleteButton.setTitleColor(.red, for: .normal)
+            deleteButton.setTitleColor(.systemRed, for: .normal)
             deleteButton.setTitle(L10n.EditContactViewController.Label.deleteContact, for: .normal)
             cell.contentView.addSubview(deleteButton)
             deleteButton.addTarget(self, action: #selector(deleteButtonDidClicked(_:)), for: .touchUpInside)
@@ -219,6 +234,5 @@ extension ContactEditViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
-    
     
 }

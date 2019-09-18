@@ -21,13 +21,17 @@ final class MessageCardCell: UITableViewCell {
 
     let cardView: TCCardView = {
         let cardView = TCCardView()
-        cardView.cardBackgroundColor = .white
         return cardView
+    }()
+    let headerBackgroundView: UIView = {
+        let view = UIView()
+        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        view.layoutMargins = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        return view
     }()
     let signedByLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SFProDisplay.regular.font(size: 14)
-        label.textColor = Asset.darkTextGrey.color
         label.text = L10n.MessageCardCell.Label.signedBy
         return label
     }()
@@ -39,7 +43,6 @@ final class MessageCardCell: UITableViewCell {
     let recipeintsLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SFProDisplay.regular.font(size: 14)
-        label.textColor = Asset.darkTextGrey.color
         label.text = L10n.MessageCardCell.Label.recipeints
         return label
     }()
@@ -58,14 +61,12 @@ final class MessageCardCell: UITableViewCell {
     let leftFooterLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SFProDisplay.regular.font(size: 14)
-        label.textColor = Asset.lightTextGrey.color
         label.text = "Left Footer"
         return label
     }()
     let rightFooterLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SFProDisplay.regular.font(size: 14)
-        label.textColor = Asset.lightTextGrey.color
         label.text = "Right Footer"
         label.textAlignment = .right
         return label
@@ -74,7 +75,6 @@ final class MessageCardCell: UITableViewCell {
     lazy var extraBackgroundViewHeightConstraint = extraBackgroundView.heightAnchor.constraint(equalToConstant: 0)
     lazy var extraBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = Asset.cellGreyBackground.color
         view.layer.cornerRadius = cardView.cardCornerRadius
         view.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         view.clipsToBounds = true
@@ -112,10 +112,23 @@ final class MessageCardCell: UITableViewCell {
 
     func _init() {
         selectionStyle = .none
-        backgroundColor = .clear
         clipsToBounds = false
         setupUI()
+        setupColor()
     }
+
+}
+
+extension MessageCardCell {
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        setupColor()
+    }
+
+}
+
+extension MessageCardCell {
 
     func setupUI() {
         // - Card
@@ -147,15 +160,7 @@ final class MessageCardCell: UITableViewCell {
         }
 
         // Header
-        let headerBackgroundView: UIView = {
-            let view = UIView()
-            view.backgroundColor = Asset.cellGreyBackground.color
-            view.layer.cornerRadius = cardView.cardCornerRadius
-            view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-            view.layoutMargins = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
-            return view
-        }()
-
+        headerBackgroundView.layer.cornerRadius = cardView.cardCornerRadius
         headerBackgroundView.addSubview(signedByLabel)
         signedByLabel.snp.makeConstraints { maker in
             maker.top.equalTo(headerBackgroundView.snp.topMargin)
@@ -196,7 +201,6 @@ final class MessageCardCell: UITableViewCell {
         // Content
         let contentBackgroundView: UIView = {
             let view = UIView()
-            // view.backgroundColor = .white
             view.layoutMargins = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
             return view
         }()
@@ -266,6 +270,7 @@ final class MessageCardCell: UITableViewCell {
 
         extraBackgroundView.backgroundColor = .cardExtraBackground
     }
+
 }
 
 extension MessageCardCell {

@@ -57,7 +57,7 @@ struct KeyBridge: ContactMappable, KeychianMappable {
         } else if let key = ProfileService.default.keys.value.first(where: { $0.longIdentifier == longIdentifier }) {   // restore key
             self.key = key
         } else {
-            assertionFailure("key restore fail")
+            // Mark invalid key if restore fail
             self.key = nil
         }
 

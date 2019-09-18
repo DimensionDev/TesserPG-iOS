@@ -90,9 +90,14 @@ class TCActionButton: UIButton {
         layer.masksToBounds = true
         shadow2Layer = CALayer(layer: layer)
         layer.insertSublayer(shadow2Layer!, at: 0)
-        
-        layer.addSublayer(lightGlowLayer)
-        layer.addSublayer(shadowGlowLayer)
+
+        if #available(iOS 13, *) {
+            // do not add glow layer to adopt dark mode appearnce
+        } else {
+            layer.addSublayer(lightGlowLayer)
+            layer.addSublayer(shadowGlowLayer)
+        }
+
         titleLabel?.font = FontFamily.SFProDisplay.medium.font(size: 17)
     }
     

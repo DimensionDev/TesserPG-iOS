@@ -64,6 +64,8 @@ class ContactsListViewController: TCBaseViewController {
         }
         tableView.allowsMultipleSelectionDuringEditing = true
         tableView.keyboardDismissMode = .interactive
+        tableView.preservesSuperviewLayoutMargins = true
+        tableView.cellLayoutMarginsFollowReadableWidth = true
         return tableView
     }()
     
@@ -318,6 +320,29 @@ extension ContactsListViewController: UITableViewDelegate {
 
         if indexPath.row < contacts.count, viewModel.selectedContactIDs.contains(contacts[indexPath.row].id ?? -1 ) {
             tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+        }
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let navigationBar = navigationController?.navigationBar,
+            emptyView.textLabel.frame != .zero else {
+            return
+        }
+
+        let emptyViewTextLabelFrameInView = emptyView.convert(emptyView.textLabel.frame, to: view)
+        let navigationBarFrameInView = navigationBar.convert(navigationBar.frame, to: view)
+        // manually calculate it due to .maxY not return expect value
+        let navigationBarFrameMaxY = navigationBar.frame.origin.y + navigationBarFrameInView.height
+
+        if navigationBarFrameMaxY >= emptyViewTextLabelFrameInView.minY {
+            let mask = CALayer()
+            mask.backgroundColor = UIColor.blue.cgColor
+            var maskFrame = emptyView.textLabel.bounds
+            maskFrame.origin.y = navigationBarFrameMaxY - emptyViewTextLabelFrameInView.minY
+            mask.frame = maskFrame
+            emptyView.textLabel.layer.mask = mask
+        } else {
+            emptyView.textLabel.layer.mask = nil
         }
     }
     
