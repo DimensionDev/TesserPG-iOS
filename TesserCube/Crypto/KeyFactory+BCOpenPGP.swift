@@ -116,14 +116,14 @@ extension KeyFactory {
                         if signatureKey == nil {
                             // Check the signature key
                             for pubkey in keys {
-                                if pubkey.longIdentifier == messageDetail.signedByKeyId.uppercased() {
+                                if pubkey.longIdentifier == messageDetail.signedByKeyId {
                                     signatureKey = pubkey
                                 }
                             }
                         }
                     }
                     for recipientIndex in 0 ..< messageDetail.getEncryptedToKeyIdsCount() {
-                        let keyID = messageDetail.getEncryptedToKeyId(recipientIndex, error: &getMessageDetailError).uppercased()
+                        let keyID = messageDetail.getEncryptedToKeyId(recipientIndex, error: &getMessageDetailError)
                         if getMessageDetailError == nil {
                             if keyID.isHiddenRecipientID {
                                 hiddenRecipientKeyIDs.append(keyID)
