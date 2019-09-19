@@ -9,6 +9,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import DMSGoPGP
 import ConsolePrint
 
 extension MessagesViewModel {
@@ -31,7 +32,10 @@ extension MessagesViewModel {
             case .copyMessageContent:   return L10n.MessagesViewController.Action.Button.copyMessageContent
             case .copyPayload:          return L10n.MessagesViewController.Action.Button.copyRawPayload
             case .shareArmoredMessage(let message, _, _):
-                let isCleartextMessage = DMSPGPClearTextVerifier.verify(armoredMessage: message.encryptedMessage)
+                var verifyClearTextError: NSError?
+                let _ = CryptoNewClearTextMessageFromArmored(message.encryptedMessage, &verifyClearTextError)
+                let isCleartextMessage = (verifyClearTextError == nil)
+//                let isCleartextMessage = DMSPGPClearTextVerifier.verify(armoredMessage: message.encryptedMessage)
                 let shareActionTitle = isCleartextMessage ? L10n.MessagesViewController.Action.Button.shareSignedMessage : L10n.MessagesViewController.Action.Button.shareEncryptedMessage
                 return shareActionTitle
             case .recomposeMessage:     return L10n.MessagesViewController.Action.Button.reCompose
@@ -106,7 +110,9 @@ extension MessagesViewModel {
                     UIPasteboard.general.string = message.encryptedMessage
 
                 case let .shareArmoredMessage(message, presentingViewController, cell):
-                    let isCleartextMessage = DMSPGPClearTextVerifier.verify(armoredMessage: message.encryptedMessage)
+                    var verifyClearTextError: NSError?
+                    let _ = CryptoNewClearTextMessageFromArmored(message.encryptedMessage, &verifyClearTextError)
+                    let isCleartextMessage = (verifyClearTextError == nil)
                     let shareActionTitle = isCleartextMessage ? L10n.MessagesViewController.Action.Button.shareSignedMessage : L10n.MessagesViewController.Action.Button.shareEncryptedMessage
                     ShareUtil.share(message: message.encryptedMessage, from: presentingViewController, over: cell)
 
