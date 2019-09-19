@@ -284,7 +284,7 @@ private extension ComposeMessageViewController {
         let senderKey = fromContactPickerCellView.viewModel.selectedKey.value
         let recipientKeys = tags.compactMap { $0.key }
 
-        let invalidKeys = recipientKeys.filter { $0.keyRing.publicKeyRing.primaryEncryptionKey == nil }
+        let invalidKeys = recipientKeys.filter { !$0.hasPrimaryEncryptionKey }
 
         if tags.contains(where: { $0.contact == nil }) {
             let alertController = UIAlertController(title: L10n.ComposeMessageViewController.Alert.Title.skipInvalidResipients, message: nil, preferredStyle: .actionSheet)

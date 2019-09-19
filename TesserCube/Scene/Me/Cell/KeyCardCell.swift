@@ -26,12 +26,13 @@ enum KeyValue {
         case .mockKey:
             return "****@*****.***"
         case .TCKey(let key):
-            if let userID = key.keyRing.publicKeyRing.primaryKey.primaryUserID {
-                let meta = PGPUserIDTranslator(userID: userID)
-                return meta.name ?? meta.email ?? " " // userID should have one of name and email
-            }
-            
-            return L10n.Common.Label.nameNull
+            return key.userID
+//            if let userID = key.keyRing.publicKeyRing.primaryKey.primaryUserID {
+//                let meta = PGPUserIDTranslator(userID: userID)
+//                return meta.name ?? meta.email ?? " " // userID should have one of name and email
+//            }
+//            
+//            return L10n.Common.Label.nameNull
         }
     }
     
@@ -43,13 +44,13 @@ enum KeyValue {
             let keySizeString = key.keyStrength?.string ?? L10n.Common.Label.nameUnknown
             var keyDescString = "\(keySizeString)-bit / "
             
-            let pubKeyAlgorithmString = key.algorithm?.displayName ?? L10n.Common.Label.nameUnknown
+            let pubKeyAlgorithmString = key.algorithm?.rawValue ?? L10n.Common.Label.nameUnknown
             let pubKeyDescString = "\(pubKeyAlgorithmString)\(keySizeString)"
             keyDescString.append(pubKeyDescString)
             
             if key.hasSubkey {
                 let subkeySizeString = key.subkeyStrength?.string ?? L10n.Common.Label.nameUnknown
-                let subkeyAlgorithmString = key.subkeyAlgorithm?.displayName ?? L10n.Common.Label.nameUnknown
+                let subkeyAlgorithmString = key.subkeyAlgorithm?.rawValue ?? L10n.Common.Label.nameUnknown
                 let subkeyDescString = "\(subkeyAlgorithmString)\(subkeySizeString)"
                 keyDescString.append(" + \(subkeyDescString)")
             }

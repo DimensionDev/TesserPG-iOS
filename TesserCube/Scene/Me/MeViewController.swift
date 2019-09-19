@@ -251,6 +251,7 @@ extension MeViewController: UITableViewDelegate {
 
     @available(iOS 13.0, *)
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        
         let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath)
         guard !actions.isEmpty else {
             return nil

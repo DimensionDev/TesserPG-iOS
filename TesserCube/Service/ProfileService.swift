@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import DMSOpenPGP
 import RxSwift
 import RxCocoa
 import KeychainAccess
@@ -44,13 +43,12 @@ class ProfileService {
         keyRecordsObervation = try! ValueObservation.trackingAll(KeyRecord.all())
             .start(in: TCDBManager.default.dbQueue, onChange: { latestKeyRecords in
                 let keys = latestKeyRecords.compactMap { record -> TCKey? in
-                    guard let armored = record.armored,
-                    let keyRing = try? DMSPGPKeyRing(armoredKey: armored) else {
+                    guard let armored = record.armored else {
                         return nil
                     }
-
-                    return TCKey(keyRing: keyRing, from: record)
+                    return TCKey(armored: armored)
                 }
+
                 self.keys.accept(keys)
 
                 #if TARGET_IS_EXTENSION
@@ -72,12 +70,10 @@ class ProfileService {
         WormholdService.shared.listeningWormhole.listenForMessage(withIdentifier: keysUpdateIdentifier.rawValue) { [weak self] _ in
             guard let `self` = self else { return }
             let keys = KeyRecord.all().compactMap { record -> TCKey? in
-                guard let armored = record.armored,
-                let keyRing = try? DMSPGPKeyRing(armoredKey: armored) else {
+                guard let armored = record.armored else {
                     return nil
                 }
-
-                return TCKey(keyRing: keyRing, from: record)
+                return TCKey(armored: armored)
             }
             self.keys.accept(keys)
         }
@@ -183,4 +179,19 @@ extension ProfileService {
         })
     }
     
+}
+
+//MARK: Keychain conivience method
+extension ProfileService {
+    func getPasswordDict(keyIdentifiers: [String]) -> [String: String] {
+        var keyPasswordDict = [String: String]()
+        for keyChainItem in ProfileService.default.keyChain.allItems() {
+            if let key = keyChainItem["key"] as? String, let password = keyChainItem["value"] as? String {
+                if keyIdentifiers.contains(key) {
+                    keyPasswordDict[key] = password
+                }
+            }
+        }
+        return keyPasswordDict
+    }
 }

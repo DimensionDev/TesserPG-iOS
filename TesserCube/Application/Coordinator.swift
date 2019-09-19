@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import DMSOpenPGP
 
 class Coordinator {
     
@@ -188,13 +187,13 @@ extension Coordinator {
                 return true
             }
 
-            let hasSecretKey = DMSPGPKeyRing.extractSecretKeyBlock(from: message) != nil
+            let hasSecretKey = KeyFactory.extractSecretKeyBlock(from: message) != nil
             guard !hasSecretKey else {
                 Coordinator.main.present(scene: .pasteKey(armoredKey: message, needPassphrase: true), from: rootViewController, transition: .modal, completion: nil)
                 return true
             }
 
-            let hasPublicKey = DMSPGPKeyRing.extractPublicKeyBlock(from: message) != nil
+            let hasPublicKey = KeyFactory.extractPublicKeyBlock(from: message) != nil
             guard !hasPublicKey else {
                 Coordinator.main.present(scene: .pasteKey(armoredKey: message, needPassphrase: false), from: rootViewController, transition: .modal, completion: nil)
                 return true

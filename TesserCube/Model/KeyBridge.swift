@@ -22,7 +22,7 @@ struct KeyBridge: ContactMappable, KeychianMappable {
     }
 
     var name: String {
-        let meta = PGPUserIDTranslator(userID: userID)
+        let meta = DMSPGPUserIDTranslator(userID: userID)
         return contact?.name ?? meta.name ?? meta.email ?? ""
     }
 
