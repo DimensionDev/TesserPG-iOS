@@ -15,8 +15,8 @@ class TesserCubeUITests: XCTestCase {
     }
 
     override func tearDown() {
-//        let app = XCUIApplication()
-//        print(app.debugDescription)
+        let app = XCUIApplication()
+        print(app.debugDescription)
     }
 
     func testSmoke() {
@@ -29,6 +29,10 @@ class TesserCubeUITests: XCTestCase {
         app.launchArguments.append("ResetApplication")
         app.launch()
     }
+
+}
+
+extension TesserCubeUITests {
 
     func testSnapshot() throws {
         // Reset application
@@ -71,20 +75,36 @@ class TesserCubeUITests: XCTestCase {
         try app.snapshot()
     }
 
+}
 
-    func testKeyCreateAndRemove() {
+extension TesserCubeUITests {
+
+    // test create keypair and delete in me tab
+    func testKeyCreateAndRemove_Me() {
         let app = XCUIApplication()
         app.launchArguments.append("ResetApplication")
         app.launch()
         app.terminate()
 
         skipWizard()
-        checkExist(name: "Bob", isExist: false)
-        createKey(name: "Bob", email: "bob@pgp.org", password: "Bob")
-        checkExist(name: "Bob", isExist: true)
-        deleteKey(name: "Bob")
-        checkExist(name: "Bob", isExist: false)
+
+        // Not exist
+        XCTAssertFalse(checkContactExist(name: "Bob"))
+        XCTAssertFalse(checkMeExist(name: "Bob <bob@tessercube.com>"))
+        // Create Bob
+        createKey(name: "Bob", email: "bob@tessercube.com", password: "Bob")
+        // Exist
+        XCTAssertTrue(checkContactExist(name: "Bob"))
+        XCTAssertTrue(checkMeExist(name: "Bob <bob@tessercube.com>"))
+        // Delete
+        deleteKey(name: "Bob <bob@tessercube.com>")
+        // Not exist
+        XCTAssertFalse(checkContactExist(name: "Bob"))
+        XCTAssertFalse(checkMeExist(name: "Bob <bob@tessercube.com>"))
     }
+
+    // TODO: test create and delete key secret part in contact edit view
+    // TODO: test create and delete whole key in contact edit view
 
 }
 
@@ -311,7 +331,8 @@ extension TesserCubeUITests {
         XCTAssert(app.tables.buttons["Create Keypair"].exists)
         app.tables.buttons["Create Keypair"].tap()
 
-        XCTAssert(app.tables.cells.staticTexts[name].waitForExistence(timeout: 10))
+        let nameAndEmail = [name, "<" + email + ">"].joined(separator: " ")
+        XCTAssert(app.tables.cells.staticTexts[nameAndEmail].waitForExistence(timeout: 10))
     }
 
     // copy private key by name
@@ -373,36 +394,32 @@ extension TesserCubeUITests {
         XCTAssert(app.sheets.buttons["Delete"].exists)
         app.sheets.buttons["Delete"].tap()
 
-        app.sheets.buttons.element(boundBy: 0).tap()
-
-        let sleep = expectation(description: "Sleep")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-            sleep.fulfill()
-        }
-        waitForExpectations(timeout: 5.0, handler: nil)
-        XCTAssert(!app.tables.cells.containing(.staticText, identifier: name).firstMatch.exists)
+        XCTAssert(app.sheets.buttons.firstMatch.waitForExistence(timeout: 5.0))
+        app.sheets.buttons.firstMatch.tap()
     }
 
-    // check private key exist in Me & Contacts tab
-    func checkExist(name: String, isExist: Bool) {
+    // check private key exist in Contacts tab
+    func checkContactExist(name: String) -> Bool {
+        let app = XCUIApplication()
+        app.launch()
+
+        // Move to "Contacts" tab
+        XCTAssert(app.tabBars.buttons["Contacts"].exists)
+        app.tabBars.buttons["Contacts"].tap()
+
+        return app.tables.cells.staticTexts[name].exists
+    }
+
+    // check private key exist in Me tab
+    func checkMeExist(name: String) -> Bool {
         let app = XCUIApplication()
         app.launch()
 
         // Move to "Me" tab
-        XCTAssert(app.navigationBars["Messages"].exists)
-        XCTAssert(app.tabBars.buttons.count == 3)
         XCTAssert(app.tabBars.buttons["Me"].exists)
         app.tabBars.buttons["Me"].tap()
 
-        XCTAssertEqual(app.tables.cells.staticTexts[name].exists, isExist)
-
-        // Move to "Contacts" tab
-        XCTAssert(app.navigationBars["Me"].exists)
-        XCTAssert(app.tabBars.buttons.count == 3)
-        XCTAssert(app.tabBars.buttons["Contacts"].exists)
-        app.tabBars.buttons["Contacts"].tap()
-
-        XCTAssertEqual(app.tables.cells.staticTexts[name].exists, isExist)
+        return app.tables.cells.staticTexts[name].exists
     }
 
 }

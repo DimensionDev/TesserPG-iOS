@@ -15,6 +15,9 @@
   },
   "testTargets" : [
     {
+      "skippedTests" : [
+        "TesserCubeUITests\/testSnapshot()"
+      ],
       "target" : {
         "containerPath" : "container:TesserCube.xcodeproj",
         "identifier" : "8304E9AF221BF10200122637",
