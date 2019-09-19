@@ -15,6 +15,7 @@ import FLEX
 import SwifterSwift
 import IQKeyboardManagerSwift
 import SVProgressHUD
+import ConsolePrint
 
 class Application: NSObject {
     
@@ -43,6 +44,12 @@ class Application: NSObject {
             #endif
         } else {
             
+        }
+
+        if let wordPredictor = WordSuggestionService.shared.wordPredictor, wordPredictor.needLoadNgramData {
+            wordPredictor.load { error in
+                consolePrint(error?.localizedDescription ?? "NGram realm setup success")
+            }
         }
 
         IQKeyboardManager.shared.enable = true

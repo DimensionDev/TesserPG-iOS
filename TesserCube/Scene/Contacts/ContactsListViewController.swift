@@ -66,6 +66,7 @@ class ContactsListViewController: TCBaseViewController {
         tableView.keyboardDismissMode = .interactive
         tableView.preservesSuperviewLayoutMargins = true
         tableView.cellLayoutMarginsFollowReadableWidth = true
+        tableView.accessibilityLabel = "ContactsTableView"
         return tableView
     }()
     
