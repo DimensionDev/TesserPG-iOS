@@ -117,11 +117,8 @@ class KeyboardViewController: UIInputViewController {
             // Fallback on earlier versions
         }
         
-        if #available(iOSApplicationExtension 11.0, *) {
-            self.keyboard = defaultKeyboard(needInputSwitchKey: needsInputModeSwitchKey)
-        } else {
-            self.keyboard = defaultKeyboard(needInputSwitchKey: true)
-        }
+        //self.keyboard = defaultKeyboard(needInputSwitchKey: needsInputModeSwitchKey)
+        self.keyboard = defaultKeyboard(needInputSwitchKey: true)
         self.shiftState = .disabled
         self.currentMode = 0
         
