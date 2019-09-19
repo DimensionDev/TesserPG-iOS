@@ -155,7 +155,7 @@ final class SenderContactPickerView: UIView {
         separatorView.backgroundColor = .separator
         senderPickerView.delegate = self
         senderPickerView.dataSource = viewModel
-        
+
         viewModel.keys.asDriver()
             .drive(onNext: { [weak self] _ in
                 self?.senderPickerView.reloadAllComponents()
@@ -177,7 +177,7 @@ extension SenderContactPickerView: UIPickerViewDelegate {
 
         switch row {
         case 0..<viewModel.keys.value.count:
-            let key =  viewModel.keys.value[row]
+            let key = viewModel.keys.value[row]
             label.text = [key.name, "(\(key.shortIdentifier))"]
                 .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
                 .filter { !$0.isEmpty }

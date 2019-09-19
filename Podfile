@@ -46,7 +46,7 @@ target 'TesserCube' do
   pod 'Eureka', '~> 4.3.1'
 
   # DEBUG
-  pod 'FLEX', '~> 2.4.0', :configurations => ['Debug', 'Debug Stub', 'Debug PGP']
+  pod 'FLEX', '~> 2.4.0', :configurations => ['Debug']
 
   target 'TesserCubeTests' do
     inherit! :search_paths
@@ -80,11 +80,8 @@ post_install do |installer|
     end
 
     installer.pods_project.build_configurations.each do |config|  
-        if config.name == 'Debug Stub'
-            config.build_settings['SWIFT_ACTIVE_COMPILATION_CONDITIONS'] = 'DEBUG STUB $(inherited)'
-        end
-        if config.name == 'Debug PGP'
-            config.build_settings['SWIFT_ACTIVE_COMPILATION_CONDITIONS'] = 'DEBUG DEBUGPGP $(inherited)'
+        if config.name == 'XCTest'
+            config.build_settings['SWIFT_ACTIVE_COMPILATION_CONDITIONS'] = 'XCTEST'
         end
     end
 end
