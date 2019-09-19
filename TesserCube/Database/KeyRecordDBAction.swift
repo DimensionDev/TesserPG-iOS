@@ -35,15 +35,15 @@ extension KeyRecord {
 
 extension KeyRecord {
 
-//    static func remove(keys: [String]) throws {
-//        do {
-//            _ = try TCDBManager.default.dbQueue.write({ db in
-//                try KeyRecord.filter(keys.contains(Column("longIdentifier"))).deleteAll(db)
-//            })
-//        } catch let error {
-//            throw error
-//        }
-//    }
+    static func remove(keys: [String]) throws {
+        do {
+            _ = try TCDBManager.default.dbQueue.write({ db in
+                try KeyRecord.filter(keys.contains(Column("longIdentifier"))).deleteAll(db)
+            })
+        } catch let error {
+            throw error
+        }
+    }
 
 }
 
