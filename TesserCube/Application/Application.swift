@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import DMSOpenPGP
 #if DEBUG
 #if FLEX
 import FLEX
@@ -56,8 +55,9 @@ class Application: NSObject {
     private class func initUserDefaults() {
         KeyboardPreference.accountName = "you get me!"
 
-        DMSPGPArmoredHeader.commentHeaderContentForArmoredKey = "You can manage keys with https://tessercube.com"
-        DMSPGPArmoredHeader.commentHeaderContentForMessage = "Encrypted with https://tessercube.com"
+        // TODO: set tessercube armor header
+//        DMSPGPArmoredHeader.commentHeaderContentForArmoredKey = "You can manage keys with https://tessercube.com"
+//        DMSPGPArmoredHeader.commentHeaderContentForMessage = "Encrypted with https://tessercube.com"
         
     }
     

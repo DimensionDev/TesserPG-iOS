@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import BouncyCastle_ObjC
 import ConsolePrint
 
 @UIApplicationMain
@@ -16,8 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Setup Bouncy Castle
-        JavaSecuritySecurity.addProvider(with: OrgBouncycastleJceProviderBouncyCastleProvider())
 
         // Setup Application
         Application.applicationConfigInit(application, launchOptions: launchOptions)

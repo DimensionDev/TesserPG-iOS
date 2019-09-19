@@ -17,12 +17,14 @@ def common_pods
   pod 'RxSwift', '~> 4.4.2'
   pod 'RxCocoa', '~> 4.4.2'
 
-  pod 'DMSOpenPGP', '~> 0.1.4'
+  # pod 'DMSOpenPGP', '~> 0.1.4'
   pod 'KeychainAccess', '~> 3.2.0'
 
   pod 'GRDB.swift', '~> 3.7.0'
   pod 'GRDBCipher', '~> 3.7.0'
   pod 'DeepDiff', '~> 2.0.1'
+
+  pod 'DMSGoPGP', '~> 0.0.16'
 
   pod 'WordSuggestion', '~> 0.2.1'
 end

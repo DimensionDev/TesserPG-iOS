@@ -119,8 +119,11 @@ extension ProfileService {
                 senderKeyUserID = decryptInfo.signatureKey?.userID ?? ""
             case .unknownSigner(let infos):
                 // This is real KeyID of signature key (not long identifier)
-                senderKeyID = infos.first?.keyID ?? ""
-                senderKeyUserID = infos.first?.primaryUserID ?? ""
+                // TODO: Get signer userID in DMSGoPGP
+//                senderKeyID = infos.first?.keyID ?? ""
+//                senderKeyUserID = infos.first?.primaryUserID ?? ""
+                senderKeyID = infos.first ?? ""
+                senderKeyUserID = infos.first ?? ""
             }
 
             var interpretedMessage = Message(id: nil,

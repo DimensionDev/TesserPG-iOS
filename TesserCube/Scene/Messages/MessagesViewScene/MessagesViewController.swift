@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import DMSOpenPGP
 import SwifterSwift
 import SnapKit
 import RxCocoa

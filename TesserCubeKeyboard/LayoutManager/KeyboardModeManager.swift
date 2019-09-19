@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import DMSOpenPGP
 import ConsolePrint
 
 enum KeyboardMode {
@@ -327,7 +326,7 @@ extension KeyboardModeManager: SuggesionViewDelegate {
 // MARK: Copy
 extension KeyboardModeManager {
     func checkPasteboard() {
-        if let pastedString = UIPasteboard.general.string, DMSPGPDecryptor.verify(armoredMessage: pastedString) {
+        if let pastedString = UIPasteboard.general.string, KeyFactory.verify(armoredMessage: pastedString) {
             KeyboardInterpretor.interpretMessage(pastedString) { (success, error, result) in
                 KeyboardModeManager.shared.handleInterpretResult(success: success, error: error, result: result)
                 
@@ -345,23 +344,23 @@ extension KeyboardModeManager {
             mode = .interpretResult
         } else {
             consolePrint(error?.localizedDescription)
-//            switch error {
-//            case (let tcError as TCError):
-//                switch tcError {
-//                case .pgpKeyError(let reason):
-//                    switch reason {
-//                    case .invalidKeyFormat:
-//                        self.toastAlerter.alert(message: L10n.Keyboard.Alert.noEncryptedText, in: keyboardVC.view)
-//                    default:
-//                        break
-//                    }
-//                default:
-//                    toastAlerter.alert(message: tcError.localizedDescription, in: keyboardVC.view)
-//                    return
-//                }
-//            default:
-//                toastAlerter.alert(message: error?.localizedDescription ?? L10n.Common.Alert.unknownError, in: keyboardVC.view)
-//            }
+            switch error {
+            case (let tcError as TCError):
+                switch tcError {
+                case .pgpKeyError(let reason):
+                    switch reason {
+                    case .invalidKeyFormat:
+                        self.toastAlerter.alert(message: L10n.Keyboard.Alert.noEncryptedText, in: keyboardVC.view)
+                    default:
+                        break
+                    }
+                default:
+                    toastAlerter.alert(message: tcError.localizedDescription, in: keyboardVC.view)
+                    return
+                }
+            default:
+                toastAlerter.alert(message: error?.localizedDescription ?? L10n.Common.Alert.unknownError, in: keyboardVC.view)
+            }
         }
     }
 }

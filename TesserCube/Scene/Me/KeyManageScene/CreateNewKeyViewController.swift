@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import DMSOpenPGP
 import Eureka
 import SnapKit
 
@@ -179,7 +178,7 @@ class CreateNewKeyViewController: FormViewController {
         }
         showHUD(L10n.Common.Hud.creatingKey)
         
-        let userID = PGPUserIDTranslator.buildUserID(name: name, email: email, comment: nil)
+        let userID = DMSPGPUserIDTranslator.buildUserID(name: name, email: email, comment: nil)
         let password = valuesDictionary["Password"] as? String
         
         let chosenKeyLength: Int = (valuesDictionary["KeyLength"] as? Int) ?? 3072
