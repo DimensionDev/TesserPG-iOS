@@ -11,18 +11,6 @@ import GRDB
 import ConsolePrint
 
 extension Contact {
-
-//    static func all() -> [Contact] {
-//        do {
-//            let contacts = try TCDBManager.default.dbQueue.read({ db in
-//                try Contact.fetchAll(db)
-//            })
-//            return contacts
-//        } catch let error {
-//            consolePrint(error.localizedDescription)
-//            return []
-//        }
-//    }
     
     static func find(id: Int64) -> Contact? {
         do {

@@ -23,7 +23,7 @@ extension MeViewModel {
             case .sharePublic:       return L10n.MeViewController.Action.Button.share
             case .exportPrivate:     return L10n.MeViewController.Action.Button.export
             case .delete:            return L10n.Common.Button.delete
-            case .cancel:               return L10n.Common.Button.cancel
+            case .cancel:            return L10n.Common.Button.cancel
             }
         }
 
@@ -84,15 +84,12 @@ extension MeViewModel {
                 case let .exportPrivate(key, presentingViewController, cell):
                     ShareUtil.export(key: key, from: presentingViewController, over: cell)
                 case let .delete(key, presentingViewController, cell):
-//                    guard let keyRecord = key.keyRecord else {
-//                        return
-//                    }
 
                     let deleteConfirmAlertController: UIAlertController = {
                         let confirmMessage = L10n.MeViewController.Action.Button.confirmDeleteKey + key.shortIdentifier
                         let alertVC = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                         alertVC.addAction(title: confirmMessage, style: .destructive, isEnabled: true) { _ in
-                            try? KeyRecord.remove(keys: [key.longIdentifier])
+                            try? KeyRecord.remove(longIdentifier: [key.longIdentifier])
                         }
                         alertVC.addAction(title: L10n.Common.Button.cancel, style: .cancel, isEnabled: true)
                         if let presenter = alertVC.popoverPresentationController {

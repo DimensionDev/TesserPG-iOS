@@ -35,10 +35,30 @@ extension KeyRecord {
 
 extension KeyRecord {
 
-    static func remove(keys: [String]) throws {
+    // Remove keyRecord and owner contact side-effect
+    static func remove(longIdentifier: [String]) throws {
+
         do {
             _ = try TCDBManager.default.dbQueue.write({ db in
-                try KeyRecord.filter(keys.contains(Column("longIdentifier"))).deleteAll(db)
+                let keyRecords = try KeyRecord.filter(longIdentifier.contains(Column("longIdentifier"))).fetchAll(db)
+                for keyRecord in keyRecords {
+                    guard let contact = try? Contact.fetchOne(db, key: keyRecord.contactId) else {
+                        assertionFailure("Key not belong to any contact")
+                        try keyRecord.delete(db)
+                        continue
+                    }
+
+                    let keysCount = try contact.keys.fetchCount(db)
+                    let shouldRemoveContact = keysCount == 1
+
+                    if shouldRemoveContact {
+                        try contact.delete(db)
+                        // cascade delete key record
+                    } else {
+                        try keyRecord.delete(db)
+                    }
+
+                }
             })
         } catch let error {
             throw error
