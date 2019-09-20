@@ -37,7 +37,7 @@ class CreateNewKeyViewController: FormViewController {
         form +++ Section() {
             $0.footer = footer
             }
-            <<< NameRow("name"){ row in
+            <<< NameRow("name") { row in
                 row.placeholder = L10n.CreateNewKeyViewController.Label.name
                 row.add(rule: RuleRequired(msg: L10n.CreateNewKeyViewController.Alert.Title.nameRequired, id: "Name_Required"))
                 row.validationOptions = .validatesOnChange
@@ -184,7 +184,11 @@ class CreateNewKeyViewController: FormViewController {
         let chosenKeyLength: Int = (valuesDictionary["KeyLength"] as? Int) ?? 3072
         let generateKeyOption: CreateKeyOption = (valuesDictionary["Algorithm"] as? CreateKeyOption) ?? .rsa
         
-        let generateKeyData = GenerateKeyData(name: name, email: email, password: password, masterKey: KeyData(strength: chosenKeyLength, algorithm: generateKeyOption.dmsPGPPublicKeyAlgorithm, curve: generateKeyOption.curve), subkey: KeyData(strength: chosenKeyLength, algorithm: generateKeyOption.dmsSubkeyAlgorithm, curve: generateKeyOption.curve))
+        let generateKeyData = GenerateKeyData(name: name,
+                                              email: email,
+                                              password: password,
+                                              masterKey: KeyData(strength: chosenKeyLength, algorithm: generateKeyOption.dmsPGPPublicKeyAlgorithm),
+                                              subkey: KeyData(strength: chosenKeyLength, algorithm: generateKeyOption.dmsSubkeyAlgorithm))
         
         ProfileService.default.addNewKey(userID: userID, passphrase: password, generateKeyData: generateKeyData) { [weak self] error in
             DispatchQueue.main.async {

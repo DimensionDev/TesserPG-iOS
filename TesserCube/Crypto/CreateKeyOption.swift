@@ -16,7 +16,7 @@ public enum CreateKeyOption {
     var displayName: String {
         switch self {
         case .ecc:
-            return "ECC(SECP256K1)"
+            return "EdDSA"
         case .rsa:
             return "RSA"
         }
@@ -40,12 +40,12 @@ public enum CreateKeyOption {
         }
     }
 
-    var curve: KeyCurve? {
-        switch self {
-        case .ecc:
-            return .Secp256k1
-        default:
-            return nil
-        }
-    }
+//    var curve: KeyCurve? {
+//        switch self {
+//        case .ecc:
+//            return .Secp256k1
+//        default:
+//            return nil
+//        }
+//    }
 }

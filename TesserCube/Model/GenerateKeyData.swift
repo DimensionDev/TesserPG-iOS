@@ -8,25 +8,25 @@
 
 import Foundation
 
-public enum KeyCurve {
-    case NIST_P256
-    case NIST_P384
-    case NIST_P521
-    case Secp256k1
-    
-    public var parameterSpecName: String {
-        switch self {
-        case .NIST_P256:
-            return "P-256"
-        case .NIST_P384:
-            return "P-384"
-        case .NIST_P521:
-            return "P-521"
-        case .Secp256k1:
-            return "secp256k1"
-        }
-    }
-}
+//public enum KeyCurve {
+//    case NIST_P256
+//    case NIST_P384
+//    case NIST_P521
+//    case Secp256k1
+//
+//    public var parameterSpecName: String {
+//        switch self {
+//        case .NIST_P256:
+//            return "P-256"
+//        case .NIST_P384:
+//            return "P-384"
+//        case .NIST_P521:
+//            return "P-521"
+//        case .Secp256k1:
+//            return "secp256k1"
+//        }
+//    }
+//}
 
 public enum KeyAlgorithm: String {
     case rsa, x25519
@@ -35,12 +35,12 @@ public enum KeyAlgorithm: String {
 public struct KeyData {
     public var strength: Int = 3072
     public var algorithm: KeyAlgorithm = .rsa
-    public var curve: KeyCurve?
+    // public var curve: KeyCurve?
     
-    public init(strength: Int = 3072, algorithm: KeyAlgorithm = .rsa, curve: KeyCurve? = nil) {
+    public init(strength: Int = 3072, algorithm: KeyAlgorithm = .rsa) {
         self.strength = strength
         self.algorithm = algorithm
-        self.curve = curve
+        // self.curve = curve
     }
 }
 
