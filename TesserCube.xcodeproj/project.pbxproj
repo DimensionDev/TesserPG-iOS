@@ -373,6 +373,10 @@
 		DBC7DEC12248D49E00DA4C3E /* ComposeMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC7DEC02248D49E00DA4C3E /* ComposeMessageViewModel.swift */; };
 		DBD63FDD229682E400E46FDC /* KeyFactory+TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */; };
 		DBD63FE02296864200E46FDC /* KeyFactory+TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */; };
+		DBD98FDB2334B7B7003A952B /* CryptoPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD98FDA2334B7B7003A952B /* CryptoPublicKey.swift */; };
+		DBD98FDC2334B7B7003A952B /* CryptoPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD98FDA2334B7B7003A952B /* CryptoPublicKey.swift */; };
+		DBD98FDD2334B7B7003A952B /* CryptoPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD98FDA2334B7B7003A952B /* CryptoPublicKey.swift */; };
+		DBD98FDE2334B7B7003A952B /* CryptoPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD98FDA2334B7B7003A952B /* CryptoPublicKey.swift */; };
 		DBE13D79224CCC0B004850A6 /* TCDBManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE13D78224CCC0B004850A6 /* TCDBManagerTests.swift */; };
 		DBF6B2A9232F43C7008F83AE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6B2A8232F43C7008F83AE /* UIColor.swift */; };
 		DBF6B2AA232F5479008F83AE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6B2A8232F43C7008F83AE /* UIColor.swift */; };
@@ -673,6 +677,7 @@
 		DBCE91DF23320EF30000A9F3 /* UITests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UITests.xctestplan; sourceTree = "<group>"; };
 		DBD638E5227EDC6B00E10BF2 /* JRE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JRE.framework; path = "../../../Java/j2objc-2.4/frameworks/JRE.framework"; sourceTree = "<group>"; };
 		DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyFactory+TCKey.swift"; sourceTree = "<group>"; };
+		DBD98FDA2334B7B7003A952B /* CryptoPublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoPublicKey.swift; sourceTree = "<group>"; };
 		DBE13D78224CCC0B004850A6 /* TCDBManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCDBManagerTests.swift; sourceTree = "<group>"; };
 		DBF01ECD22A53BEE004711F1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		DBF01ECE22A53BEE004711F1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -1168,6 +1173,7 @@
 		83B93D20221CEB8500F556C0 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				DBD98FDF2334B7BB003A952B /* DMSGoPGP */,
 				DB4F300522A120F50003804B /* DMSOpenPGP */,
 				832146B5223F89A8008ECC22 /* CALayer+Shadow.swift */,
 				DB66FE69224A330D00D82704 /* String.swift */,
@@ -1463,6 +1469,14 @@
 				DB66FE6E224A3CD600D82704 /* SenderContactPickerView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		DBD98FDF2334B7BB003A952B /* DMSGoPGP */ = {
+			isa = PBXGroup;
+			children = (
+				DBD98FDA2334B7B7003A952B /* CryptoPublicKey.swift */,
+			);
+			path = DMSGoPGP;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2094,6 +2108,7 @@
 				8313F69B22476F5500C09C2D /* SharePosterViewController.swift in Sources */,
 				837833632249C33B00F2C0BF /* TCDBManager.swift in Sources */,
 				833FF38D224F97BD00EFE0A9 /* ProfileService+Message.swift in Sources */,
+				DBD98FDB2334B7B7003A952B /* CryptoPublicKey.swift in Sources */,
 				83783377224B9B9B00F2C0BF /* ContactDetailViewController.swift in Sources */,
 				83FE346022B73AD70077C1A5 /* IntroCardView.swift in Sources */,
 				833FF391224F97D900EFE0A9 /* Message.swift in Sources */,
@@ -2172,6 +2187,7 @@
 				83B93D5E221E6D1E00F556C0 /* UIImage+Color.swift in Sources */,
 				8325E477222CD0E700EE9B83 /* SeparatorView.swift in Sources */,
 				83783384224CB7F700F2C0BF /* strings.swift in Sources */,
+				DBD98FDC2334B7B7003A952B /* CryptoPublicKey.swift in Sources */,
 				83B93D3A221D486600F556C0 /* KeyboardModel.swift in Sources */,
 				83C12EE12332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */,
 				8325E487222E768500EE9B83 /* Debounce.swift in Sources */,
@@ -2272,6 +2288,7 @@
 				DB63A12022E068A400C2DDA6 /* ContactsListViewController.swift in Sources */,
 				DB63A10122DDCBD700C2DDA6 /* MessageDBAction.swift in Sources */,
 				DB63A0F622DDCAEB00C2DDA6 /* TCKey.swift in Sources */,
+				DBD98FDD2334B7B7003A952B /* CryptoPublicKey.swift in Sources */,
 				DBF6B2AB232F5479008F83AE /* UIColor.swift in Sources */,
 				DB63A10322DDCD0300C2DDA6 /* KeyRecordDBAction.swift in Sources */,
 				DB63A12822E06F8200C2DDA6 /* ContactListViewModel.swift in Sources */,
@@ -2297,6 +2314,7 @@
 				DB1169DF22E19CA00099BA25 /* MessageCardTableViewController.swift in Sources */,
 				DBF6B2AC232F5479008F83AE /* UIColor.swift in Sources */,
 				DB1169B122E183390099BA25 /* ContactMappable.swift in Sources */,
+				DBD98FDE2334B7B7003A952B /* CryptoPublicKey.swift in Sources */,
 				DB1169BF22E183F90099BA25 /* KeyRecordDBAction.swift in Sources */,
 				DB1169B222E183440099BA25 /* ContactsListViewController.swift in Sources */,
 				835294BA23279F40000E6170 /* DMSReceipientKeyIDUtil.swift in Sources */,
