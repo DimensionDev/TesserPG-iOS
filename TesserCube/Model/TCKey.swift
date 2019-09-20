@@ -167,21 +167,17 @@ extension TCKey {
         }
         return nil
     }
-    
-    var algorithm: KeyAlgorithm? {
-        if let algo = try? goKeyRing?.getEncryptionKey().getAlgorithm(), algo == 1 {
-            return .rsa
-        }
-        // TODO: check algorithm
-        return .rsa
-//        return keyRing.publicKeyRing.primaryEncryptionKey?.algorithm
+
+    /// primary key algorithm
+    var primaryKeyAlgorihm: PublicKeyAlgorithm? {
+        return try? goKeyRing?.getEntity(0).primaryKey?.algorithm
     }
 
-    var keyStrength: Int? {
+    /// primary key length in bit
+    var primaryKeyStrength: Int? {
         var bitLenghtInt = 0
         try? goKeyRing?.getEntity(0).primaryKey?.getBitLength(&bitLenghtInt)
         return bitLenghtInt
-//        return keyRing.publicKeyRing.primaryEncryptionKey?.keyStrength
     }
     
     var isValid: Bool {

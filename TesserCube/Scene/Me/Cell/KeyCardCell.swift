@@ -41,20 +41,34 @@ enum KeyValue {
         case .mockKey:
             return L10n.MeViewController.KeyCardCell.Label.noKeyYet
         case .TCKey(let key):
-            let keySizeString = key.keyStrength?.string ?? L10n.Common.Label.nameUnknown
-            var keyDescString = "\(keySizeString)-bit / "
+            let keySizeString = key.primaryKeyStrength?.string ?? L10n.Common.Label.nameUnknown
+            let keySizeDescription = "\(keySizeString)-bit"
             
-            let pubKeyAlgorithmString = key.algorithm?.rawValue ?? L10n.Common.Label.nameUnknown
-            let pubKeyDescString = "\(pubKeyAlgorithmString)\(keySizeString)"
-            keyDescString.append(pubKeyDescString)
-            
-            if key.hasSubkey {
-                let subkeySizeString = key.subkeyStrength?.string ?? L10n.Common.Label.nameUnknown
-                let subkeyAlgorithmString = key.subkeyAlgorithm?.rawValue ?? L10n.Common.Label.nameUnknown
-                let subkeyDescString = "\(subkeyAlgorithmString)\(subkeySizeString)"
-                keyDescString.append(" + \(subkeyDescString)")
-            }
-            return keyDescString
+            let primaryKeyDescription: String? = {
+                guard let algorithm = key.primaryKeyAlgorihm else {
+                    return nil
+                }
+
+                // RSA or RSA3072
+                return algorithm.displayName + (key.primaryKeyStrength.flatMap { String($0) } ?? "")
+            }()
+
+            // TODO: needs GoPGP subkey support
+//            let primaryEncryptionKeyDescription: String? = {
+//                guard key.hasSubkey else {
+//                    return nil
+//                }
+//
+//                if key.hasSubkey {
+//                    let subkeySizeString = key.subkeyStrength?.string ?? L10n.Common.Label.nameUnknown
+//                    let subkeyAlgorithmString = key.subkeyAlgorithm?.rawValue ?? L10n.Common.Label.nameUnknown
+//                    let subkeyDescString = "\(subkeyAlgorithmString)\(subkeySizeString)"
+//                    keyDescString.append(" + \(subkeyDescString)")
+//                }
+//                return ""
+//            }()
+
+            return [keySizeDescription, primaryKeyDescription].compactMap { $0 }.joined(separator: " / ")
         }
     }
 }

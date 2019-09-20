@@ -294,8 +294,8 @@ extension ContactDetailViewController {
         validitylabel.text = isValid ? L10n.ContactDetailViewController.Label.valid : L10n.ContactDetailViewController.Label.invalid
         validitylabel.textColor = isValid ? .systemGreen : .systemRed
 
-        let keyTypeString = keys?.first?.algorithm?.rawValue ?? L10n.Common.Label.nameUnknown
-        let keySizeString = keys?.first?.keyStrength?.string ?? L10n.Common.Label.nameUnknown
+        let keyTypeString = keys?.first?.primaryKeyAlgorihm?.displayName ?? L10n.Common.Label.nameUnknown
+        let keySizeString = keys?.first?.primaryKeyStrength?.string ?? L10n.Common.Label.nameUnknown
         let keyInfoString = "\(keyTypeString)-\(keySizeString)"
         typelabel.text = keyInfoString
 

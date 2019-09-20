@@ -29,7 +29,45 @@ import Foundation
 //}
 
 public enum KeyAlgorithm: String {
-    case rsa, x25519
+    case rsa
+    case x25519
+}
+
+// PublicKeyAlgorithm uint8
+// Ref: crypto/openpgp/packet/packet.go
+public enum PublicKeyAlgorithm: Int, CaseIterable {
+    case RSA     = 1
+    case Elgamal = 16
+    case DSA     = 17
+
+    case ECDH    = 18
+    case ECDSA   = 19
+
+    case EdDSA   = 22
+
+    case RSA_Encrypt = 2
+    case RSA_Sign    = 3
+}
+
+extension PublicKeyAlgorithm {
+    public var displayName: String {
+        switch self {
+        case .RSA,
+             .RSA_Encrypt,
+             .RSA_Sign:
+            return "RSA"
+        case .Elgamal:
+            return "Elgamal"
+        case .DSA:
+            return "DSA"
+        case .ECDH:
+            return "EC"
+        case .ECDSA:
+            return "ECDSA"
+        case .EdDSA:
+            return "EdDSA"
+        }
+    }
 }
 
 public struct KeyData {
