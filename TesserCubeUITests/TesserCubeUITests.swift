@@ -404,7 +404,7 @@ extension TesserCubeUITests {
         app.launch()
 
         // Move to "Contacts" tab
-        XCTAssert(app.tabBars.buttons["Contacts"].exists)
+        XCTAssert(app.tabBars.buttons["Contacts"].waitForExistence(timeout: 5.0))
         app.tabBars.buttons["Contacts"].tap()
 
         return app.tables.cells.staticTexts[name].exists
