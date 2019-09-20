@@ -35,10 +35,11 @@ class ShareUtil {
 
     static func export(key: TCKey, from viewController: UIViewController, over view: UIView?) {
         let passwordDict = ProfileService.default.getPasswordDict(keyIdentifiers: [key.longIdentifier])
-        let armoredKeyString = try? key.getPrivateArmored(passprahse: passwordDict[key.longIdentifier]) ?? ""
+        let privateArmored = try? key.getPrivateArmored(passprahse: passwordDict[key.longIdentifier]) ?? ""
+        let armoredKeyString = [key.publicArmored, privateArmored].compactMap { $0 }.joined(separator: "\n")
 
         var items: [Any] = []
-        if let armoredKeyFileURL = createTempFile(for: armoredKeyString ?? "") {
+        if let armoredKeyFileURL = createTempFile(for: armoredKeyString) {
             items.append(armoredKeyFileURL)
         } else {
             items.append(armoredKeyString)
