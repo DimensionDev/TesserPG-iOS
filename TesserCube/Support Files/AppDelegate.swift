@@ -36,11 +36,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             window = UIWindow(frame: UIScreen.main.bounds)
 
-            #if XCTEST
-            window?.rootViewController = UIViewController()
-            return true
-            #endif
-
             // Make it the key window first since navigator works by finding the key window
             window?.makeKeyAndVisible()
             Coordinator.main.present(scene: .main(message: nil, window: window!), from: nil)
