@@ -37,7 +37,6 @@ class ContactCell: UITableViewCell {
             return hasSecretKey || key.hasSecretKey
         }) ?? false
 
-
         if #available(iOS 13.0, *) {
             switch traitCollection.userInterfaceStyle {
             case .dark:

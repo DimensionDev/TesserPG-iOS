@@ -111,10 +111,12 @@ extension InterpretMessageViewController {
 extension InterpretMessageViewController {
     
     private func hasValidKeyInPasteboard() -> Bool {
-        if UIPasteboard.general.hasStrings, let pasteString = UIPasteboard.general.string,
-        KeyFactory.verify(armoredMessage: pasteString) {   // FIXME: veriy function not work as expected
+        if UIPasteboard.general.hasStrings,
+        let pasteString = UIPasteboard.general.string,
+        KeyFactory.isValidMessage(from: pasteString) {
             return true
         }
+        
         return false
     }
     

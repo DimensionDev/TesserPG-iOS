@@ -4,6 +4,13 @@ disabled_rules:
   - line_length
   - type_body_length
   - file_length
+  - trailing_comma
+  - function_body_length
+  - unused_closure_parameter
+  - todo
+  - cyclomatic_complexity
+  - unused_setter_value
+  - type_name
 included:
   - TesserCube
 excluded:
@@ -12,3 +19,6 @@ excluded:
   - TesserCube/Resources
   - TesserCube/Generated
   - TesserCube/Vendor
+force_cast: warning # implicitly
+force_try:
+  severity: warning # explicitly

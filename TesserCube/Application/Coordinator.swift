@@ -53,7 +53,7 @@ class Coordinator {
     
     func present(scene: Scene, from sender: UIViewController?, transition: Transition = .detail, completion: (() -> Void)? = nil) {
         switch scene {
-        case let .main(message, window):
+        case let .main(_, window):
             if #available(iOS 13, *) {
                 window.rootViewController = MainTabbarViewController()
                 window.makeKeyAndVisible()
@@ -86,6 +86,7 @@ class Coordinator {
 }
 
 extension Coordinator {
+    
     private func get(scene: Scene) -> UIViewController {
         switch scene {
         case .main:

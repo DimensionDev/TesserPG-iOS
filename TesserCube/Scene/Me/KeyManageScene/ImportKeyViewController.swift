@@ -23,7 +23,6 @@ class ImportKeyViewController: TCBaseViewController {
     }()
     var contentScrollViewContentLayoutGuideHeight: NSLayoutConstraint!
 
-    
     private lazy var contentStackView: UIStackView = {
         let stackView = UIStackView(frame: .zero)
         stackView.spacing = 12

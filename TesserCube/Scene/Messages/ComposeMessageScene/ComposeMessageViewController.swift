@@ -191,7 +191,7 @@ extension ComposeMessageViewController {
     private func dismiss() {
         // Post notification in App Extension & App. Due to in-app open URL not trigger Swift condition flag (TARGET_IS_EXTENSION)
         let userInfo = ["message": composedMessage]
-        NotificationCenter.default.post(name: .messageComposeComplete, object: self, userInfo: userInfo as [AnyHashable : Any])
+        NotificationCenter.default.post(name: .messageComposeComplete, object: self, userInfo: userInfo as [AnyHashable: Any])
 
         dismiss(animated: true, completion: nil)
     }

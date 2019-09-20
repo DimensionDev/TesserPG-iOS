@@ -203,7 +203,7 @@ extension KeyboardModeManager {
 
 extension KeyboardModeManager: RecommendRecipientsViewDelegate {
     func recommendRecipientsView(_ view: RecommendRecipientsView, didSelect contactInfo: FullContactInfo) {
-        var selectedData = optionsView.selectedContacts
+        let selectedData = optionsView.selectedContacts
         if selectedData.contains(where: { (data) -> Bool in
             return data.contact.id == contactInfo.contact.id
         }) {
@@ -211,8 +211,6 @@ extension KeyboardModeManager: RecommendRecipientsViewDelegate {
             print(" This should not happen, account: \(contactInfo.contact.name)")
         } else {
             optionsView.addSelectedRecipient(contactInfo)
-//            selectedData.append(account)
-//            optionsView.selectedRecipients = selectedData
         }
     }
 }
@@ -326,7 +324,7 @@ extension KeyboardModeManager: SuggesionViewDelegate {
 // MARK: Copy
 extension KeyboardModeManager {
     func checkPasteboard() {
-        if let pastedString = UIPasteboard.general.string, KeyFactory.verify(armoredMessage: pastedString) {
+        if let pastedString = UIPasteboard.general.string, KeyFactory.isValidMessage(from: pastedString) {
             KeyboardInterpretor.interpretMessage(pastedString) { (success, error, result) in
                 KeyboardModeManager.shared.handleInterpretResult(success: success, error: error, result: result)
                 

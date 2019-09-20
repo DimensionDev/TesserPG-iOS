@@ -94,7 +94,7 @@ private class ShadowingViewAction: NSObject, CAAction {
     var pendingAnimation: CABasicAnimation?
     var priorPath: CGPath?
 
-    func run(forKey event: String, object anObject: Any, arguments dict: [AnyHashable : Any]?) {
+    func run(forKey event: String, object anObject: Any, arguments dict: [AnyHashable: Any]?) {
         guard let layer = anObject as? CALayer, let animation = self.pendingAnimation else {
             return
         }

@@ -13,7 +13,7 @@ class ShareUtil {
     // share public key
     static func share(key: TCKey, from viewController: UIViewController, over view: UIView?) {
         let armoredKeyString = key.publicArmored
-        let items: [Any] = [armoredKeyString]
+        let items: [Any] = [armoredKeyString as Any]
 
         let vc = UIActivityViewController(activityItems: items, applicationActivities: [])
         vc.completionWithItemsHandler = { type, result, items, error in

@@ -26,10 +26,11 @@ extension DMSPGPError: LocalizedError {
         case .notSupportAlgorithm(let algorithm):
             return L10n.DMSPGPError.notSupportAlgorithm(algorithm.rawValue)
         case .missingEncryptionKey(let keyRings):
-            // TODO: return missing fingerprint
-            return ""
-//            let fingerprints = keyRings.map { $0.primaryKey.fingerprint }.joined(separator: ", ")
-//            return L10n.DMSPGPError.missingEncryptionKey(fingerprints)
+            let fingerprints = keyRings
+                .map { TCKey(keyRing: $0) }
+                .map { $0.fingerprint }
+                .joined(separator: ", ")
+            return L10n.DMSPGPError.missingEncryptionKey(fingerprints)
         }
     }
 }

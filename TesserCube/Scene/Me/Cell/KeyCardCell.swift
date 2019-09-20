@@ -106,10 +106,12 @@ class KeyCardCell: UITableViewCell {
     private func updateModel() {
         addressLabel.text = keyValue.address
         codeLabel.attributedText = NSAttributedString(string: keyValue.hashCodeString, attributes:
-            [NSAttributedString.Key.font: FontFamily.SourceCodeProMedium.regular.font(size: 14),
-             NSAttributedString.Key.foregroundColor: UIColor.white,
-             NSAttributedString.Key.paragraphStyle: paraghStyle
-            ])
+            [
+                NSAttributedString.Key.font: FontFamily.SourceCodeProMedium.regular.font(size: 14) ?? Font.systemFont(ofSize: 14.0),
+                NSAttributedString.Key.foregroundColor: UIColor.white,
+                NSAttributedString.Key.paragraphStyle: paraghStyle
+            ]
+        )
         statusLabel.text = keyValue.status
     }
 }

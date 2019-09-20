@@ -20,7 +20,7 @@ extension ProfileService {
             }
 
             // contactsObervation will handle database update
-            let _ = try TCDBManager.default.dbQueue.write { db -> Contact in
+            _ = try TCDBManager.default.dbQueue.write { db -> Contact in
                 var newContact = Contact(id: nil, name: username ?? "")
                 try newContact.insert(db)
                 if let contactId = newContact.id {
@@ -35,14 +35,14 @@ extension ProfileService {
                 return newContact
             }   // end let _ = try …
 
-        } catch let error {
+        } catch {
             throw error
         }
     }
 
     func deleteContact(_ contact: Contact) throws {
         do {
-            guard let _ = contact.id else {
+            guard contact.id != nil else {
                 assertionFailure("Entity without ID could not to delete")
                 return
             }
@@ -52,7 +52,7 @@ extension ProfileService {
 
             // Any key records will be deleted cascade
 
-        } catch let error {
+        } catch {
             throw error
         }
     }

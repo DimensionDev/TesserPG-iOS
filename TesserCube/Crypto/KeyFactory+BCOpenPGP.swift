@@ -10,6 +10,29 @@ import Foundation
 import ConsolePrint
 import DMSGoPGP
 
+// MARK: - Verify
+extension KeyFactory {
+
+    static func verifyEncrypMessage(of armor: String) -> Bool {
+        var verifyPGPMsgError: NSError?
+        _ = CryptoNewPGPMessageFromArmored(armor, &verifyPGPMsgError)
+
+        return verifyPGPMsgError == nil
+    }
+
+    static func verifyCleartextMessage(of armor: String) -> Bool {
+        var verifyClearTextError: NSError?
+        _ = CryptoNewClearTextMessageFromArmored(armor, &verifyClearTextError)
+
+        return verifyClearTextError == nil
+    }
+
+    static func isValidMessage(from armor: String) -> Bool {
+        return verifyEncrypMessage(of: armor) || verifyCleartextMessage(of: armor)
+    }
+
+}
+
 // MARK: - Decrypt
 extension KeyFactory {
     
@@ -32,21 +55,6 @@ extension KeyFactory {
 
     static var keys: [TCKey] {
         return ProfileService.default.keys.value
-    }
-    
-    static func verify(armoredMessage: String) -> Bool {
-        var verifyPGPMsgError: NSError?
-        let _ = CryptoNewPGPMessageFromArmored(armoredMessage, &verifyPGPMsgError)
-        if verifyPGPMsgError == nil {
-            return true
-        }
-        
-        var verifyClearTextError: NSError?
-        let _ = CryptoNewClearTextMessageFromArmored(armoredMessage, &verifyClearTextError)
-        if verifyClearTextError == nil {
-            return true
-        }
-        return false
     }
 
     // swiftlint:disable cyclomatic_complexity
@@ -171,8 +179,7 @@ extension KeyFactory {
                 // No valid keys found for either known or hidden recipient
                 throw TCError.pgpKeyError(reason: .noAvailableDecryptKey)
             }
-            
-            
+
             // 6. Decryption message using any recipient key
             var decryptedMessage: String?
             let decryptKey = recipientKeys.first
@@ -180,7 +187,7 @@ extension KeyFactory {
             decryptedMessage = HelperDecryptMessageArmored(decryptKey!.goKeyRing, keyPasswordDict[decryptKey!.longIdentifier], armoredMessage, &error)
             
             var signatureVerifyError: NSError?
-            let _ = HelperDecryptVerifyMessageArmored(signatureKey?.goKeyRing, decryptKey!.goKeyRing, keyPasswordDict[decryptKey!.longIdentifier], armoredMessage, &signatureVerifyError)
+            _ = HelperDecryptVerifyMessageArmored(signatureKey?.goKeyRing, decryptKey!.goKeyRing, keyPasswordDict[decryptKey!.longIdentifier], armoredMessage, &signatureVerifyError)
 
             if signatureVerifyError != nil {
                 signatureVerifyResult = .invalid

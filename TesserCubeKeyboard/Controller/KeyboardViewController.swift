@@ -860,9 +860,10 @@ class KeyboardViewController: UIInputViewController {
                 }
             case .allCharacters:
                 return true
+            @unknown default:
+                return false
             }
-        }
-        else {
+        } else {
             return false
         }
     }

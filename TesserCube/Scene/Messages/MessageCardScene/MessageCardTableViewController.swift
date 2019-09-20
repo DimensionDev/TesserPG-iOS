@@ -17,8 +17,8 @@ final class MessageCardTableViewModel: NSObject {
 
     // input
     let messages = BehaviorRelay<[Message]>(value: [])
-    var messageExpandedDict: [IndexPath : Bool] = [:]
-    var messageMaxNumberOfLinesDict: [IndexPath : Int] = [:]
+    var messageExpandedDict: [IndexPath: Bool] = [:]
+    var messageMaxNumberOfLinesDict: [IndexPath: Int] = [:]
 
 }
 
