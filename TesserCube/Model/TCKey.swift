@@ -122,7 +122,7 @@ extension TCKey {
             var error: NSError?
             try? goKeyRing?.unlock(withPassphrase: passprahse)
             let armoredKeyRing = goKeyRing?.getArmored(passprahse, error: &error) ?? ""
-            if let error = error {
+            if error != nil {
                 throw TCError.pgpKeyError(reason: .invalidPassword)
             }
             return armoredKeyRing
@@ -187,7 +187,7 @@ extension TCKey {
     }
 }
 
-//MARK: Subkey management
+// MARK: - Subkey management
 extension TCKey {
     
     var hasSubkey: Bool {

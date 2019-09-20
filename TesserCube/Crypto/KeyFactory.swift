@@ -38,23 +38,8 @@ class KeyFactory {
 
     // @deprecated, only used in database migration
     static func legacyLoadKeys() -> [String] {
-        var keys: [String] = []
-        for keyType in TCKeyType.allCases {
-            let keyFiles = KeyFactory.loadKeyFiles(keyType: keyType)
-            for keyFile in keyFiles {
-                if let armored = try? String(contentsOfFile: keyFile, encoding: .utf8) {
-                        keys.append(armored)
-                }
-                
-                
-//                let keyRing = try? DMSPGPKeyRing(armoredKey: armored) else {
-//                    continue
-//                }
-//
-//                keys.append(TCKey(keyRing: keyRing))
-            }
-        }
-        return keys
+        return KeyFactory.loadKeyFiles(keyType: TCKeyType.rsa)
+            .compactMap { try? String(contentsOfFile: $0, encoding: .utf8) }
     }
 
 }

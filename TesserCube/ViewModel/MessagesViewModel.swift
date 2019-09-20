@@ -45,7 +45,7 @@ class MessagesViewModel: NSObject {
 
     // For diffable datasource
     var messageExpandedIDDict: [Int64: Bool] = [:]
-    var messageMaxNumberOfLinesIDDict: [Int64 : Int] = [:]
+    var messageMaxNumberOfLinesIDDict: [Int64: Int] = [:]
 
     // Output
     let segmentedControlItems = MessageType.allCases.map { $0.segmentedControlTitle }
@@ -76,7 +76,7 @@ class MessagesViewModel: NSObject {
                             if searchText.isEmpty { return true }
                             return $0.rawMessage.range(of: searchText, options: .caseInsensitive) != nil ||
                                 $0.senderKeyUserId.range(of: searchText, options: .caseInsensitive) != nil ||
-                                $0.getRecipients().first(where: { messageRecipient in messageRecipient.keyUserId.range(of: searchText, options: .caseInsensitive) != nil } ) != nil
+                                $0.getRecipients().first(where: { messageRecipient in messageRecipient.keyUserId.range(of: searchText, options: .caseInsensitive) != nil }) != nil
                         }
                         .sorted(by: { lhs, rhs -> Bool in
                             guard let lhsDate = lhs.interpretedAt ?? lhs.composedAt else {

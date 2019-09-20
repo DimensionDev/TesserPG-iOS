@@ -157,7 +157,6 @@
 		83C12EE12332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C12EDF2332209D009DB359 /* DMSPGPUserIDTranslator.swift */; };
 		83C12EE22332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C12EDF2332209D009DB359 /* DMSPGPUserIDTranslator.swift */; };
 		83C12EE32332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C12EDF2332209D009DB359 /* DMSPGPUserIDTranslator.swift */; };
-		83C12EE52332244E009DB359 /* MeViewModel+ContextMenuActionTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C12EE42332244D009DB359 /* MeViewModel+ContextMenuActionTableViewDelegate.swift */; };
 		83C12EE9233224C3009DB359 /* ShareUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F69722476ADD00C09C2D /* ShareUtil.swift */; };
 		83C12EEA233224C3009DB359 /* ShareUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F69722476ADD00C09C2D /* ShareUtil.swift */; };
 		83C12EEB233224C4009DB359 /* ShareUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F69722476ADD00C09C2D /* ShareUtil.swift */; };
@@ -2071,7 +2070,6 @@
 				8320AF4A22B64D1C00843FE7 /* IntroWizardViewController.swift in Sources */,
 				8313F69622475AC600C09C2D /* SharePublicKeyActivity.swift in Sources */,
 				832146DA2241FAC6008ECC22 /* PasteKeyViewController.swift in Sources */,
-				83C12EE52332244E009DB359 /* MeViewModel+ContextMenuActionTableViewDelegate.swift in Sources */,
 				832146BA223F8AA1008ECC22 /* KeyCardCell.swift in Sources */,
 				8313F69D22477CA000C09C2D /* UIViewController+Alert.swift in Sources */,
 				832146FA2244CCF4008ECC22 /* MessagesViewController.swift in Sources */,

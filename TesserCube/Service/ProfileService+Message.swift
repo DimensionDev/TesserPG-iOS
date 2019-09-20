@@ -88,7 +88,6 @@ extension ProfileService {
         }
     }
 
-
     /// Decrypt message and store in database
     ///
     /// - Parameter message: armored message

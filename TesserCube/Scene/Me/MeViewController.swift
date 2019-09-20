@@ -262,7 +262,7 @@ extension MeViewController: UITableViewDelegate {
         return UIContextMenuConfiguration(
             identifier: indexPath as NSCopying,
             previewProvider: nil,
-            actionProvider: { suggestedActions in
+            actionProvider: { _ in
                 return UIMenu(title: "", image: nil, identifier: nil, options: [], children: children)
             })
     }

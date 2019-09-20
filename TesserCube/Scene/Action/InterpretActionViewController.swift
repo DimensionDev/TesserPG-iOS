@@ -148,7 +148,7 @@ extension InterpretActionViewController {
 extension InterpretActionViewController {
 
     @objc private func extensionContextCompleteRequest(_ notification: Notification) {
-        guard let _ = notification.object as? ComposeMessageViewController,
+        guard nil != notification.object as? ComposeMessageViewController,
         let message = notification.userInfo?["message"] as? Message else {
             return
         }

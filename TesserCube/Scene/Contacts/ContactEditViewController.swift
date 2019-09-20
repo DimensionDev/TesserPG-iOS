@@ -94,7 +94,7 @@ class ContactEditViewController: TCBaseViewController {
             try contact?.update(name: newName, email: email)
             
             navigationController?.popViewController(animated: true)
-        } catch let error {
+        } catch {
             showHUDError("Fail to edit the contact")
         }
     }
@@ -158,7 +158,7 @@ class ContactEditViewController: TCBaseViewController {
                 try ProfileService.default.deleteContact(toDeleteContact)
             }
             navigationController?.popToRootViewController(animated: true)
-        } catch let error {
+        } catch {
             showHUDError("Fail to delete the contact")
         }
     }

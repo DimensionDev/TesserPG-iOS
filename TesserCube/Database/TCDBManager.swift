@@ -37,8 +37,8 @@ class TCDBManager {
                 var email = Email(id: nil, address: "bradgao@email.com", contactId: contact.id!)
                 try email.insert(db)
             }
-        } catch let error {
-            print("db error")
+        } catch {
+            assertionFailure(error.localizedDescription)
         }
         
     }

@@ -29,7 +29,6 @@ enum DMSPGPError: Error {
     case missingEncryptionKey(keyRings: [CryptoKeyRing])
 }
 
-
 enum TCError: Error {
     
     enum PGPKeyErrorReason {

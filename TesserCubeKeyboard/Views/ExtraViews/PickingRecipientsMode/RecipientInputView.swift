@@ -84,7 +84,7 @@ class ReceipientTextField: UITextField, UITextInputDelegate {
     
     func repositionCursor() {
         let oFrame = cursorView.frame
-        let textWidth = NSString(string: text ?? "").boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: bounds.size.height), options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: [NSAttributedString.Key.font : textFont], context: nil).width
+        let textWidth = NSString(string: text ?? "").boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: bounds.size.height), options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: [NSAttributedString.Key.font: textFont], context: nil).width
         cursorView.frame = CGRect(x: textWidth + ReceipientTextField.widthInset, y: oFrame.origin.y, width: oFrame.size.width, height: oFrame.size.height)
         customDelegate?.receipientTextField(self, textDidChange: text)
     }

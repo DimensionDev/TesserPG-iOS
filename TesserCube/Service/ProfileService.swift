@@ -114,7 +114,7 @@ class ProfileService {
             .subscribe(onNext: { contactIds in
                 var currentContacts = self.contacts.value
                 contactIds.forEach { contactId in
-                    if let existContactIndex = currentContacts.firstIndex(where: { ($0.id ?? -1) == contactId } ),
+                    if let existContactIndex = currentContacts.firstIndex(where: { ($0.id ?? -1) == contactId }),
                     let updatedContact = Contact.find(id: contactId) {
                         currentContacts[existContactIndex] = updatedContact
                     }
@@ -122,7 +122,6 @@ class ProfileService {
                 self.contacts.accept(currentContacts)
             })
             .disposed(by: disposeBag)
-
 
         // Message
 
@@ -154,7 +153,7 @@ class ProfileService {
         messageChanged
             .subscribe(onNext: { messageID in
                 var currentMessages = self.messages.value
-                if let index = currentMessages.firstIndex(where: { ($0.id ?? -1) == messageID } ),
+                if let index = currentMessages.firstIndex(where: { ($0.id ?? -1) == messageID }),
                 let updateMessage = Message.loadMessage(id: messageID) {
                     currentMessages[index] = updateMessage
                 }
@@ -186,7 +185,7 @@ extension ProfileService {
     
 }
 
-//MARK: Keychain conivience method
+// MARK: - Keychain conivience method
 extension ProfileService {
     func getPasswordDict(keyIdentifiers: [String]) -> [String: String] {
         var keyPasswordDict = [String: String]()
