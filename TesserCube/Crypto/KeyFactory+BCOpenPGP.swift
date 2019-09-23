@@ -292,6 +292,7 @@ extension KeyFactory {
                 allRecipientsKeyRing = CryptoGopenPGP().combineKeyRing(allRecipientsKeyRing, keyRing2: recipients[i].goKeyRing)
             }
             if signatureKey?.hasSecretKey ?? false, let password = signatureKeyPassword {
+                allRecipientsKeyRing = CryptoGopenPGP().combineKeyRing(allRecipientsKeyRing, keyRing2: signatureKey?.goKeyRing)
                 encrypted = HelperEncryptSignMessageArmored(allRecipientsKeyRing, signatureKey?.goKeyRing, password, message, &error)
             } else {
                 encrypted = HelperEncryptMessageArmored(allRecipientsKeyRing, message, &error)
@@ -303,18 +304,7 @@ extension KeyFactory {
                 throw TCError.composeError(reason: .internal)
             }
             return encryptedMessage
-//            var encryptor: DMSPGPEncryptor
-            // Add encryption key of signer if possible otherwise sender (a.k.a signer) could not decrypt message
-//            if let secretKeyRing = signatureKey?.keyRing.secretKeyRing, let senderPublicKeyRing = signatureKey?.keyRing.publicKeyRing, let password = signatureKeyPassword {
-//                let publicKeyDataList = recipients.map { DMSPGPEncryptor.PublicKeyData(publicKeyRing: $0.keyRing.publicKeyRing, isHidden: false)  } + [ DMSPGPEncryptor.PublicKeyData(publicKeyRing: senderPublicKeyRing, isHidden: false)]
-//                encryptor = try DMSPGPEncryptor(publicKeyDataList: publicKeyDataList, secretKeyRing: secretKeyRing, password: password)
-//            } else {
-//                let publicKeyDataList = recipients.map { DMSPGPEncryptor.PublicKeyData(publicKeyRing: $0.keyRing.publicKeyRing, isHidden: false)  }
-//                encryptor = try DMSPGPEncryptor(publicKeyDataList: publicKeyDataList)
-//            }
-//
-//            let encrypted = try encryptor.encrypt(message: message)
-//            return encrypted
+
         } catch {
             throw TCError.composeError(reason: .pgpError(error))
         }
