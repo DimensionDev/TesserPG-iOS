@@ -80,12 +80,8 @@ extension TesserCubeUITests {
 extension TesserCubeUITests {
 
     // test create keypair and delete in me tab
-    func testKeyCreateAndRemove_Me() {
-        let app = XCUIApplication()
-        app.launchArguments.append("ResetApplication")
-        app.launch()
-        app.terminate()
-
+    func testKeyCreateAndRemove_1() {
+        resetApplication()
         skipWizard()
 
         // Not exist
@@ -110,7 +106,36 @@ extension TesserCubeUITests {
 
 extension TesserCubeUITests {
 
-    func aliceComposeMessageToBob() {
+    // test sender if or not interpret self signing cipher message
+    func testInterpretEnctypedAndSignedMessage() {
+        resetApplication()
+        skipWizard()
+
+        createKey(name: "Alice", email: "alice@tessercube.com", password: "Alice")
+        createKey(name: "Bob", email: "bob@tessercube.com", password: "Bob")
+        aliceComposeMessageToBob(message: "From Alice")
+        let messageFromBob = copyFirstMessagePGPArmor()
+        deleteFirstMessage()
+        deleteKey(name: "Bob <bob@tessercube.com>")
+        interpretMessage(message: messageFromBob)
+
+        let app = XCUIApplication()
+        print(app.debugDescription)
+        XCTAssert(app.tables.cells.containing(.staticText, identifier: "From Alice").firstMatch.waitForExistence(timeout: 5.0))
+    }
+
+}
+
+extension TesserCubeUITests {
+
+    func resetApplication() {
+        let app = XCUIApplication()
+        app.launchArguments.append("ResetApplication")
+        app.launch()
+        app.terminate()
+    }
+
+    func aliceComposeMessageToBob(message: String = "Hi, Bob. What time shall we meet tonight for a drink?") {
        let app = XCUIApplication()
        app.launch()
 
@@ -129,7 +154,7 @@ extension TesserCubeUITests {
        let textView = app.textViews.firstMatch
        XCTAssert(textView.waitForExistence(timeout: 5.0))
        textView.tap()
-       textView.typeText("Hi, Bob. What time shall we meet tonight for a drink?")
+       textView.typeText(message)
        app.buttons["Finish"].tap()
 
        print(app.debugDescription)
@@ -381,8 +406,6 @@ extension TesserCubeUITests {
         app.launch()
 
         // Move to "Me" tab
-        XCTAssert(app.navigationBars["Messages"].exists)
-        XCTAssert(app.tabBars.buttons.count == 3)
         XCTAssert(app.tabBars.buttons["Me"].exists)
         app.tabBars.buttons["Me"].tap()
 
