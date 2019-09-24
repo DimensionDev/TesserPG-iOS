@@ -201,18 +201,10 @@ extension ContactEditViewController: UITableViewDataSource {
             }
             cell.selectionStyle = .none
 
-            // Note: It's should automatically adopting dark mode due to cell.traitCollection is .dark
-            // However it's still light mode. Mannully set color as workaround. (Xcode 11 Beta 5)
-            if #available(iOS 13.0, *) {
-                cell.contentView.backgroundColor = .secondarySystemBackground
-                cell.titleLabel.textColor = .secondaryLabel
-                cell.inputTextField.textColor = .label
-            } else {
-                // Fallback on earlier versions
-                cell.contentView.backgroundColor = .white
-                cell.titleLabel.textColor = .lightGray
-                cell.inputTextField.textColor = .black
-            }
+            cell.contentView.backgroundColor = ._secondarySystemGroupedBackground
+            cell.titleLabel.textColor = ._secondaryLabel
+            cell.inputTextField.textColor = ._label
+
             return cell
         } else {
             let cell = UITableViewCell(style: .default, reuseIdentifier: "deleteButton")

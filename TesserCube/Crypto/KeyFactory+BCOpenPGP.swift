@@ -35,12 +35,17 @@ extension KeyFactory {
 
 // MARK: - Decrypt
 extension KeyFactory {
+
+    public struct KeyInfo {
+        public let keyID: String
+        public let primaryUserID: String?
+    }
     
     enum VerifyResult {
         case noSignature
         case valid
         case invalid
-        case unknownSigner([String])    // unknown signer
+        case unknownSigner([KeyInfo])    // unknown signer
     }
 
     struct DecryptResult {
@@ -66,19 +71,30 @@ extension KeyFactory {
         // Message is cleartext signed message
         // Do not need decrypt, just return the body and signature
         var error: NSError?
-        let clearMessage = CryptoNewClearTextMessageFromArmored(armoredMessage, &error)
-        if error == nil, clearMessage != nil {
-            // Armored message is a clear text message
-            for key in keys {
+        let cleartextMessage = CryptoNewClearTextMessageFromArmored(armoredMessage, &error)
+        if error == nil, let message = cleartextMessage?.getString() {
+            let signatureKey = keys.first { key -> Bool in
+                var erro: Error?
                 let originMessage = HelperVerifyCleartextMessage(key.goKeyRing, armoredMessage, CryptoGetGopenPGP()!.getUnixTime(), &error)
-                if error == nil {
-                    return DecryptResult(message: originMessage,
-                                         signatureKey: key,
-                                         recipientKeys: [],
-                                         verifyResult: .valid,
-                                         unknownRecipientKeyIDs: [])
-                }
+                return error == nil
             }
+            let verifyResult: VerifyResult = {
+                // TODO .invalid
+                if signatureKey != nil {
+                    return .valid       // verifed signature key
+                } else {
+                    let signature = CryptoNewPGPSignature(cleartextMessage?.getSignature())
+                    // TODO: get signer key info from signature
+                    return .unknownSigner([])
+                }
+
+                return .unknownSigner([])
+            }()
+            return DecryptResult(message: message,
+                                 signatureKey: signatureKey,
+                                 recipientKeys: [],
+                                 verifyResult: verifyResult,
+                                 unknownRecipientKeyIDs: [])
         }
 
         do {
@@ -298,6 +314,7 @@ extension KeyFactory {
                 allRecipientsKeyRing = CryptoGopenPGP().combineKeyRing(allRecipientsKeyRing, keyRing2: recipients[i].goKeyRing)
             }
             if signatureKey?.hasSecretKey ?? false, let password = signatureKeyPassword {
+                allRecipientsKeyRing = CryptoGopenPGP().combineKeyRing(allRecipientsKeyRing, keyRing2: signatureKey?.goKeyRing)
                 encrypted = HelperEncryptSignMessageArmored(allRecipientsKeyRing, signatureKey?.goKeyRing, password, message, &error)
             } else {
                 encrypted = HelperEncryptMessageArmored(allRecipientsKeyRing, message, &error)
@@ -309,18 +326,7 @@ extension KeyFactory {
                 throw TCError.composeError(reason: .internal)
             }
             return encryptedMessage
-//            var encryptor: DMSPGPEncryptor
-            // Add encryption key of signer if possible otherwise sender (a.k.a signer) could not decrypt message
-//            if let secretKeyRing = signatureKey?.keyRing.secretKeyRing, let senderPublicKeyRing = signatureKey?.keyRing.publicKeyRing, let password = signatureKeyPassword {
-//                let publicKeyDataList = recipients.map { DMSPGPEncryptor.PublicKeyData(publicKeyRing: $0.keyRing.publicKeyRing, isHidden: false)  } + [ DMSPGPEncryptor.PublicKeyData(publicKeyRing: senderPublicKeyRing, isHidden: false)]
-//                encryptor = try DMSPGPEncryptor(publicKeyDataList: publicKeyDataList, secretKeyRing: secretKeyRing, password: password)
-//            } else {
-//                let publicKeyDataList = recipients.map { DMSPGPEncryptor.PublicKeyData(publicKeyRing: $0.keyRing.publicKeyRing, isHidden: false)  }
-//                encryptor = try DMSPGPEncryptor(publicKeyDataList: publicKeyDataList)
-//            }
-//
-//            let encrypted = try encryptor.encrypt(message: message)
-//            return encrypted
+
         } catch {
             throw TCError.composeError(reason: .pgpError(error))
         }

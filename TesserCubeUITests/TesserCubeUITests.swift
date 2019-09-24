@@ -80,12 +80,8 @@ extension TesserCubeUITests {
 extension TesserCubeUITests {
 
     // test create keypair and delete in me tab
-    func testKeyCreateAndRemove_Me() {
-        let app = XCUIApplication()
-        app.launchArguments.append("ResetApplication")
-        app.launch()
-        app.terminate()
-
+    func testKeyCreateAndRemove_1() {
+        resetApplication()
         skipWizard()
 
         // Not exist
@@ -110,73 +106,149 @@ extension TesserCubeUITests {
 
 extension TesserCubeUITests {
 
-    func aliceComposeMessageToBob() {
-       let app = XCUIApplication()
-       app.launch()
+    // test sender if or not interpret self signing cipher message
+    func testInterpretEnctypedAndSignedMessage() {
+        resetApplication()
+        skipWizard()
 
-       // compose
-       app.buttons["Compose"].tap()
+        createKey(name: "Alice", email: "alice@tessercube.com", password: "Alice")
+        createKey(name: "Bob", email: "bob@tessercube.com", password: "Bob")
+        aliceComposeMessageToBob(message: "From Alice")
+        let messageFromBob = copyFirstMessagePGPArmor()
+        deleteFirstMessage()
+        deleteKey(name: "Bob <bob@tessercube.com>")
+        interpretMessage(message: messageFromBob)
 
-       // select bob
-       XCTAssert(app.buttons["plus.circle"].waitForExistence(timeout: 5.0))
-       app.buttons["plus.circle"].tap()
-       let cell = app.tables.cells.containing(.staticText, identifier: "Bob").firstMatch
-       XCTAssert(cell.waitForExistence(timeout: 5.0))
-       cell.tap()
-       app.buttons["Done"].tap()
+        let app = XCUIApplication()
+        print(app.debugDescription)
+        XCTAssert(app.tables.cells.containing(.staticText, identifier: "From Alice").firstMatch.waitForExistence(timeout: 5.0))
+    }
 
-       // type compose message
-       let textView = app.textViews.firstMatch
-       XCTAssert(textView.waitForExistence(timeout: 5.0))
-       textView.tap()
-       textView.typeText("Hi, Bob. What time shall we meet tonight for a drink?")
-       app.buttons["Finish"].tap()
+    // test create key use invalid User ID
+    func testCreateKeyUseInvalidUserID_1() {
+        resetApplication()
+        skipWizard()
 
-       print(app.debugDescription)
-   }
+        let title = "Name cannot contain the following characters: <>()"
+        XCTAssertEqual(createKey(name: "Alice <", email: "alice@tessercube.com", password: "Alice")?.staticTexts.firstMatch.label, title)
+        XCTAssertEqual(createKey(name: "Alice >", email: "alice@tessercube.com", password: "Alice")?.staticTexts.firstMatch.label, title)
+        XCTAssertEqual(createKey(name: "Alice (", email: "alice@tessercube.com", password: "Alice")?.staticTexts.firstMatch.label, title)
+        XCTAssertEqual(createKey(name: "Alice )", email: "alice@tessercube.com", password: "Alice")?.staticTexts.firstMatch.label, title)
 
-   func bobComposeMessageToAlice() {
-       let app = XCUIApplication()
-       app.launch()
+        let title2 = "Please input a valid email address"
+        XCTAssertEqual(createKey(name: "Alice", email: "alice<@tessercube.com", password: "Alice")?.staticTexts.firstMatch.label, title2)
+        XCTAssertEqual(createKey(name: "Alice", email: "alice>@tessercube.com", password: "Alice")?.staticTexts.firstMatch.label, title2)
+        XCTAssertEqual(createKey(name: "Alice", email: "alice(@tessercube.com", password: "Alice")?.staticTexts.firstMatch.label, title2)
+        XCTAssertEqual(createKey(name: "Alice", email: "alice)@tessercube.com", password: "Alice")?.staticTexts.firstMatch.label, title2)
 
-       // Compose
-       app.buttons["Compose"].tap()
+        XCTAssertNil(createKey(name: "Alice", email: "alice@tessercube.com", password: "Alice"))
+    }
 
-       // Select bob
-       XCTAssert(app.buttons["plus.circle"].waitForExistence(timeout: 5.0))
-       app.buttons["plus.circle"].tap()
+    // test interpret cleartext message without signed public key
+    func testInterpretCleartextMessage() {
+        resetApplication()
+        skipWizard()
 
-       print(app.debugDescription)
+        createKey(name: "Alice", email: "alice@tessercube.com", password: "Alice")
+        composeCleartextMessage(message: "Sign by Alice")
+        let cleartext = copyFirstMessagePGPArmor(buttonTitle: "Share Signed Message")
+        deleteKey(name: "Alice <alice@tessercube.com>")
+        deleteFirstMessage()
+        interpretMessage(message: cleartext)
 
-       let cell = app.tables["ContactsTableView"].cells.containing(.staticText, identifier: "Alice").firstMatch
-       XCTAssert(cell.waitForExistence(timeout: 5.0))
-       cell.tap()
-       app.buttons["Done"].tap()
 
-       // select Bob as sender
-       let window = app.windows.element(boundBy: 0)
-       let appWindowHeight = window.frame.height
-       print(appWindowHeight)
+        let app = XCUIApplication()
+        app.launch()
 
-       let textField = app.textFields["Alice"].firstMatch
-       XCTAssert(textField.waitForExistence(timeout: 5.0))
-       textField.tap()
+        XCTAssertEqual(app.tables.cells.count, 1)
+    }
 
-       // Tap to select Bob
-       let pickerWheel = app.pickerWheels.firstMatch
-       XCTAssert(pickerWheel.waitForExistence(timeout: 5.0))
-       pickerWheel.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: pickerWheel.frame.midX, dy: pickerWheel.frame.height * 0.5 + 20)).tap()
-       app.buttons["Done"].tap()
+}
 
-       // Type compose message
-       let textView = app.textViews.firstMatch
-       XCTAssert(textView.waitForExistence(timeout: 5.0))
-       textView.tap()
-       textView.typeText("Meet at eight in the evening.")
-       app.buttons["Finish"].tap()
+extension TesserCubeUITests {
 
-       print(app.debugDescription)
-   }
+    func resetApplication() {
+        let app = XCUIApplication()
+        app.launchArguments.append("ResetApplication")
+        app.launch()
+        app.terminate()
+    }
+
+    func aliceComposeMessageToBob(message: String = "Hi, Bob. What time shall we meet tonight for a drink?") {
+        let app = XCUIApplication()
+        app.launch()
+
+        // compose
+        app.buttons["Compose"].tap()
+
+        // select bob
+        XCTAssert(app.buttons["plus.circle"].waitForExistence(timeout: 5.0))
+        app.buttons["plus.circle"].tap()
+        let cell = app.tables.cells.containing(.staticText, identifier: "Bob").firstMatch
+        XCTAssert(cell.waitForExistence(timeout: 5.0))
+        cell.tap()
+        app.buttons["Done"].tap()
+
+        // type compose message
+        let textView = app.textViews.firstMatch
+        XCTAssert(textView.waitForExistence(timeout: 5.0))
+        textView.tap()
+        textView.typeText(message)
+        app.buttons["Finish"].tap()
+    }
+
+    func bobComposeMessageToAlice() {
+        let app = XCUIApplication()
+        app.launch()
+
+        // Compose
+        app.buttons["Compose"].tap()
+
+        // Select bob
+        XCTAssert(app.buttons["plus.circle"].waitForExistence(timeout: 5.0))
+        app.buttons["plus.circle"].tap()
+
+        let cell = app.tables["ContactsTableView"].cells.containing(.staticText, identifier: "Alice").firstMatch
+        XCTAssert(cell.waitForExistence(timeout: 5.0))
+        cell.tap()
+        app.buttons["Done"].tap()
+
+        // select Bob as sender
+        let window = app.windows.element(boundBy: 0)
+        let appWindowHeight = window.frame.height
+        print(appWindowHeight)
+
+        let textField = app.textFields["Alice"].firstMatch
+        XCTAssert(textField.waitForExistence(timeout: 5.0))
+        textField.tap()
+
+        // Tap to select Bob
+        let pickerWheel = app.pickerWheels.firstMatch
+        XCTAssert(pickerWheel.waitForExistence(timeout: 5.0))
+        pickerWheel.coordinate(withNormalizedOffset: .zero).withOffset(CGVector(dx: pickerWheel.frame.midX, dy: pickerWheel.frame.height * 0.5 + 20)).tap()
+        app.buttons["Done"].tap()
+
+        // Type compose message
+        let textView = app.textViews.firstMatch
+        XCTAssert(textView.waitForExistence(timeout: 5.0))
+        textView.tap()
+        textView.typeText("Meet at eight in the evening.")
+        app.buttons["Finish"].tap()
+    }
+
+    func composeCleartextMessage(message: String) {
+        let app = XCUIApplication()
+        app.launch()
+
+        app.buttons["Compose"].tap()
+
+        let textView = app.textViews.firstMatch
+        XCTAssert(textView.waitForExistence(timeout: 5.0))
+        textView.tap()
+        textView.typeText(message)
+
+        app.buttons["Finish"].tap()
+    }
 
 }
 
@@ -220,7 +292,7 @@ extension TesserCubeUITests {
         wait(for: [sleep2], timeout: 5.0)
     }
 
-    func copyFirstMessagePGPArmor() -> String {
+    func copyFirstMessagePGPArmor(buttonTitle: String = "Share Encrypted Message") -> String {
         let app = XCUIApplication()
         app.launch()
 
@@ -230,8 +302,8 @@ extension TesserCubeUITests {
 
         // Copy
         card.tap()
-        XCTAssert(app.sheets.buttons["Share Encrypted Message"].exists)
-        app.sheets.buttons["Share Encrypted Message"].tap()
+        XCTAssert(app.sheets.buttons[buttonTitle].exists)
+        app.sheets.buttons[buttonTitle].tap()
 
         // Wait 5s
         let sleep = expectation(description: "Sleep")
@@ -288,7 +360,8 @@ extension TesserCubeUITests {
     }
 
     // create private key by name
-    func createKey(name: String, email: String, password: String) {
+    @discardableResult
+    func createKey(name: String, email: String, password: String) -> XCUIElement? {
         let app = XCUIApplication()
         app.launch()
 
@@ -297,11 +370,6 @@ extension TesserCubeUITests {
         XCTAssert(app.tabBars.buttons.count == 3)
         XCTAssert(app.tabBars.buttons["Me"].exists)
         app.tabBars.buttons["Me"].tap()
-
-        // Not exists
-        guard !app.tables.cells.staticTexts[name].exists else {
-            return
-        }
 
         // Tap "+" bar button item
         XCTAssert(app.navigationBars.buttons["Add"].exists)
@@ -331,8 +399,11 @@ extension TesserCubeUITests {
         XCTAssert(app.tables.buttons["Create Keypair"].exists)
         app.tables.buttons["Create Keypair"].tap()
 
-        let nameAndEmail = [name, "<" + email + ">"].joined(separator: " ")
-        XCTAssert(app.tables.cells.staticTexts[nameAndEmail].waitForExistence(timeout: 10))
+        if app.alerts.firstMatch.waitForExistence(timeout: 3.0) {
+            return app.alerts.firstMatch
+        } else {
+            return nil
+        }
     }
 
     // copy private key by name
@@ -381,8 +452,6 @@ extension TesserCubeUITests {
         app.launch()
 
         // Move to "Me" tab
-        XCTAssert(app.navigationBars["Messages"].exists)
-        XCTAssert(app.tabBars.buttons.count == 3)
         XCTAssert(app.tabBars.buttons["Me"].exists)
         app.tabBars.buttons["Me"].tap()
 

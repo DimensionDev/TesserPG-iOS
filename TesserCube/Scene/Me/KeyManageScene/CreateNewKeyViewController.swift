@@ -27,11 +27,7 @@ class CreateNewKeyViewController: FormViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(CreateNewKeyViewController.cancelBarButtonItemPressed(_:)))
         
         setupFormStyle()
-        
-        var passwordRules = RuleSet<String>()
-//        passwordRules.add(rule: RuleRequired(msg: "Please input password", id: "Password_Required"))
-        passwordRules.add(rule: RuleRegExp(regExpr: "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,20}$", msg: "Password should be minimum 8 characters at least 1 Alphabet and 1 Number", id: nil))
-        
+
         let footer = createButtonFooter()
         
         form +++ Section {
@@ -40,6 +36,7 @@ class CreateNewKeyViewController: FormViewController {
             <<< NameRow("name") { row in
                 row.placeholder = L10n.CreateNewKeyViewController.Label.name
                 row.add(rule: RuleRequired(msg: L10n.CreateNewKeyViewController.Alert.Title.nameRequired, id: "Name_Required"))
+                row.add(rule: RuleRegExp(regExpr: "^[^\\<\\>\\(\\)]*$", msg: L10n.CreateNewKeyViewController.Alert.Title.nameInvalid, id: nil))
                 row.validationOptions = .validatesOnChange
             }.cellUpdate { cell, row in
                 cell.textField.font = FontFamily.SFProText.regular.font(size: 17)
