@@ -124,6 +124,25 @@ extension TesserCubeUITests {
         XCTAssert(app.tables.cells.containing(.staticText, identifier: "From Alice").firstMatch.waitForExistence(timeout: 5.0))
     }
 
+    func testCreateKeyUseInvalidUserID_1() {
+        resetApplication()
+        skipWizard()
+
+        let title = "Name cannot contain the following characters: <>()"
+        XCTAssertEqual(createKey(name: "Alice <", email: "alice@tessercube.com", password: "Alice")?.staticTexts.firstMatch.label, title)
+        XCTAssertEqual(createKey(name: "Alice >", email: "alice@tessercube.com", password: "Alice")?.staticTexts.firstMatch.label, title)
+        XCTAssertEqual(createKey(name: "Alice (", email: "alice@tessercube.com", password: "Alice")?.staticTexts.firstMatch.label, title)
+        XCTAssertEqual(createKey(name: "Alice )", email: "alice@tessercube.com", password: "Alice")?.staticTexts.firstMatch.label, title)
+
+        let title2 = "Please input a valid email address"
+        XCTAssertEqual(createKey(name: "Alice", email: "alice<@tessercube.com", password: "Alice")?.staticTexts.firstMatch.label, title2)
+        XCTAssertEqual(createKey(name: "Alice", email: "alice>@tessercube.com", password: "Alice")?.staticTexts.firstMatch.label, title2)
+        XCTAssertEqual(createKey(name: "Alice", email: "alice(@tessercube.com", password: "Alice")?.staticTexts.firstMatch.label, title2)
+        XCTAssertEqual(createKey(name: "Alice", email: "alice)@tessercube.com", password: "Alice")?.staticTexts.firstMatch.label, title2)
+
+        XCTAssertNil(createKey(name: "Alice", email: "alice@tessercube.com", password: "Alice"))
+    }
+
 }
 
 extension TesserCubeUITests {
@@ -313,7 +332,8 @@ extension TesserCubeUITests {
     }
 
     // create private key by name
-    func createKey(name: String, email: String, password: String) {
+    @discardableResult
+    func createKey(name: String, email: String, password: String) -> XCUIElement? {
         let app = XCUIApplication()
         app.launch()
 
@@ -322,11 +342,6 @@ extension TesserCubeUITests {
         XCTAssert(app.tabBars.buttons.count == 3)
         XCTAssert(app.tabBars.buttons["Me"].exists)
         app.tabBars.buttons["Me"].tap()
-
-        // Not exists
-        guard !app.tables.cells.staticTexts[name].exists else {
-            return
-        }
 
         // Tap "+" bar button item
         XCTAssert(app.navigationBars.buttons["Add"].exists)
@@ -356,8 +371,11 @@ extension TesserCubeUITests {
         XCTAssert(app.tables.buttons["Create Keypair"].exists)
         app.tables.buttons["Create Keypair"].tap()
 
-        let nameAndEmail = [name, "<" + email + ">"].joined(separator: " ")
-        XCTAssert(app.tables.cells.staticTexts[nameAndEmail].waitForExistence(timeout: 10))
+        if app.alerts.firstMatch.waitForExistence(timeout: 3.0) {
+            return app.alerts.firstMatch
+        } else {
+            return nil
+        }
     }
 
     // copy private key by name

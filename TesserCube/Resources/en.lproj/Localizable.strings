@@ -159,6 +159,7 @@
 "CreateNewKeyViewController.Label.KeyLength" = "Key Length";
 
 "CreateNewKeyViewController.Alert.Title.NameRequired" = "Name is required to create a key";
+"CreateNewKeyViewController.Alert.Title.NameInvalid" = "Name cannot contain the following characters: <>()";
 "CreateNewKeyViewController.Alert.Title.EmailRequired" = "Email is required to create a key";
 "CreateNewKeyViewController.Alert.Title.EmailInvalid" = "Please input a valid email address";
 "CreateNewKeyViewController.Alert.Title.PasswordNotMatch" = "Confirm password should be same as password";
