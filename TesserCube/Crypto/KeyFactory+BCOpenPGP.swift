@@ -207,7 +207,7 @@ extension KeyFactory {
             // 7. Verify Signature
             if signatureKey == nil {
                 if let signerID = signatureUserID {
-                    signatureVerifyResult = .unknownSigner([signerID])
+                    signatureVerifyResult = .unknownSigner([KeyInfo(keyID: signatureKeyID ?? "", primaryUserID: signerID)])
                 } else {
                     // No signedUserID, Cannot find signedKeyID, this should not happen?
                     signatureVerifyResult = .valid
