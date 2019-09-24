@@ -44,16 +44,15 @@ enum KeyValue {
             let keySizeString = key.primaryKeyStrength?.string ?? L10n.Common.Label.nameUnknown
             let keySizeDescription = "\(keySizeString)-bit"
             
-//            let primaryKeyDescription: String? = {
-//                guard let algorithm = key.primaryKeyAlgorihm else {
-//                    return nil
-//                }
-//
-//                // RSA or RSA3072
-//                return algorithm.displayName + (key.primaryKeyStrength.flatMap { String($0) } ?? "")
-//            }()
+            let primaryKeyDescription: String? = {
+                guard let algorithm = key.primaryKeyAlgorihm else {
+                    return nil
+                }
 
-            // TODO: needs GoPGP subkey support
+                // RSA or RSA3072
+                return algorithm.displayName + (key.primaryKeyStrength.flatMap { String($0) } ?? "")
+            }()
+
             let primaryEncryptionKeyDescription: String? = {
                 guard key.hasSubkey else {
                     return nil
@@ -67,9 +66,18 @@ enum KeyValue {
                 return ""
             }()
 
-            return [keySizeDescription, primaryEncryptionKeyDescription].compactMap { $0 }.joined(separator: " / ")
+            let keyAlgorithmDescription: String? = {
+                if primaryKeyDescription == nil && primaryEncryptionKeyDescription == nil {
+                    return nil
+                } else {
+                    return [primaryKeyDescription, primaryKeyDescription].compactMap { $0 }.joined(separator: " + ")
+                }
+            }()
+
+            return [keySizeDescription, keyAlgorithmDescription].compactMap { $0 }.joined(separator: " / ")
         }
     }
+
 }
 
 class KeyCardCell: UITableViewCell {
