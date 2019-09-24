@@ -41,7 +41,7 @@ extension UIColor {
         let _tertiaryLabel = UIColor(displayP3Red: 60.0/255.0, green: 60.0/255.0, blue: 67.0/255.0, alpha: 0.3)
 
         if #available(iOS 13, *) {
-            return _tertiaryLabel
+            return .tertiaryLabel
         } else {
             return _tertiaryLabel
         }
