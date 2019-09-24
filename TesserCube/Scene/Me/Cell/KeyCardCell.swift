@@ -44,31 +44,30 @@ enum KeyValue {
             let keySizeString = key.primaryKeyStrength?.string ?? L10n.Common.Label.nameUnknown
             let keySizeDescription = "\(keySizeString)-bit"
             
-            let primaryKeyDescription: String? = {
-                guard let algorithm = key.primaryKeyAlgorihm else {
-                    return nil
-                }
-
-                // RSA or RSA3072
-                return algorithm.displayName + (key.primaryKeyStrength.flatMap { String($0) } ?? "")
-            }()
-
-            // TODO: needs GoPGP subkey support
-//            let primaryEncryptionKeyDescription: String? = {
-//                guard key.hasSubkey else {
+//            let primaryKeyDescription: String? = {
+//                guard let algorithm = key.primaryKeyAlgorihm else {
 //                    return nil
 //                }
 //
-//                if key.hasSubkey {
-//                    let subkeySizeString = key.subkeyStrength?.string ?? L10n.Common.Label.nameUnknown
-//                    let subkeyAlgorithmString = key.subkeyAlgorithm?.rawValue ?? L10n.Common.Label.nameUnknown
-//                    let subkeyDescString = "\(subkeyAlgorithmString)\(subkeySizeString)"
-//                    keyDescString.append(" + \(subkeyDescString)")
-//                }
-//                return ""
+//                // RSA or RSA3072
+//                return algorithm.displayName + (key.primaryKeyStrength.flatMap { String($0) } ?? "")
 //            }()
 
-            return [keySizeDescription, primaryKeyDescription].compactMap { $0 }.joined(separator: " / ")
+            // TODO: needs GoPGP subkey support
+            let primaryEncryptionKeyDescription: String? = {
+                guard key.hasSubkey else {
+                    return nil
+                }
+
+                if key.hasSubkey {
+                    let subkeySizeString = key.subkeyStrength?.string ?? L10n.Common.Label.nameUnknown
+                    let subkeyAlgorithmString = key.subkeyAlgorithm?.displayName ?? L10n.Common.Label.nameUnknown
+                    return "\(subkeyAlgorithmString)\(subkeySizeString)"
+                }
+                return ""
+            }()
+
+            return [keySizeDescription, primaryEncryptionKeyDescription].compactMap { $0 }.joined(separator: " / ")
         }
     }
 }
