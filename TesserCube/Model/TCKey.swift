@@ -191,25 +191,38 @@ extension TCKey {
 extension TCKey {
     
     var hasSubkey: Bool {
-        return false
-//        goKeyRing?.getEntity(0).privateKey
-//        return !keyRing.publicKeyRing.encryptionKeys.isEmpty
+        guard let subKeyCount = try? goKeyRing?.getEntity(0).getSubkeyCount() else {
+            return false
+        }
+        return subKeyCount > 0
     }
     
     var subkeyStrength: Int? {
-        return 0
-//        guard let firstSubkey = keyRing.publicKeyRing.encryptionKeys.first else {
-//            return nil
-//        }
-//        return firstSubkey.keyStrength
+        guard hasSubkey else { return nil }
+        
+        if let primaryEncryptionKey = try? goKeyRing?.getEncryptionKey() {
+            var primaryEncryptionKeybitLenghtInt = 0
+            try? primaryEncryptionKey.getBitLength(&primaryEncryptionKeybitLenghtInt)
+        }
+        
+        if let firstSubKey = try? goKeyRing?.getEntity(0).getSubkey(0) {
+            var bitLenghtInt = 0
+            try? firstSubKey.publicKey?.getBitLength(&bitLenghtInt)
+            return bitLenghtInt
+        }
+        return nil
     }
     
-    var subkeyAlgorithm: KeyAlgorithm? {
-        return .rsa
-//        guard let firstSubkey = keyRing.publicKeyRing.encryptionKeys.first else {
-//            return nil
-//        }
-//        return firstSubkey.algorithm
-//    }
+    var subkeyAlgorithm: PublicKeyAlgorithm? {
+        guard hasSubkey else { return nil }
+        if let primaryEncryptionKey = try? goKeyRing?.getEncryptionKey() {
+            let primaryAlgo = primaryEncryptionKey.algorithm
+            print("TEST ALGO")
+        }
+        
+        if let firstSubKey = try? goKeyRing?.getEntity(0).getSubkey(0) {
+            return firstSubKey.publicKey?.algorithm
+        }
+        return nil
     }
 }

@@ -110,6 +110,7 @@ extension KeyFactory {
             var signatureVerifyResult: VerifyResult = .invalid
             var signatureKey: TCKey?
             var signatureKeyID: String?
+            var signatureUserID: String?
             for secretKey in secretKeys {
                 if let passphrase = keyPasswordDict[secretKey.longIdentifier] {
                     try? secretKey.unlock(passphrase: passphrase)
@@ -120,6 +121,7 @@ extension KeyFactory {
                     if !messageDetail.isSigned {
                         signatureVerifyResult = .noSignature
                     } else {
+                        signatureUserID = messageDetail.getSignedUserID()
                         signatureKeyID = messageDetail.signedByKeyId
                         if signatureKey == nil {
                             // Check the signature key
@@ -186,15 +188,19 @@ extension KeyFactory {
 
             decryptedMessage = HelperDecryptMessageArmored(decryptKey!.goKeyRing, keyPasswordDict[decryptKey!.longIdentifier], armoredMessage, &error)
             
-            var signatureVerifyError: NSError?
-            _ = HelperDecryptVerifyMessageArmored(signatureKey?.goKeyRing, decryptKey!.goKeyRing, keyPasswordDict[decryptKey!.longIdentifier], armoredMessage, &signatureVerifyError)
-
-            if signatureVerifyError != nil {
-                signatureVerifyResult = .invalid
-            } else {
-                if signatureKey == nil {
-                    // TODO: return unknown signature keyID
+            // 7. Verify Signature
+            if signatureKey == nil {
+                if let signerID = signatureUserID {
+                    signatureVerifyResult = .unknownSigner([signerID])
+                } else {
+                    // No signedUserID, Cannot find signedKeyID, this should not happen?
                     signatureVerifyResult = .valid
+                }
+            } else {
+                var signatureVerifyError: NSError?
+                _ = HelperDecryptVerifyMessageArmored(signatureKey?.goKeyRing, decryptKey!.goKeyRing, keyPasswordDict[decryptKey!.longIdentifier], armoredMessage, &signatureVerifyError)
+                if signatureVerifyError != nil {
+                    signatureVerifyResult = .invalid
                 } else {
                     signatureVerifyResult = .valid
                 }

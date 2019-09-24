@@ -4,7 +4,7 @@ PODS:
   - DateToolsSwift (4.0.0)
   - DeepDiff (2.0.1)
   - DeviceKit (1.11.0)
-  - DMSGoPGP (0.0.16)
+  - DMSGoPGP (0.0.17)
   - Eureka (4.3.1)
   - FLEX (2.4.0)
   - GRDB.swift (3.7.0)
@@ -63,7 +63,7 @@ DEPENDENCIES:
   - DateToolsSwift (~> 4.0.0)
   - DeepDiff (~> 2.0.1)
   - DeviceKit (~> 1.11.0)
-  - DMSGoPGP (~> 0.0.16)
+  - DMSGoPGP (~> 0.0.17)
   - Eureka (~> 4.3.1)
   - FLEX (~> 2.4.0)
   - GRDB.swift (~> 3.7.0)
@@ -118,7 +118,7 @@ SPEC CHECKSUMS:
   DateToolsSwift: 875d97ff9e3a5d54abdd67a269b3f51c757b71ab
   DeepDiff: 1944bb2c841ab238a66b31de1faa7627f3ca84bd
   DeviceKit: a3a86f8dddbe1317a9a243cdf9646858bf135dce
-  DMSGoPGP: d8c06de65ed0c413c2648f0734c6f39af1f58bc3
+  DMSGoPGP: fd0970ab6941eb4a5b6cb2f8846ca9ab9a9151a6
   Eureka: 28ea296f06710f6745266b71f17862048941a32d
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
   GRDB.swift: 51cc9e57ae8ff7083a9d674c97925aa1de06aac5
@@ -141,6 +141,6 @@ SPEC CHECKSUMS:
   "UITextView+Placeholder": e1316455f0a17a27d0a13b3c291487762de3c43e
   WordSuggestion: 424d96dd2cfe4259c72959f9bdcffc864f0e65d4
 
-PODFILE CHECKSUM: 0a7a46cc396c0d6956924988c4b97e599a0629a7
+PODFILE CHECKSUM: 3746f09c88b9c187a1273c3a596758a8c171f77e
 
 COCOAPODS: 1.7.5
