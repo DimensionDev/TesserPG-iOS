@@ -151,6 +151,7 @@
 "CreateNewKeyViewController.Label.KeyLength" = "密鑰長度";
 
 "CreateNewKeyViewController.Alert.Title.NameRequired" = "名字不能為空";
+"CreateNewKeyViewController.Alert.Title.NameInvalid" = "名字不能含有以下字符: <>()";
 "CreateNewKeyViewController.Alert.Title.EmailRequired" = "郵箱不能為空";
 "CreateNewKeyViewController.Alert.Title.EmailInvalid" = "電子郵箱格式不正確";
 "CreateNewKeyViewController.Alert.Title.PasswordNotMatch" = "兩次輸入的密碼需不一致";
