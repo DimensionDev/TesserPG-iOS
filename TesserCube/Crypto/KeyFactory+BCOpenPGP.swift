@@ -35,12 +35,17 @@ extension KeyFactory {
 
 // MARK: - Decrypt
 extension KeyFactory {
+
+    public struct KeyInfo {
+        public let keyID: String
+        public let primaryUserID: String?
+    }
     
     enum VerifyResult {
         case noSignature
         case valid
         case invalid
-        case unknownSigner([String])    // unknown signer
+        case unknownSigner([KeyInfo])    // unknown signer
     }
 
     struct DecryptResult {
@@ -66,19 +71,30 @@ extension KeyFactory {
         // Message is cleartext signed message
         // Do not need decrypt, just return the body and signature
         var error: NSError?
-        let clearMessage = CryptoNewClearTextMessageFromArmored(armoredMessage, &error)
-        if error == nil, clearMessage != nil {
-            // Armored message is a clear text message
-            for key in keys {
+        let cleartextMessage = CryptoNewClearTextMessageFromArmored(armoredMessage, &error)
+        if error == nil, let message = cleartextMessage?.getString() {
+            let signatureKey = keys.first { key -> Bool in
+                var erro: Error?
                 let originMessage = HelperVerifyCleartextMessage(key.goKeyRing, armoredMessage, CryptoGetGopenPGP()!.getUnixTime(), &error)
-                if error == nil {
-                    return DecryptResult(message: originMessage,
-                                         signatureKey: key,
-                                         recipientKeys: [],
-                                         verifyResult: .valid,
-                                         unknownRecipientKeyIDs: [])
-                }
+                return error == nil
             }
+            let verifyResult: VerifyResult = {
+                // TODO .invalid
+                if signatureKey != nil {
+                    return .valid       // verifed signature key
+                } else {
+                    let signature = CryptoNewPGPSignature(cleartextMessage?.getSignature())
+                    // TODO: get signer key info from signature
+                    return .unknownSigner([])
+                }
+
+                return .unknownSigner([])
+            }()
+            return DecryptResult(message: message,
+                                 signatureKey: signatureKey,
+                                 recipientKeys: [],
+                                 verifyResult: verifyResult,
+                                 unknownRecipientKeyIDs: [])
         }
 
         do {
