@@ -56,6 +56,14 @@ extension KeyFactory {
             consolePrint(error.localizedDescription)
             throw TCError.pgpKeyError(reason: .invalidKeyFormat)
         } catch {
+            if let goPGPError = DMGGoPGPError(from: error) {
+                switch goPGPError {
+                case .invalidSecrectKeyPassword:
+                    throw TCError.pgpKeyError(reason: .invalidPassword)
+                default:
+                    throw TCError.pgpKeyError(reason: .invalidKeyFormat)
+                }
+            }
             consolePrint(error.localizedDescription)
             throw error
         }
