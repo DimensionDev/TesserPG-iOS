@@ -70,6 +70,7 @@ class Application: NSObject {
     
     private class func setupAppearance() {
         SVProgressHUD.setHapticsEnabled(true)
+        SVProgressHUD.setMinimumSize(CGSize(width: 128, height: 96))
 //        UINavigationBar.appearance().barTintColor = .purple
 //        UINavigationBar.appearance().tintColor = .white
 //        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
