@@ -62,6 +62,14 @@ class ContactDetailViewController: TCBaseViewController {
         label.numberOfLines = 2
         return label
     }()
+    
+    private lazy var exportPubKeyButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.titleLabel?.font = FontFamily.SFProText.regular.font(size: 17)
+        button.setTitle(L10n.ContactDetailViewController.Button.exportPubKey, for: .normal)
+        button.contentHorizontalAlignment = .leading
+        return button
+    }()
 
     private lazy var validitylabel: UILabel = {
         let label = UILabel(frame: .zero)
@@ -210,6 +218,31 @@ class ContactDetailViewController: TCBaseViewController {
             maker.height.equalTo(44)
         }
 
+        // Export public key button
+        let upperSeparatorLine = UIView()
+        view.addSubview(upperSeparatorLine)
+        upperSeparatorLine.snp.makeConstraints { maker in
+            maker.leading.trailing.equalTo(view.readableContentGuide)
+            maker.top.equalTo(emailTextView.snp.bottom)
+            maker.height.equalTo(0.5)
+        }
+        upperSeparatorLine.backgroundColor = .separator
+
+        view.addSubview(exportPubKeyButton)
+        exportPubKeyButton.snp.makeConstraints { maker in
+            maker.leading.trailing.equalTo(view.readableContentGuide)
+            maker.top.equalTo(upperSeparatorLine.snp.bottom).offset(10)
+        }
+
+        let lowerSeparatorLine = UIView()
+        view.addSubview(lowerSeparatorLine)
+        lowerSeparatorLine.snp.makeConstraints { maker in
+            maker.leading.trailing.equalTo(view.readableContentGuide)
+            maker.top.equalTo(exportPubKeyButton.snp.bottom).offset(10)
+            maker.height.equalTo(0.5)
+        }
+        lowerSeparatorLine.backgroundColor = .separator
+
         // 6. Send message button
         view.addSubview(sendMessageButton)
         sendMessageButton.snp.makeConstraints { maker in
@@ -217,6 +250,7 @@ class ContactDetailViewController: TCBaseViewController {
             maker.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
         }
 
+        exportPubKeyButton.addTarget(self, action: #selector(ContactDetailViewController.exportPubKeyToPasteboard(_:)), for: .touchUpInside)
         sendMessageButton.addTarget(self, action: #selector(ContactDetailViewController.sendMessageButtonDidClicked(_:)), for: .touchUpInside)
     }
 
@@ -271,6 +305,15 @@ extension ContactDetailViewController {
         }
 
         Coordinator.main.present(scene: .composeMessageTo(keyBridges: keybridges), from: self, transition: .modal, completion: nil)
+    }
+    
+    @objc
+    private func exportPubKeyToPasteboard(_ sender: UIButton) {
+        guard let firstKey = contact?.getKeys().first else {
+            return
+        }
+
+        ShareUtil.share(key: firstKey, from: self, over: sender)
     }
 
     private func createTitleLabel(title: String) -> UILabel {

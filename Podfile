@@ -41,7 +41,7 @@ target 'TesserCube' do
   pod 'SwifterSwift', '~> 4.6.0'
   
   # UI
-  pod 'SVProgressHUD', '~> 2.2.5'
+  pod 'SVProgressHUD', :git => 'https://github.com/getaaron/SVProgressHUD.git', :branch => 'dark-mode'
   pod 'IQKeyboardManagerSwift', '~> 6.4.2'
   pod 'Eureka', '~> 4.3.1'
 

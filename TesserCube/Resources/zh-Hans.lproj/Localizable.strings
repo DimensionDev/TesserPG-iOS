@@ -56,6 +56,7 @@
 "ContactDetailViewController.Label.Valid" = "有效";
 "ContactDetailViewController.Label.Invalid" = "无效";
 "ContactDetailViewController.Button.SendMessage" = "发送消息";
+"ContactDetailViewController.Button.ExportPubKey" = "复制公钥";
 
 "EditContactViewController.Label.DeleteContact" = "删除联系人";
 "EditContactViewController.Action.Button.ConfirmDeleteContact" = "确认删除该联系人";
