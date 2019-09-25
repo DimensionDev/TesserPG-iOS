@@ -141,16 +141,24 @@ class ContactDetailViewController: TCBaseViewController {
             maker.bottom.equalTo(userIdentifierLabel.snp.bottom).offset(15)
         }
 
+        let scrollView = UIScrollView()
+        view.addSubview(scrollView)
+        scrollView.snp.makeConstraints { maker in
+            maker.top.equalTo(topBackgroundView.snp.bottom)
+            maker.leading.trailing.bottom.equalTo(view)
+        }
+        scrollView.alwaysBounceVertical = true
+
         // 1. Fingerprint
         let fingerprintTitleLabel = createTitleLabel(title: L10n.ContactDetailViewController.Label.fingerprint)
-        view.addSubview(fingerprintTitleLabel)
+        scrollView.addSubview(fingerprintTitleLabel)
 
         fingerprintTitleLabel.snp.makeConstraints { maker in
             maker.leading.equalTo(view.readableContentGuide)
-            maker.top.equalTo(topBackgroundView.snp.bottom).offset(15)
+            maker.top.equalTo(scrollView.snp.top).offset(15)
         }
 
-        view.addSubview(fingerprintlabel)
+        scrollView.addSubview(fingerprintlabel)
         fingerprintlabel.snp.makeConstraints { maker in
             maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(fingerprintTitleLabel.snp.bottom).offset(2)
@@ -158,14 +166,14 @@ class ContactDetailViewController: TCBaseViewController {
 
         // 2. validity
         let validityTitleLabel = createTitleLabel(title: L10n.ContactDetailViewController.Label.validity)
-        view.addSubview(validityTitleLabel)
+        scrollView.addSubview(validityTitleLabel)
 
         validityTitleLabel.snp.makeConstraints { maker in
             maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(fingerprintlabel.snp.bottom).offset(17)
         }
 
-        view.addSubview(validitylabel)
+        scrollView.addSubview(validitylabel)
         validitylabel.snp.makeConstraints { maker in
             maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(validityTitleLabel.snp.bottom).offset(2)
@@ -173,14 +181,14 @@ class ContactDetailViewController: TCBaseViewController {
 
         // 3. type
         let typeTitleLabel = createTitleLabel(title: L10n.ContactDetailViewController.Label.keytype)
-        view.addSubview(typeTitleLabel)
+        scrollView.addSubview(typeTitleLabel)
 
         typeTitleLabel.snp.makeConstraints { maker in
             maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(validitylabel.snp.bottom).offset(17)
         }
 
-        view.addSubview(typelabel)
+        scrollView.addSubview(typelabel)
         typelabel.snp.makeConstraints { maker in
             maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(typeTitleLabel.snp.bottom).offset(2)
@@ -188,14 +196,14 @@ class ContactDetailViewController: TCBaseViewController {
 
         // 4. created at
         let createdAtTitleLabel = createTitleLabel(title: L10n.ContactDetailViewController.Label.createdAt)
-        view.addSubview(createdAtTitleLabel)
+        scrollView.addSubview(createdAtTitleLabel)
 
         createdAtTitleLabel.snp.makeConstraints { maker in
             maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(typelabel.snp.bottom).offset(17)
         }
 
-        view.addSubview(createdAtlabel)
+        scrollView.addSubview(createdAtlabel)
         createdAtlabel.snp.makeConstraints { maker in
             maker.leading.trailing.equalTo(view.readableContentGuide)
             maker.top.equalTo(createdAtTitleLabel.snp.bottom).offset(2)
@@ -203,14 +211,14 @@ class ContactDetailViewController: TCBaseViewController {
 
         // 5. email
         let emailTitlelabel = createTitleLabel(title: L10n.ContactDetailViewController.Label.email)
-        view.addSubview(emailTitlelabel)
+        scrollView.addSubview(emailTitlelabel)
 
         emailTitlelabel.snp.makeConstraints { maker in
             maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(createdAtlabel.snp.bottom).offset(17)
         }
 
-        view.addSubview(emailTextView)
+        scrollView.addSubview(emailTextView)
         emailTextView.snp.makeConstraints { maker in
             maker.leading.equalTo(view.readableContentGuide).offset(-5)
             maker.trailing.equalTo(view.readableContentGuide)
@@ -220,7 +228,7 @@ class ContactDetailViewController: TCBaseViewController {
 
         // Export public key button
         let upperSeparatorLine = UIView()
-        view.addSubview(upperSeparatorLine)
+        scrollView.addSubview(upperSeparatorLine)
         upperSeparatorLine.snp.makeConstraints { maker in
             maker.leading.trailing.equalTo(view.readableContentGuide)
             maker.top.equalTo(emailTextView.snp.bottom)
@@ -228,18 +236,19 @@ class ContactDetailViewController: TCBaseViewController {
         }
         upperSeparatorLine.backgroundColor = .separator
 
-        view.addSubview(exportPubKeyButton)
+        scrollView.addSubview(exportPubKeyButton)
         exportPubKeyButton.snp.makeConstraints { maker in
             maker.leading.trailing.equalTo(view.readableContentGuide)
             maker.top.equalTo(upperSeparatorLine.snp.bottom).offset(10)
         }
 
         let lowerSeparatorLine = UIView()
-        view.addSubview(lowerSeparatorLine)
+        scrollView.addSubview(lowerSeparatorLine)
         lowerSeparatorLine.snp.makeConstraints { maker in
             maker.leading.trailing.equalTo(view.readableContentGuide)
             maker.top.equalTo(exportPubKeyButton.snp.bottom).offset(10)
             maker.height.equalTo(0.5)
+            maker.bottom.equalToSuperview()
         }
         lowerSeparatorLine.backgroundColor = .separator
 
@@ -249,6 +258,8 @@ class ContactDetailViewController: TCBaseViewController {
             maker.leading.trailing.equalTo(view.readableContentGuide)
             maker.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
         }
+
+        scrollView.contentInset.bottom = 100
 
         exportPubKeyButton.addTarget(self, action: #selector(ContactDetailViewController.exportPubKeyToPasteboard(_:)), for: .touchUpInside)
         sendMessageButton.addTarget(self, action: #selector(ContactDetailViewController.sendMessageButtonDidClicked(_:)), for: .touchUpInside)
