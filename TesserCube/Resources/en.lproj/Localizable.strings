@@ -56,6 +56,7 @@
 "ContactDetailViewController.Label.Valid" = "Valid";
 "ContactDetailViewController.Label.Invalid" = "Invalid";
 "ContactDetailViewController.Button.SendMessage" = "Send Message";
+"ContactDetailViewController.Button.ExportPubKey" = "Export Full Public Key";
 
 "EditContactViewController.Label.DeleteContact" = "Delete Contact";
 "EditContactViewController.Action.Button.ConfirmDeleteContact" = "Would you like to delete this contact?";

@@ -33,7 +33,7 @@ PODS:
   - SQLCipher/common (3.4.2)
   - SQLCipher/standard (3.4.2):
     - SQLCipher/common
-  - SVProgressHUD (2.2.5)
+  - SVProgressHUD (2.2.6)
   - SwifterSwift (4.6.0):
     - SwifterSwift/AppKit (= 4.6.0)
     - SwifterSwift/CoreGraphics (= 4.6.0)
@@ -75,7 +75,7 @@ DEPENDENCIES:
   - RxCocoa (~> 4.4.2)
   - RxSwift (~> 4.4.2)
   - SnapKit (~> 4.2.0)
-  - SVProgressHUD (~> 2.2.5)
+  - SVProgressHUD (from `https://github.com/getaaron/SVProgressHUD.git`, branch `dark-mode`)
   - SwifterSwift (~> 4.6.0)
   - SwiftGen (~> 6.1.0)
   - SwiftLint (~> 0.30.1)
@@ -105,12 +105,21 @@ SPEC REPOS:
     - RxSwift
     - SnapKit
     - SQLCipher
-    - SVProgressHUD
     - SwifterSwift
     - SwiftGen
     - SwiftLint
     - "UITextView+Placeholder"
     - WordSuggestion
+
+EXTERNAL SOURCES:
+  SVProgressHUD:
+    :branch: dark-mode
+    :git: https://github.com/getaaron/SVProgressHUD.git
+
+CHECKOUT OPTIONS:
+  SVProgressHUD:
+    :commit: e0751029e2befc68e3a0feeffbca240adde9eb08
+    :git: https://github.com/getaaron/SVProgressHUD.git
 
 SPEC CHECKSUMS:
   AlignedCollectionViewFlowLayout: ee2ef451e741ec08f8e0967d828001e2f051c20a
@@ -134,13 +143,13 @@ SPEC CHECKSUMS:
   RxSwift: 74c29b693c8e42b0f64400e8b06564575742d649
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   SQLCipher: f9fcf29b2e59ced7defc2a2bdd0ebe79b40d4990
-  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  SVProgressHUD: 6ed134667e9ebb2f33679e8273cd48fd3fa349e5
   SwifterSwift: 812ffec6f301922f5430e75be3f2939ea3a80024
   SwiftGen: f872ca75cbd17bf7103c17f13dcfa0d9a15667b0
   SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
   "UITextView+Placeholder": c407b27599ea23cca425946fee3cf1db5d547008
   WordSuggestion: 424d96dd2cfe4259c72959f9bdcffc864f0e65d4
 
-PODFILE CHECKSUM: 3746f09c88b9c187a1273c3a596758a8c171f77e
+PODFILE CHECKSUM: 77cfecf4c0b927d8ea2b0b9b49fe006c95c9bf77
 
 COCOAPODS: 1.7.5

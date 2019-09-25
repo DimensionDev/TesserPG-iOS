@@ -122,6 +122,8 @@ internal enum L10n {
 
   internal enum ContactDetailViewController {
     internal enum Button {
+      /// Export Full Public Key
+      internal static let exportPubKey = L10n.tr("Localizable", "ContactDetailViewController.Button.ExportPubKey")
       /// Send Message
       internal static let sendMessage = L10n.tr("Localizable", "ContactDetailViewController.Button.SendMessage")
     }
