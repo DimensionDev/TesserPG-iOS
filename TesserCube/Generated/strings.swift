@@ -121,15 +121,9 @@ internal enum L10n {
   }
 
   internal enum ContactDetailViewController {
-    internal enum Alert {
-      /// Paste the public key anywhere.
-      internal static let subtitle = L10n.tr("Localizable", "ContactDetailViewController.Alert.Subtitle")
-      /// Copied\nPaste the public key anywhere.
-      internal static let title = L10n.tr("Localizable", "ContactDetailViewController.Alert.Title")
-    }
     internal enum Button {
-      /// copy full public key
-      internal static let copyPubKey = L10n.tr("Localizable", "ContactDetailViewController.Button.CopyPubKey")
+      /// Export Full Public Key
+      internal static let exportPubKey = L10n.tr("Localizable", "ContactDetailViewController.Button.ExportPubKey")
       /// Send Message
       internal static let sendMessage = L10n.tr("Localizable", "ContactDetailViewController.Button.SendMessage")
     }
