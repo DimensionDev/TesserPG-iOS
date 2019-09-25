@@ -62,6 +62,13 @@ class ContactDetailViewController: TCBaseViewController {
         label.numberOfLines = 2
         return label
     }()
+    
+    private lazy var copyPubKeyButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.titleLabel?.font = FontFamily.SFProText.regular.font(size: 17)
+        button.setTitle(L10n.ContactDetailViewController.Button.copyPubKey, for: .normal)
+        return button
+    }()
 
     private lazy var validitylabel: UILabel = {
         let label = UILabel(frame: .zero)
@@ -147,6 +154,12 @@ class ContactDetailViewController: TCBaseViewController {
             maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(fingerprintTitleLabel.snp.bottom).offset(2)
         }
+        
+        view.addSubview(copyPubKeyButton)
+        copyPubKeyButton.snp.makeConstraints { maker in
+            maker.leading.equalTo(view.readableContentGuide)
+            maker.top.equalTo(fingerprintlabel.snp.bottom).offset(2)
+        }
 
         // 2. validity
         let validityTitleLabel = createTitleLabel(title: L10n.ContactDetailViewController.Label.validity)
@@ -154,7 +167,7 @@ class ContactDetailViewController: TCBaseViewController {
 
         validityTitleLabel.snp.makeConstraints { maker in
             maker.leading.equalTo(view.readableContentGuide)
-            maker.top.equalTo(fingerprintlabel.snp.bottom).offset(17)
+            maker.top.equalTo(copyPubKeyButton.snp.bottom).offset(17)
         }
 
         view.addSubview(validitylabel)
@@ -218,6 +231,8 @@ class ContactDetailViewController: TCBaseViewController {
         }
 
         sendMessageButton.addTarget(self, action: #selector(ContactDetailViewController.sendMessageButtonDidClicked(_:)), for: .touchUpInside)
+        
+        copyPubKeyButton.addTarget(self, action: #selector(ContactDetailViewController.copyPubKeyToPasteboard(_:)), for: .touchUpInside)
     }
 
 }
@@ -271,6 +286,15 @@ extension ContactDetailViewController {
         }
 
         Coordinator.main.present(scene: .composeMessageTo(keyBridges: keybridges), from: self, transition: .modal, completion: nil)
+    }
+    
+    @objc
+    private func copyPubKeyToPasteboard(_ sender: UIButton) {
+        guard let firstKey = contact?.getKeys().first else {
+            return
+        }
+        UIPasteboard.general.string = firstKey.publicArmored
+        showHUDSuccess(L10n.ContactDetailViewController.Alert.title)
     }
 
     private func createTitleLabel(title: String) -> UILabel {
