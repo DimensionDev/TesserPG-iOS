@@ -67,6 +67,7 @@ class ContactDetailViewController: TCBaseViewController {
         let button = UIButton(type: .system)
         button.titleLabel?.font = FontFamily.SFProText.regular.font(size: 17)
         button.setTitle(L10n.ContactDetailViewController.Button.copyPubKey, for: .normal)
+        button.contentHorizontalAlignment = .leading
         return button
     }()
 
@@ -154,12 +155,6 @@ class ContactDetailViewController: TCBaseViewController {
             maker.leading.equalTo(view.readableContentGuide)
             maker.top.equalTo(fingerprintTitleLabel.snp.bottom).offset(2)
         }
-        
-        view.addSubview(copyPubKeyButton)
-        copyPubKeyButton.snp.makeConstraints { maker in
-            maker.leading.equalTo(view.readableContentGuide)
-            maker.top.equalTo(fingerprintlabel.snp.bottom).offset(2)
-        }
 
         // 2. validity
         let validityTitleLabel = createTitleLabel(title: L10n.ContactDetailViewController.Label.validity)
@@ -167,7 +162,7 @@ class ContactDetailViewController: TCBaseViewController {
 
         validityTitleLabel.snp.makeConstraints { maker in
             maker.leading.equalTo(view.readableContentGuide)
-            maker.top.equalTo(copyPubKeyButton.snp.bottom).offset(17)
+            maker.top.equalTo(fingerprintlabel.snp.bottom).offset(17)
         }
 
         view.addSubview(validitylabel)
@@ -223,6 +218,31 @@ class ContactDetailViewController: TCBaseViewController {
             maker.height.equalTo(44)
         }
 
+        // Export public key button
+        let upperSeparatorLine = UIView()
+        view.addSubview(upperSeparatorLine)
+        upperSeparatorLine.snp.makeConstraints { maker in
+            maker.leading.trailing.equalTo(view.readableContentGuide)
+            maker.top.equalTo(emailTextView.snp.bottom)
+            maker.height.equalTo(0.5)
+        }
+        upperSeparatorLine.backgroundColor = .separator
+
+        view.addSubview(copyPubKeyButton)
+        copyPubKeyButton.snp.makeConstraints { maker in
+            maker.leading.trailing.equalTo(view.readableContentGuide)
+            maker.top.equalTo(upperSeparatorLine.snp.bottom).offset(13)
+        }
+
+        let lowerSeparatorLine = UIView()
+        view.addSubview(lowerSeparatorLine)
+        lowerSeparatorLine.snp.makeConstraints { maker in
+            maker.leading.trailing.equalTo(view.readableContentGuide)
+            maker.top.equalTo(copyPubKeyButton.snp.bottom).offset(10)
+            maker.height.equalTo(0.5)
+        }
+        lowerSeparatorLine.backgroundColor = .separator
+
         // 6. Send message button
         view.addSubview(sendMessageButton)
         sendMessageButton.snp.makeConstraints { maker in
@@ -230,9 +250,8 @@ class ContactDetailViewController: TCBaseViewController {
             maker.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
         }
 
-        sendMessageButton.addTarget(self, action: #selector(ContactDetailViewController.sendMessageButtonDidClicked(_:)), for: .touchUpInside)
-        
         copyPubKeyButton.addTarget(self, action: #selector(ContactDetailViewController.copyPubKeyToPasteboard(_:)), for: .touchUpInside)
+        sendMessageButton.addTarget(self, action: #selector(ContactDetailViewController.sendMessageButtonDidClicked(_:)), for: .touchUpInside)
     }
 
 }
