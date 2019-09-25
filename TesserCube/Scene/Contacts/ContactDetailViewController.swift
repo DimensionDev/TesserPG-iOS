@@ -63,10 +63,10 @@ class ContactDetailViewController: TCBaseViewController {
         return label
     }()
     
-    private lazy var copyPubKeyButton: UIButton = {
+    private lazy var exportPubKeyButton: UIButton = {
         let button = UIButton(type: .system)
         button.titleLabel?.font = FontFamily.SFProText.regular.font(size: 17)
-        button.setTitle(L10n.ContactDetailViewController.Button.copyPubKey, for: .normal)
+        button.setTitle(L10n.ContactDetailViewController.Button.exportPubKey, for: .normal)
         button.contentHorizontalAlignment = .leading
         return button
     }()
@@ -228,17 +228,17 @@ class ContactDetailViewController: TCBaseViewController {
         }
         upperSeparatorLine.backgroundColor = .separator
 
-        view.addSubview(copyPubKeyButton)
-        copyPubKeyButton.snp.makeConstraints { maker in
+        view.addSubview(exportPubKeyButton)
+        exportPubKeyButton.snp.makeConstraints { maker in
             maker.leading.trailing.equalTo(view.readableContentGuide)
-            maker.top.equalTo(upperSeparatorLine.snp.bottom).offset(13)
+            maker.top.equalTo(upperSeparatorLine.snp.bottom).offset(10)
         }
 
         let lowerSeparatorLine = UIView()
         view.addSubview(lowerSeparatorLine)
         lowerSeparatorLine.snp.makeConstraints { maker in
             maker.leading.trailing.equalTo(view.readableContentGuide)
-            maker.top.equalTo(copyPubKeyButton.snp.bottom).offset(10)
+            maker.top.equalTo(exportPubKeyButton.snp.bottom).offset(10)
             maker.height.equalTo(0.5)
         }
         lowerSeparatorLine.backgroundColor = .separator
@@ -250,7 +250,7 @@ class ContactDetailViewController: TCBaseViewController {
             maker.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
         }
 
-        copyPubKeyButton.addTarget(self, action: #selector(ContactDetailViewController.copyPubKeyToPasteboard(_:)), for: .touchUpInside)
+        exportPubKeyButton.addTarget(self, action: #selector(ContactDetailViewController.exportPubKeyToPasteboard(_:)), for: .touchUpInside)
         sendMessageButton.addTarget(self, action: #selector(ContactDetailViewController.sendMessageButtonDidClicked(_:)), for: .touchUpInside)
     }
 
@@ -308,12 +308,12 @@ extension ContactDetailViewController {
     }
     
     @objc
-    private func copyPubKeyToPasteboard(_ sender: UIButton) {
+    private func exportPubKeyToPasteboard(_ sender: UIButton) {
         guard let firstKey = contact?.getKeys().first else {
             return
         }
-        UIPasteboard.general.string = firstKey.publicArmored
-        showHUDSuccess(L10n.ContactDetailViewController.Alert.title)
+
+        ShareUtil.share(key: firstKey, from: self, over: sender)
     }
 
     private func createTitleLabel(title: String) -> UILabel {
