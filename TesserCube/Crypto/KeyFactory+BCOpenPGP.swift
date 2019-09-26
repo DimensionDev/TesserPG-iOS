@@ -74,9 +74,9 @@ extension KeyFactory {
         let cleartextMessage = CryptoNewClearTextMessageFromArmored(armoredMessage, &error)
         if error == nil, let message = cleartextMessage?.getString() {
             let signatureKey = keys.first { key -> Bool in
-                var erro: Error?
-                let originMessage = HelperVerifyCleartextMessage(key.goKeyRing, armoredMessage, CryptoGetGopenPGP()!.getUnixTime(), &error)
-                return error == nil
+                var verifyError: NSError?
+                let originMessage = HelperVerifyCleartextMessage(key.goKeyRing, armoredMessage, CryptoGetGopenPGP()!.getUnixTime(), &verifyError)
+                return verifyError == nil
             }
             let verifyResult: VerifyResult = {
                 // TODO .invalid
@@ -142,7 +142,7 @@ extension KeyFactory {
                         if signatureKey == nil {
                             // Check the signature key
                             for pubkey in keys {
-                                if pubkey.longIdentifier == messageDetail.signedByKeyId {
+                                if pubkey.keyID.caseInsensitiveCompare(messageDetail.signedByKeyId) == .orderedSame {
                                     signatureKey = pubkey
                                 }
                             }
