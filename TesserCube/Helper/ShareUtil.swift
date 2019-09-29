@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class ShareUtil {
 
@@ -34,33 +35,46 @@ class ShareUtil {
     }
 
     static func export(key: TCKey, from viewController: UIViewController, over view: UIView?) {
-        let passwordDict = ProfileService.default.getPasswordDict(keyIdentifiers: [key.longIdentifier])
-        let privateArmored = try? key.getPrivateArmored(passprahse: passwordDict[key.longIdentifier]) ?? ""
-        let armoredKeyString = [key.publicArmored, privateArmored].compactMap { $0 }.joined(separator: "\n")
+        viewController.showHUD(L10n.MeViewController.Action.Button.export + "…")
+        DispatchQueue.global().async {
+            let passwordDict = ProfileService.default.getPasswordDict(keyIdentifiers: [key.longIdentifier])
+            SVProgressHUD.dismiss()
 
-        var items: [Any] = []
-        if let armoredKeyFileURL = createTempFile(for: armoredKeyString) {
-            items.append(armoredKeyFileURL)
-        } else {
-            items.append(armoredKeyString)
-        }
+            guard !passwordDict.isEmpty else {
+                return
+            }
+            
+            let privateArmored = try? key.getPrivateArmored(passprahse: passwordDict[key.longIdentifier]) ?? ""
+            let armoredKeyString = [key.publicArmored, privateArmored].compactMap { $0 }.joined(separator: "\n")
 
-        let vc = UIActivityViewController(activityItems: items, applicationActivities: [])
-        vc.completionWithItemsHandler = { type, result, items, error in
-            // do nothing
-        }
-
-        if let presenter = vc.popoverPresentationController {
-            if let view = view {
-                presenter.sourceView = view
-                presenter.sourceRect = view.bounds
+            var items: [Any] = []
+            if let armoredKeyFileURL = createTempFile(for: armoredKeyString) {
+                items.append(armoredKeyFileURL)
             } else {
-                presenter.sourceView = viewController.view
-                presenter.sourceRect = CGRect(origin: viewController.view.center, size: .zero)
-                presenter.permittedArrowDirections = []
+                items.append(armoredKeyString)
+            }
+
+            DispatchQueue.main.async { [weak viewController] in
+                guard let viewController = viewController else { return }
+
+                let vc = UIActivityViewController(activityItems: items, applicationActivities: [])
+                vc.completionWithItemsHandler = { type, result, items, error in
+                    // do nothing
+                }
+
+                if let presenter = vc.popoverPresentationController {
+                    if let view = view {
+                        presenter.sourceView = view
+                        presenter.sourceRect = view.bounds
+                    } else {
+                        presenter.sourceView = viewController.view
+                        presenter.sourceRect = CGRect(origin: viewController.view.center, size: .zero)
+                        presenter.permittedArrowDirections = []
+                    }
+                }
+                viewController.present(vc, animated: true)
             }
         }
-        viewController.present(vc, animated: true)
     }
     
     static func share(message: String, from viewController: UIViewController, over view: UIView?) {
