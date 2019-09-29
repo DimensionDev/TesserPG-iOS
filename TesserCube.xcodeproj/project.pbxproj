@@ -157,9 +157,6 @@
 		83C12EE12332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C12EDF2332209D009DB359 /* DMSPGPUserIDTranslator.swift */; };
 		83C12EE22332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C12EDF2332209D009DB359 /* DMSPGPUserIDTranslator.swift */; };
 		83C12EE32332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C12EDF2332209D009DB359 /* DMSPGPUserIDTranslator.swift */; };
-		83C12EE9233224C3009DB359 /* ShareUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F69722476ADD00C09C2D /* ShareUtil.swift */; };
-		83C12EEA233224C3009DB359 /* ShareUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F69722476ADD00C09C2D /* ShareUtil.swift */; };
-		83C12EEB233224C4009DB359 /* ShareUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F69722476ADD00C09C2D /* ShareUtil.swift */; };
 		83C90B43231678B90048743A /* GenerateKeyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C90B42231678B90048743A /* GenerateKeyData.swift */; };
 		83C90B44231678DE0048743A /* GenerateKeyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C90B42231678B90048743A /* GenerateKeyData.swift */; };
 		83C90B45231678DF0048743A /* GenerateKeyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C90B42231678B90048743A /* GenerateKeyData.swift */; };
@@ -2181,7 +2178,6 @@
 				83DFC73C2258D0EF00993160 /* Assets.swift in Sources */,
 				83B93D53221E33C600F556C0 /* ForwardingView.swift in Sources */,
 				83B93D65221E825300F556C0 /* DoneActionButton.swift in Sources */,
-				83C12EE9233224C3009DB359 /* ShareUtil.swift in Sources */,
 				83B93D5E221E6D1E00F556C0 /* UIImage+Color.swift in Sources */,
 				8325E477222CD0E700EE9B83 /* SeparatorView.swift in Sources */,
 				83783384224CB7F700F2C0BF /* strings.swift in Sources */,
@@ -2265,7 +2261,6 @@
 				DB1169DE22E19CA00099BA25 /* MessageCardTableViewController.swift in Sources */,
 				DB63A11F22E0688C00C2DDA6 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */,
 				DB63A11D22E0672400C2DDA6 /* SenderContactPickerView.swift in Sources */,
-				83C12EEA233224C3009DB359 /* ShareUtil.swift in Sources */,
 				DB63A10622DDD0EF00C2DDA6 /* InterpretActionViewController.swift in Sources */,
 				DB63A11522E0605800C2DDA6 /* KeyBridge.swift in Sources */,
 				83C12EDE23321EE4009DB359 /* KeyRecord.swift in Sources */,
@@ -2305,7 +2300,6 @@
 				DB1169B022E1831E0099BA25 /* Contact.swift in Sources */,
 				DB1169C322E184C30099BA25 /* UIViewController+Alert.swift in Sources */,
 				DB1169A222E182730099BA25 /* Fonts.swift in Sources */,
-				83C12EEB233224C4009DB359 /* ShareUtil.swift in Sources */,
 				DB1169C722E185020099BA25 /* ContactCell.swift in Sources */,
 				834DB06F23175B1C004E6F50 /* DMSPGPError.swift in Sources */,
 				DB1169D922E19C0F0099BA25 /* MessageCardCell.swift in Sources */,
