@@ -26,12 +26,13 @@ enum KeyValue {
         case .mockKey:
             return "****@*****.***"
         case .TCKey(let key):
-            if let userID = key.keyRing.publicKeyRing.primaryKey.primaryUserID {
-                let meta = PGPUserIDTranslator(userID: userID)
-                return meta.name ?? meta.email ?? " " // userID should have one of name and email
-            }
-            
-            return L10n.Common.Label.nameNull
+            return key.userID
+//            if let userID = key.keyRing.publicKeyRing.primaryKey.primaryUserID {
+//                let meta = PGPUserIDTranslator(userID: userID)
+//                return meta.name ?? meta.email ?? " " // userID should have one of name and email
+//            }
+//            
+//            return L10n.Common.Label.nameNull
         }
     }
     
@@ -40,22 +41,43 @@ enum KeyValue {
         case .mockKey:
             return L10n.MeViewController.KeyCardCell.Label.noKeyYet
         case .TCKey(let key):
-            let keySizeString = key.keyStrength?.string ?? L10n.Common.Label.nameUnknown
-            var keyDescString = "\(keySizeString)-bit / "
+            let keySizeString = key.primaryKeyStrength?.string ?? L10n.Common.Label.nameUnknown
+            let keySizeDescription = "\(keySizeString)-bit"
             
-            let pubKeyAlgorithmString = key.algorithm?.displayName ?? L10n.Common.Label.nameUnknown
-            let pubKeyDescString = "\(pubKeyAlgorithmString)\(keySizeString)"
-            keyDescString.append(pubKeyDescString)
-            
-            if key.hasSubkey {
-                let subkeySizeString = key.subkeyStrength?.string ?? L10n.Common.Label.nameUnknown
-                let subkeyAlgorithmString = key.subkeyAlgorithm?.displayName ?? L10n.Common.Label.nameUnknown
-                let subkeyDescString = "\(subkeyAlgorithmString)\(subkeySizeString)"
-                keyDescString.append(" + \(subkeyDescString)")
-            }
-            return keyDescString
+            let primaryKeyDescription: String? = {
+                guard let algorithm = key.primaryKeyAlgorihm else {
+                    return nil
+                }
+
+                // RSA or RSA3072
+                return algorithm.displayName + (key.primaryKeyStrength.flatMap { String($0) } ?? "")
+            }()
+
+            let primaryEncryptionKeyDescription: String? = {
+                guard key.hasSubkey else {
+                    return nil
+                }
+
+                if key.hasSubkey {
+                    let subkeySizeString = key.subkeyStrength?.string ?? L10n.Common.Label.nameUnknown
+                    let subkeyAlgorithmString = key.subkeyAlgorithm?.displayName ?? L10n.Common.Label.nameUnknown
+                    return "\(subkeyAlgorithmString)\(subkeySizeString)"
+                }
+                return ""
+            }()
+
+            let keyAlgorithmDescription: String? = {
+                if primaryKeyDescription == nil && primaryEncryptionKeyDescription == nil {
+                    return nil
+                } else {
+                    return [primaryKeyDescription, primaryKeyDescription].compactMap { $0 }.joined(separator: " + ")
+                }
+            }()
+
+            return [keySizeDescription, keyAlgorithmDescription].compactMap { $0 }.joined(separator: " / ")
         }
     }
+
 }
 
 class KeyCardCell: UITableViewCell {
@@ -91,10 +113,12 @@ class KeyCardCell: UITableViewCell {
     private func updateModel() {
         addressLabel.text = keyValue.address
         codeLabel.attributedText = NSAttributedString(string: keyValue.hashCodeString, attributes:
-            [NSAttributedString.Key.font: FontFamily.SourceCodeProMedium.regular.font(size: 14),
-             NSAttributedString.Key.foregroundColor: UIColor.white,
-             NSAttributedString.Key.paragraphStyle: paraghStyle
-            ])
+            [
+                NSAttributedString.Key.font: FontFamily.SourceCodeProMedium.regular.font(size: 14) ?? Font.systemFont(ofSize: 14.0),
+                NSAttributedString.Key.foregroundColor: UIColor.white,
+                NSAttributedString.Key.paragraphStyle: paraghStyle
+            ]
+        )
         statusLabel.text = keyValue.status
     }
 }

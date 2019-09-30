@@ -7,6 +7,49 @@
 //
 
 import Foundation
+import DMSGoPGP
+
+enum DMSPGPError: Error {
+    case `internal`
+    
+    case notArmoredInput
+    case invalidArmored
+    
+    case invalidKeyID
+    case invalidCleartext
+    case invalidMessage
+    case invalidPublicKeyRing
+    case invalidSecretKeyRing
+    case invalidPrivateKey
+    case invalidSecrectKeyPassword
+    case invalidCurve
+    case invalidKeyLength
+    case notSupportAlgorithm(KeyAlgorithm)
+    
+    case missingEncryptionKey(keyRings: [CryptoKeyRing])
+}
+
+enum DMGGoPGPError: Error {
+    
+    private static let GoPGPErrorHeader = "openpgp:"
+    
+    // TODO: Add more error type
+    case invalidSecrectKeyPassword
+    case unknown
+    
+    init?(from error: Error) {
+        let errorDesc = error.localizedDescription
+        guard errorDesc.starts(with: DMGGoPGPError.GoPGPErrorHeader) else {
+            return nil
+        }
+        // TODO: Optimize error handling in DMSGoPGP
+        if errorDesc.contains("private key checksum failure") {
+            self = .invalidSecrectKeyPassword
+        } else {
+            self = .unknown
+        }
+    }
+}
 
 enum TCError: Error {
     
@@ -110,3 +153,5 @@ extension TCError: LocalizedError {
         }
     }
 }
+
+

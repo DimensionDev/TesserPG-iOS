@@ -10,9 +10,9 @@ import Foundation
 
 extension ProfileService {
 
-    func addNewContact(keyUserID: String, key: TCKey) throws {
+    func addNewContact(keyUserID: String, key: TCKey, passphrase: String?) throws {
         do {
-            let userInfo = PGPUserIDTranslator.extractMeta(from: keyUserID)
+            let userInfo = DMSPGPUserIDTranslator.extractMeta(from: keyUserID)
             let username = userInfo.name
             let email = userInfo.email
             guard username != nil || email != nil else {
@@ -20,7 +20,7 @@ extension ProfileService {
             }
 
             // contactsObervation will handle database update
-            let _ = try TCDBManager.default.dbQueue.write { db -> Contact in
+            _ = try TCDBManager.default.dbQueue.write { db -> Contact in
                 var newContact = Contact(id: nil, name: username ?? "")
                 try newContact.insert(db)
                 if let contactId = newContact.id {
@@ -28,20 +28,21 @@ extension ProfileService {
                         var newEmail = Email(id: nil, address: validMail, contactId: contactId)
                         try newEmail.insert(db)
                     }
-                    var newKeyRecord = KeyRecord(id: nil, longIdentifier: key.longIdentifier, hasSecretKey: key.hasSecretKey, hasPublicKey: key.hasPublicKey, contactId: contactId, armored: key.armored)
+                    let armored = key.hasSecretKey ? try key.getPrivateArmored(passprahse: passphrase ?? "") : key.publicArmored
+                    var newKeyRecord = KeyRecord(id: nil, longIdentifier: key.longIdentifier, hasSecretKey: key.hasSecretKey, hasPublicKey: key.hasPublicKey, contactId: contactId, armored: armored)
                     try newKeyRecord.insert(db)
                 }
                 return newContact
             }   // end let _ = try …
 
-        } catch let error {
+        } catch {
             throw error
         }
     }
 
     func deleteContact(_ contact: Contact) throws {
         do {
-            guard let _ = contact.id else {
+            guard contact.id != nil else {
                 assertionFailure("Entity without ID could not to delete")
                 return
             }
@@ -51,7 +52,7 @@ extension ProfileService {
 
             // Any key records will be deleted cascade
 
-        } catch let error {
+        } catch {
             throw error
         }
     }

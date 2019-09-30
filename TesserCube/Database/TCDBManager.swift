@@ -16,7 +16,7 @@ class TCDBManager {
     private static let dbDirectoryName = "db"
     private static let dbFileName = "tc.sqlite"
     
-    private static let dbVersion = "2019052301"
+    private static let dbVersion = "2019090201"
     
     let dbQueue: DatabaseQueue
     
@@ -37,8 +37,8 @@ class TCDBManager {
                 var email = Email(id: nil, address: "bradgao@email.com", contactId: contact.id!)
                 try email.insert(db)
             }
-        } catch let error {
-            print("db error")
+        } catch {
+            assertionFailure(error.localizedDescription)
         }
         
     }
@@ -90,9 +90,11 @@ class TCDBManager {
 
                 let allKeyRecords = try KeyRecord.fetchAll(db)
                 for var perKeyRecord in allKeyRecords {
-                    if let tcKey = allKeys.first(where: { $0.longIdentifier == perKeyRecord.longIdentifier }) {
-                        perKeyRecord.armored = tcKey.armored
-                        try perKeyRecord.update(db)
+                    for legacyKey in allKeys {
+                        if let tcKey = TCKey(armored: legacyKey), tcKey.longIdentifier == perKeyRecord.longIdentifier {
+                            perKeyRecord.armored = legacyKey
+                            try perKeyRecord.update(db)
+                        }
                     }
                 }
             }

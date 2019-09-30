@@ -27,7 +27,6 @@ class ContactEditTextCell: UITableViewCell {
     
 }
 
-
 fileprivate extension UIColor {
 
     static let cellBackground: UIColor = {

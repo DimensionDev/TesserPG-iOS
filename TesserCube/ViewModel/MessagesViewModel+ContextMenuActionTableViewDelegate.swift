@@ -9,7 +9,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
-import DMSOpenPGP
+import DMSGoPGP
 import ConsolePrint
 
 extension MessagesViewModel {
@@ -32,9 +32,12 @@ extension MessagesViewModel {
             case .copyMessageContent:   return L10n.MessagesViewController.Action.Button.copyMessageContent
             case .copyPayload:          return L10n.MessagesViewController.Action.Button.copyRawPayload
             case .shareArmoredMessage(let message, _, _):
-                let isCleartextMessage = DMSPGPClearTextVerifier.verify(armoredMessage: message.encryptedMessage)
-                let shareActionTitle = isCleartextMessage ? L10n.MessagesViewController.Action.Button.shareSignedMessage : L10n.MessagesViewController.Action.Button.shareEncryptedMessage
-                return shareActionTitle
+                let isCleartextMessage: Bool = {
+                    var error: NSError?
+                    _ = CryptoNewClearTextMessageFromArmored(message.encryptedMessage, &error)
+                    return error == nil
+                }()
+                return isCleartextMessage ? L10n.MessagesViewController.Action.Button.shareSignedMessage : L10n.MessagesViewController.Action.Button.shareEncryptedMessage
             case .recomposeMessage:     return L10n.MessagesViewController.Action.Button.reCompose
             case .edit:                 return L10n.Common.Button.edit
             case .finishDraft:          return L10n.MessagesViewController.Action.Button.markAsFinished
@@ -107,8 +110,6 @@ extension MessagesViewModel {
                     UIPasteboard.general.string = message.encryptedMessage
 
                 case let .shareArmoredMessage(message, presentingViewController, cell):
-                    let isCleartextMessage = DMSPGPClearTextVerifier.verify(armoredMessage: message.encryptedMessage)
-                    let shareActionTitle = isCleartextMessage ? L10n.MessagesViewController.Action.Button.shareSignedMessage : L10n.MessagesViewController.Action.Button.shareEncryptedMessage
                     ShareUtil.share(message: message.encryptedMessage, from: presentingViewController, over: cell)
 
                 case let .recomposeMessage(message, presentingViewController):

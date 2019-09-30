@@ -72,7 +72,7 @@ final class ContactPickerTagCollectionViewCell: UICollectionViewCell {
             let style = NSMutableParagraphStyle()
             style.lineHeightMultiple = 0.75
             let attributedString = NSMutableAttributedString(string: newValue)
-            attributedString.addAttributes([NSAttributedString.Key.paragraphStyle : style], range: NSRange(location: 0, length: attributedString.length))
+            attributedString.addAttributes([NSAttributedString.Key.paragraphStyle: style], range: NSRange(location: 0, length: attributedString.length))
             shortIDLabel.attributedText = attributedString
         }
     }
@@ -157,13 +157,15 @@ extension ContactPickerTagCollectionViewCell {
     override var canBecomeFirstResponder: Bool {
         return true
     }
-    
+
+    @discardableResult
     override func resignFirstResponder() -> Bool {
         let status = super.resignFirstResponder()
         isSelected = false
         return status
     }
-    
+
+    @discardableResult
     override func becomeFirstResponder() -> Bool {
         let status = super.becomeFirstResponder()
         isSelected = true

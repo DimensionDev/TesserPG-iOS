@@ -6,7 +6,6 @@
 //  Copyright © 2019 Sujitech. All rights reserved.
 //
 
-import DMSOpenPGP
 import SnapKit
 import SwifterSwift
 import RxCocoa
@@ -228,13 +227,13 @@ class ImportPrivateKeyConfirmViewController: TCBaseViewController {
 
 extension ImportPrivateKeyConfirmViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return tcKey?.keyRing.publicKeyRing.primaryKey.primaryUserID != nil ? 1 : 0
+        return tcKey?.userID != nil ? 1 : 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withClass: ConfirmContactCell.self, for: indexPath)
         cell.keyValue = .TCKey(value: tcKey!)
-        cell.userID = tcKey?.keyRing.publicKeyRing.primaryKey.primaryUserID
+        cell.userID = tcKey?.userID
         cell.cardView.cardBackgroundColor = .systemBlue
         return cell
     }

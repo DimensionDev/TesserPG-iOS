@@ -10,8 +10,6 @@ import UIKit
 import RxSwift
 import RxCocoa
 import MobileCoreServices
-import BouncyCastle_ObjC
-import DMSOpenPGP
 import ConsolePrint
 import os
 
@@ -23,24 +21,6 @@ final class InterpretActionViewController: UIViewController {
     private lazy var brokenMessageViewController = BrokenMessageViewController()
 
     let viewModel = InterpretActionViewModel()
-
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        _init()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        _init()
-    }
-
-    private func _init() {
-        // Setup Bouncy Castle
-        #if TARGET_IS_EXTENSION
-        JavaSecuritySecurity.addProvider(with: OrgBouncycastleJceProviderBouncyCastleProvider())
-        #endif
-    }
-
 }
 
 extension InterpretActionViewController {
@@ -168,7 +148,7 @@ extension InterpretActionViewController {
 extension InterpretActionViewController {
 
     @objc private func extensionContextCompleteRequest(_ notification: Notification) {
-        guard let _ = notification.object as? ComposeMessageViewController,
+        guard nil != notification.object as? ComposeMessageViewController,
         let message = notification.userInfo?["message"] as? Message else {
             return
         }

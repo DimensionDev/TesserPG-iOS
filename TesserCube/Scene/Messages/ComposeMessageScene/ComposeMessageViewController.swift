@@ -191,7 +191,7 @@ extension ComposeMessageViewController {
     private func dismiss() {
         // Post notification in App Extension & App. Due to in-app open URL not trigger Swift condition flag (TARGET_IS_EXTENSION)
         let userInfo = ["message": composedMessage]
-        NotificationCenter.default.post(name: .messageComposeComplete, object: self, userInfo: userInfo as [AnyHashable : Any])
+        NotificationCenter.default.post(name: .messageComposeComplete, object: self, userInfo: userInfo as [AnyHashable: Any])
 
         dismiss(animated: true, completion: nil)
     }
@@ -284,7 +284,7 @@ private extension ComposeMessageViewController {
         let senderKey = fromContactPickerCellView.viewModel.selectedKey.value
         let recipientKeys = tags.compactMap { $0.key }
 
-        let invalidKeys = recipientKeys.filter { $0.keyRing.publicKeyRing.primaryEncryptionKey == nil }
+        let invalidKeys = recipientKeys.filter { !$0.hasPrimaryEncryptionKey }
 
         if tags.contains(where: { $0.contact == nil }) {
             let alertController = UIAlertController(title: L10n.ComposeMessageViewController.Alert.Title.skipInvalidResipients, message: nil, preferredStyle: .actionSheet)

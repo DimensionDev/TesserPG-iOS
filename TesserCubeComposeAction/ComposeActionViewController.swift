@@ -8,8 +8,6 @@
 
 import UIKit
 import MobileCoreServices
-import BouncyCastle_ObjC
-import DMSOpenPGP
 import ConsolePrint
 import RxSwift
 import RxCocoa
@@ -49,23 +47,7 @@ final class ComposeActionViewController: UIViewController {
 
     private var didPresentComposeMessageViewController = false
     private lazy var messageCardViewController = MessageCardViewController()
-    private lazy var composeMessageViewController: ComposeMessageViewController? = ComposeMessageViewController()
-
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        _init()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        _init()
-    }
-
-    private func _init() {
-        // Setup Bouncy Castle
-        JavaSecuritySecurity.addProvider(with: OrgBouncycastleJceProviderBouncyCastleProvider())
-    }
-    
+    private lazy var composeMessageViewController: ComposeMessageViewController? = ComposeMessageViewController() 
 }
 
 extension ComposeActionViewController {

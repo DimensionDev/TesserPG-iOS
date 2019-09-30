@@ -93,6 +93,10 @@
 		833FF394224F9D8100EFE0A9 /* KeyboardInterpretor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FF393224F9D8100EFE0A9 /* KeyboardInterpretor.swift */; };
 		833FF395224F9D8100EFE0A9 /* KeyboardInterpretor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FF393224F9D8100EFE0A9 /* KeyboardInterpretor.swift */; };
 		834CA61922659EE900AC8355 /* FullAccessHintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 834CA61822659EE900AC8355 /* FullAccessHintView.swift */; };
+		834DB06E23175B1C004E6F50 /* DMSPGPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F309722A14C0D0003804B /* DMSPGPError.swift */; };
+		834DB06F23175B1C004E6F50 /* DMSPGPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F309722A14C0D0003804B /* DMSPGPError.swift */; };
+		835294B923279F40000E6170 /* DMSReceipientKeyIDUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831EC43022B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift */; };
+		835294BA23279F40000E6170 /* DMSReceipientKeyIDUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831EC43022B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift */; };
 		837833552248840600F2C0BF /* TCTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837833542248840600F2C0BF /* TCTypes.swift */; };
 		837833562248840600F2C0BF /* TCTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837833542248840600F2C0BF /* TCTypes.swift */; };
 		837833582248897C00F2C0BF /* KeyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146F32243ACCE008ECC22 /* KeyFactory.swift */; };
@@ -102,7 +106,6 @@
 		837833632249C33B00F2C0BF /* TCDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837833622249C33B00F2C0BF /* TCDBManager.swift */; };
 		837833652249C34400F2C0BF /* TCDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837833622249C33B00F2C0BF /* TCDBManager.swift */; };
 		83783367224B232000F2C0BF /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146DF22421F93008ECC22 /* Contact.swift */; };
-		83783369224B32AC00F2C0BF /* PGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0758A1224493DB0046FBFD /* PGPUserIDTranslator.swift */; };
 		8378336B224B352500F2C0BF /* ContactListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8378336A224B352500F2C0BF /* ContactListViewModel.swift */; };
 		8378336D224B36A400F2C0BF /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8378336C224B36A400F2C0BF /* String+Localization.swift */; };
 		83783371224B384000F2C0BF /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8378336F224B384000F2C0BF /* ContactCell.swift */; };
@@ -120,6 +123,7 @@
 		83783388224CC23400F2C0BF /* ContactEditTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83783386224CC23400F2C0BF /* ContactEditTextCell.xib */; };
 		8378338C224DFED100F2C0BF /* SubKeyCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8378338A224DFED100F2C0BF /* SubKeyCardCell.swift */; };
 		8378338D224DFED100F2C0BF /* SubKeyCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8378338B224DFED100F2C0BF /* SubKeyCardCell.xib */; };
+		839E647B23320751005C21FA /* (null) in Sources */ = {isa = PBXBuildFile; };
 		83B93D1F221CE06100F556C0 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D1E221CE06100F556C0 /* Application.swift */; };
 		83B93D22221CEB9800F556C0 /* UserDefaults+AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D21221CEB9800F556C0 /* UserDefaults+AppGroup.swift */; };
 		83B93D2D221D22FA00F556C0 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D2C221D22FA00F556C0 /* KeyboardViewController.swift */; };
@@ -148,6 +152,15 @@
 		83B93E882223CCF700F556C0 /* RecipientInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93E872223CCF700F556C0 /* RecipientInputView.swift */; };
 		83B93E8A222411C300F556C0 /* UIView+blinking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93E89222411C300F556C0 /* UIView+blinking.swift */; };
 		83B93ED9222528AD00F556C0 /* RecommendRecipientsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93ED8222528AD00F556C0 /* RecommendRecipientsView.swift */; };
+		83C12EDE23321EE4009DB359 /* KeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D7312231E38FD005D15DD /* KeyRecord.swift */; };
+		83C12EE02332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C12EDF2332209D009DB359 /* DMSPGPUserIDTranslator.swift */; };
+		83C12EE12332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C12EDF2332209D009DB359 /* DMSPGPUserIDTranslator.swift */; };
+		83C12EE22332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C12EDF2332209D009DB359 /* DMSPGPUserIDTranslator.swift */; };
+		83C12EE32332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C12EDF2332209D009DB359 /* DMSPGPUserIDTranslator.swift */; };
+		83C90B43231678B90048743A /* GenerateKeyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C90B42231678B90048743A /* GenerateKeyData.swift */; };
+		83C90B44231678DE0048743A /* GenerateKeyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C90B42231678B90048743A /* GenerateKeyData.swift */; };
+		83C90B45231678DF0048743A /* GenerateKeyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C90B42231678B90048743A /* GenerateKeyData.swift */; };
+		83C90B46231678DF0048743A /* GenerateKeyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C90B42231678B90048743A /* GenerateKeyData.swift */; };
 		83DFC72C2252EF3100993160 /* KeyRecordDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFC72B2252EF3100993160 /* KeyRecordDBAction.swift */; };
 		83DFC72D2252EF3100993160 /* KeyRecordDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFC72B2252EF3100993160 /* KeyRecordDBAction.swift */; };
 		83DFC73722577B9800993160 /* WormHole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFC73622577B9800993160 /* WormHole.swift */; };
@@ -165,7 +178,6 @@
 		83FF06592250D9DA0003BC0D /* MessageDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF06572250D9DA0003BC0D /* MessageDBAction.swift */; };
 		A525A0BAED3E0A2C1C06591F /* Pods_TesserCubeComposeAction.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E0EAF428FF778E8B22035F9 /* Pods_TesserCubeComposeAction.framework */; };
 		C5D98E8849B78D615F101C81 /* Pods_TesserCubeKeyboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E62BCA2B022300EA53474B /* Pods_TesserCubeKeyboard.framework */; };
-		DB0758A2224493DB0046FBFD /* PGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0758A1224493DB0046FBFD /* PGPUserIDTranslator.swift */; };
 		DB0758D0224895B40046FBFD /* MessageCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0758CF224895B40046FBFD /* MessageCardCell.swift */; };
 		DB1169A022E182730099BA25 /* strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83783382224CB7F400F2C0BF /* strings.swift */; };
 		DB1169A122E182730099BA25 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83214694223F4CA0008ECC22 /* Assets.swift */; };
@@ -186,7 +198,6 @@
 		DB1169B022E1831E0099BA25 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146DF22421F93008ECC22 /* Contact.swift */; };
 		DB1169B122E183390099BA25 /* ContactMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBBC197224E29E50080790F /* ContactMappable.swift */; };
 		DB1169B222E183440099BA25 /* ContactsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146A1223F5FCE008ECC22 /* ContactsListViewController.swift */; };
-		DB1169B322E1834C0099BA25 /* PGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0758A1224493DB0046FBFD /* PGPUserIDTranslator.swift */; };
 		DB1169B422E183780099BA25 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE69224A330D00D82704 /* String.swift */; };
 		DB1169B522E183800099BA25 /* ProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146B0223F7D98008ECC22 /* ProfileService.swift */; };
 		DB1169B622E183830099BA25 /* ProfileService+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FF38C224F97BD00EFE0A9 /* ProfileService+Message.swift */; };
@@ -253,8 +264,6 @@
 		DB4CBCA8224F932B00ED6BF0 /* InterpretMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4CBCA7224F932B00ED6BF0 /* InterpretMessageViewController.swift */; };
 		DB4CBCAA224F962A00ED6BF0 /* InterpretMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4CBCA9224F962A00ED6BF0 /* InterpretMessageViewModel.swift */; };
 		DB4F300122A11F820003804B /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146DF22421F93008ECC22 /* Contact.swift */; };
-		DB4F300322A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F300222A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift */; };
-		DB4F300422A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F300222A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift */; };
 		DB4F309822A14C0D0003804B /* DMSPGPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F309722A14C0D0003804B /* DMSPGPError.swift */; };
 		DB4F309922A14C0D0003804B /* DMSPGPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F309722A14C0D0003804B /* DMSPGPError.swift */; };
 		DB548D5722F931DC005E7EE4 /* KeychainAccessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB548D5622F931DC005E7EE4 /* KeychainAccessTests.swift */; };
@@ -289,7 +298,6 @@
 		DB63A0FB22DDCB6500C2DDA6 /* TCErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F6A52247ACC800C09C2D /* TCErrors.swift */; };
 		DB63A0FC22DDCB9100C2DDA6 /* ContactDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83783378224BA43700F2C0BF /* ContactDBAction.swift */; };
 		DB63A0FD22DDCB9700C2DDA6 /* KeyFactory+TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */; };
-		DB63A0FE22DDCBA000C2DDA6 /* PGPUserIDTranslator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0758A1224493DB0046FBFD /* PGPUserIDTranslator.swift */; };
 		DB63A0FF22DDCBB600C2DDA6 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE69224A330D00D82704 /* String.swift */; };
 		DB63A10022DDCBC700C2DDA6 /* ProfileService+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FF38C224F97BD00EFE0A9 /* ProfileService+Message.swift */; };
 		DB63A10122DDCBD700C2DDA6 /* MessageDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF06572250D9DA0003BC0D /* MessageDBAction.swift */; };
@@ -346,7 +354,6 @@
 		DB8D7317231E393D005D15DD /* Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D7314231E3920005D15DD /* Email.swift */; };
 		DB8D7318231E393E005D15DD /* Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D7314231E3920005D15DD /* Email.swift */; };
 		DB8D7319231E394E005D15DD /* KeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D7312231E38FD005D15DD /* KeyRecord.swift */; };
-		DB8D731A231E394E005D15DD /* KeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D7312231E38FD005D15DD /* KeyRecord.swift */; };
 		DB8D731B231E394E005D15DD /* KeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D7312231E38FD005D15DD /* KeyRecord.swift */; };
 		DB97AD162317BCD9007594E9 /* MessagesViewModel+ContextMenuActionTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB97AD152317BCD9007594E9 /* MessagesViewModel+ContextMenuActionTableViewDelegate.swift */; };
 		DBA0ACF422F800010088F03B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA0ACF322F800010088F03B /* SceneDelegate.swift */; };
@@ -362,6 +369,10 @@
 		DBC7DEC12248D49E00DA4C3E /* ComposeMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC7DEC02248D49E00DA4C3E /* ComposeMessageViewModel.swift */; };
 		DBD63FDD229682E400E46FDC /* KeyFactory+TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */; };
 		DBD63FE02296864200E46FDC /* KeyFactory+TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */; };
+		DBD98FDB2334B7B7003A952B /* CryptoPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD98FDA2334B7B7003A952B /* CryptoPublicKey.swift */; };
+		DBD98FDC2334B7B7003A952B /* CryptoPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD98FDA2334B7B7003A952B /* CryptoPublicKey.swift */; };
+		DBD98FDD2334B7B7003A952B /* CryptoPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD98FDA2334B7B7003A952B /* CryptoPublicKey.swift */; };
+		DBD98FDE2334B7B7003A952B /* CryptoPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD98FDA2334B7B7003A952B /* CryptoPublicKey.swift */; };
 		DBE13D79224CCC0B004850A6 /* TCDBManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE13D78224CCC0B004850A6 /* TCDBManagerTests.swift */; };
 		DBF6B2A9232F43C7008F83AE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6B2A8232F43C7008F83AE /* UIColor.swift */; };
 		DBF6B2AA232F5479008F83AE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6B2A8232F43C7008F83AE /* UIColor.swift */; };
@@ -442,6 +453,7 @@
 		54E62BCA2B022300EA53474B /* Pods_TesserCubeKeyboard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesserCubeKeyboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		55827FE378FDFCA0E1177DDA /* Pods-TesserCubeKeyboard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeKeyboard.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeKeyboard/Pods-TesserCubeKeyboard.debug.xcconfig"; sourceTree = "<group>"; };
 		56E1EFCC71897BBD7440742B /* Pods-TesserCubeComposeAction.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.debug.xcconfig"; sourceTree = "<group>"; };
+		5836A11F534936E25D0543C8 /* Pods-TesserCubeKeyboard.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeKeyboard.xctest.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeKeyboard/Pods-TesserCubeKeyboard.xctest.xcconfig"; sourceTree = "<group>"; };
 		6AAD1C52FBF55BCAC977EEFC /* Pods-TesserCube.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.release.xcconfig"; sourceTree = "<group>"; };
 		6C37B876F4476EE0FA92731A /* Pods-TesserCubeInterpretAction.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeInterpretAction.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeInterpretAction/Pods-TesserCubeInterpretAction.release.xcconfig"; sourceTree = "<group>"; };
 		829EC06ABC2887E5DB724F5B /* Pods_TesserCube.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesserCube.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -576,6 +588,9 @@
 		83B93E872223CCF700F556C0 /* RecipientInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientInputView.swift; sourceTree = "<group>"; };
 		83B93E89222411C300F556C0 /* UIView+blinking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+blinking.swift"; sourceTree = "<group>"; };
 		83B93ED8222528AD00F556C0 /* RecommendRecipientsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendRecipientsView.swift; sourceTree = "<group>"; };
+		83C12EDF2332209D009DB359 /* DMSPGPUserIDTranslator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSPGPUserIDTranslator.swift; sourceTree = "<group>"; };
+		83C12EE42332244D009DB359 /* MeViewModel+ContextMenuActionTableViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MeViewModel+ContextMenuActionTableViewDelegate.swift"; sourceTree = "<group>"; };
+		83C90B42231678B90048743A /* GenerateKeyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateKeyData.swift; sourceTree = "<group>"; };
 		83DFC72B2252EF3100993160 /* KeyRecordDBAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyRecordDBAction.swift; sourceTree = "<group>"; };
 		83DFC73622577B9800993160 /* WormHole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WormHole.swift; sourceTree = "<group>"; };
 		83DFC73A22578ED800993160 /* InterpretFailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretFailView.swift; sourceTree = "<group>"; };
@@ -588,12 +603,13 @@
 		84957C7609515FCFA95F42A3 /* Pods-TesserCubeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.release.xcconfig"; sourceTree = "<group>"; };
 		9B17EDD1F3A38E5966DCBA34 /* Pods-TesserCubeTests.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.debug stub.xcconfig"; sourceTree = "<group>"; };
 		9C1A99D94821B29F622B677D /* Pods-TesserCube.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.debug stub.xcconfig"; sourceTree = "<group>"; };
+		AC77612245CA0D2E11ECCE70 /* Pods-TesserCube.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.xctest.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.xctest.xcconfig"; sourceTree = "<group>"; };
+		B639829F9F1E75874A6F4CC4 /* Pods-TesserCubeComposeAction.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.xctest.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.xctest.xcconfig"; sourceTree = "<group>"; };
 		B9140FA57B00A5B2BD89FABF /* Pods-TesserCube.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.debug.xcconfig"; sourceTree = "<group>"; };
 		BA307858963D472080CE0E2A /* Pods-TesserCubeKeyboard.debug pgp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeKeyboard.debug pgp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeKeyboard/Pods-TesserCubeKeyboard.debug pgp.xcconfig"; sourceTree = "<group>"; };
 		BEF5E8837849AFC231AC950C /* Pods-TesserCubeComposeAction.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.release.xcconfig"; sourceTree = "<group>"; };
 		C00CE558B320642C1C2EECE7 /* Pods-TesserCubeComposeAction.debug pgp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.debug pgp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.debug pgp.xcconfig"; sourceTree = "<group>"; };
 		C0A9D10AB1612B0483E24D78 /* Pods-TesserCube.debug pgp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.debug pgp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.debug pgp.xcconfig"; sourceTree = "<group>"; };
-		DB0758A1224493DB0046FBFD /* PGPUserIDTranslator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PGPUserIDTranslator.swift; sourceTree = "<group>"; };
 		DB0758CF224895B40046FBFD /* MessageCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCardCell.swift; sourceTree = "<group>"; };
 		DB0D9F3723152006007C293F /* FileProvider.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FileProvider.framework; path = System/Library/Frameworks/FileProvider.framework; sourceTree = SDKROOT; };
 		DB1169CA22E185640099BA25 /* NotificationName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationName.swift; sourceTree = "<group>"; };
@@ -615,7 +631,6 @@
 		DB44999D228D3353000B7E8A /* MessageDigitalSignatureSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDigitalSignatureSettingsViewModel.swift; sourceTree = "<group>"; };
 		DB4CBCA7224F932B00ED6BF0 /* InterpretMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretMessageViewController.swift; sourceTree = "<group>"; };
 		DB4CBCA9224F962A00ED6BF0 /* InterpretMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretMessageViewModel.swift; sourceTree = "<group>"; };
-		DB4F300222A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSPGPPublicKeyAlgorithm.swift; sourceTree = "<group>"; };
 		DB4F309722A14C0D0003804B /* DMSPGPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSPGPError.swift; sourceTree = "<group>"; };
 		DB548D5622F931DC005E7EE4 /* KeychainAccessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainAccessTests.swift; sourceTree = "<group>"; };
 		DB550D372313CF73000660AD /* ContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenu.swift; sourceTree = "<group>"; };
@@ -654,19 +669,24 @@
 		DBC24B1323026BA800A4AE8D /* WordSuggestionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordSuggestionService.swift; sourceTree = "<group>"; };
 		DBC7DEBC2248C7F600DA4C3E /* RecipientContactPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientContactPickerView.swift; sourceTree = "<group>"; };
 		DBC7DEC02248D49E00DA4C3E /* ComposeMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeMessageViewModel.swift; sourceTree = "<group>"; };
+		DBCE91DE23320EE30000A9F3 /* UnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitTests.xctestplan; sourceTree = "<group>"; };
+		DBCE91DF23320EF30000A9F3 /* UITests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UITests.xctestplan; sourceTree = "<group>"; };
 		DBD638E5227EDC6B00E10BF2 /* JRE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JRE.framework; path = "../../../Java/j2objc-2.4/frameworks/JRE.framework"; sourceTree = "<group>"; };
 		DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyFactory+TCKey.swift"; sourceTree = "<group>"; };
+		DBD98FDA2334B7B7003A952B /* CryptoPublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoPublicKey.swift; sourceTree = "<group>"; };
 		DBE13D78224CCC0B004850A6 /* TCDBManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCDBManagerTests.swift; sourceTree = "<group>"; };
 		DBF01ECD22A53BEE004711F1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		DBF01ECE22A53BEE004711F1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		DBF6B2A8232F43C7008F83AE /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		DBF6B2AD232F6950008F83AE /* UIColor+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Keyboard.swift"; sourceTree = "<group>"; };
 		DBF6B2D3232F9112008F83AE /* SF-Pro-Text-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Light.otf"; sourceTree = "<group>"; };
+		DCB938676101FF1A21579C50 /* Pods-TesserCubeInterpretAction.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeInterpretAction.xctest.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeInterpretAction/Pods-TesserCubeInterpretAction.xctest.xcconfig"; sourceTree = "<group>"; };
 		DDADE9070E9C7B3A44C27B2D /* Pods-TesserCubeInterpretAction.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeInterpretAction.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeInterpretAction/Pods-TesserCubeInterpretAction.debug stub.xcconfig"; sourceTree = "<group>"; };
 		ED5112F3F342C6B4F96019B9 /* Pods-TesserCubeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F0EC992A1DF4CED75A30F54D /* Pods-TesserCubeComposeAction.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.debug stub.xcconfig"; sourceTree = "<group>"; };
 		F14CF0BD6C2C55A0BFF1B2B0 /* Pods_TesserCubeInterpretAction.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesserCubeInterpretAction.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F203D9B4CDFBB0FD0E45FB6D /* Pods_TesserCubeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesserCubeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F68C7284388FF0277EBF3184 /* Pods-TesserCubeTests.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.xctest.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.xctest.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -765,6 +785,8 @@
 				83B93D12221CDC3D00F556C0 /* Resources */,
 				83B93D11221CDC3400F556C0 /* Support Files */,
 				8304E9C4221BF1CD00122637 /* TesserCube.entitlements */,
+				DBCE91DE23320EE30000A9F3 /* UnitTests.xctestplan */,
+				DBCE91DF23320EF30000A9F3 /* UITests.xctestplan */,
 				8304E9A0221BF10100122637 /* Info.plist */,
 			);
 			path = TesserCube;
@@ -784,8 +806,8 @@
 		8304E9B3221BF10200122637 /* TesserCubeUITests */ = {
 			isa = PBXGroup;
 			children = (
-				8304E9B4221BF10200122637 /* TesserCubeUITests.swift */,
 				8304E9B6221BF10200122637 /* Info.plist */,
+				8304E9B4221BF10200122637 /* TesserCubeUITests.swift */,
 			);
 			path = TesserCubeUITests;
 			sourceTree = "<group>";
@@ -820,6 +842,7 @@
 				DB550D372313CF73000660AD /* ContextMenu.swift */,
 				8313F69522475AC600C09C2D /* SharePublicKeyActivity.swift */,
 				8313F69722476ADD00C09C2D /* ShareUtil.swift */,
+				83C12EDF2332209D009DB359 /* DMSPGPUserIDTranslator.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -949,6 +972,7 @@
 		832146BC223F955D008ECC22 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				83C12EE42332244D009DB359 /* MeViewModel+ContextMenuActionTableViewDelegate.swift */,
 				8378336A224B352500F2C0BF /* ContactListViewModel.swift */,
 				832146FB2244CD43008ECC22 /* MessagesViewModel.swift */,
 				DB97AD152317BCD9007594E9 /* MessagesViewModel+ContextMenuActionTableViewDelegate.swift */,
@@ -985,7 +1009,6 @@
 				832146F32243ACCE008ECC22 /* KeyFactory.swift */,
 				DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */,
 				DB6AA3E92273218C00A7ADDF /* KeyFactory+BCOpenPGP.swift */,
-				DB0758A1224493DB0046FBFD /* PGPUserIDTranslator.swift */,
 				DB75454A2296A7C400B4E1EF /* CreateKeyOption.swift */,
 			);
 			path = Crypto;
@@ -1004,6 +1027,7 @@
 				DBBBC197224E29E50080790F /* ContactMappable.swift */,
 				DBBBC194224E29D70080790F /* KeychainMappable.swift */,
 				DB1327142253651C00BD7B98 /* KeyBridge.swift */,
+				83C90B42231678B90048743A /* GenerateKeyData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1145,6 +1169,7 @@
 		83B93D20221CEB8500F556C0 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				DBD98FDF2334B7BB003A952B /* DMSGoPGP */,
 				DB4F300522A120F50003804B /* DMSOpenPGP */,
 				832146B5223F89A8008ECC22 /* CALayer+Shadow.swift */,
 				DB66FE69224A330D00D82704 /* String.swift */,
@@ -1311,6 +1336,11 @@
 				C00CE558B320642C1C2EECE7 /* Pods-TesserCubeComposeAction.debug pgp.xcconfig */,
 				F0EC992A1DF4CED75A30F54D /* Pods-TesserCubeComposeAction.debug stub.xcconfig */,
 				BEF5E8837849AFC231AC950C /* Pods-TesserCubeComposeAction.release.xcconfig */,
+				AC77612245CA0D2E11ECCE70 /* Pods-TesserCube.xctest.xcconfig */,
+				B639829F9F1E75874A6F4CC4 /* Pods-TesserCubeComposeAction.xctest.xcconfig */,
+				DCB938676101FF1A21579C50 /* Pods-TesserCubeInterpretAction.xctest.xcconfig */,
+				5836A11F534936E25D0543C8 /* Pods-TesserCubeKeyboard.xctest.xcconfig */,
+				F68C7284388FF0277EBF3184 /* Pods-TesserCubeTests.xctest.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1371,7 +1401,6 @@
 		DB4F300522A120F50003804B /* DMSOpenPGP */ = {
 			isa = PBXGroup;
 			children = (
-				DB4F300222A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift */,
 				DB4F309722A14C0D0003804B /* DMSPGPError.swift */,
 				831EC43022B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift */,
 			);
@@ -1436,6 +1465,14 @@
 				DB66FE6E224A3CD600D82704 /* SenderContactPickerView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		DBD98FDF2334B7BB003A952B /* DMSGoPGP */ = {
+			isa = PBXGroup;
+			children = (
+				DBD98FDA2334B7B7003A952B /* CryptoPublicKey.swift */,
+			);
+			path = DMSGoPGP;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1995,7 +2032,6 @@
 				83B93D1F221CE06100F556C0 /* Application.swift in Sources */,
 				831EC43122B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift in Sources */,
 				DBC7DEBD2248C7F600DA4C3E /* RecipientContactPickerView.swift in Sources */,
-				DB0758A2224493DB0046FBFD /* PGPUserIDTranslator.swift in Sources */,
 				8325E486222E768500EE9B83 /* Debounce.swift in Sources */,
 				DB66FE67224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift in Sources */,
 				DB1327152253651C00BD7B98 /* KeyBridge.swift in Sources */,
@@ -2036,7 +2072,9 @@
 				832146FA2244CCF4008ECC22 /* MessagesViewController.swift in Sources */,
 				DB449995228C1CEF000B7E8A /* SettingsTableViewCell.swift in Sources */,
 				DB1169D722E19B100099BA25 /* MessageCardViewController.swift in Sources */,
+				83C12EE02332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */,
 				8325E4A4222F8FDA00EE9B83 /* Fonts.swift in Sources */,
+				839E647B23320751005C21FA /* (null) in Sources */,
 				DBB81AE1225DFF7A003D63C6 /* UIScreen.swift in Sources */,
 				DB44999A228C244F000B7E8A /* MessageDigitalSignatureSettingsViewController.swift in Sources */,
 				DB616C0922A4CBB4002768B4 /* UILabel.swift in Sources */,
@@ -2065,6 +2103,7 @@
 				8313F69B22476F5500C09C2D /* SharePosterViewController.swift in Sources */,
 				837833632249C33B00F2C0BF /* TCDBManager.swift in Sources */,
 				833FF38D224F97BD00EFE0A9 /* ProfileService+Message.swift in Sources */,
+				DBD98FDB2334B7B7003A952B /* CryptoPublicKey.swift in Sources */,
 				83783377224B9B9B00F2C0BF /* ContactDetailViewController.swift in Sources */,
 				83FE346022B73AD70077C1A5 /* IntroCardView.swift in Sources */,
 				833FF391224F97D900EFE0A9 /* Message.swift in Sources */,
@@ -2076,7 +2115,7 @@
 				831C831422CC9BEB008DE52C /* ImportPublicKeyConfirmViewController.swift in Sources */,
 				DB0758D0224895B40046FBFD /* MessageCardCell.swift in Sources */,
 				83FE346222B74E980077C1A5 /* MainTabbarViewController+IntroWizard.swift in Sources */,
-				DB4F300322A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift in Sources */,
+				83C90B43231678B90048743A /* GenerateKeyData.swift in Sources */,
 				DB75454B2296A7C400B4E1EF /* CreateKeyOption.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2142,15 +2181,15 @@
 				83B93D5E221E6D1E00F556C0 /* UIImage+Color.swift in Sources */,
 				8325E477222CD0E700EE9B83 /* SeparatorView.swift in Sources */,
 				83783384224CB7F700F2C0BF /* strings.swift in Sources */,
+				DBD98FDC2334B7B7003A952B /* CryptoPublicKey.swift in Sources */,
 				83B93D3A221D486600F556C0 /* KeyboardModel.swift in Sources */,
+				83C12EE12332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */,
 				8325E487222E768500EE9B83 /* Debounce.swift in Sources */,
 				8310B34522325E0C00C35AEC /* String+Compare.swift in Sources */,
 				DBC24B1523026BA800A4AE8D /* WordSuggestionService.swift in Sources */,
 				833FF395224F9D8100EFE0A9 /* KeyboardInterpretor.swift in Sources */,
-				83783369224B32AC00F2C0BF /* PGPUserIDTranslator.swift in Sources */,
 				83DFC73722577B9800993160 /* WormHole.swift in Sources */,
 				833FF38E224F97BD00EFE0A9 /* ProfileService+Message.swift in Sources */,
-				DB4F300422A120F00003804B /* DMSPGPPublicKeyAlgorithm.swift in Sources */,
 				DBF6B2AE232F6950008F83AE /* UIColor+Keyboard.swift in Sources */,
 				83B93D4B221D7EB000F556C0 /* Shapes.swift in Sources */,
 				8378335A224889B100F2C0BF /* ProfileService.swift in Sources */,
@@ -2177,6 +2216,7 @@
 				837833592248898A00F2C0BF /* TCErrors.swift in Sources */,
 				DB8D7319231E394E005D15DD /* KeyRecord.swift in Sources */,
 				8325E46D222CBFBC00EE9B83 /* KeyboardLayoutManager.swift in Sources */,
+				83C90B44231678DE0048743A /* GenerateKeyData.swift in Sources */,
 				83B93D5B221E575500F556C0 /* Theme.swift in Sources */,
 				8325E4A5222F8FDA00EE9B83 /* Fonts.swift in Sources */,
 				8325E479222CD48200EE9B83 /* ActionButton.swift in Sources */,
@@ -2213,18 +2253,19 @@
 				DB63A0F922DDCB2000C2DDA6 /* TCDBManager.swift in Sources */,
 				DB63A10A22DEF4D300C2DDA6 /* ImageUtil.swift in Sources */,
 				DB63A10522DDCF1600C2DDA6 /* UILabel.swift in Sources */,
-				DB8D731A231E394E005D15DD /* KeyRecord.swift in Sources */,
+				835294B923279F40000E6170 /* DMSReceipientKeyIDUtil.swift in Sources */,
 				DB63A12522E06E0900C2DDA6 /* String+Localization.swift in Sources */,
 				DB63A0E422DD9B5600C2DDA6 /* CALayer+Shadow.swift in Sources */,
 				DB63A11E22E0687C00C2DDA6 /* ContactPickerTagCollectionViewCell.swift in Sources */,
-				DB63A0FE22DDCBA000C2DDA6 /* PGPUserIDTranslator.swift in Sources */,
 				DB15696023278EA200220926 /* FetchableRecord+all.swift in Sources */,
 				DB1169DE22E19CA00099BA25 /* MessageCardTableViewController.swift in Sources */,
 				DB63A11F22E0688C00C2DDA6 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */,
 				DB63A11D22E0672400C2DDA6 /* SenderContactPickerView.swift in Sources */,
 				DB63A10622DDD0EF00C2DDA6 /* InterpretActionViewController.swift in Sources */,
 				DB63A11522E0605800C2DDA6 /* KeyBridge.swift in Sources */,
+				83C12EDE23321EE4009DB359 /* KeyRecord.swift in Sources */,
 				DB1169CC22E185640099BA25 /* NotificationName.swift in Sources */,
+				83C90B45231678DF0048743A /* GenerateKeyData.swift in Sources */,
 				DB63A12322E0691900C2DDA6 /* UIViewController+Alert.swift in Sources */,
 				DB63A0F322DDCAB400C2DDA6 /* Message.swift in Sources */,
 				DB63A10E22DF2A5900C2DDA6 /* BrokenMessageViewController.swift in Sources */,
@@ -2232,12 +2273,15 @@
 				DB63A0E022DD9AFF00C2DDA6 /* TCCardView.swift in Sources */,
 				DB63A11B22E0670200C2DDA6 /* TCBaseViewController.swift in Sources */,
 				DB63A10C22DEF75100C2DDA6 /* InterpretActionViewModel.swift in Sources */,
+				834DB06E23175B1C004E6F50 /* DMSPGPError.swift in Sources */,
 				DB63A0FB22DDCB6500C2DDA6 /* TCErrors.swift in Sources */,
 				DB63A11C22E0671B00C2DDA6 /* RecipientContactPickerView.swift in Sources */,
+				83C12EE22332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */,
 				DB1169D422E19ABF0099BA25 /* MessageCardViewController.swift in Sources */,
 				DB63A12022E068A400C2DDA6 /* ContactsListViewController.swift in Sources */,
 				DB63A10122DDCBD700C2DDA6 /* MessageDBAction.swift in Sources */,
 				DB63A0F622DDCAEB00C2DDA6 /* TCKey.swift in Sources */,
+				DBD98FDD2334B7B7003A952B /* CryptoPublicKey.swift in Sources */,
 				DBF6B2AB232F5479008F83AE /* UIColor.swift in Sources */,
 				DB63A10322DDCD0300C2DDA6 /* KeyRecordDBAction.swift in Sources */,
 				DB63A12822E06F8200C2DDA6 /* ContactListViewModel.swift in Sources */,
@@ -2257,12 +2301,15 @@
 				DB1169C322E184C30099BA25 /* UIViewController+Alert.swift in Sources */,
 				DB1169A222E182730099BA25 /* Fonts.swift in Sources */,
 				DB1169C722E185020099BA25 /* ContactCell.swift in Sources */,
+				834DB06F23175B1C004E6F50 /* DMSPGPError.swift in Sources */,
 				DB1169D922E19C0F0099BA25 /* MessageCardCell.swift in Sources */,
 				DB1169DF22E19CA00099BA25 /* MessageCardTableViewController.swift in Sources */,
 				DBF6B2AC232F5479008F83AE /* UIColor.swift in Sources */,
 				DB1169B122E183390099BA25 /* ContactMappable.swift in Sources */,
+				DBD98FDE2334B7B7003A952B /* CryptoPublicKey.swift in Sources */,
 				DB1169BF22E183F90099BA25 /* KeyRecordDBAction.swift in Sources */,
 				DB1169B222E183440099BA25 /* ContactsListViewController.swift in Sources */,
+				835294BA23279F40000E6170 /* DMSReceipientKeyIDUtil.swift in Sources */,
 				DB1169DA22E19C360099BA25 /* UILabel.swift in Sources */,
 				DB63A14D22E1809200C2DDA6 /* ComposeActionViewController.swift in Sources */,
 				DB8D7318231E393E005D15DD /* Email.swift in Sources */,
@@ -2280,7 +2327,6 @@
 				DB63A14F22E180E100C2DDA6 /* TCBaseViewController.swift in Sources */,
 				DB1169C422E184CB0099BA25 /* ContactPickerTagCollectionViewCell.swift in Sources */,
 				DB1169E222E1A2620099BA25 /* ImageUtil.swift in Sources */,
-				DB1169B322E1834C0099BA25 /* PGPUserIDTranslator.swift in Sources */,
 				DB1169C922E185350099BA25 /* ListEmptyView.swift in Sources */,
 				DB15695C23277FD900220926 /* ProfileService+Contact.swift in Sources */,
 				DB1169C022E184310099BA25 /* ComposeMessageViewModel.swift in Sources */,
@@ -2289,6 +2335,7 @@
 				DB1169AF22E1830A0099BA25 /* Message.swift in Sources */,
 				DB1169A022E182730099BA25 /* strings.swift in Sources */,
 				DB1169B922E183AD0099BA25 /* TCDBManager.swift in Sources */,
+				83C12EE32332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */,
 				DB1169D022E1859F0099BA25 /* String+Localization.swift in Sources */,
 				DB1169AD22E183010099BA25 /* KeychainMappable.swift in Sources */,
 				DB1169BE22E183E50099BA25 /* TCErrors.swift in Sources */,
@@ -2301,6 +2348,7 @@
 				DB1169CD22E185640099BA25 /* NotificationName.swift in Sources */,
 				DB63A14E22E180DE00C2DDA6 /* ComposeMessageViewController.swift in Sources */,
 				DB1169C522E184D00099BA25 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */,
+				83C90B46231678DF0048743A /* GenerateKeyData.swift in Sources */,
 				DB1169B622E183830099BA25 /* ProfileService+Message.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2544,8 +2592,9 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
+				CURRENT_PROJECT_VERSION = 35;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TesserCube/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2554,7 +2603,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2577,8 +2626,9 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
+				CURRENT_PROJECT_VERSION = 35;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TesserCube/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2587,7 +2637,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2608,6 +2658,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TesserCubeTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2630,6 +2681,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TesserCubeTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2650,6 +2702,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TesserCubeUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2670,6 +2723,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TesserCubeUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2693,7 +2747,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
+				CURRENT_PROJECT_VERSION = 35;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2703,11 +2757,12 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
 				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2723,7 +2778,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
+				CURRENT_PROJECT_VERSION = 35;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2733,180 +2788,17 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
 				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
-		};
-		DB3F5B9C226833BD00998F67 /* Debug PGP */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_BITCODE = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "FLEX DEBUG DEBUGPGP";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-			};
-			name = "Debug PGP";
-		};
-		DB3F5B9D226833BD00998F67 /* Debug PGP */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C0A9D10AB1612B0483E24D78 /* Pods-TesserCube.debug pgp.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
-				DEVELOPMENT_TEAM = 7LFDZ96332;
-				HEADER_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = TesserCube/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
-				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
-				SYSTEM_HEADER_SEARCH_PATHS = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
-				USER_HEADER_SEARCH_PATHS = "";
-			};
-			name = "Debug PGP";
-		};
-		DB3F5B9E226833BD00998F67 /* Debug PGP */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 433A84EFFA67237E885331BD /* Pods-TesserCubeTests.debug pgp.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7LFDZ96332;
-				INFOPLIST_FILE = TesserCubeTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCubeTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TesserCube.app/TesserCube";
-			};
-			name = "Debug PGP";
-		};
-		DB3F5B9F226833BD00998F67 /* Debug PGP */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 7LFDZ96332;
-				INFOPLIST_FILE = TesserCubeUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCubeUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = TesserCube;
-			};
-			name = "Debug PGP";
-		};
-		DB3F5BA0226833BD00998F67 /* Debug PGP */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BA307858963D472080CE0E2A /* Pods-TesserCubeKeyboard.debug pgp.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
-				DEVELOPMENT_TEAM = 7LFDZ96332;
-				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeKeyboard;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Debug PGP";
 		};
 		DB63A0DA22DD82EE00C2DDA6 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -2916,7 +2808,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeInterpretAction/TesserCubeInterpretAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
+				CURRENT_PROJECT_VERSION = 35;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2925,68 +2817,15 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeInterpretAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TARGET_IS_EXTENSION";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
-		};
-		DB63A0DB22DD82EE00C2DDA6 /* Debug PGP */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 47231CE0AB21C16DA6B3C73E /* Pods-TesserCubeInterpretAction.debug pgp.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_interpret;
-				CODE_SIGN_ENTITLEMENTS = TesserCubeInterpretAction/TesserCubeInterpretAction.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
-				DEVELOPMENT_TEAM = 7LFDZ96332;
-				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeInterpretAction;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TARGET_IS_EXTENSION";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Debug PGP";
-		};
-		DB63A0DC22DD82EE00C2DDA6 /* Debug Stub */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = DDADE9070E9C7B3A44C27B2D /* Pods-TesserCubeInterpretAction.debug stub.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_interpret;
-				CODE_SIGN_ENTITLEMENTS = TesserCubeInterpretAction/TesserCubeInterpretAction.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
-				DEVELOPMENT_TEAM = 7LFDZ96332;
-				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeInterpretAction;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TARGET_IS_EXTENSION";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Debug Stub";
 		};
 		DB63A0DD22DD82EE00C2DDA6 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -2996,7 +2835,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeInterpretAction/TesserCubeInterpretAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
+				CURRENT_PROJECT_VERSION = 35;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3005,11 +2844,11 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeInterpretAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TARGET_IS_EXTENSION";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -3023,7 +2862,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeComposeAction/TesserCubeComposeAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
+				CURRENT_PROJECT_VERSION = 35;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3032,68 +2871,15 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeComposeAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TARGET_IS_EXTENSION";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
-		};
-		DB63A14522E17D3300C2DDA6 /* Debug PGP */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = C00CE558B320642C1C2EECE7 /* Pods-TesserCubeComposeAction.debug pgp.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_compose;
-				CODE_SIGN_ENTITLEMENTS = TesserCubeComposeAction/TesserCubeComposeAction.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
-				DEVELOPMENT_TEAM = 7LFDZ96332;
-				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeComposeAction;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TARGET_IS_EXTENSION";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Debug PGP";
-		};
-		DB63A14622E17D3300C2DDA6 /* Debug Stub */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = F0EC992A1DF4CED75A30F54D /* Pods-TesserCubeComposeAction.debug stub.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_compose;
-				CODE_SIGN_ENTITLEMENTS = TesserCubeComposeAction/TesserCubeComposeAction.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
-				DEVELOPMENT_TEAM = 7LFDZ96332;
-				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeComposeAction;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TARGET_IS_EXTENSION";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Debug Stub";
 		};
 		DB63A14722E17D3300C2DDA6 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -3103,7 +2889,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeComposeAction/TesserCubeComposeAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
+				CURRENT_PROJECT_VERSION = 35;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3112,17 +2898,17 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeComposeAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) TARGET_IS_EXTENSION";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
-		DBD3BCB82254C3FE00A74920 /* Debug Stub */ = {
+		DBCE91E0233212D90000A9F3 /* XCTest */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -3180,14 +2966,14 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "FLEX DEBUG STUB";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "XCTEST DEBUG";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
-			name = "Debug Stub";
+			name = XCTest;
 		};
-		DBD3BCB92254C3FE00A74920 /* Debug Stub */ = {
+		DBCE91E1233212D90000A9F3 /* XCTest */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9C1A99D94821B29F622B677D /* Pods-TesserCube.debug stub.xcconfig */;
+			baseConfigurationReference = AC77612245CA0D2E11ECCE70 /* Pods-TesserCube.xctest.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -3195,8 +2981,9 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
+				CURRENT_PROJECT_VERSION = 35;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = TesserCube/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3205,7 +2992,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.3.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3216,16 +3003,102 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 			};
-			name = "Debug Stub";
+			name = XCTest;
 		};
-		DBD3BCBA2254C3FE00A74920 /* Debug Stub */ = {
+		DBCE91E2233212D90000A9F3 /* XCTest */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9B17EDD1F3A38E5966DCBA34 /* Pods-TesserCubeTests.debug stub.xcconfig */;
+			baseConfigurationReference = 5836A11F534936E25D0543C8 /* Pods-TesserCubeKeyboard.xctest.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 35;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.3.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeKeyboard;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = XCTest;
+		};
+		DBCE91E3233212D90000A9F3 /* XCTest */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DCB938676101FF1A21579C50 /* Pods-TesserCubeInterpretAction.xctest.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_interpret;
+				CODE_SIGN_ENTITLEMENTS = TesserCubeInterpretAction/TesserCubeInterpretAction.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 35;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.3.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeInterpretAction;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = XCTest;
+		};
+		DBCE91E4233212D90000A9F3 /* XCTest */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B639829F9F1E75874A6F4CC4 /* Pods-TesserCubeComposeAction.xctest.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_compose;
+				CODE_SIGN_ENTITLEMENTS = TesserCubeComposeAction/TesserCubeComposeAction.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 35;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.3.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeComposeAction;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = XCTest;
+		};
+		DBCE91E5233212D90000A9F3 /* XCTest */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F68C7284388FF0277EBF3184 /* Pods-TesserCubeTests.xctest.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TesserCubeTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3238,14 +3111,15 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TesserCube.app/TesserCube";
 			};
-			name = "Debug Stub";
+			name = XCTest;
 		};
-		DBD3BCBB2254C3FE00A74920 /* Debug Stub */ = {
+		DBCE91E6233212D90000A9F3 /* XCTest */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TesserCubeUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3258,37 +3132,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = TesserCube;
 			};
-			name = "Debug Stub";
-		};
-		DBD3BCBC2254C3FE00A74920 /* Debug Stub */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 34254D2B33B9D38AA6A8B02B /* Pods-TesserCubeKeyboard.debug stub.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 31;
-				DEVELOPMENT_TEAM = 7LFDZ96332;
-				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				J2OBJC_HOME = "${PROJECT_DIR}/BCOpenPGP/j2objc/dist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.2.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeKeyboard;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Debug Stub";
+			name = XCTest;
 		};
 /* End XCBuildConfiguration section */
 
@@ -3297,8 +3141,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8304E9B7221BF10200122637 /* Debug */,
-				DB3F5B9C226833BD00998F67 /* Debug PGP */,
-				DBD3BCB82254C3FE00A74920 /* Debug Stub */,
+				DBCE91E0233212D90000A9F3 /* XCTest */,
 				8304E9B8221BF10200122637 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -3308,8 +3151,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8304E9BA221BF10200122637 /* Debug */,
-				DB3F5B9D226833BD00998F67 /* Debug PGP */,
-				DBD3BCB92254C3FE00A74920 /* Debug Stub */,
+				DBCE91E1233212D90000A9F3 /* XCTest */,
 				8304E9BB221BF10200122637 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -3319,8 +3161,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8304E9BD221BF10200122637 /* Debug */,
-				DB3F5B9E226833BD00998F67 /* Debug PGP */,
-				DBD3BCBA2254C3FE00A74920 /* Debug Stub */,
+				DBCE91E5233212D90000A9F3 /* XCTest */,
 				8304E9BE221BF10200122637 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -3330,8 +3171,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8304E9C0221BF10200122637 /* Debug */,
-				DB3F5B9F226833BD00998F67 /* Debug PGP */,
-				DBD3BCBB2254C3FE00A74920 /* Debug Stub */,
+				DBCE91E6233212D90000A9F3 /* XCTest */,
 				8304E9C1221BF10200122637 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -3341,8 +3181,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83B93D33221D22FA00F556C0 /* Debug */,
-				DB3F5BA0226833BD00998F67 /* Debug PGP */,
-				DBD3BCBC2254C3FE00A74920 /* Debug Stub */,
+				DBCE91E2233212D90000A9F3 /* XCTest */,
 				83B93D34221D22FA00F556C0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -3352,8 +3191,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DB63A0DA22DD82EE00C2DDA6 /* Debug */,
-				DB63A0DB22DD82EE00C2DDA6 /* Debug PGP */,
-				DB63A0DC22DD82EE00C2DDA6 /* Debug Stub */,
+				DBCE91E3233212D90000A9F3 /* XCTest */,
 				DB63A0DD22DD82EE00C2DDA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -3363,8 +3201,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DB63A14422E17D3300C2DDA6 /* Debug */,
-				DB63A14522E17D3300C2DDA6 /* Debug PGP */,
-				DB63A14622E17D3300C2DDA6 /* Debug Stub */,
+				DBCE91E4233212D90000A9F3 /* XCTest */,
 				DB63A14722E17D3300C2DDA6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;

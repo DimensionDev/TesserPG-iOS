@@ -204,9 +204,6 @@ extension MessageCardCell {
             view.layoutMargins = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
             return view
         }()
-        contentBackgroundView.snp.makeConstraints { maker in
-            // maker.height.greaterThanOrEqualTo(100)
-        }
 
         // Message
         contentBackgroundView.addSubview(messageLabel)

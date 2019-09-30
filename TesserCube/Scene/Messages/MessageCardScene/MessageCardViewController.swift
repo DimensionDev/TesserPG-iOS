@@ -159,7 +159,6 @@ extension MessageCardViewController {
 
 }
 
-
 extension MessageCardViewController {
 
     private func reloadBottomActionView(with actions: [MessageCardViewModel.Action]) {

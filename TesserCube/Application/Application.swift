@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import DMSOpenPGP
 #if DEBUG
 #if FLEX
 import FLEX
@@ -16,6 +15,7 @@ import FLEX
 import SwifterSwift
 import IQKeyboardManagerSwift
 import SVProgressHUD
+import ConsolePrint
 
 class Application: NSObject {
     
@@ -46,6 +46,12 @@ class Application: NSObject {
             
         }
 
+        if let wordPredictor = WordSuggestionService.shared.wordPredictor, wordPredictor.needLoadNgramData {
+            wordPredictor.load { error in
+                consolePrint(error?.localizedDescription ?? "NGram realm setup success")
+            }
+        }
+
         IQKeyboardManager.shared.enable = true
     }
     
@@ -56,13 +62,15 @@ class Application: NSObject {
     private class func initUserDefaults() {
         KeyboardPreference.accountName = "you get me!"
 
-        DMSPGPArmoredHeader.commentHeaderContentForArmoredKey = "You can manage keys with https://tessercube.com"
-        DMSPGPArmoredHeader.commentHeaderContentForMessage = "Encrypted with https://tessercube.com"
+        // TODO: set tessercube armor header
+//        DMSPGPArmoredHeader.commentHeaderContentForArmoredKey = "You can manage keys with https://tessercube.com"
+//        DMSPGPArmoredHeader.commentHeaderContentForMessage = "Encrypted with https://tessercube.com"
         
     }
     
     private class func setupAppearance() {
         SVProgressHUD.setHapticsEnabled(true)
+        SVProgressHUD.setMinimumSize(CGSize(width: 128, height: 96))
 //        UINavigationBar.appearance().barTintColor = .purple
 //        UINavigationBar.appearance().tintColor = .white
 //        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]

@@ -8,8 +8,7 @@
 
 import Foundation
 
-extension Collection where Element == String
-{
+extension Collection where Element == String {
     func containsHiddenRecipientKeyID() -> Bool {
         return contains { keyID -> Bool in
             return keyID.isHiddenRecipientID

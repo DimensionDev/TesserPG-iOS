@@ -114,9 +114,9 @@ class TCActionButton: UIButton {
     fileprivate func updateBackgroundImages() {
         
         let normalImage = ImageUtil.buttonImage(color: color, shadowHeight: 0, shadowColor: .clear, cornerRadius: buttonCornerRadius)
-        let highlightedImage = ImageUtil.buttonImage(color: highlightedColor, shadowHeight: 0, shadowColor: .clear, cornerRadius: buttonCornerRadius)
-        let selectedImage = ImageUtil.buttonImage(color: selectedColor, shadowHeight: 0, shadowColor: .clear, cornerRadius: buttonCornerRadius)
-        let disabledImage = ImageUtil.buttonImage(color: disabledColor, shadowHeight: 0, shadowColor: .clear, cornerRadius: buttonCornerRadius)
+//        let highlightedImage = ImageUtil.buttonImage(color: highlightedColor, shadowHeight: 0, shadowColor: .clear, cornerRadius: buttonCornerRadius)
+//        let selectedImage = ImageUtil.buttonImage(color: selectedColor, shadowHeight: 0, shadowColor: .clear, cornerRadius: buttonCornerRadius)
+//        let disabledImage = ImageUtil.buttonImage(color: disabledColor, shadowHeight: 0, shadowColor: .clear, cornerRadius: buttonCornerRadius)
         
         setBackgroundImage(normalImage, for: .normal)
 //        setBackgroundImage(highlightedImage, for: .highlighted)
@@ -136,7 +136,7 @@ class TCActionButton: UIButton {
     }
     
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        var hittestInset = UIEdgeInsets(top: 0, left: -insetLength, bottom: 0, right: -insetLength)
+        let hittestInset = UIEdgeInsets(top: 0, left: -insetLength, bottom: 0, right: -insetLength)
         let hitTestFrame = bounds.inset(by: hittestInset)
         return hitTestFrame.contains(point)
     }

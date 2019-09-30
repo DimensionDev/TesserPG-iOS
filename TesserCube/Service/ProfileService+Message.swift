@@ -88,7 +88,6 @@ extension ProfileService {
         }
     }
 
-
     /// Decrypt message and store in database
     ///
     /// - Parameter message: armored message
@@ -119,6 +118,7 @@ extension ProfileService {
                 senderKeyUserID = decryptInfo.signatureKey?.userID ?? ""
             case .unknownSigner(let infos):
                 // This is real KeyID of signature key (not long identifier)
+                // TODO: Get signer userID in DMSGoPGP
                 senderKeyID = infos.first?.keyID ?? ""
                 senderKeyUserID = infos.first?.primaryUserID ?? ""
             }

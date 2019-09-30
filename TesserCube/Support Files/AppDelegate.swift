@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import BouncyCastle_ObjC
+import GRDB
 import ConsolePrint
 
 @UIApplicationMain
@@ -16,17 +16,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Setup Bouncy Castle
-        JavaSecuritySecurity.addProvider(with: OrgBouncycastleJceProviderBouncyCastleProvider())
+
+        #if XCTEST
+        if ProcessInfo().arguments.contains("ResetApplication") {
+            try? FileManager.default.removeItem(atPath: TCDBManager.dbFilePath)
+        }
+        #endif
 
         // Setup Application
         Application.applicationConfigInit(application, launchOptions: launchOptions)
-
-        if let wordPredictor = WordSuggestionService.shared.wordPredictor, wordPredictor.needLoadNgramData {
-            wordPredictor.load { error in
-                consolePrint(error?.localizedDescription ?? "NGram realm setup success")
-            }
-        }
 
         #if DEBUG
         consolePrint(TCDBManager.dbDirectoryUrl)
@@ -34,17 +32,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         #endif
 
         if #available(iOS 13, *) {
-
+            // setup window in SceneDelegate
         } else {
-            #if DEBUG
-            if AppDelegate.isRunningTests {
-                window?.rootViewController = UIViewController()
-                return true
-            }
-            #endif
-
             window = UIWindow(frame: UIScreen.main.bounds)
-            //Make it the keywindow first since navigator works by finding the keywindow
+
+            // Make it the key window first since navigator works by finding the key window
             window?.makeKeyAndVisible()
             Coordinator.main.present(scene: .main(message: nil, window: window!), from: nil)
         }
@@ -80,14 +72,6 @@ extension AppDelegate {
         }
 
         return .portrait
-    }
-
-}
-
-extension AppDelegate {
-
-    static var isRunningTests: Bool {
-        return ProcessInfo().environment["XCInjectBundleInto"] != nil
     }
 
 }

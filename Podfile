@@ -17,12 +17,14 @@ def common_pods
   pod 'RxSwift', '~> 4.4.2'
   pod 'RxCocoa', '~> 4.4.2'
 
-  pod 'DMSOpenPGP', '~> 0.1.4'
+  # pod 'DMSOpenPGP', '~> 0.1.4'
   pod 'KeychainAccess', '~> 3.2.0'
 
   pod 'GRDB.swift', '~> 3.7.0'
   pod 'GRDBCipher', '~> 3.7.0'
   pod 'DeepDiff', '~> 2.0.1'
+
+  pod 'DMSGoPGP', '~> 0.0.17'
 
   pod 'WordSuggestion', '~> 0.2.1'
 end
@@ -39,12 +41,12 @@ target 'TesserCube' do
   pod 'SwifterSwift', '~> 4.6.0'
   
   # UI
-  pod 'SVProgressHUD', '~> 2.2.5'
+  pod 'SVProgressHUD', :git => 'https://github.com/getaaron/SVProgressHUD.git', :branch => 'dark-mode'
   pod 'IQKeyboardManagerSwift', '~> 6.4.2'
   pod 'Eureka', '~> 4.3.1'
 
   # DEBUG
-  pod 'FLEX', '~> 2.4.0', :configurations => ['Debug', 'Debug Stub', 'Debug PGP']
+  pod 'FLEX', '~> 2.4.0', :configurations => ['Debug']
 
   target 'TesserCubeTests' do
     inherit! :search_paths
@@ -78,11 +80,8 @@ post_install do |installer|
     end
 
     installer.pods_project.build_configurations.each do |config|  
-        if config.name == 'Debug Stub'
-            config.build_settings['SWIFT_ACTIVE_COMPILATION_CONDITIONS'] = 'DEBUG STUB $(inherited)'
-        end
-        if config.name == 'Debug PGP'
-            config.build_settings['SWIFT_ACTIVE_COMPILATION_CONDITIONS'] = 'DEBUG DEBUGPGP $(inherited)'
+        if config.name == 'XCTest'
+            config.build_settings['SWIFT_ACTIVE_COMPILATION_CONDITIONS'] = 'XCTEST'
         end
     end
 end
