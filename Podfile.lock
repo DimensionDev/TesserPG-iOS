@@ -1,13 +1,10 @@
 PODS:
   - AlignedCollectionViewFlowLayout (1.1.2)
-  - BouncyCastle-ObjC (0.1.0)
   - ConsolePrint (0.1.0)
   - DateToolsSwift (4.0.0)
   - DeepDiff (2.0.1)
   - DeviceKit (1.11.0)
-  - DMSOpenPGP (0.1.4):
-    - BouncyCastle-ObjC (~> 0.1.0)
-    - OpenSSL-Universal (~> 1.0.2.17)
+  - DMSGoPGP (0.0.17)
   - Eureka (4.3.1)
   - FLEX (2.4.0)
   - GRDB.swift (3.7.0)
@@ -18,14 +15,11 @@ PODS:
   - MMWormhole (2.0.0):
     - MMWormhole/Core (= 2.0.0)
   - MMWormhole/Core (2.0.0)
-  - OpenSSL-Universal (1.0.2.18):
-    - OpenSSL-Universal/Static (= 1.0.2.18)
-  - OpenSSL-Universal/Static (1.0.2.18)
-  - Realm (3.17.3):
-    - Realm/Headers (= 3.17.3)
-  - Realm/Headers (3.17.3)
-  - RealmSwift (3.17.3):
-    - Realm (= 3.17.3)
+  - Realm (3.18.0):
+    - Realm/Headers (= 3.18.0)
+  - Realm/Headers (3.18.0)
+  - RealmSwift (3.18.0):
+    - Realm (= 3.18.0)
   - RxAtomic (4.4.2)
   - RxBlocking (4.5.0):
     - RxSwift (>= 4.4.2, ~> 4.4)
@@ -39,7 +33,7 @@ PODS:
   - SQLCipher/common (3.4.2)
   - SQLCipher/standard (3.4.2):
     - SQLCipher/common
-  - SVProgressHUD (2.2.5)
+  - SVProgressHUD (2.2.6)
   - SwifterSwift (4.6.0):
     - SwifterSwift/AppKit (= 4.6.0)
     - SwifterSwift/CoreGraphics (= 4.6.0)
@@ -59,7 +53,7 @@ PODS:
   - SwifterSwift/UIKit (4.6.0)
   - SwiftGen (6.1.0)
   - SwiftLint (0.30.1)
-  - "UITextView+Placeholder (1.3.1)"
+  - "UITextView+Placeholder (1.3.3)"
   - WordSuggestion (0.2.1):
     - RealmSwift
 
@@ -69,7 +63,7 @@ DEPENDENCIES:
   - DateToolsSwift (~> 4.0.0)
   - DeepDiff (~> 2.0.1)
   - DeviceKit (~> 1.11.0)
-  - DMSOpenPGP (~> 0.1.4)
+  - DMSGoPGP (~> 0.0.17)
   - Eureka (~> 4.3.1)
   - FLEX (~> 2.4.0)
   - GRDB.swift (~> 3.7.0)
@@ -81,7 +75,7 @@ DEPENDENCIES:
   - RxCocoa (~> 4.4.2)
   - RxSwift (~> 4.4.2)
   - SnapKit (~> 4.2.0)
-  - SVProgressHUD (~> 2.2.5)
+  - SVProgressHUD (from `https://github.com/getaaron/SVProgressHUD.git`, branch `dark-mode`)
   - SwifterSwift (~> 4.6.0)
   - SwiftGen (~> 6.1.0)
   - SwiftLint (~> 0.30.1)
@@ -91,12 +85,11 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AlignedCollectionViewFlowLayout
-    - BouncyCastle-ObjC
     - ConsolePrint
     - DateToolsSwift
     - DeepDiff
     - DeviceKit
-    - DMSOpenPGP
+    - DMSGoPGP
     - Eureka
     - FLEX
     - GRDB.swift
@@ -104,7 +97,6 @@ SPEC REPOS:
     - IQKeyboardManagerSwift
     - KeychainAccess
     - MMWormhole
-    - OpenSSL-Universal
     - Realm
     - RealmSwift
     - RxAtomic
@@ -113,21 +105,29 @@ SPEC REPOS:
     - RxSwift
     - SnapKit
     - SQLCipher
-    - SVProgressHUD
     - SwifterSwift
     - SwiftGen
     - SwiftLint
     - "UITextView+Placeholder"
     - WordSuggestion
 
+EXTERNAL SOURCES:
+  SVProgressHUD:
+    :branch: dark-mode
+    :git: https://github.com/getaaron/SVProgressHUD.git
+
+CHECKOUT OPTIONS:
+  SVProgressHUD:
+    :commit: e0751029e2befc68e3a0feeffbca240adde9eb08
+    :git: https://github.com/getaaron/SVProgressHUD.git
+
 SPEC CHECKSUMS:
   AlignedCollectionViewFlowLayout: ee2ef451e741ec08f8e0967d828001e2f051c20a
-  BouncyCastle-ObjC: e9e35f6cf5b1333f6ce4cc6bb5ab19cbf5dfc7aa
   ConsolePrint: 695d494f0a2595d1792ec19483f2aa16e4501c19
   DateToolsSwift: 875d97ff9e3a5d54abdd67a269b3f51c757b71ab
   DeepDiff: 1944bb2c841ab238a66b31de1faa7627f3ca84bd
   DeviceKit: a3a86f8dddbe1317a9a243cdf9646858bf135dce
-  DMSOpenPGP: 3c667b775e705abef816582f320bbadb972bd8ce
+  DMSGoPGP: fd0970ab6941eb4a5b6cb2f8846ca9ab9a9151a6
   Eureka: 28ea296f06710f6745266b71f17862048941a32d
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
   GRDB.swift: 51cc9e57ae8ff7083a9d674c97925aa1de06aac5
@@ -135,22 +135,21 @@ SPEC CHECKSUMS:
   IQKeyboardManagerSwift: 79a3ec200dfb41cb66a89b8575417b5378107c5d
   KeychainAccess: 3b1bf8a77eb4c6ea1ce9404c292e48f948954c6b
   MMWormhole: 0cd3fd35a9118b2e2d762b499f54eeaace0be791
-  OpenSSL-Universal: d10ab08e0b258023e5184f77660b1b9f4ec93926
-  Realm: 5a1d9d47bfc101dd597668b1a8af4288a2557f6d
-  RealmSwift: b7fdc2d18616621c31df5c7a398a45a2163f8eb0
+  Realm: 7b3d04740facf45e958a514b466a32b04f1113d6
+  RealmSwift: c817b5f374668cf08f649afb05f55d92a787649c
   RxAtomic: d00e97c10db88c6f08540e0bf2752fc5a2404167
   RxBlocking: 79413e4d916f44bb3e113c5b2cc059e36fe58910
   RxCocoa: 477990dc3b4c3ff55fb0ac77e1cc06244e0aaec8
   RxSwift: 74c29b693c8e42b0f64400e8b06564575742d649
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   SQLCipher: f9fcf29b2e59ced7defc2a2bdd0ebe79b40d4990
-  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  SVProgressHUD: 6ed134667e9ebb2f33679e8273cd48fd3fa349e5
   SwifterSwift: 812ffec6f301922f5430e75be3f2939ea3a80024
   SwiftGen: f872ca75cbd17bf7103c17f13dcfa0d9a15667b0
   SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
-  "UITextView+Placeholder": f23df8592290d8d06078072ae1a663e11ee07ff4
+  "UITextView+Placeholder": c407b27599ea23cca425946fee3cf1db5d547008
   WordSuggestion: 424d96dd2cfe4259c72959f9bdcffc864f0e65d4
 
-PODFILE CHECKSUM: 3c7bb666fd83c4079f062bce3ae3abb17c305eb3
+PODFILE CHECKSUM: 77cfecf4c0b927d8ea2b0b9b49fe006c95c9bf77
 
 COCOAPODS: 1.7.5

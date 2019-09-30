@@ -56,7 +56,6 @@ extension RecipientContactPickerViewModel: UICollectionViewDataSource {
             cell.isInvalid = tag.contact == nil
             return cell
 
-        // TODO:
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: ContactPickerTextFieldCollectionViewCell.self), for: indexPath) as! ContactPickerTextFieldCollectionViewCell
             return cell

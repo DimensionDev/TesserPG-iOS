@@ -7,18 +7,19 @@
 //
 
 import Foundation
-import DMSOpenPGP
+import DMSGoPGP
 import GRDB
 
 extension KeyRecord {
 
     mutating func removeKeySecretPart() throws {
         guard let armored = armored else { return }
-        guard let keyRing = try? DMSPGPKeyRing(armoredKey: armored) else {
+        guard let keyRing = try? CryptoGopenPGP().buildKeyRingArmored(armored) else {
             assertionFailure()
             return
         }
-        let publicKeyArmored = keyRing.publicKeyRing.armored()
+        
+        let publicKeyArmored = keyRing.getArmoredPublicKey(nil)
 
         do {
             try TCDBManager.default.dbQueue.write { db in
@@ -34,15 +35,35 @@ extension KeyRecord {
 
 extension KeyRecord {
 
-//    static func remove(keys: [String]) throws {
-//        do {
-//            _ = try TCDBManager.default.dbQueue.write({ db in
-//                try KeyRecord.filter(keys.contains(Column("longIdentifier"))).deleteAll(db)
-//            })
-//        } catch let error {
-//            throw error
-//        }
-//    }
+    // Remove keyRecord and owner contact side-effect
+    static func remove(longIdentifier: [String]) throws {
+
+        do {
+            _ = try TCDBManager.default.dbQueue.write({ db in
+                let keyRecords = try KeyRecord.filter(longIdentifier.contains(Column("longIdentifier"))).fetchAll(db)
+                for keyRecord in keyRecords {
+                    guard let contact = try? Contact.fetchOne(db, key: keyRecord.contactId) else {
+                        assertionFailure("Key not belong to any contact")
+                        try keyRecord.delete(db)
+                        continue
+                    }
+
+                    let keysCount = try contact.keys.fetchCount(db)
+                    let shouldRemoveContact = keysCount == 1
+
+                    if shouldRemoveContact {
+                        try contact.delete(db)
+                        // cascade delete key record
+                    } else {
+                        try keyRecord.delete(db)
+                    }
+
+                }
+            })
+        } catch let error {
+            throw error
+        }
+    }
 
 }
 

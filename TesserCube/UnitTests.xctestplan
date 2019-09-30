@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "5A0E1F5E-F88D-40F4-9312-F2FF78BA6CAC",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:TesserCube.xcodeproj",
+        "identifier" : "8304E9A4221BF10200122637",
+        "name" : "TesserCubeTests"
+      }
+    }
+  ],
+  "version" : 1
+}

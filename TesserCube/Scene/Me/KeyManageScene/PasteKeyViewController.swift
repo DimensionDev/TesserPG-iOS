@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import DMSOpenPGP
 import SnapKit
 import SwifterSwift
 import RxCocoa
@@ -17,7 +16,7 @@ import ConsolePrint
 class PasteKeyViewController: TCBaseViewController {
     
     var needPassphrase: Bool = false
-    var armoredKey: String? = nil
+    var armoredKey: String?
     
     let disposeBag = DisposeBag()
     
@@ -133,10 +132,10 @@ class PasteKeyViewController: TCBaseViewController {
     }
     
     private func hasValidKeyInPasteboard() -> Bool {
-        if UIPasteboard.general.hasStrings, let pasteString = UIPasteboard.general.string,
-        let _ = try? DMSPGPKeyRing(armoredKey: pasteString) {
+        if UIPasteboard.general.hasStrings, let pasteString = UIPasteboard.general.string, KeyFactory.isValidMessage(from: pasteString) {
             return true
         }
+
         return false
     }
     
@@ -145,7 +144,7 @@ class PasteKeyViewController: TCBaseViewController {
     }
     
     deinit {
-        print("")
+        consolePrint("deinit")
     }
 }
 

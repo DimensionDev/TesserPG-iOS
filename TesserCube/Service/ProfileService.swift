@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import DMSOpenPGP
 import RxSwift
 import RxCocoa
 import KeychainAccess
@@ -28,9 +27,14 @@ class ProfileService {
     private var keyRecordsObervation: TransactionObserver?
     private var contactsObervation: TransactionObserver?
     private var messagesObervation: TransactionObserver?
-    
+
+    #if XCTEST
+    // For simulator
+    let keyChain = Keychain(service: "com.Sujitech.TesserCube", accessGroup: "7LFDZ96332.com.Sujitech.TesserCube")
+    #else
     let keyChain = Keychain(service: "com.Sujitech.TesserCube", accessGroup: "7LFDZ96332.com.Sujitech.TesserCube").accessibility(.afterFirstUnlock, authenticationPolicy: .userPresence)
-    
+    #endif
+
     private let disposeBag = DisposeBag()
     
     init() {
@@ -44,13 +48,12 @@ class ProfileService {
         keyRecordsObervation = try! ValueObservation.trackingAll(KeyRecord.all())
             .start(in: TCDBManager.default.dbQueue, onChange: { latestKeyRecords in
                 let keys = latestKeyRecords.compactMap { record -> TCKey? in
-                    guard let armored = record.armored,
-                    let keyRing = try? DMSPGPKeyRing(armoredKey: armored) else {
+                    guard let armored = record.armored else {
                         return nil
                     }
-
-                    return TCKey(keyRing: keyRing, from: record)
+                    return TCKey(armored: armored)
                 }
+
                 self.keys.accept(keys)
 
                 #if TARGET_IS_EXTENSION
@@ -72,12 +75,10 @@ class ProfileService {
         WormholdService.shared.listeningWormhole.listenForMessage(withIdentifier: keysUpdateIdentifier.rawValue) { [weak self] _ in
             guard let `self` = self else { return }
             let keys = KeyRecord.all().compactMap { record -> TCKey? in
-                guard let armored = record.armored,
-                let keyRing = try? DMSPGPKeyRing(armoredKey: armored) else {
+                guard let armored = record.armored else {
                     return nil
                 }
-
-                return TCKey(keyRing: keyRing, from: record)
+                return TCKey(armored: armored)
             }
             self.keys.accept(keys)
         }
@@ -113,7 +114,7 @@ class ProfileService {
             .subscribe(onNext: { contactIds in
                 var currentContacts = self.contacts.value
                 contactIds.forEach { contactId in
-                    if let existContactIndex = currentContacts.firstIndex(where: { ($0.id ?? -1) == contactId } ),
+                    if let existContactIndex = currentContacts.firstIndex(where: { ($0.id ?? -1) == contactId }),
                     let updatedContact = Contact.find(id: contactId) {
                         currentContacts[existContactIndex] = updatedContact
                     }
@@ -121,7 +122,6 @@ class ProfileService {
                 self.contacts.accept(currentContacts)
             })
             .disposed(by: disposeBag)
-
 
         // Message
 
@@ -153,7 +153,7 @@ class ProfileService {
         messageChanged
             .subscribe(onNext: { messageID in
                 var currentMessages = self.messages.value
-                if let index = currentMessages.firstIndex(where: { ($0.id ?? -1) == messageID } ),
+                if let index = currentMessages.firstIndex(where: { ($0.id ?? -1) == messageID }),
                 let updateMessage = Message.loadMessage(id: messageID) {
                     currentMessages[index] = updateMessage
                 }
@@ -183,4 +183,19 @@ extension ProfileService {
         })
     }
     
+}
+
+// MARK: - Keychain conivience method
+extension ProfileService {
+    func getPasswordDict(keyIdentifiers: [String]) -> [String: String] {
+        var keyPasswordDict = [String: String]()
+        for keyChainItem in ProfileService.default.keyChain.allItems() {
+            if let key = keyChainItem["key"] as? String, let password = keyChainItem["value"] as? String {
+                if keyIdentifiers.contains(key) {
+                    keyPasswordDict[key] = password
+                }
+            }
+        }
+        return keyPasswordDict
+    }
 }

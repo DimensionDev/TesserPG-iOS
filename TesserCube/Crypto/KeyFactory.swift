@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import DMSOpenPGP
 import ConsolePrint
 
 enum TCKeyType: CaseIterable {
@@ -22,26 +21,25 @@ enum TCKeyType: CaseIterable {
 }
 
 class KeyFactory {
+    
+    private enum SecretKeyHeader: String {
+        case v1 = "-----BEGIN PGP PRIVATE KEY BLOCK-----"
+        case v2 = "-----BEGIN PGP SECRET KEY BLOCK-----"
+    }
+    
+    private enum SecretKeyFooter: String {
+        case v1 = "-----END PGP PRIVATE KEY BLOCK-----"
+        case v2 = "-----END PGP SECRET KEY BLOCK-----"
+    }
 
     private static let keyDirectoryName = "keys"
 
     private init() { }
 
     // @deprecated, only used in database migration
-    static func legacyLoadKeys() -> [TCKey] {
-        var keys: [TCKey] = []
-        for keyType in TCKeyType.allCases {
-            let keyFiles = KeyFactory.loadKeyFiles(keyType: keyType)
-            for keyFile in keyFiles {
-                guard let armored = try? String(contentsOfFile: keyFile, encoding: .utf8),
-                let keyRing = try? DMSPGPKeyRing(armoredKey: armored) else {
-                    continue
-                }
-
-                keys.append(TCKey(keyRing: keyRing, from: nil))
-            }
-        }
-        return keys
+    static func legacyLoadKeys() -> [String] {
+        return KeyFactory.loadKeyFiles(keyType: TCKeyType.rsa)
+            .compactMap { try? String(contentsOfFile: $0, encoding: .utf8) }
     }
 
 }
@@ -69,20 +67,20 @@ private extension KeyFactory {
         return keyFileNames.map { keysDirectoryUrl.appendingPathComponent($0).path }
     }
 
-    @available(*, deprecated, message: "only used in database migration")
-    static func saveNewKeyFile(_ key: TCKey) throws {
-        do {
-            let armorString = key.armored
-            guard !armorString.isEmpty else {
-                throw TCError.pgpKeyError(reason: .failToSave)
-            }
-            let fileName = key.longIdentifier
-            try armorString.write(to: keysDirectoryUrl.appendingPathComponent(fileName).appendingPathExtension("asc"), atomically: true, encoding: .utf8)
-        } catch let error {
-            consolePrint(error.localizedDescription)
-            throw TCError.pgpKeyError(reason: .failToSave)
-        }
-    }
+//    @available(*, deprecated, message: "only used in database migration")
+//    static func saveNewKeyFile(_ key: TCKey) throws {
+//        do {
+//            let armorString = key.armored
+//            guard !armorString.isEmpty else {
+//                throw TCError.pgpKeyError(reason: .failToSave)
+//            }
+//            let fileName = key.longIdentifier
+//            try armorString.write(to: keysDirectoryUrl.appendingPathComponent(fileName).appendingPathExtension("asc"), atomically: true, encoding: .utf8)
+//        } catch let error {
+//            consolePrint(error.localizedDescription)
+//            throw TCError.pgpKeyError(reason: .failToSave)
+//        }
+//    }
 
     @available(*, deprecated, message: "only used in database migration")
     static func deleteKeyFile(_ key: TCKey) {
@@ -92,4 +90,25 @@ private extension KeyFactory {
             try? FileManager.default.removeItem(atPath: filePath)
         }
     }
+}
+
+extension KeyFactory {
+    public static func extractPublicKeyBlock(from armored: String) -> String? {
+        guard let header = armored.range(of: "-----BEGIN PGP PUBLIC KEY BLOCK-----"),
+            let footer = armored.range(of: "-----END PGP PUBLIC KEY BLOCK-----") else {
+                return nil
+        }
+        
+        return String(armored[header.lowerBound..<footer.upperBound])
+    }
+    
+    public static func extractSecretKeyBlock(from armored: String) -> String? {
+        guard let header = armored.range(of: SecretKeyHeader.v1.rawValue) ?? armored.range(of: SecretKeyHeader.v2.rawValue),
+            let footer = armored.range(of: SecretKeyFooter.v1.rawValue) ?? armored.range(of: SecretKeyFooter.v2.rawValue) else {
+                return nil
+        }
+        
+        return String(armored[header.lowerBound..<footer.upperBound])
+    }
+
 }

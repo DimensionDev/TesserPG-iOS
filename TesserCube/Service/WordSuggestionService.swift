@@ -13,7 +13,6 @@ import ConsolePrint
 
 final class WordSuggestionService {
 
-    // swiftlint:disable force_try
     let realm: Realm? = {
         var config = Realm.Configuration()
         let realmName = "WordPredictor_default"
@@ -30,7 +29,6 @@ final class WordSuggestionService {
     }()
 
     private(set) var wordPredictor: WordPredictor?
-    // swiftlint:enable force_try
 
     // MARK: - Singleton
     public static let shared = WordSuggestionService()

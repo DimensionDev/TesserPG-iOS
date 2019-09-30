@@ -7,23 +7,10 @@
 //
 
 import Foundation
-import DMSOpenPGP
 import GRDB
 import ConsolePrint
 
 extension Contact {
-
-//    static func all() -> [Contact] {
-//        do {
-//            let contacts = try TCDBManager.default.dbQueue.read({ db in
-//                try Contact.fetchAll(db)
-//            })
-//            return contacts
-//        } catch let error {
-//            consolePrint(error.localizedDescription)
-//            return []
-//        }
-//    }
     
     static func find(id: Int64) -> Contact? {
         do {
@@ -54,12 +41,15 @@ extension Contact {
             })
 
             return keyRecords.compactMap { keyRecord in
-                guard let armored = keyRecord.armored,
-                let keyRing = try? DMSPGPKeyRing(armoredKey: armored) else {
-                    // assertionFailure("KeyRecord should not empty except first time process database migrate")
+                guard let armored = keyRecord.armored, let key = TCKey(armored: armored) else {
                     return nil
                 }
-                return TCKey(keyRing: keyRing, from: keyRecord)
+                return key
+//                let keyRing = try? DMSPGPKeyRing(armoredKey: armored) else {
+//                    // assertionFailure("KeyRecord should not empty except first time process database migrate")
+//                    return nil
+//                }
+//                return TCKey(keyRing: keyRing)
             }
         } catch {
             consolePrint(error.localizedDescription)

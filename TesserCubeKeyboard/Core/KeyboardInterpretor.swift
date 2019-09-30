@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import DMSGoPGP
 
 typealias InterpretCompletion = (Bool, Error?, Message?) -> Void
 
 class KeyboardInterpretor {
     
     static let inputQueue = DispatchQueue(label: "input")
+    
     static func interpret(textDocumentProxy: UITextDocumentProxy, _ completion: InterpretCompletion? = nil) {
         inputQueue.async {
             getAllString(textDocumentProxy: textDocumentProxy, completion)

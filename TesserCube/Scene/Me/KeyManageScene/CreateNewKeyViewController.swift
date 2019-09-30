@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import DMSOpenPGP
 import Eureka
 import SnapKit
 
@@ -28,19 +27,16 @@ class CreateNewKeyViewController: FormViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(CreateNewKeyViewController.cancelBarButtonItemPressed(_:)))
         
         setupFormStyle()
-        
-        var passwordRules = RuleSet<String>()
-//        passwordRules.add(rule: RuleRequired(msg: "Please input password", id: "Password_Required"))
-        passwordRules.add(rule: RuleRegExp(regExpr: "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{6,20}$", msg: "Password should be minimum 8 characters at least 1 Alphabet and 1 Number", id: nil))
-        
+
         let footer = createButtonFooter()
         
-        form +++ Section() {
+        form +++ Section {
             $0.footer = footer
             }
-            <<< NameRow("name"){ row in
+            <<< NameRow("name") { row in
                 row.placeholder = L10n.CreateNewKeyViewController.Label.name
                 row.add(rule: RuleRequired(msg: L10n.CreateNewKeyViewController.Alert.Title.nameRequired, id: "Name_Required"))
+                row.add(rule: RuleRegExp(regExpr: "^[^\\<\\>\\(\\)]*$", msg: L10n.CreateNewKeyViewController.Alert.Title.nameInvalid, id: nil))
                 row.validationOptions = .validatesOnChange
             }.cellUpdate { cell, row in
                 cell.textField.font = FontFamily.SFProText.regular.font(size: 17)
@@ -70,7 +66,7 @@ class CreateNewKeyViewController: FormViewController {
                     // do nothing
                 }
             }
-            <<< PasswordRow() { row in
+            <<< PasswordRow { row in
                 row.placeholder = L10n.CreateNewKeyViewController.Label.confirmPassword
                 row.add(rule: RuleEqualsToRow(form: form, tag: "Password", msg: L10n.CreateNewKeyViewController.Alert.Title.passwordNotMatch, id: nil))
             }.cellUpdate { cell, row in
@@ -92,7 +88,7 @@ class CreateNewKeyViewController: FormViewController {
                 }
                 row.value = true
             }
-            <<< PickerInlineRow<CreateKeyOption>("Algorithm") { (row : PickerInlineRow<CreateKeyOption>) -> Void in
+            <<< PickerInlineRow<CreateKeyOption>("Algorithm") { (row: PickerInlineRow<CreateKeyOption>) -> Void in
                 row.title = L10n.CreateNewKeyViewController.Label.algorithm
                 row.displayValueFor = { (rowValue: CreateKeyOption?) in
                     return rowValue?.displayName ?? ""
@@ -103,12 +99,12 @@ class CreateNewKeyViewController: FormViewController {
                     let row: RowOf<Bool>! = form.rowBy(tag: self.easyModeRowTag)
                     return row.value ?? true == true
                 })
-            }.cellUpdate{ cell, row in
+            }.cellUpdate { cell, row in
                 if #available(iOS 13, *) {
                     cell.textLabel?.textColor = .label
                 }
             }
-            <<< PickerInlineRow<Int>("KeyLength") { (row : PickerInlineRow<Int>) -> Void in
+            <<< PickerInlineRow<Int>("KeyLength") { (row: PickerInlineRow<Int>) -> Void in
                 row.title = L10n.CreateNewKeyViewController.Label.keyLength
                 row.displayValueFor = { (rowValue: Int?) in
                     return "\(rowValue ?? 0)"
@@ -121,7 +117,7 @@ class CreateNewKeyViewController: FormViewController {
                     let selectedAlgorithm = algorithmRow.value ?? .rsa
                     return (easyModeRow.value ?? true == true) || selectedAlgorithm != .rsa
                 })
-            }.cellUpdate{ cell, row in
+            }.cellUpdate { cell, row in
                 if #available(iOS 13, *) {
                     cell.textLabel?.textColor = .label
                 }
@@ -179,13 +175,17 @@ class CreateNewKeyViewController: FormViewController {
         }
         showHUD(L10n.Common.Hud.creatingKey)
         
-        let userID = PGPUserIDTranslator.buildUserID(name: name, email: email, comment: nil)
+        let userID = DMSPGPUserIDTranslator.buildUserID(name: name, email: email, comment: nil)
         let password = valuesDictionary["Password"] as? String
         
         let chosenKeyLength: Int = (valuesDictionary["KeyLength"] as? Int) ?? 3072
         let generateKeyOption: CreateKeyOption = (valuesDictionary["Algorithm"] as? CreateKeyOption) ?? .rsa
         
-        let generateKeyData = GenerateKeyData(name: name, email: email, password: password, masterKey: KeyData(strength: chosenKeyLength, algorithm: generateKeyOption.dmsPGPPublicKeyAlgorithm, curve: generateKeyOption.curve), subkey: KeyData(strength: chosenKeyLength, algorithm: generateKeyOption.dmsSubkeyAlgorithm, curve: generateKeyOption.curve))
+        let generateKeyData = GenerateKeyData(name: name,
+                                              email: email,
+                                              password: password,
+                                              masterKey: KeyData(strength: chosenKeyLength, algorithm: generateKeyOption.dmsPGPPublicKeyAlgorithm),
+                                              subkey: KeyData(strength: chosenKeyLength, algorithm: generateKeyOption.dmsSubkeyAlgorithm))
         
         ProfileService.default.addNewKey(userID: userID, passphrase: password, generateKeyData: generateKeyData) { [weak self] error in
             DispatchQueue.main.async {

@@ -45,7 +45,7 @@ class MessagesViewModel: NSObject {
 
     // For diffable datasource
     var messageExpandedIDDict: [Int64: Bool] = [:]
-    var messageMaxNumberOfLinesIDDict: [Int64 : Int] = [:]
+    var messageMaxNumberOfLinesIDDict: [Int64: Int] = [:]
 
     // Output
     let segmentedControlItems = MessageType.allCases.map { $0.segmentedControlTitle }
@@ -76,7 +76,7 @@ class MessagesViewModel: NSObject {
                             if searchText.isEmpty { return true }
                             return $0.rawMessage.range(of: searchText, options: .caseInsensitive) != nil ||
                                 $0.senderKeyUserId.range(of: searchText, options: .caseInsensitive) != nil ||
-                                $0.getRecipients().first(where: { messageRecipient in messageRecipient.keyUserId.range(of: searchText, options: .caseInsensitive) != nil } ) != nil
+                                $0.getRecipients().first(where: { messageRecipient in messageRecipient.keyUserId.range(of: searchText, options: .caseInsensitive) != nil }) != nil
                         }
                         .sorted(by: { lhs, rhs -> Bool in
                             guard let lhsDate = lhs.interpretedAt ?? lhs.composedAt else {
@@ -213,7 +213,7 @@ extension MessagesViewModel {
         // set sender info
         let senderInfoView: MessageContactInfoView = {
             let infoView = MessageContactInfoView()
-            let senderMeta = PGPUserIDTranslator(userID: message.senderKeyUserId)
+            let senderMeta = DMSPGPUserIDTranslator(userID: message.senderKeyUserId)
             let senderIDLabelColor: UIColor = ProfileService.default.containsKey(longIdentifier: message.senderKeyId) ? .systemGreen : .systemBlue
 
             infoView.nameLabel.text = MessagesViewModel.retrieveNameBy(longIdentifier: message.senderKeyId, fallbackToMeta: senderMeta)
@@ -228,7 +228,7 @@ extension MessagesViewModel {
         // set recipient(s) info
         let recipeintsInfoViews = message.getRecipients().map { recipient -> MessageContactInfoView in
             let infoView = MessageContactInfoView()
-            let meta = PGPUserIDTranslator(userID: recipient.keyUserId)
+            let meta = DMSPGPUserIDTranslator(userID: recipient.keyUserId)
             infoView.nameLabel.text = MessagesViewModel.retrieveNameBy(longIdentifier: recipient.keyId, fallbackToMeta: meta)
             infoView.emailLabel.text = meta.email.flatMap { "(\($0))"}
             infoView.shortIDLabel.text = String(recipient.keyId.suffix(8))
@@ -267,7 +267,7 @@ extension MessagesViewModel {
 
 extension MessagesViewModel {
 
-    static func retrieveNameBy(longIdentifier: String, fallbackToMeta meta: PGPUserIDTranslator) -> String {
+    static func retrieveNameBy(longIdentifier: String, fallbackToMeta meta: DMSPGPUserIDTranslator) -> String {
         guard !longIdentifier.isEmpty else {
             return L10n.Common.Label.nameNone
         }

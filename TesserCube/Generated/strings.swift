@@ -122,6 +122,8 @@ internal enum L10n {
 
   internal enum ContactDetailViewController {
     internal enum Button {
+      /// Export Full Public Key
+      internal static let exportPubKey = L10n.tr("Localizable", "ContactDetailViewController.Button.ExportPubKey")
       /// Send Message
       internal static let sendMessage = L10n.tr("Localizable", "ContactDetailViewController.Button.SendMessage")
     }
@@ -167,6 +169,8 @@ internal enum L10n {
         internal static let emailInvalid = L10n.tr("Localizable", "CreateNewKeyViewController.Alert.Title.EmailInvalid")
         /// Email is required to create a key
         internal static let emailRequired = L10n.tr("Localizable", "CreateNewKeyViewController.Alert.Title.EmailRequired")
+        /// Name cannot contain the following characters: <>()
+        internal static let nameInvalid = L10n.tr("Localizable", "CreateNewKeyViewController.Alert.Title.NameInvalid")
         /// Name is required to create a key
         internal static let nameRequired = L10n.tr("Localizable", "CreateNewKeyViewController.Alert.Title.NameRequired")
         /// Confirm password should be same as password

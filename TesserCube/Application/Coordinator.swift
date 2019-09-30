@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import DMSOpenPGP
 
 class Coordinator {
     
@@ -54,7 +53,7 @@ class Coordinator {
     
     func present(scene: Scene, from sender: UIViewController?, transition: Transition = .detail, completion: (() -> Void)? = nil) {
         switch scene {
-        case let .main(message, window):
+        case let .main(_, window):
             if #available(iOS 13, *) {
                 window.rootViewController = MainTabbarViewController()
                 window.makeKeyAndVisible()
@@ -87,6 +86,7 @@ class Coordinator {
 }
 
 extension Coordinator {
+    
     private func get(scene: Scene) -> UIViewController {
         switch scene {
         case .main:
@@ -188,13 +188,13 @@ extension Coordinator {
                 return true
             }
 
-            let hasSecretKey = DMSPGPKeyRing.extractSecretKeyBlock(from: message) != nil
+            let hasSecretKey = KeyFactory.extractSecretKeyBlock(from: message) != nil
             guard !hasSecretKey else {
                 Coordinator.main.present(scene: .pasteKey(armoredKey: message, needPassphrase: true), from: rootViewController, transition: .modal, completion: nil)
                 return true
             }
 
-            let hasPublicKey = DMSPGPKeyRing.extractPublicKeyBlock(from: message) != nil
+            let hasPublicKey = KeyFactory.extractPublicKeyBlock(from: message) != nil
             guard !hasPublicKey else {
                 Coordinator.main.present(scene: .pasteKey(armoredKey: message, needPassphrase: false), from: rootViewController, transition: .modal, completion: nil)
                 return true

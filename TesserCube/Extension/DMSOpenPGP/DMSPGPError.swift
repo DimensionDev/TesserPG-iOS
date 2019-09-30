@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import DMSOpenPGP
 
 extension DMSPGPError: LocalizedError {
     public var errorDescription: String? {
@@ -25,9 +24,12 @@ extension DMSPGPError: LocalizedError {
         case .invalidCurve:                 return L10n.DMSPGPError.invalidCurve
         case .invalidKeyLength:             return L10n.DMSPGPError.invalidKeyLength
         case .notSupportAlgorithm(let algorithm):
-            return L10n.DMSPGPError.notSupportAlgorithm(algorithm.displayName)
+            return L10n.DMSPGPError.notSupportAlgorithm(algorithm.rawValue)
         case .missingEncryptionKey(let keyRings):
-            let fingerprints = keyRings.map { $0.primaryKey.fingerprint }.joined(separator: ", ")
+            let fingerprints = keyRings
+                .map { TCKey(keyRing: $0) }
+                .map { $0.fingerprint }
+                .joined(separator: ", ")
             return L10n.DMSPGPError.missingEncryptionKey(fingerprints)
         }
     }

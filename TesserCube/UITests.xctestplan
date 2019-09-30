@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "E141D783-F52B-454C-A3B2-2E41D6FE4A24",
+      "name" : "screenshot_enUS",
+      "options" : {
+        "language" : "en",
+        "region" : "US",
+        "uiTestingScreenshotsLifetime" : "keepAlways"
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "skippedTests" : [
+        "TesserCubeUITests\/testSnapshot()"
+      ],
+      "target" : {
+        "containerPath" : "container:TesserCube.xcodeproj",
+        "identifier" : "8304E9AF221BF10200122637",
+        "name" : "TesserCubeUITests"
+      }
+    }
+  ],
+  "version" : 1
+}
