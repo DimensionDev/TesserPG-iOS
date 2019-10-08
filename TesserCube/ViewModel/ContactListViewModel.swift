@@ -22,6 +22,6 @@ class ContactListViewModel: NSObject {
 //    let cellDidClick = PublishRelay<KeyCardCell>()
     
     override init() {
-        hasContact = ProfileService.default.contacts.asDriver().map { !$0.isEmpty }
+        hasContact =  contacts.asDriver().map { !$0.isEmpty }
     }
 }
