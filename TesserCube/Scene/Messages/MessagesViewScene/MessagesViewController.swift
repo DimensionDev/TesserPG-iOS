@@ -159,6 +159,8 @@ class MessagesViewController: TCBaseViewController {
             .drive(onNext: { [weak self] isEditing in
                 guard let `self` = self else { return }
                 self.tableView.setEditing(isEditing, animated: true)
+                self.segmentedControl.isEnabled = !isEditing
+                self.searchController.searchBar.isUserInteractionEnabled = !isEditing
             })
             .disposed(by: disposeBag)
 
