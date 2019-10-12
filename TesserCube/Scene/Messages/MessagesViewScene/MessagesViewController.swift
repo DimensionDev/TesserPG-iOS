@@ -412,6 +412,10 @@ extension MessagesViewController: UISearchControllerDelegate {
 // MARK: - UISearchBarDelegate
 extension MessagesViewController: UISearchBarDelegate {
 
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        viewModel.searchText.accept("")
+    }
+
 }
 
 // MARK: - UISearchResultsUpdating
