@@ -11,6 +11,15 @@ import RxSwift
 import RxCocoa
 import DateToolsSwift
 
+// Fix multiple selection not enable default in UIDiffableTableViewDataSource issue
+@available(iOS 13.0, *)
+final class MultipleSelectableDiffableTableViewDataSource<SectionIdentifierType, ItemIdentifierType>: UITableViewDiffableDataSource<SectionIdentifierType, ItemIdentifierType> where SectionIdentifierType: Hashable, ItemIdentifierType: Hashable {
+
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+}
+
 class MessagesViewModel: NSObject {
 
     @available(iOS 13.0, *)
@@ -35,9 +44,17 @@ class MessagesViewModel: NSObject {
     let disposeBag = DisposeBag()
 
     // Input
-    // all messages in database
-    let _messages = BehaviorRelay<[Message]>(value: [])
+    let _messages = BehaviorRelay<[Message]>(value: [])     // all messages in database
     let searchText = BehaviorRelay(value: "")
+    let selectedSegmentIndex = BehaviorRelay(value: 0)      // Timeline | Saved Drafts
+    let isEditing = BehaviorRelay(value: false)             // tableView editing mode
+
+    // Output
+    let segmentedControlItems = MessageType.allCases.map { $0.segmentedControlTitle }
+    let selectedMessageType = BehaviorRelay<MessageType>(value: .timeline)
+    let messages = BehaviorRelay<[Message]>(value: [])      // visiable messages
+    let hasMessages: Driver<Bool>
+    let isSearching: Driver<Bool>
 
     // UI cache for displaying message
     var messageExpandedDict: [IndexPath: Bool] = [:]
@@ -46,15 +63,6 @@ class MessagesViewModel: NSObject {
     // For diffable datasource
     var messageExpandedIDDict: [Int64: Bool] = [:]
     var messageMaxNumberOfLinesIDDict: [Int64: Int] = [:]
-
-    // Output
-    let segmentedControlItems = MessageType.allCases.map { $0.segmentedControlTitle }
-    // messages should display
-    let messages = BehaviorRelay<[Message]>(value: [])
-    let selectedSegmentIndex = BehaviorRelay(value: 0)
-    let selectedMessageType = BehaviorRelay<MessageType>(value: .timeline)
-    let hasMessages: Driver<Bool>
-    let isSearching: Driver<Bool>
     
     override init() {
         hasMessages = messages.asDriver().map { !$0.isEmpty }
@@ -68,51 +76,51 @@ class MessagesViewModel: NSObject {
             .disposed(by: disposeBag)
 
         Driver.combineLatest(_messages.asDriver(), selectedMessageType.asDriver(), searchText.asDriver()) { _messages, messageType, searchText -> [Message] in
-                switch messageType {
-                case .timeline:
-                    return _messages
-                        .filter { !$0.isDraft }
-                        .filter {
-                            if searchText.isEmpty { return true }
-                            return $0.rawMessage.range(of: searchText, options: .caseInsensitive) != nil ||
-                                $0.senderKeyUserId.range(of: searchText, options: .caseInsensitive) != nil ||
-                                $0.getRecipients().first(where: { messageRecipient in messageRecipient.keyUserId.range(of: searchText, options: .caseInsensitive) != nil }) != nil
+            switch messageType {
+            case .timeline:
+                return _messages
+                    .filter { !$0.isDraft }
+                    .filter {
+                        if searchText.isEmpty { return true }
+                        return $0.rawMessage.range(of: searchText, options: .caseInsensitive) != nil ||
+                            $0.senderKeyUserId.range(of: searchText, options: .caseInsensitive) != nil ||
+                            $0.getRecipients().first(where: { messageRecipient in messageRecipient.keyUserId.range(of: searchText, options: .caseInsensitive) != nil }) != nil
+                    }
+                    .sorted(by: { lhs, rhs -> Bool in
+                        guard let lhsDate = lhs.interpretedAt ?? lhs.composedAt else {
+                            return false
                         }
-                        .sorted(by: { lhs, rhs -> Bool in
-                            guard let lhsDate = lhs.interpretedAt ?? lhs.composedAt else {
-                                return false
-                            }
 
-                            guard let rhsDate = rhs.interpretedAt ?? rhs.composedAt else {
-                                return true
-                            }
-
-                            return lhsDate > rhsDate
-                        })
-                case .savedDrafts:
-                    return _messages
-                        .filter { $0.isDraft }
-                        .filter {
-                            if searchText.isEmpty { return true }
-                            return $0.rawMessage.range(of: searchText, options: .caseInsensitive) != nil ||
-                                $0.senderKeyUserId.range(of: searchText, options: .caseInsensitive) != nil ||
-                                $0.getRecipients().first(where: { messageRecipient in messageRecipient.keyUserId.range(of: searchText, options: .caseInsensitive) != nil }) != nil
+                        guard let rhsDate = rhs.interpretedAt ?? rhs.composedAt else {
+                            return true
                         }
-                        .sorted(by: { lhs, rhs -> Bool in
-                            guard let lhsDate = lhs.interpretedAt ?? lhs.composedAt else {
-                                return false
-                            }
 
-                            guard let rhsDate = rhs.interpretedAt ?? rhs.composedAt else {
-                                return true
-                            }
+                        return lhsDate > rhsDate
+                    })
+            case .savedDrafts:
+                return _messages
+                    .filter { $0.isDraft }
+                    .filter {
+                        if searchText.isEmpty { return true }
+                        return $0.rawMessage.range(of: searchText, options: .caseInsensitive) != nil ||
+                            $0.senderKeyUserId.range(of: searchText, options: .caseInsensitive) != nil ||
+                            $0.getRecipients().first(where: { messageRecipient in messageRecipient.keyUserId.range(of: searchText, options: .caseInsensitive) != nil }) != nil
+                    }
+                    .sorted(by: { lhs, rhs -> Bool in
+                        guard let lhsDate = lhs.interpretedAt ?? lhs.composedAt else {
+                            return false
+                        }
 
-                            return lhsDate > rhsDate
-                        })
-                }
+                        guard let rhsDate = rhs.interpretedAt ?? rhs.composedAt else {
+                            return true
+                        }
+
+                        return lhsDate > rhsDate
+                    })
             }
-            .drive(messages)
-            .disposed(by: disposeBag)
+        }
+        .drive(messages)
+        .disposed(by: disposeBag)
     }
     
 }
@@ -122,7 +130,7 @@ extension MessagesViewModel {
 
     // swiftlint:disable force_cast
     func configureDataSource(tableView: UITableView) {
-        diffableDataSource = UITableViewDiffableDataSource<Section, Message>(tableView: tableView) { [weak self] tableView, indexPath, message -> UITableViewCell? in
+        diffableDataSource = MultipleSelectableDiffableTableViewDataSource<Section, Message>(tableView: tableView) { [weak self] tableView, indexPath, message -> UITableViewCell? in
             guard let `self` = self else { return nil }
 
             let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: MessageCardCell.self), for: indexPath) as! MessageCardCell
