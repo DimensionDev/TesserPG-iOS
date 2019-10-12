@@ -93,11 +93,13 @@ class ContactDetailViewController: TCBaseViewController {
 
     private lazy var emailTextView: UITextView = {
         let textView = UITextView(frame: .zero)
+        textView.isScrollEnabled = false    // fix AutoLayout height
         textView.font = FontFamily.SFProText.regular.font(size: 17)
         textView.dataDetectorTypes = [.link]
         textView.isUserInteractionEnabled = true
         textView.isEditable = false
         textView.textContainerInset = .zero
+        textView.backgroundColor = .clear
         return textView
     }()
 
@@ -223,7 +225,6 @@ class ContactDetailViewController: TCBaseViewController {
             maker.leading.equalTo(view.readableContentGuide).offset(-5)
             maker.trailing.equalTo(view.readableContentGuide)
             maker.top.equalTo(emailTitlelabel.snp.bottom)
-            maker.height.equalTo(44)
         }
 
         // Export public key button
@@ -231,24 +232,24 @@ class ContactDetailViewController: TCBaseViewController {
         scrollView.addSubview(upperSeparatorLine)
         upperSeparatorLine.snp.makeConstraints { maker in
             maker.leading.trailing.equalTo(view.readableContentGuide)
-            maker.top.equalTo(emailTextView.snp.bottom)
-            maker.height.equalTo(0.5)
+            maker.top.equalTo(emailTextView.snp.bottom).offset(16)
+            maker.height.equalTo(0.67)
         }
         upperSeparatorLine.backgroundColor = .separator
 
         scrollView.addSubview(exportPubKeyButton)
         exportPubKeyButton.snp.makeConstraints { maker in
             maker.leading.trailing.equalTo(view.readableContentGuide)
-            maker.top.equalTo(upperSeparatorLine.snp.bottom).offset(10)
+            maker.top.equalTo(upperSeparatorLine.snp.bottom).offset(8)
         }
 
         let lowerSeparatorLine = UIView()
         scrollView.addSubview(lowerSeparatorLine)
         lowerSeparatorLine.snp.makeConstraints { maker in
             maker.leading.trailing.equalTo(view.readableContentGuide)
-            maker.top.equalTo(exportPubKeyButton.snp.bottom).offset(10)
-            maker.height.equalTo(0.5)
-            maker.bottom.equalToSuperview()
+            maker.top.equalTo(exportPubKeyButton.snp.bottom).offset(8)
+            maker.height.equalTo(upperSeparatorLine)
+            maker.bottom.equalToSuperview()     // snap to scroll view bottom
         }
         lowerSeparatorLine.backgroundColor = .separator
 
