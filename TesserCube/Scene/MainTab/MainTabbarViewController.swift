@@ -62,7 +62,7 @@ class MainTabbarViewController: UITabBarController {
     }
     
     private func configUI() {
-        tabBar.isTranslucent = false
+        tabBar.isTranslucent = true
         let tabViewControllers: [UIViewController] = MainTabItem.allCases.map {
             let vc = $0.viewController
             let naviVC = BaseNavigationController(rootViewController: vc)

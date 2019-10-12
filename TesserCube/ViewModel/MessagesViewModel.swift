@@ -41,6 +41,11 @@ class MessagesViewModel: NSObject {
         }
     }
 
+    enum SelectType: CaseIterable {
+        case selectAll
+        case deselectAll
+    }
+
     let disposeBag = DisposeBag()
 
     // Input
@@ -48,6 +53,10 @@ class MessagesViewModel: NSObject {
     let searchText = BehaviorRelay(value: "")
     let selectedSegmentIndex = BehaviorRelay(value: 0)      // Timeline | Saved Drafts
     let isEditing = BehaviorRelay(value: false)             // tableView editing mode
+    let selectIndexPaths = BehaviorRelay<[IndexPath]>(value: [])
+    // toolbar
+    let selectAction = PublishRelay<UIBarButtonItem>()
+    let deleteAction = PublishRelay<UIBarButtonItem>()
 
     // Output
     let segmentedControlItems = MessageType.allCases.map { $0.segmentedControlTitle }
@@ -55,6 +64,12 @@ class MessagesViewModel: NSObject {
     let messages = BehaviorRelay<[Message]>(value: [])      // visiable messages
     let hasMessages: Driver<Bool>
     let isSearching: Driver<Bool>
+    // toolbar
+    let selectType = BehaviorRelay(value: SelectType.selectAll)
+    let selectBarButtonItemTitle: Driver<String>
+    let deleteBarButtonItemIsEnable = BehaviorRelay(value: false)
+    let selectAllAction: Driver<Void>
+    let deselectAllAction: Driver<Void>
 
     // UI cache for displaying message
     var messageExpandedDict: [IndexPath: Bool] = [:]
@@ -67,6 +82,22 @@ class MessagesViewModel: NSObject {
     override init() {
         hasMessages = messages.asDriver().map { !$0.isEmpty }
         isSearching = searchText.asDriver().map { !$0.isEmpty }
+        selectBarButtonItemTitle = selectType.asDriver().map { type in
+            switch type {
+            case .selectAll: return L10n.MessagesViewController.Toolbar.Button.selectAll
+            case .deselectAll: return L10n.MessagesViewController.Toolbar.Button.deselectAll
+            }
+        }
+        selectAllAction = Driver.combineLatest(selectType.asDriver(), selectAction.asDriver(onErrorJustReturn: UIBarButtonItem()))
+            .filter { selectType, sender -> Bool in
+                return selectType == .selectAll
+            }
+            .map { _ in return Void() }
+        deselectAllAction = Driver.combineLatest(selectType.asDriver(), selectAction.asDriver(onErrorJustReturn: UIBarButtonItem()))
+            .filter { selectType, sender -> Bool in
+                return selectType == .deselectAll
+            }
+            .map { _ in return Void() }
         super.init()
 
         selectedSegmentIndex.asDriver()

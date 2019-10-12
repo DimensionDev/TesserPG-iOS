@@ -83,6 +83,8 @@
 "MessagesViewController.Action.Button.ShareSignedMessage" = "分享簽名報文";
 "MessagesViewController.Action.Button.ReCompose" = "重新撰寫";
 "MessagesViewController.Alert.Title.DeleteMessage" = "刪除消息";
+"MessagesViewController.Toolbar.Button.SelectAll" = "全選";
+"MessagesViewController.Toolbar.Button.DeselectAll" = "取消全選";
 
 "MessageCardCell.Label.SignedBy" = "簽名者:";
 "MessageCardCell.Label.Recipeints" = "收件人:";
