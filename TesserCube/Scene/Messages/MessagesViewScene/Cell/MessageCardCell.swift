@@ -111,7 +111,6 @@ final class MessageCardCell: UITableViewCell {
     }
 
     func _init() {
-        selectionStyle = .none
         clipsToBounds = false
         setupUI()
         setupColor()
@@ -124,6 +123,14 @@ extension MessageCardCell {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         setupColor()
+    }
+
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+
+        // only enable selection background when isEditing
+        selectionStyle = editing ? .default : .none
+        expandButton.isEnabled = !editing
     }
 
 }
@@ -143,11 +150,11 @@ extension MessageCardCell {
 
         // Card
         cardView.layoutMargins = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
-        addSubview(cardView)
+        contentView.addSubview(cardView)
         cardView.snp.makeConstraints { maker in
             maker.top.equalToSuperview().offset(MessageCardCell.cardVerticalMargin)
             maker.bottom.equalToSuperview().offset(-MessageCardCell.cardVerticalMargin)
-            maker.leading.trailing.equalTo(layoutMarginsGuide)
+            maker.leading.trailing.equalTo(contentView.layoutMarginsGuide)
         }
 
         // [StackView]
@@ -209,10 +216,23 @@ extension MessageCardCell {
         contentBackgroundView.addSubview(messageLabel)
         messageLabel.snp.makeConstraints { maker in
             maker.top.equalTo(contentBackgroundView.snp.topMargin)
-            maker.leading.trailing.equalTo(contentBackgroundView.layoutMargins)
+            maker.leading.equalTo(contentBackgroundView.layoutMarginsGuide)
+            maker.trailing.lessThanOrEqualTo(contentBackgroundView.snp.trailingMargin)
         }
         messageLabel.setContentHuggingPriority(.init(100), for: .vertical)
         messageLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+
+        // fix message label strange moveing animation when tableView set isEditing to true
+        let indentAnimationFixPaddingView = UIView()
+        contentBackgroundView.addSubview(indentAnimationFixPaddingView)
+        indentAnimationFixPaddingView.snp.makeConstraints { maker in
+            maker.leading.equalTo(messageLabel)
+            maker.trailing.equalToSuperview()
+            maker.centerY.equalTo(messageLabel.snp.centerY)
+            maker.height.equalTo(CGFloat.leastNonzeroMagnitude)
+        }
+        indentAnimationFixPaddingView.setContentHuggingPriority(.required, for: .horizontal)
+        indentAnimationFixPaddingView.setContentCompressionResistancePriority(.required, for: .horizontal)
 
         // Footer
         contentBackgroundView.addSubview(leftFooterLabel)

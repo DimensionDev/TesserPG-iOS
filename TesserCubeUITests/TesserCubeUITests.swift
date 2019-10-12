@@ -59,20 +59,20 @@ extension TesserCubeUITests {
         createKeyThenDeleteSecretPart(name: "Dan")
         createKeyThenDeleteSecretPart(name: "Erin")
 
-        let app = XCUIApplication()
-        app.launch()
-
-        XCTAssert(app.tabBars.buttons["Compose"].waitForExistence(timeout: 5.0))
-        app.tabBars.buttons["Compose"].tap()
-        try app.snapshot()
-
-        XCTAssert(app.tabBars.buttons["Messages"].waitForExistence(timeout: 5.0))
-        app.tabBars.buttons["Messages"].tap()
-        try app.snapshot()
-
-        XCTAssert(app.tabBars.buttons["Me"].waitForExistence(timeout: 5.0))
-        app.tabBars.buttons["Me"].tap()
-        try app.snapshot()
+//        let app = XCUIApplication()
+//        app.launch()
+//
+//        XCTAssert(app.tabBars.buttons["Compose"].waitForExistence(timeout: 5.0))
+//        app.tabBars.buttons["Compose"].tap()
+//        try app.snapshot()
+//
+//        XCTAssert(app.tabBars.buttons["Messages"].waitForExistence(timeout: 5.0))
+//        app.tabBars.buttons["Messages"].tap()
+//        try app.snapshot()
+//
+//        XCTAssert(app.tabBars.buttons["Me"].waitForExistence(timeout: 5.0))
+//        app.tabBars.buttons["Me"].tap()
+//        try app.snapshot()
     }
 
 }
