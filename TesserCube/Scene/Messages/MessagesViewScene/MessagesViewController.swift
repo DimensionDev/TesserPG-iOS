@@ -37,7 +37,7 @@ class MessagesViewController: TCBaseViewController {
         return view
     }()
 
-    private lazy var segmentedControl: UISegmentedControl = {
+    private(set) lazy var segmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl(items: viewModel.segmentedControlItems)
         segmentedControl.selectedSegmentIndex = 0
         return segmentedControl
@@ -72,7 +72,7 @@ class MessagesViewController: TCBaseViewController {
         return headerView
     }()
 
-    private lazy var tableView: UITableView = {
+    private(set) lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.alwaysBounceVertical = true
         tableView.tableFooterView = UIView()
@@ -83,6 +83,7 @@ class MessagesViewController: TCBaseViewController {
         tableView.keyboardDismissMode = .interactive
         tableView.preservesSuperviewLayoutMargins = true
         tableView.cellLayoutMarginsFollowReadableWidth = true
+        tableView.allowsMultipleSelectionDuringEditing = true
         return tableView
     }()
 
@@ -98,6 +99,7 @@ class MessagesViewController: TCBaseViewController {
     override func configUI() {
         super.configUI()
 
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(MessagesViewController.editBarButtonItemPressed(_:)))
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = true
         definesPresentationContext = true
@@ -150,6 +152,13 @@ class MessagesViewController: TCBaseViewController {
         viewModel.isSearching
             .drive(onNext: { [weak self] isSearching in
                 self?.emptyView.textLabel.text = isSearching ? L10n.MessagesViewController.EmptyView.searchingPrompt : L10n.MessagesViewController.EmptyView.prompt
+            })
+            .disposed(by: disposeBag)
+
+        viewModel.isEditing.asDriver().debug()
+            .drive(onNext: { [weak self] isEditing in
+                guard let `self` = self else { return }
+                self.tableView.setEditing(isEditing, animated: true)
             })
             .disposed(by: disposeBag)
 
@@ -249,6 +258,10 @@ extension MessagesViewController {
 
 private extension MessagesViewController {
 
+    @objc func editBarButtonItemPressed(_ sender: UIBarButtonItem) {
+        viewModel.isEditing.accept(!viewModel.isEditing.value)
+    }
+
     @objc func composeButtonPressed(_ sender: UIButton) {
         Coordinator.main.present(scene: .composeMessage, from: self, transition: .modal, completion: nil)
     }
@@ -283,28 +296,40 @@ extension MessagesViewController: UITableViewDelegate {
             return
         }
 
-        let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath)
-        let alertController: UIAlertController = {
-            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            let alertActions = actions.map { $0.alertAction }
-            for alertAction in alertActions {
-                alertController.addAction(alertAction)
+        if !tableView.isEditing {
+            let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath)
+            let alertController: UIAlertController = {
+                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                let alertActions = actions.map { $0.alertAction }
+                for alertAction in alertActions {
+                    alertController.addAction(alertAction)
+                }
+                return alertController
+            }()
+
+            if let presenter = alertController.popoverPresentationController {
+                presenter.sourceView = cell
+                presenter.sourceRect = cell.bounds
             }
-            return alertController
-        }()
-        
-        if let presenter = alertController.popoverPresentationController {
-            presenter.sourceView = cell
-            presenter.sourceRect = cell.bounds
+
+            DispatchQueue.main.async {
+                self.present(alertController, animated: true, completion: nil)
+            }
+        } else {
+
         }
-        
-        DispatchQueue.main.async {
-            self.present(alertController, animated: true, completion: nil)
-        }
+    }
+
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+
     }
 
     @available(iOS 13.0, *)
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        guard !tableView.isEditing else {
+            return nil
+        }
+
         let message = viewModel.messages.value[indexPath.row]
         guard let cell = tableView.cellForRow(at: indexPath) as? MessageCardCell,
         let id = message.id else {
@@ -343,6 +368,10 @@ extension MessagesViewController: UITableViewDelegate {
         guard let cell = cell as? MessageCardCell else { return }
 
         cell.delegate = self
+    }
+
+    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        return tableView.isEditing
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
