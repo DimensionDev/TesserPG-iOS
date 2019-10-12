@@ -31,22 +31,19 @@ class MessagesViewController: TCBaseViewController {
 
         return controller
     }()
-
     private lazy var emptyView: ListEmptyView = {
         let view = ListEmptyView(title: L10n.MessagesViewController.EmptyView.prompt)
         return view
     }()
-
     private(set) lazy var segmentedControl: UISegmentedControl = {
         let segmentedControl = UISegmentedControl(items: viewModel.segmentedControlItems)
         segmentedControl.selectedSegmentIndex = 0
         return segmentedControl
     }()
-
     private lazy var tableHeaderView: UIView = {
         let headerView = UIView()
 
-        if #available(iOS 13, *) {
+        if #available(iOS 13.0, *) {
             // iOS 13 changed the navigation bar bottom hairline appearance
             // so only add tool bar in iOS 12 and previous
         } else {
@@ -71,6 +68,19 @@ class MessagesViewController: TCBaseViewController {
 
         return headerView
     }()
+
+    // toolbar
+    private lazy var selectBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(MessagesViewController.selectBarButtonItemPressed(_:)))
+    private lazy var deleteBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: L10n.Common.Button.delete, style: .plain, target: self, action: #selector(MessagesViewController.deleteBarButtonItemPressed(_:)))
+    private lazy var tableViewEditToolbar: UIToolbar = {
+        let toolbar = UIToolbar()
+        let items = [selectBarButtonItem,
+                     UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+                     deleteBarButtonItem]
+        toolbar.setItems(items, animated: false)
+        return toolbar
+    }()
+    private var tableViewEditToolbarConstraints = [NSLayoutConstraint]()
 
     private(set) lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -115,7 +125,7 @@ class MessagesViewController: TCBaseViewController {
 
         bottomActionsView.snp.makeConstraints { maker in
             maker.leading.trailing.equalTo(view.readableContentGuide)
-            maker.bottom.equalToSuperview().offset(-15)
+            maker.bottom.equalTo(view.safeAreaLayoutGuide).offset(-15)
         }
 
         tableView.delegate = self
@@ -128,6 +138,21 @@ class MessagesViewController: TCBaseViewController {
         tableView.tableHeaderView = tableHeaderView
 
         reloadActionsView()
+
+        if let tabBar = tabBarController?.tabBar {
+            tableViewEditToolbar.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(tableViewEditToolbar)
+            tableViewEditToolbarConstraints.append(contentsOf: [
+                tableViewEditToolbar.topAnchor.constraint(equalTo: tabBar.topAnchor),
+                tableViewEditToolbar.leadingAnchor.constraint(equalTo: tabBar.leadingAnchor),
+                tableViewEditToolbar.trailingAnchor.constraint(equalTo: tabBar.trailingAnchor),
+                tableViewEditToolbar.bottomAnchor.constraint(equalTo: tabBar.layoutMarginsGuide.bottomAnchor),
+            ])  // active in viewDidAppear
+
+            tableViewEditToolbar.delegate = self
+        } else {
+            assertionFailure()
+        }
 
         // Bind data
         ProfileService.default.messages
@@ -161,8 +186,46 @@ class MessagesViewController: TCBaseViewController {
                 self.tableView.setEditing(isEditing, animated: true)
                 self.segmentedControl.isEnabled = !isEditing
                 self.searchController.searchBar.isUserInteractionEnabled = !isEditing
+
+                self.tabBarController?.tabBar.isUserInteractionEnabled = !isEditing
+                self.bottomActionsView.isUserInteractionEnabled = !isEditing
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.tabBarController?.tabBar.alpha = isEditing ? 0 : 1
+                    self.bottomActionsView.alpha = isEditing ? 0 : 1
+                })
+
+                self.view.setNeedsLayout()
             })
             .disposed(by: disposeBag)
+
+        // Toolbar
+        viewModel.selectBarButtonItemTitle.asDriver()
+            .drive(selectBarButtonItem.rx.title)
+            .disposed(by: disposeBag)
+        viewModel.deleteBarButtonItemIsEnable.asDriver()
+            .drive(deleteBarButtonItem.rx.isEnabled)
+            .disposed(by: disposeBag)
+        viewModel.selectAllAction.asDriver()
+            .drive(onNext: { [weak self] _ in
+                guard let totalRows = self?.tableView.numberOfRows(inSection: 0) else {
+                    return
+                }
+
+                for i in 0..<totalRows {
+                    self?.tableView.selectRow(at: IndexPath(row: i, section: 0), animated: true, scrollPosition: .none)
+                }
+            })
+            .disposed(by: disposeBag)
+        viewModel.deselectAllAction.asDriver()
+            .drive(onNext: { [weak self] _ in
+                if let rows = self?.tableView.indexPathsForSelectedRows {
+                    for row in rows {
+                        self?.tableView.deselectRow(at: row, animated: true)
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
+
 
         NotificationCenter.default.addObserver(self, selector: #selector(MessagesViewController.keyboardWillShowNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(MessagesViewController.keyboardWillHideNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -199,10 +262,19 @@ class MessagesViewController: TCBaseViewController {
         bottomActionsView.addArrangedSubviews(actionViews)
 
         view.layoutIfNeeded()
-
-        defaultSafeAreaBottomInset = bottomActionsView.height + 15
-        additionalSafeAreaInsets.bottom = defaultSafeAreaBottomInset
     }
+}
+
+extension MessagesViewController {
+
+    @objc private func selectBarButtonItemPressed(_ sender: UIBarButtonItem) {
+        viewModel.selectAction.accept(sender)
+    }
+
+    @objc private func deleteBarButtonItemPressed(_ sender: UIBarButtonItem) {
+        viewModel.deleteAction.accept(sender)
+    }
+
 }
 
 extension MessagesViewController {
@@ -243,6 +315,8 @@ extension MessagesViewController {
                 }
             })
             .disposed(by: disposeBag)
+
+        NSLayoutConstraint.activate(tableViewEditToolbarConstraints)
     }
 
     override func viewDidLayoutSubviews() {
@@ -255,7 +329,10 @@ extension MessagesViewController {
             tableView.tableHeaderView = headerView
             tableView.layoutIfNeeded()
         }
+
+        tableView.contentInset.bottom = viewModel.isEditing.value ? 0 : bottomActionsView.height + 15
     }
+
 }
 
 private extension MessagesViewController {
@@ -401,7 +478,11 @@ extension MessagesViewController: UITableViewDelegate {
 extension MessagesViewController: UIToolbarDelegate {
 
     func position(for bar: UIBarPositioning) -> UIBarPosition {
-        return .topAttached
+        if bar === tableViewEditToolbar {
+            return .bottom
+        } else {
+            return .topAttached     // in segment control
+        }
     }
 
 }
@@ -415,7 +496,7 @@ extension MessagesViewController: UISearchControllerDelegate {
 extension MessagesViewController: UISearchBarDelegate {
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        viewModel.searchText.accept("")
+        viewModel.searchText.accept("")     // reset search text when cancel searching
     }
 
 }

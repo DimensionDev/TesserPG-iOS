@@ -549,6 +549,14 @@ internal enum L10n {
       /// Timeline
       internal static let timeline = L10n.tr("Localizable", "MessagesViewController.SegmentedControl.timeline")
     }
+    internal enum Toolbar {
+      internal enum Button {
+        /// Deselect All
+        internal static let deselectAll = L10n.tr("Localizable", "MessagesViewController.Toolbar.Button.DeselectAll")
+        /// Select All
+        internal static let selectAll = L10n.tr("Localizable", "MessagesViewController.Toolbar.Button.SelectAll")
+      }
+    }
   }
 
   internal enum PasteKeyViewController {

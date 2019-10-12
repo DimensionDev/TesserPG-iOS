@@ -230,6 +230,7 @@ extension MessageCardCell {
             maker.trailing.equalToSuperview()
             maker.centerY.equalTo(messageLabel.snp.centerY)
             maker.height.equalTo(CGFloat.leastNonzeroMagnitude)
+            maker.width.equalTo(CGFloat.leastNonzeroMagnitude)
         }
         indentAnimationFixPaddingView.setContentHuggingPriority(.required, for: .horizontal)
         indentAnimationFixPaddingView.setContentCompressionResistancePriority(.required, for: .horizontal)
