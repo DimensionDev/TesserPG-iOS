@@ -8,6 +8,7 @@
 
 import XCTest
 
+// Note: Test under iOS 13
 class TesserCubeUITests: XCTestCase {
 
     override func setUp() {
@@ -59,20 +60,20 @@ extension TesserCubeUITests {
         createKeyThenDeleteSecretPart(name: "Dan")
         createKeyThenDeleteSecretPart(name: "Erin")
 
-        let app = XCUIApplication()
-        app.launch()
-
-        XCTAssert(app.tabBars.buttons["Compose"].waitForExistence(timeout: 5.0))
-        app.tabBars.buttons["Compose"].tap()
-        try app.snapshot()
-
-        XCTAssert(app.tabBars.buttons["Messages"].waitForExistence(timeout: 5.0))
-        app.tabBars.buttons["Messages"].tap()
-        try app.snapshot()
-
-        XCTAssert(app.tabBars.buttons["Me"].waitForExistence(timeout: 5.0))
-        app.tabBars.buttons["Me"].tap()
-        try app.snapshot()
+//        let app = XCUIApplication()
+//        app.launch()
+//
+//        XCTAssert(app.tabBars.buttons["Compose"].waitForExistence(timeout: 5.0))
+//        app.tabBars.buttons["Compose"].tap()
+//        try app.snapshot()
+//
+//        XCTAssert(app.tabBars.buttons["Messages"].waitForExistence(timeout: 5.0))
+//        app.tabBars.buttons["Messages"].tap()
+//        try app.snapshot()
+//
+//        XCTAssert(app.tabBars.buttons["Me"].waitForExistence(timeout: 5.0))
+//        app.tabBars.buttons["Me"].tap()
+//        try app.snapshot()
     }
 
 }
@@ -125,7 +126,7 @@ extension TesserCubeUITests {
     }
 
     // test create key use invalid User ID
-    func testCreateKeyUseInvalidUserID_1() {
+    func testCreateKeyUseInvalidUserID() {
         resetApplication()
         skipWizard()
 
@@ -164,6 +165,38 @@ extension TesserCubeUITests {
     }
 
 }
+
+extension TesserCubeUITests {
+
+    func testDeleteOneMessage() {
+        resetApplication()
+        skipWizard()
+
+        createKey(name: "Alice", email: "alice@tessercube.com", password: "Alice")
+        createKey(name: "Bob", email: "bob@tessercube.com", password: "Bob")
+
+        aliceComposeMessageToBob()
+        bobComposeMessageToAlice()
+
+        deleteFirstMessageInEditMode()
+    }
+
+    func testDeleteAllMessage() {
+        resetApplication()
+        skipWizard()
+
+        createKey(name: "Alice", email: "alice@tessercube.com", password: "Alice")
+        createKey(name: "Bob", email: "bob@tessercube.com", password: "Bob")
+
+        aliceComposeMessageToBob()
+        bobComposeMessageToAlice()
+
+        deleteAllMessageInEditMode()
+    }
+
+}
+
+// MARK: - helper methods
 
 extension TesserCubeUITests {
 
@@ -263,7 +296,7 @@ extension TesserCubeUITests {
         XCTAssert(card.waitForExistence(timeout: 5.0))
 
         card.tap()
-        app.buttons["Delete"].tap()
+        app.sheets.buttons["Delete"].tap()
     }
 
     func interpretMessage(message: String) {
@@ -493,3 +526,56 @@ extension TesserCubeUITests {
 
 }
 
+extension TesserCubeUITests {
+
+    func deleteFirstMessageInEditMode() {
+        let app = XCUIApplication()
+        app.launch()
+
+        let editButton = app.buttons["Edit"]
+        XCTAssert(editButton.waitForExistence(timeout: 3.0))
+        XCTAssert(editButton.isEnabled)
+        editButton.tap()
+
+        let card = app.tables.cells.element(boundBy: 0)
+        XCTAssert(card.waitForExistence(timeout: 3.0))
+
+        let count = app.tables.cells.count
+        card.tap()
+
+        let deleteButton = app.buttons["Delete"]
+        XCTAssert(deleteButton.waitForExistence(timeout: 3.0))
+        deleteButton.tap()
+
+        let deleteAction = app.sheets.buttons["Delete"]
+        XCTAssert(deleteAction.waitForExistence(timeout: 3.0))
+        deleteAction.tap()
+
+        XCTAssertEqual(count - 1, app.tables.cells.count)
+    }
+
+    func deleteAllMessageInEditMode() {
+        let app = XCUIApplication()
+        app.launch()
+
+        let editButton = app.buttons["Edit"]
+        XCTAssert(editButton.waitForExistence(timeout: 3.0))
+        XCTAssert(editButton.isEnabled)
+        editButton.tap()
+
+        let selectAllAction = app.buttons["Select All"]
+        XCTAssert(selectAllAction.waitForExistence(timeout: 3.0))
+        selectAllAction.tap()
+
+        let deleteButton = app.buttons["Delete"]
+        XCTAssert(deleteButton.waitForExistence(timeout: 3.0))
+        deleteButton.tap()
+
+        let deleteAction = app.sheets.buttons["Delete"]
+        XCTAssert(deleteAction.waitForExistence(timeout: 3.0))
+        deleteAction.tap()
+
+        XCTAssertEqual(0, app.tables.cells.count)
+    }
+
+}
