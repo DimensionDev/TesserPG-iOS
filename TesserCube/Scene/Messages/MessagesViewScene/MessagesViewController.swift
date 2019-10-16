@@ -71,7 +71,11 @@ class MessagesViewController: TCBaseViewController {
 
     // toolbar
     private lazy var selectBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: self, action: #selector(MessagesViewController.selectBarButtonItemPressed(_:)))
-    private lazy var deleteBarButtonItem: UIBarButtonItem = UIBarButtonItem(title: L10n.Common.Button.delete, style: .plain, target: self, action: #selector(MessagesViewController.deleteBarButtonItemPressed(_:)))
+    private lazy var deleteBarButtonItem: UIBarButtonItem = {
+        let item = UIBarButtonItem(title: L10n.Common.Button.delete, style: .plain, target: self, action: #selector(MessagesViewController.deleteBarButtonItemPressed(_:)))
+        item.tintColor = .systemRed
+        return item
+    }()
     private lazy var tableViewEditToolbar: UIToolbar = {
         let toolbar = UIToolbar()
         let items = [selectBarButtonItem,
@@ -109,7 +113,7 @@ class MessagesViewController: TCBaseViewController {
     override func configUI() {
         super.configUI()
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(MessagesViewController.editBarButtonItemPressed(_:)))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: L10n.Common.Button.edit, style: .plain, target: self, action: #selector(MessagesViewController.editBarButtonItemPressed(_:)))
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = true
         definesPresentationContext = true
@@ -198,6 +202,16 @@ class MessagesViewController: TCBaseViewController {
             })
             .disposed(by: disposeBag)
 
+        // EditBarButtonItem
+        if let editBarButtonItem = navigationItem.rightBarButtonItem {
+            viewModel.editBarButtonItemTitle.asDriver()
+                .drive(editBarButtonItem.rx.title)
+                .disposed(by: disposeBag)
+            viewModel.editBarButtonItemIsEnable.asDriver()
+                .drive(editBarButtonItem.rx.isEnabled)
+                .disposed(by: disposeBag)
+        }
+
         // Toolbar
         viewModel.selectBarButtonItemTitle.asDriver()
             .drive(selectBarButtonItem.rx.title)
@@ -205,27 +219,60 @@ class MessagesViewController: TCBaseViewController {
         viewModel.deleteBarButtonItemIsEnable.asDriver()
             .drive(deleteBarButtonItem.rx.isEnabled)
             .disposed(by: disposeBag)
-        viewModel.selectAllAction.asDriver()
-            .drive(onNext: { [weak self] _ in
-                guard let totalRows = self?.tableView.numberOfRows(inSection: 0) else {
-                    return
-                }
-
-                for i in 0..<totalRows {
-                    self?.tableView.selectRow(at: IndexPath(row: i, section: 0), animated: true, scrollPosition: .none)
-                }
-            })
-            .disposed(by: disposeBag)
-        viewModel.deselectAllAction.asDriver()
-            .drive(onNext: { [weak self] _ in
-                if let rows = self?.tableView.indexPathsForSelectedRows {
-                    for row in rows {
-                        self?.tableView.deselectRow(at: row, animated: true)
+        viewModel.selectAction.asDriver(onErrorJustReturn: UIBarButtonItem())
+            .withLatestFrom(viewModel.selectType.asDriver())
+            .drive(onNext: { [weak self] selectType in
+                switch selectType {
+                case .selectAll:
+                    guard let totalRows = self?.tableView.numberOfRows(inSection: 0) else {
+                        return
                     }
+
+                    var selectIndexPaths: [IndexPath] = []
+                    for i in 0..<totalRows {
+                        let indexPath = IndexPath(row: i, section: 0)
+                        selectIndexPaths.append(indexPath)
+                        self?.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+                    }
+                    self?.viewModel.selectIndexPaths.accept(selectIndexPaths)
+
+                case .deselectAll:
+                    if let rows = self?.tableView.indexPathsForSelectedRows {
+                        for row in rows {
+                            self?.tableView.deselectRow(at: row, animated: true)
+                        }
+                    }
+                    self?.viewModel.selectIndexPaths.accept([])
+
                 }
             })
             .disposed(by: disposeBag)
+        viewModel.deleteAction.asDriver(onErrorJustReturn: UIBarButtonItem())
+            .debounce(0.3)
+            .withLatestFrom(viewModel.selectIndexPaths.asDriver())
+            .drive(onNext: { [weak self] indexPaths in
+                guard let `self` = self else { return }
 
+                let message = indexPaths.count == 1 ? L10n.MessagesViewController.Alert.Message.deleteMessage : L10n.MessagesViewController.Alert.Message.deleteMessages(indexPaths.count)
+                let alertController = UIAlertController(title: nil, message: message, preferredStyle: .actionSheet)
+                if let popoverPresentationController = alertController.popoverPresentationController {
+                    popoverPresentationController.barButtonItem = self.deleteBarButtonItem
+                }
+
+                let deleteAction = UIAlertAction(title: L10n.Common.Button.delete, style: .destructive) { _ in
+                    self.viewModel.isEditing.accept(false)
+                    let messages = indexPaths.map { self.viewModel.messages.value[$0.row] }
+                    ProfileService.default.delete(messages: messages)
+                }
+                alertController.addAction(deleteAction)
+                let cancelAction = UIAlertAction(title: L10n.Common.Button.cancel, style: .cancel) { _ in
+                    // do nothing
+                }
+                alertController.addAction(cancelAction)
+
+                self.present(alertController, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
 
         NotificationCenter.default.addObserver(self, selector: #selector(MessagesViewController.keyboardWillShowNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(MessagesViewController.keyboardWillHideNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -263,18 +310,6 @@ class MessagesViewController: TCBaseViewController {
 
         view.layoutIfNeeded()
     }
-}
-
-extension MessagesViewController {
-
-    @objc private func selectBarButtonItemPressed(_ sender: UIBarButtonItem) {
-        viewModel.selectAction.accept(sender)
-    }
-
-    @objc private func deleteBarButtonItemPressed(_ sender: UIBarButtonItem) {
-        viewModel.deleteAction.accept(sender)
-    }
-
 }
 
 extension MessagesViewController {
@@ -337,6 +372,14 @@ extension MessagesViewController {
 
 private extension MessagesViewController {
 
+    @objc private func selectBarButtonItemPressed(_ sender: UIBarButtonItem) {
+        viewModel.selectAction.accept(sender)
+    }
+
+    @objc private func deleteBarButtonItemPressed(_ sender: UIBarButtonItem) {
+        viewModel.deleteAction.accept(sender)
+    }
+
     @objc func editBarButtonItemPressed(_ sender: UIBarButtonItem) {
         viewModel.isEditing.accept(!viewModel.isEditing.value)
     }
@@ -395,12 +438,17 @@ extension MessagesViewController: UITableViewDelegate {
                 self.present(alertController, animated: true, completion: nil)
             }
         } else {
-
+            viewModel.selectIndexPaths.accept(viewModel.selectIndexPaths.value + [indexPath])
         }
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-
+        if tableView.isEditing {
+            var selectIndexPaths = viewModel.selectIndexPaths.value
+            selectIndexPaths.removeAll(where: { $0 == indexPath })
+            viewModel.selectIndexPaths.accept(selectIndexPaths)
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
     }
 
     @available(iOS 13.0, *)
@@ -451,6 +499,17 @@ extension MessagesViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
         return tableView.isEditing
+    }
+
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        return UISwipeActionsConfiguration()
+    }
+
+    func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath) {
+        let cell = tableView.cellForRow(at: indexPath)
+        cell?.clipsToBounds = false
+        cell?.contentView.clipsToBounds = false
+        cell?.contentView.superview?.clipsToBounds = false
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -513,17 +572,21 @@ extension MessagesViewController: UISearchResultsUpdating {
 extension MessagesViewController {
 
     @objc private func keyboardWillShowNotification(_ notification: Notification) {
-        // consolePrint(notification)
+//         consolePrint(notification)
         guard let endFrame = notification.userInfo?["UIKeyboardFrameEndUserInfoKey"] as? CGRect else {
             return
         }
-
-        // consolePrint(endFrame)
-        additionalSafeAreaInsets.bottom = endFrame.height - (tabBarController?.tabBar.size.height ?? 0.0)
+//
+//        // consolePrint(endFrame)
+        // Keyboard only display in search mode
+        tableView.contentInset.bottom = endFrame.height - (tabBarController?.tabBar.size.height ?? 0.0)
+        tableView.scrollIndicatorInsets.bottom = endFrame.height - (tabBarController?.tabBar.size.height ?? 0.0)
     }
-
+//
     @objc private func keyboardWillHideNotification(_ notification: Notification) {
-        additionalSafeAreaInsets.bottom = defaultSafeAreaBottomInset
+        // back to normal mode
+        tableView.contentInset.bottom = bottomActionsView.height + 15
+        tableView.scrollIndicatorInsets.bottom = 0
     }
 
 }

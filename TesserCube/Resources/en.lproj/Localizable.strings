@@ -85,6 +85,8 @@
 "MessagesViewController.Alert.Title.DeleteMessage" = "Delete Message?";
 "MessagesViewController.Toolbar.Button.SelectAll" = "Select All";
 "MessagesViewController.Toolbar.Button.DeselectAll" = "Deselect All";
+"MessagesViewController.Alert.Message.deleteMessage" = "Delete Selected message";
+"MessagesViewController.Alert.Message.deleteMessages" = "Delete Selected %lu messages";
 
 "MessageCardCell.Label.SignedBy" = "Signed by:";
 "MessageCardCell.Label.Recipeints" = "Recipeints:";

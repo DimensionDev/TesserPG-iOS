@@ -532,6 +532,14 @@ internal enum L10n {
       }
     }
     internal enum Alert {
+      internal enum Message {
+        /// Delete Selected message
+        internal static let deleteMessage = L10n.tr("Localizable", "MessagesViewController.Alert.Message.deleteMessage")
+        /// Delete Selected %lu messages
+        internal static func deleteMessages(_ p1: Int) -> String {
+          return L10n.tr("Localizable", "MessagesViewController.Alert.Message.deleteMessages", p1)
+        }
+      }
       internal enum Title {
         /// Delete Message?
         internal static let deleteMessage = L10n.tr("Localizable", "MessagesViewController.Alert.Title.DeleteMessage")
