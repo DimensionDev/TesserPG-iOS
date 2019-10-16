@@ -532,6 +532,14 @@ internal enum L10n {
       }
     }
     internal enum Alert {
+      internal enum Message {
+        /// Delete Selected message
+        internal static let deleteMessage = L10n.tr("Localizable", "MessagesViewController.Alert.Message.deleteMessage")
+        /// Delete Selected %lu messages
+        internal static func deleteMessages(_ p1: Int) -> String {
+          return L10n.tr("Localizable", "MessagesViewController.Alert.Message.deleteMessages", p1)
+        }
+      }
       internal enum Title {
         /// Delete Message?
         internal static let deleteMessage = L10n.tr("Localizable", "MessagesViewController.Alert.Title.DeleteMessage")
@@ -548,6 +556,14 @@ internal enum L10n {
       internal static let savedDrafts = L10n.tr("Localizable", "MessagesViewController.SegmentedControl.savedDrafts")
       /// Timeline
       internal static let timeline = L10n.tr("Localizable", "MessagesViewController.SegmentedControl.timeline")
+    }
+    internal enum Toolbar {
+      internal enum Button {
+        /// Deselect All
+        internal static let deselectAll = L10n.tr("Localizable", "MessagesViewController.Toolbar.Button.DeselectAll")
+        /// Select All
+        internal static let selectAll = L10n.tr("Localizable", "MessagesViewController.Toolbar.Button.SelectAll")
+      }
     }
   }
 

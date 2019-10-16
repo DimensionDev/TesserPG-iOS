@@ -65,7 +65,7 @@ class MeViewController: TCBaseViewController {
         
         bottomActionsView.snp.makeConstraints { maker in
             maker.leading.trailing.equalTo(view.readableContentGuide)
-            maker.bottom.equalToSuperview().offset(-15)
+            maker.bottom.equalTo(view.layoutMarginsGuide).offset(-15)
         }
         
         tableView.snp.makeConstraints { maker in
@@ -159,7 +159,7 @@ extension MeViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        additionalSafeAreaInsets.bottom = bottomActionsView.bounds.height + 15
+        tableView.contentInset.bottom = bottomActionsView.bounds.height + 15
     }
 }
 
