@@ -145,7 +145,7 @@ extension MessagesViewModel {
 
                 case let .delete(message, presentingViewController, cell):
                     if #available(iOS 13.0, *) {
-                        ProfileService.default.deleteMessage(message)
+                        ProfileService.default.delete(messages: [message])
                     } else {
                         let deleteMessageAlertController = MessagesViewModel.deleteMessageAlertController(for: message, cell: cell)
                         presentingViewController.present(deleteMessageAlertController, animated: true, completion: nil)
@@ -181,7 +181,7 @@ extension MessagesViewModel {
         let alertController = UIAlertController(title: L10n.MessagesViewController.Alert.Title.deleteMessage, message: nil, preferredStyle: .actionSheet)
 
         let confirmAction = UIAlertAction(title: L10n.Common.Button.delete, style: .destructive, handler: { _ in
-            ProfileService.default.deleteMessage(message)
+            ProfileService.default.delete(messages: [message])
         })
         alertController.addAction(confirmAction)
 
