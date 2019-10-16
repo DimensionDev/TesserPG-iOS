@@ -112,6 +112,7 @@ final class MessageCardCell: UITableViewCell {
 
     func _init() {
         clipsToBounds = false
+        contentView.clipsToBounds = false
         setupUI()
         setupColor()
     }
@@ -308,7 +309,7 @@ fileprivate extension UIColor {
         if #available(iOS 13.0, *) {
             return UIColor { trait -> UIColor in
                 switch trait.userInterfaceStyle {
-                case .dark:     return .secondarySystemBackground   // use 2nd background color in dark mode
+                case .dark:     return UIColor(white: 1.0, alpha: 0.05)
                 default:        return color
                 }
             }

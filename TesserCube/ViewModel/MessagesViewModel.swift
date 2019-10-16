@@ -18,6 +18,7 @@ final class MultipleSelectableDiffableTableViewDataSource<SectionIdentifierType,
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
+
 }
 
 class MessagesViewModel: NSObject {
@@ -64,12 +65,12 @@ class MessagesViewModel: NSObject {
     let messages = BehaviorRelay<[Message]>(value: [])      // visiable messages
     let hasMessages: Driver<Bool>
     let isSearching: Driver<Bool>
+    let editBarButtonItemTitle: Driver<String>
+    let editBarButtonItemIsEnable: Driver<Bool>
     // toolbar
     let selectType = BehaviorRelay(value: SelectType.selectAll)
     let selectBarButtonItemTitle: Driver<String>
     let deleteBarButtonItemIsEnable = BehaviorRelay(value: false)
-    let selectAllAction: Driver<Void>
-    let deselectAllAction: Driver<Void>
 
     // UI cache for displaying message
     var messageExpandedDict: [IndexPath: Bool] = [:]
@@ -82,22 +83,16 @@ class MessagesViewModel: NSObject {
     override init() {
         hasMessages = messages.asDriver().map { !$0.isEmpty }
         isSearching = searchText.asDriver().map { !$0.isEmpty }
+        editBarButtonItemTitle = isEditing.asDriver().map { isEditing in
+            return isEditing ? L10n.Common.Button.cancel : L10n.Common.Button.edit
+        }
+        editBarButtonItemIsEnable = messages.asDriver().map { !$0.isEmpty }
         selectBarButtonItemTitle = selectType.asDriver().map { type in
             switch type {
             case .selectAll: return L10n.MessagesViewController.Toolbar.Button.selectAll
             case .deselectAll: return L10n.MessagesViewController.Toolbar.Button.deselectAll
             }
         }
-        selectAllAction = Driver.combineLatest(selectType.asDriver(), selectAction.asDriver(onErrorJustReturn: UIBarButtonItem()))
-            .filter { selectType, sender -> Bool in
-                return selectType == .selectAll
-            }
-            .map { _ in return Void() }
-        deselectAllAction = Driver.combineLatest(selectType.asDriver(), selectAction.asDriver(onErrorJustReturn: UIBarButtonItem()))
-            .filter { selectType, sender -> Bool in
-                return selectType == .deselectAll
-            }
-            .map { _ in return Void() }
         super.init()
 
         selectedSegmentIndex.asDriver()
@@ -152,6 +147,24 @@ class MessagesViewModel: NSObject {
         }
         .drive(messages)
         .disposed(by: disposeBag)
+
+        isEditing.asDriver().filter { $0 == false }
+            .drive(onNext: { _ in
+                self.selectIndexPaths.accept([])
+            })
+            .disposed(by: disposeBag)
+
+        Driver.combineLatest(selectIndexPaths.asDriver(), self.messages.asDriver()) { selectIndexPaths, messages in
+            let allSelected = selectIndexPaths.count == self.messages.value.count
+            return allSelected ? .deselectAll : .selectAll
+        }
+        .drive(selectType)
+        .disposed(by: disposeBag)
+
+        selectIndexPaths.asDriver()
+            .map { !$0.isEmpty }
+            .drive(deleteBarButtonItemIsEnable)
+            .disposed(by: disposeBag)
     }
     
 }
@@ -239,6 +252,10 @@ extension MessagesViewModel: UITableViewDataSource {
         return cell
     }
     // swiftlint:enable force_cast
+
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
 
 }
 

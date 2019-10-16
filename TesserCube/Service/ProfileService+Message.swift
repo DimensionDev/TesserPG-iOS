@@ -43,11 +43,13 @@ extension ProfileService {
         }
     }
     
-    func deleteMessage(_ message: Message) {
+    func delete(messages: [Message]) {
         do {
-            _ = try TCDBManager.default.dbQueue.write({ db in
-                try message.delete(db)
-            })
+            _ = try TCDBManager.default.dbQueue.write { db in
+                for message in messages {
+                    try message.delete(db)
+                }
+            }
         } catch let error {
             consolePrint(error.localizedDescription)
             return
