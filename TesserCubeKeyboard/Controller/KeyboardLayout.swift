@@ -185,7 +185,9 @@ class GlobalColors: NSObject {
     class var lightModeTextColor: UIColor { get { return UIColor.black }}
     class var darkModeTextColor: UIColor { get { return UIColor.white }}
     class var lightModeBorderColor: UIColor { get { return UIColor(hue: (214/360.0), saturation: 0.04, brightness: 0.65, alpha: 1.0) }}
-    class var darkModeBorderColor: UIColor { get { return UIColor.clear }}
+    class var darkModeBorderColor: UIColor { get { return UIColor.blue }}
+    
+    class var returnKeyColor: UIColor { get { return UIColor.systemBlue }}
     
     class func regularKey(_ darkMode: Bool, solidColorMode: Bool) -> UIColor {
         if darkMode {
@@ -274,6 +276,7 @@ class KeyboardLayout: NSObject, KeyboardKeyProtocol {
     var shapePool: [String:Shape] = [:]
     
     var darkMode: Bool
+    var returnKeyEnabled: Bool = false
     var solidColorMode: Bool
     var initialized: Bool
     
@@ -511,6 +514,34 @@ class KeyboardLayout: NSObject, KeyboardKeyProtocol {
         }
         else {
             key.text = model.keyCapForCase(uppercase)
+        }
+    }
+    
+    func updateReturnKeyType(_ returnType: UIReturnKeyType) {
+        for (key, view) in self.modelToView {
+            if key.type == .return {
+                key.uppercaseKeyCap = returnType.title
+                view.text = returnType.title
+                var bgColor: UIColor
+                switch returnType {
+                case .go,
+                     .search,
+                     .join,
+                     .send,
+                     .next,
+                     .google,
+                     .yahoo,
+                     .emergencyCall,
+                     .route,
+                     .done:
+                    bgColor = self.returnKeyEnabled ? GlobalColors.returnKeyColor : self.globalColors.specialKey(darkMode, solidColorMode: solidColorMode)
+                default:
+                    bgColor = self.globalColors.specialKey(darkMode, solidColorMode: solidColorMode)
+                }
+                
+                view.color = bgColor
+                break
+            }
         }
     }
     

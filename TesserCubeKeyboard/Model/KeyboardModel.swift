@@ -6,7 +6,7 @@
 //  Copyright © 2019 Sujitech. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 var counter = 0
 
@@ -165,5 +165,39 @@ class Key: Hashable {
     
     static func ==(lhs: Key, rhs: Key) -> Bool {
         return lhs.hashValue == rhs.hashValue
+    }
+}
+
+// MARK: Return Key Type Title
+extension UIReturnKeyType {
+    var title: String {
+        var returnKeyText = "return"
+        switch self {
+        case .search:
+            returnKeyText = "search"
+        case .send:
+            returnKeyText = "send"
+        case .go:
+            returnKeyText = "go"
+        case .continue:
+            returnKeyText = "continue"
+        case .done:
+            returnKeyText = "done"
+        case .emergencyCall:
+            returnKeyText = "emergency Cakk"
+        case .google:
+            returnKeyText = "google"
+        case .join:
+            returnKeyText = "join"
+        case .next:
+            returnKeyText = "next"
+        case .route:
+            returnKeyText = "route"
+        case .yahoo:
+            returnKeyText = "yahoo"
+        default:
+            break
+        }
+        return returnKeyText
     }
 }
