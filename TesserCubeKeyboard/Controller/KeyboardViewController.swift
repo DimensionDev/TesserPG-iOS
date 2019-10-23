@@ -476,6 +476,8 @@ class KeyboardViewController: UIInputViewController {
     func contextChanged() {
         KeyboardModeManager.shared.mode = .typing
         self.updateCapsIfNeeded()
+        self.layout?.returnKeyEnabled = self.textDocumentProxy.hasText
+        self.updateReturnKeyIfNeeded()
         self.autoPeriodState = .noSpace
         KeyboardModeManager.shared.contextDidChange()
     }
@@ -564,6 +566,8 @@ class KeyboardViewController: UIInputViewController {
             // TODO: timeout
             
             self.handleAutoPeriod(model)
+            self.layout?.returnKeyEnabled = self.textDocumentProxy.hasText
+            self.updateReturnKeyIfNeeded()
             // TODO: reset context
         }
         
@@ -755,6 +759,10 @@ class KeyboardViewController: UIInputViewController {
         self.shiftWasMultitapped = false
         
         self.advanceToNextInputMode()
+    }
+    
+    func updateReturnKeyIfNeeded() {
+        self.layout?.updateReturnKeyType(textDocumentProxy.returnKeyType ?? .default)
     }
     
     func updateCapsIfNeeded() {
