@@ -171,30 +171,30 @@ class Key: Hashable {
 // MARK: Return Key Type Title
 extension UIReturnKeyType {
     var title: String {
-        var returnKeyText = "return"
+        var returnKeyText = L10n.Keyboard.KeyCap.Return.return
         switch self {
         case .search:
-            returnKeyText = "search"
+            returnKeyText = L10n.Keyboard.KeyCap.Return.search
         case .send:
-            returnKeyText = "send"
+            returnKeyText = L10n.Keyboard.KeyCap.Return.send
         case .go:
-            returnKeyText = "go"
+            returnKeyText = L10n.Keyboard.KeyCap.Return.go
         case .continue:
-            returnKeyText = "continue"
+            returnKeyText = L10n.Keyboard.KeyCap.Return.continue
         case .done:
-            returnKeyText = "done"
+            returnKeyText = L10n.Keyboard.KeyCap.Return.done
         case .emergencyCall:
-            returnKeyText = "emergency Cakk"
+            returnKeyText = L10n.Keyboard.KeyCap.Return.emergencyCall
         case .google:
-            returnKeyText = "google"
+            returnKeyText = L10n.Keyboard.KeyCap.Return.google
         case .join:
-            returnKeyText = "join"
+            returnKeyText = L10n.Keyboard.KeyCap.Return.join
         case .next:
-            returnKeyText = "next"
+            returnKeyText = L10n.Keyboard.KeyCap.Return.next
         case .route:
-            returnKeyText = "route"
+            returnKeyText = L10n.Keyboard.KeyCap.Return.route
         case .yahoo:
-            returnKeyText = "yahoo"
+            returnKeyText = L10n.Keyboard.KeyCap.Return.yahoo
         default:
             break
         }

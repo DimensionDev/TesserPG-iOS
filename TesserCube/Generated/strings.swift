@@ -419,6 +419,34 @@ internal enum L10n {
         internal static let unknownSender = L10n.tr("Localizable", "Keyboard.Interpreted.Title.UnknownSender")
       }
     }
+    internal enum KeyCap {
+      internal enum Return {
+        /// continue
+        internal static let `continue` = L10n.tr("Localizable", "Keyboard.KeyCap.Return.continue")
+        /// done
+        internal static let done = L10n.tr("Localizable", "Keyboard.KeyCap.Return.done")
+        /// emergency Call
+        internal static let emergencyCall = L10n.tr("Localizable", "Keyboard.KeyCap.Return.emergency Call")
+        /// go
+        internal static let go = L10n.tr("Localizable", "Keyboard.KeyCap.Return.go")
+        /// search
+        internal static let google = L10n.tr("Localizable", "Keyboard.KeyCap.Return.google")
+        /// join
+        internal static let join = L10n.tr("Localizable", "Keyboard.KeyCap.Return.join")
+        /// next
+        internal static let next = L10n.tr("Localizable", "Keyboard.KeyCap.Return.next")
+        /// return
+        internal static let `return` = L10n.tr("Localizable", "Keyboard.KeyCap.Return.return")
+        /// route
+        internal static let route = L10n.tr("Localizable", "Keyboard.KeyCap.Return.route")
+        /// search
+        internal static let search = L10n.tr("Localizable", "Keyboard.KeyCap.Return.search")
+        /// send
+        internal static let send = L10n.tr("Localizable", "Keyboard.KeyCap.Return.send")
+        /// search
+        internal static let yahoo = L10n.tr("Localizable", "Keyboard.KeyCap.Return.yahoo")
+      }
+    }
     internal enum Label {
       /// No contacts found
       internal static let noContactsFound = L10n.tr("Localizable", "Keyboard.Label.NoContactsFound")
