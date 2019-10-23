@@ -185,7 +185,7 @@ class GlobalColors: NSObject {
     class var lightModeTextColor: UIColor { get { return UIColor.black }}
     class var darkModeTextColor: UIColor { get { return UIColor.white }}
     class var lightModeBorderColor: UIColor { get { return UIColor(hue: (214/360.0), saturation: 0.04, brightness: 0.65, alpha: 1.0) }}
-    class var darkModeBorderColor: UIColor { get { return UIColor.blue }}
+    class var darkModeBorderColor: UIColor { get { return UIColor.clear }}
     
     class var returnKeyColor: UIColor { get { return UIColor.systemBlue }}
     
