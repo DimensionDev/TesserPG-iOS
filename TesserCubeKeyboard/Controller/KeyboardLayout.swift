@@ -187,6 +187,8 @@ class GlobalColors: NSObject {
     class var lightModeBorderColor: UIColor { get { return UIColor(hue: (214/360.0), saturation: 0.04, brightness: 0.65, alpha: 1.0) }}
     class var darkModeBorderColor: UIColor { get { return UIColor.clear }}
     
+    class var returnKeyColor: UIColor { get { return UIColor.systemBlue }}
+    
     class func regularKey(_ darkMode: Bool, solidColorMode: Bool) -> UIColor {
         if darkMode {
             if solidColorMode {
@@ -274,6 +276,8 @@ class KeyboardLayout: NSObject, KeyboardKeyProtocol {
     var shapePool: [String:Shape] = [:]
     
     var darkMode: Bool
+    var returnKeyEnabled: Bool = false
+    var returnKeyType: UIReturnKeyType = .default
     var solidColorMode: Bool
     var initialized: Bool
     
@@ -508,10 +512,49 @@ class KeyboardLayout: NSObject, KeyboardKeyProtocol {
     func updateKeyCapText(_ key: KeyboardKey, model: Key, uppercase: Bool, characterUppercase: Bool) {
         if model.type == .character {
             key.text = model.keyCapForCase(characterUppercase)
-        }
-        else {
+        } else if model.type == .return {
+            key.text = self.returnKeyType.title
+        } else {
             key.text = model.keyCapForCase(uppercase)
         }
+    }
+    
+    func updateReturnKey() {
+        for (key, view) in self.modelToView {
+            if key.type == .return {
+                updateReturnKeyStyle(key, key: view)
+                break
+            }
+        }
+    }
+    
+    private func updateReturnKeyStyle(_ model: Key, key: KeyboardKey) {
+        model.uppercaseKeyCap = returnKeyType.title
+        key.text = returnKeyType.title
+        var bgColor: UIColor
+        var textColor = (darkMode ? self.globalColors.darkModeTextColor : self.globalColors.lightModeTextColor)
+        switch self.returnKeyType {
+        case .go,
+             .search,
+             .join,
+             .send,
+             .google,
+             .yahoo,
+             .emergencyCall,
+             .route,
+             .done:
+            // Blue bgColor and white text color for these special returnKeyType
+            bgColor = self.returnKeyEnabled ? GlobalColors.returnKeyColor : self.globalColors.specialKey(darkMode, solidColorMode: solidColorMode)
+            if self.returnKeyEnabled {
+                textColor = self.globalColors.darkModeTextColor
+            }
+            
+        default:
+            bgColor = self.globalColors.specialKey(darkMode, solidColorMode: solidColorMode)
+        }
+        
+        key.color = bgColor
+        key.textColor = textColor
     }
     
     ///////////////
@@ -563,13 +606,16 @@ class KeyboardLayout: NSObject, KeyboardKeyProtocol {
             key.textColor = (darkMode ? self.globalColors.darkModeTextColor : self.globalColors.lightModeTextColor)
             key.downTextColor = nil
         case
-        Key.TCKeyboardKeyType.return,
         Key.TCKeyboardKeyType.keyboardChange,
         Key.TCKeyboardKeyType.settings:
             key.color = self.globalColors.specialKey(darkMode, solidColorMode: solidColorMode)
             // TODO: actually a bit different
             key.downColor = self.globalColors.regularKey(darkMode, solidColorMode: solidColorMode)
             key.textColor = (darkMode ? self.globalColors.darkModeTextColor : self.globalColors.lightModeTextColor)
+            key.downTextColor = nil
+        case Key.TCKeyboardKeyType.return:
+            updateReturnKeyStyle(model, key: key)
+            key.downColor = self.globalColors.regularKey(darkMode, solidColorMode: solidColorMode)
             key.downTextColor = nil
         default:
             break
