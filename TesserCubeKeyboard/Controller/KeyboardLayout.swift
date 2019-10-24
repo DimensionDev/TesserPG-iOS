@@ -523,23 +523,29 @@ class KeyboardLayout: NSObject, KeyboardKeyProtocol {
                 key.uppercaseKeyCap = returnType.title
                 view.text = returnType.title
                 var bgColor: UIColor
+                var textColor = (darkMode ? self.globalColors.darkModeTextColor : self.globalColors.lightModeTextColor)
                 switch returnType {
                 case .go,
                      .search,
                      .join,
                      .send,
-                     .next,
                      .google,
                      .yahoo,
                      .emergencyCall,
                      .route,
                      .done:
+                    // Blue bgColor and white text color for these special returnKeyType
                     bgColor = self.returnKeyEnabled ? GlobalColors.returnKeyColor : self.globalColors.specialKey(darkMode, solidColorMode: solidColorMode)
+                    if self.returnKeyEnabled {
+                        textColor = self.globalColors.darkModeTextColor
+                    }
+                    
                 default:
                     bgColor = self.globalColors.specialKey(darkMode, solidColorMode: solidColorMode)
                 }
                 
                 view.color = bgColor
+                view.textColor = textColor
                 break
             }
         }
