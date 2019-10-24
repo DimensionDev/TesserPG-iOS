@@ -225,7 +225,7 @@
 "Keyboard.KeyCap.Return.go" = "go";
 "Keyboard.KeyCap.Return.continue" = "continue";
 "Keyboard.KeyCap.Return.done" = "done";
-"Keyboard.KeyCap.Return.emergency Call" = "emergency Call";
+"Keyboard.KeyCap.Return.emergencyCall" = "call";
 "Keyboard.KeyCap.Return.google" = "search";
 "Keyboard.KeyCap.Return.join" = "join";
 "Keyboard.KeyCap.Return.next" = "next";

@@ -425,8 +425,8 @@ internal enum L10n {
         internal static let `continue` = L10n.tr("Localizable", "Keyboard.KeyCap.Return.continue")
         /// done
         internal static let done = L10n.tr("Localizable", "Keyboard.KeyCap.Return.done")
-        /// emergency Call
-        internal static let emergencyCall = L10n.tr("Localizable", "Keyboard.KeyCap.Return.emergency Call")
+        /// call
+        internal static let emergencyCall = L10n.tr("Localizable", "Keyboard.KeyCap.Return.emergencyCall")
         /// go
         internal static let go = L10n.tr("Localizable", "Keyboard.KeyCap.Return.go")
         /// search

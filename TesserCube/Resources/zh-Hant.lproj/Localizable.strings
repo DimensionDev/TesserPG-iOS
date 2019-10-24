@@ -217,7 +217,7 @@
 "Keyboard.KeyCap.Return.go" = "前往";
 "Keyboard.KeyCap.Return.continue" = "繼續";
 "Keyboard.KeyCap.Return.done" = "完成";
-"Keyboard.KeyCap.Return.emergency Call" = "緊急電話";
+"Keyboard.KeyCap.Return.emergencyCall" = "緊急電話";
 "Keyboard.KeyCap.Return.google" = "搜尋";
 "Keyboard.KeyCap.Return.join" = "加入";
 "Keyboard.KeyCap.Return.next" = "下一個";
