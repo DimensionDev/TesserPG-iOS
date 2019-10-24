@@ -6,7 +6,7 @@
 //  Copyright © 2019 Sujitech. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 var counter = 0
 
@@ -165,5 +165,39 @@ class Key: Hashable {
     
     static func ==(lhs: Key, rhs: Key) -> Bool {
         return lhs.hashValue == rhs.hashValue
+    }
+}
+
+// MARK: Return Key Type Title
+extension UIReturnKeyType {
+    var title: String {
+        var returnKeyText = L10n.Keyboard.KeyCap.Return.return
+        switch self {
+        case .search:
+            returnKeyText = L10n.Keyboard.KeyCap.Return.search
+        case .send:
+            returnKeyText = L10n.Keyboard.KeyCap.Return.send
+        case .go:
+            returnKeyText = L10n.Keyboard.KeyCap.Return.go
+        case .continue:
+            returnKeyText = L10n.Keyboard.KeyCap.Return.continue
+        case .done:
+            returnKeyText = L10n.Keyboard.KeyCap.Return.done
+        case .emergencyCall:
+            returnKeyText = L10n.Keyboard.KeyCap.Return.emergencyCall
+        case .google:
+            returnKeyText = L10n.Keyboard.KeyCap.Return.google
+        case .join:
+            returnKeyText = L10n.Keyboard.KeyCap.Return.join
+        case .next:
+            returnKeyText = L10n.Keyboard.KeyCap.Return.next
+        case .route:
+            returnKeyText = L10n.Keyboard.KeyCap.Return.route
+        case .yahoo:
+            returnKeyText = L10n.Keyboard.KeyCap.Return.yahoo
+        default:
+            break
+        }
+        return returnKeyText
     }
 }

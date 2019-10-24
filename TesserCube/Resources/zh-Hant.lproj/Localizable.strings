@@ -211,6 +211,19 @@
 "Keyboard.Interpreted.Title.BadSignature" = "無效簽名: 可能來自偽造的簽名者";
 "Keyboard.Interpreted.Title.UnknownSender" = "未知簽名: 請保持警惕";
 
+"Keyboard.KeyCap.Return.return" = "換行";
+"Keyboard.KeyCap.Return.search" = "搜尋";
+"Keyboard.KeyCap.Return.send" = "傳送";
+"Keyboard.KeyCap.Return.go" = "前往";
+"Keyboard.KeyCap.Return.continue" = "繼續";
+"Keyboard.KeyCap.Return.done" = "完成";
+"Keyboard.KeyCap.Return.emergencyCall" = "緊急電話";
+"Keyboard.KeyCap.Return.google" = "搜尋";
+"Keyboard.KeyCap.Return.join" = "加入";
+"Keyboard.KeyCap.Return.next" = "下一個";
+"Keyboard.KeyCap.Return.route" = "路線";
+"Keyboard.KeyCap.Return.yahoo" = "搜尋";
+
 "DMSPGPError.internal"                  = "內部錯誤";
 "DMSPGPError.notArmoredInput"           = "無效的消息格式";
 "DMSPGPError.invalidArmored"            = "無效的消息格式";
