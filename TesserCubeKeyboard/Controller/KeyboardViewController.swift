@@ -477,6 +477,7 @@ class KeyboardViewController: UIInputViewController {
         KeyboardModeManager.shared.mode = .typing
         self.updateCapsIfNeeded()
         self.layout?.returnKeyEnabled = self.textDocumentProxy.hasText
+        self.layout?.returnKeyType = (self.textDocumentProxy.returnKeyType ?? .default)
         self.updateReturnKeyIfNeeded()
         self.autoPeriodState = .noSpace
         KeyboardModeManager.shared.contextDidChange()
@@ -762,7 +763,8 @@ class KeyboardViewController: UIInputViewController {
     }
     
     func updateReturnKeyIfNeeded() {
-        self.layout?.updateReturnKeyType(textDocumentProxy.returnKeyType ?? .default)
+        self.layout?.returnKeyType = (textDocumentProxy.returnKeyType ?? .default)
+        self.layout?.updateReturnKey()
     }
     
     func updateCapsIfNeeded() {
