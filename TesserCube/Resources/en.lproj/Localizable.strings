@@ -219,6 +219,19 @@
 "Keyboard.Interpreted.Title.BadSignature" = "Bad Signature: Possibly Fake Sender";
 "Keyboard.Interpreted.Title.UnknownSender" = "Unknown Sender: Keep Caution";
 
+"Keyboard.KeyCap.Return.return" = "return";
+"Keyboard.KeyCap.Return.search" = "search";
+"Keyboard.KeyCap.Return.send" = "send";
+"Keyboard.KeyCap.Return.go" = "go";
+"Keyboard.KeyCap.Return.continue" = "continue";
+"Keyboard.KeyCap.Return.done" = "done";
+"Keyboard.KeyCap.Return.emergency Call" = "emergency Call";
+"Keyboard.KeyCap.Return.google" = "search";
+"Keyboard.KeyCap.Return.join" = "join";
+"Keyboard.KeyCap.Return.next" = "next";
+"Keyboard.KeyCap.Return.route" = "route";
+"Keyboard.KeyCap.Return.yahoo" = "search";
+
 "DMSPGPError.internal"                  = "Internal Error";
 "DMSPGPError.notArmoredInput"           = "Invalid Message Format";
 "DMSPGPError.invalidArmored"            = "Invalid Message Format";
