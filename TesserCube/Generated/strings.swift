@@ -479,6 +479,10 @@ internal enum L10n {
         /// Messages
         internal static let title = L10n.tr("Localizable", "MainTabbarViewController.TabBarItem.Messages.title")
       }
+      internal enum Wallets {
+        /// Wallets
+        internal static let title = L10n.tr("Localizable", "MainTabbarViewController.TabBarItem.Wallets.title")
+      }
     }
   }
 

@@ -38,6 +38,7 @@ class Coordinator {
         case importKeyConfirm(key: TCKey, passphrase: String?)
         case interpretAction(message: String)
         case brokenMessage(message: String?)
+        case createWallet
     }
     
     enum URLHost: String {
@@ -169,6 +170,8 @@ extension Coordinator {
             let vc = BrokenMessageViewController()
             vc.viewModel.message.accept(message)
             return vc
+        case .createWallet:
+            return CreateWalletViewController()
         }
     }
 }
