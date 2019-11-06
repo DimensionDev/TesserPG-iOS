@@ -13,6 +13,7 @@ class MainTabbarViewController: UITabBarController {
     enum MainTabItem: CaseIterable {
         case contacts
         case messages
+        case wallets
         case me
         
         var title: String? {
@@ -21,6 +22,8 @@ class MainTabbarViewController: UITabBarController {
                 return L10n.MainTabbarViewController.TabBarItem.Contacts.title
             case .messages:
                 return L10n.MainTabbarViewController.TabBarItem.Messages.title
+            case .wallets:
+                return L10n.MainTabbarViewController.TabBarItem.Wallets.title
             case .me:
                 return L10n.MainTabbarViewController.TabBarItem.Me.title
             }
@@ -32,6 +35,8 @@ class MainTabbarViewController: UITabBarController {
                 return ContactsListViewController()
             case .messages:
                 return MessagesViewController()
+            case .wallets:
+                return WalletsViewController()
             case .me:
                 return MeViewController()
             }
@@ -43,6 +48,8 @@ class MainTabbarViewController: UITabBarController {
                 return Asset.mainTabContacts.image
             case .messages:
                 return Asset.mainTabMessages.image
+            case .wallets:
+                return nil  // TODO:
             case .me:
                 return Asset.mainTabMe.image
             }
@@ -63,7 +70,14 @@ class MainTabbarViewController: UITabBarController {
     
     private func configUI() {
         tabBar.isTranslucent = true
-        let tabViewControllers: [UIViewController] = MainTabItem.allCases.map {
+        let items: [MainTabItem] = {
+            #if RP
+            return MainTabItem.allCases
+            #else
+            return [.contacts, .messages, .me]
+            #endif
+        }()
+        let tabViewControllers: [UIViewController] = items.map {
             let vc = $0.viewController
             let naviVC = BaseNavigationController(rootViewController: vc)
             vc.title = $0.title
