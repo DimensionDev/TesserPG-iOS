@@ -22,12 +22,16 @@ class EditingRedPacketViewController: UIViewController {
     @IBOutlet weak var splitMethodTableView: UITableView!
     @IBOutlet weak var walletTableView: UITableView!
     
+    @IBOutlet weak var amountInputView: RecipientInputView!
+    
     var wallets: [TestWallet] = []
     
     var splitMethodProvider: RedPacketSplitMethodProvider?
     var walletProvider: RedPacketWalletProvider?
     
     var redPacketProperty = RedPacketProperty()
+    
+    weak var optionsView: OptionFieldView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +50,7 @@ class EditingRedPacketViewController: UIViewController {
     }
     
     private func configUI() {
+        amountInputView.inputTextField.keyboardType = .numbersAndPunctuation
         sharesValueLabel.text = "\(redPacketProperty.sharesCount)"
     }
 
@@ -56,7 +61,11 @@ class EditingRedPacketViewController: UIViewController {
     
     @objc
     private func nextBarButtonItemClicked() {
-        
+        let selectRecipientsVC = RedPacketRecipientSelectViewController()
+//        recommendView?.updateColor(theme: currentTheme)
+        selectRecipientsVC.delegate = KeyboardModeManager.shared
+        selectRecipientsVC.optionFieldView = optionsView
+        navigationController?.pushViewController(selectRecipientsVC, animated: true)
     }
 }
 
