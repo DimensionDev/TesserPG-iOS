@@ -99,7 +99,6 @@
 		835294B923279F40000E6170 /* DMSReceipientKeyIDUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831EC43022B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift */; };
 		835294BA23279F40000E6170 /* DMSReceipientKeyIDUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831EC43022B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift */; };
 		836F23C52373BF2900F938E6 /* RedPacketRecipientSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836F23C32373BF2900F938E6 /* RedPacketRecipientSelectViewController.swift */; };
-		836F23C62373BF2900F938E6 /* RedPacketRecipientSelectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 836F23C42373BF2900F938E6 /* RedPacketRecipientSelectViewController.xib */; };
 		837833552248840600F2C0BF /* TCTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837833542248840600F2C0BF /* TCTypes.swift */; };
 		837833562248840600F2C0BF /* TCTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837833542248840600F2C0BF /* TCTypes.swift */; };
 		837833582248897C00F2C0BF /* KeyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146F32243ACCE008ECC22 /* KeyFactory.swift */; };
@@ -554,7 +553,6 @@
 		833FF393224F9D8100EFE0A9 /* KeyboardInterpretor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardInterpretor.swift; sourceTree = "<group>"; };
 		834CA61822659EE900AC8355 /* FullAccessHintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullAccessHintView.swift; sourceTree = "<group>"; };
 		836F23C32373BF2900F938E6 /* RedPacketRecipientSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedPacketRecipientSelectViewController.swift; sourceTree = "<group>"; };
-		836F23C42373BF2900F938E6 /* RedPacketRecipientSelectViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RedPacketRecipientSelectViewController.xib; sourceTree = "<group>"; };
 		837833542248840600F2C0BF /* TCTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCTypes.swift; sourceTree = "<group>"; };
 		8378335D2248F1DE00F2C0BF /* HUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUD.swift; sourceTree = "<group>"; };
 		837833622249C33B00F2C0BF /* TCDBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCDBManager.swift; sourceTree = "<group>"; };
@@ -1176,7 +1174,6 @@
 				83955B7F23729B6B00161498 /* RedPacketWalletProvider.swift */,
 				83955B8223729E8C00161498 /* RedPacketProperty.swift */,
 				836F23C32373BF2900F938E6 /* RedPacketRecipientSelectViewController.swift */,
-				836F23C42373BF2900F938E6 /* RedPacketRecipientSelectViewController.xib */,
 			);
 			path = RedPacket;
 			sourceTree = "<group>";
@@ -1821,7 +1818,6 @@
 				8378337D224C990100F2C0BF /* SourceCodePro-Regular.otf in Resources */,
 				8325E49E222F8FBD00EE9B83 /* SF-Pro-Text-Semibold.otf in Resources */,
 				DBF6B2D5232F9113008F83AE /* SF-Pro-Text-Light.otf in Resources */,
-				836F23C62373BF2900F938E6 /* RedPacketRecipientSelectViewController.xib in Resources */,
 				83955B7B237271EF00161498 /* EditingRedPacketViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
