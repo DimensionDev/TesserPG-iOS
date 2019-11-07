@@ -14,6 +14,7 @@ enum MetricName: String {
     case recipientsBanner
     case cannotDecryptBanner
     case interpretResultBanner
+    case redPacketBanner
 }
 
 let metrics: [MetricName: CGFloat] = [
@@ -21,5 +22,6 @@ let metrics: [MetricName: CGFloat] = [
     .topTitleBanner: 42,
     .recipientsBanner: 42,
     .cannotDecryptBanner: 102,
-    .interpretResultBanner: 206
+    .interpretResultBanner: 206,
+    .redPacketBanner: 300
 ]

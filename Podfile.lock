@@ -1,5 +1,7 @@
 PODS:
   - AlignedCollectionViewFlowLayout (1.1.2)
+  - BigInt (3.1.0):
+    - SipHash (~> 1.2)
   - ConsolePrint (0.1.0)
   - DateToolsSwift (4.0.0)
   - DeepDiff (2.0.1)
@@ -11,10 +13,20 @@ PODS:
   - GRDBCipher (3.7.0):
     - SQLCipher (~> 3.4.1)
   - IQKeyboardManagerSwift (6.4.2)
+  - keccak.c (0.1.3)
   - KeychainAccess (3.2.0)
   - MMWormhole (2.0.0):
     - MMWormhole/Core (= 2.0.0)
   - MMWormhole/Core (2.0.0)
+  - PromiseKit (6.11.0):
+    - PromiseKit/CorePromise (= 6.11.0)
+    - PromiseKit/Foundation (= 6.11.0)
+    - PromiseKit/UIKit (= 6.11.0)
+  - PromiseKit/CorePromise (6.11.0)
+  - PromiseKit/Foundation (6.11.0):
+    - PromiseKit/CorePromise
+  - PromiseKit/UIKit (6.11.0):
+    - PromiseKit/CorePromise
   - Realm (3.18.0):
     - Realm/Headers (= 3.18.0)
   - Realm/Headers (3.18.0)
@@ -27,6 +39,9 @@ PODS:
     - RxSwift (>= 4.4.2, ~> 4.4)
   - RxSwift (4.4.2):
     - RxAtomic (>= 4.4.2, ~> 4.4)
+  - scrypt.c (0.1.1)
+  - secp256k1.c (0.1.2)
+  - SipHash (1.2.2)
   - SnapKit (4.2.0)
   - SQLCipher (3.4.2):
     - SQLCipher/standard (= 3.4.2)
@@ -54,6 +69,12 @@ PODS:
   - SwiftGen (6.1.0)
   - SwiftLint (0.30.1)
   - "UITextView+Placeholder (1.3.3)"
+  - web3swift.pod (2.1.10):
+    - BigInt (~> 3.1)
+    - keccak.c (~> 0.1)
+    - PromiseKit (~> 6.4)
+    - scrypt.c (~> 0.1)
+    - secp256k1.c (~> 0.1)
   - WordSuggestion (0.2.1):
     - RealmSwift
 
@@ -80,11 +101,13 @@ DEPENDENCIES:
   - SwiftGen (~> 6.1.0)
   - SwiftLint (~> 0.30.1)
   - "UITextView+Placeholder (~> 1.3.1)"
+  - web3swift.pod
   - WordSuggestion (~> 0.2.1)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - AlignedCollectionViewFlowLayout
+    - BigInt
     - ConsolePrint
     - DateToolsSwift
     - DeepDiff
@@ -95,20 +118,26 @@ SPEC REPOS:
     - GRDB.swift
     - GRDBCipher
     - IQKeyboardManagerSwift
+    - keccak.c
     - KeychainAccess
     - MMWormhole
+    - PromiseKit
     - Realm
     - RealmSwift
     - RxAtomic
     - RxBlocking
     - RxCocoa
     - RxSwift
+    - scrypt.c
+    - secp256k1.c
+    - SipHash
     - SnapKit
     - SQLCipher
     - SwifterSwift
     - SwiftGen
     - SwiftLint
     - "UITextView+Placeholder"
+    - web3swift.pod
     - WordSuggestion
 
 EXTERNAL SOURCES:
@@ -123,6 +152,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AlignedCollectionViewFlowLayout: ee2ef451e741ec08f8e0967d828001e2f051c20a
+  BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
   ConsolePrint: 695d494f0a2595d1792ec19483f2aa16e4501c19
   DateToolsSwift: 875d97ff9e3a5d54abdd67a269b3f51c757b71ab
   DeepDiff: 1944bb2c841ab238a66b31de1faa7627f3ca84bd
@@ -133,14 +163,19 @@ SPEC CHECKSUMS:
   GRDB.swift: 51cc9e57ae8ff7083a9d674c97925aa1de06aac5
   GRDBCipher: a3066d2953508039ea8fb423a1ba14c7b6d888be
   IQKeyboardManagerSwift: 79a3ec200dfb41cb66a89b8575417b5378107c5d
+  keccak.c: 859583afdaccb4e4fcc0f0096064d101580313f4
   KeychainAccess: 3b1bf8a77eb4c6ea1ce9404c292e48f948954c6b
   MMWormhole: 0cd3fd35a9118b2e2d762b499f54eeaace0be791
+  PromiseKit: e4863d06976e7dee5e41c04fc7371c16b3600292
   Realm: 7b3d04740facf45e958a514b466a32b04f1113d6
   RealmSwift: c817b5f374668cf08f649afb05f55d92a787649c
   RxAtomic: d00e97c10db88c6f08540e0bf2752fc5a2404167
   RxBlocking: 79413e4d916f44bb3e113c5b2cc059e36fe58910
   RxCocoa: 477990dc3b4c3ff55fb0ac77e1cc06244e0aaec8
   RxSwift: 74c29b693c8e42b0f64400e8b06564575742d649
+  scrypt.c: b42ae06183251329d2b2c620c226fb541a4a3592
+  secp256k1.c: db47b726585d80f027423682eb369729e61b3b20
+  SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   SQLCipher: f9fcf29b2e59ced7defc2a2bdd0ebe79b40d4990
   SVProgressHUD: 6ed134667e9ebb2f33679e8273cd48fd3fa349e5
@@ -148,8 +183,9 @@ SPEC CHECKSUMS:
   SwiftGen: f872ca75cbd17bf7103c17f13dcfa0d9a15667b0
   SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
   "UITextView+Placeholder": c407b27599ea23cca425946fee3cf1db5d547008
+  web3swift.pod: e3bd1c18a84e9fc1c4bfab8ebc0754b0806a7bcd
   WordSuggestion: 424d96dd2cfe4259c72959f9bdcffc864f0e65d4
 
-PODFILE CHECKSUM: 77cfecf4c0b927d8ea2b0b9b49fe006c95c9bf77
+PODFILE CHECKSUM: 407bf0a7d18959e59c8f85d1165dd18b50393d14
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.8.3

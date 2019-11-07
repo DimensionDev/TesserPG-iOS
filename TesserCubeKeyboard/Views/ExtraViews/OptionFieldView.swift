@@ -17,8 +17,9 @@ extension KeyboardMode {
              .cannotDecrypt,
              .interpretResult:
             return [.modeChange]
-        case .editingRecipients:
-            return [.encrypt, .modeChange]
+        case .editingRecipients,
+             .editingRedPacket:
+            return [.encrypt, .redPacket, .modeChange]
         }
     }
 }
@@ -154,7 +155,9 @@ class OptionFieldView: UIView, KeyboardModeListener {
     
     func updateLayout(mode: KeyboardMode) {
         // always show action title
-        actionsView.setButtonsTitleVisible(true)
+        let noRecipients = selectedRecipientsView?.contactInfos.isEmpty ?? true;
+        actionsView.setButtonsTitleVisible(noRecipients)
+        
     }
     
     @objc
