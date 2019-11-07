@@ -53,6 +53,7 @@
 		832146F42243ACCE008ECC22 /* KeyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146F32243ACCE008ECC22 /* KeyFactory.swift */; };
 		832146FA2244CCF4008ECC22 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146F92244CCF4008ECC22 /* MessagesViewController.swift */; };
 		832146FC2244CD43008ECC22 /* MessagesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146FB2244CD43008ECC22 /* MessagesViewModel.swift */; };
+		83245A89237172F60046632E /* KeyboardModeManager+RedPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83245A88237172F60046632E /* KeyboardModeManager+RedPacket.swift */; };
 		8325E46D222CBFBC00EE9B83 /* KeyboardLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E46C222CBFBC00EE9B83 /* KeyboardLayoutManager.swift */; };
 		8325E470222CC11800EE9B83 /* OptionFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E46F222CC11800EE9B83 /* OptionFieldView.swift */; };
 		8325E472222CCD4F00EE9B83 /* SuggestionStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E471222CCD4F00EE9B83 /* SuggestionStackView.swift */; };
@@ -97,6 +98,8 @@
 		834DB06F23175B1C004E6F50 /* DMSPGPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F309722A14C0D0003804B /* DMSPGPError.swift */; };
 		835294B923279F40000E6170 /* DMSReceipientKeyIDUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831EC43022B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift */; };
 		835294BA23279F40000E6170 /* DMSReceipientKeyIDUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831EC43022B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift */; };
+		836F23C52373BF2900F938E6 /* RedPacketRecipientSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836F23C32373BF2900F938E6 /* RedPacketRecipientSelectViewController.swift */; };
+		836F23C62373BF2900F938E6 /* RedPacketRecipientSelectViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 836F23C42373BF2900F938E6 /* RedPacketRecipientSelectViewController.xib */; };
 		837833552248840600F2C0BF /* TCTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837833542248840600F2C0BF /* TCTypes.swift */; };
 		837833562248840600F2C0BF /* TCTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837833542248840600F2C0BF /* TCTypes.swift */; };
 		837833582248897C00F2C0BF /* KeyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146F32243ACCE008ECC22 /* KeyFactory.swift */; };
@@ -123,6 +126,11 @@
 		83783388224CC23400F2C0BF /* ContactEditTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83783386224CC23400F2C0BF /* ContactEditTextCell.xib */; };
 		8378338C224DFED100F2C0BF /* SubKeyCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8378338A224DFED100F2C0BF /* SubKeyCardCell.swift */; };
 		8378338D224DFED100F2C0BF /* SubKeyCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8378338B224DFED100F2C0BF /* SubKeyCardCell.xib */; };
+		83955B79237271EF00161498 /* EditingRedPacketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83955B76237271EF00161498 /* EditingRedPacketViewController.swift */; };
+		83955B7B237271EF00161498 /* EditingRedPacketViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83955B77237271EF00161498 /* EditingRedPacketViewController.xib */; };
+		83955B7E2372986200161498 /* RedPacketSplitMethodProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83955B7C2372986200161498 /* RedPacketSplitMethodProvider.swift */; };
+		83955B8123729B6B00161498 /* RedPacketWalletProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83955B7F23729B6B00161498 /* RedPacketWalletProvider.swift */; };
+		83955B8423729E8C00161498 /* RedPacketProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83955B8223729E8C00161498 /* RedPacketProperty.swift */; };
 		839E647B23320751005C21FA /* (null) in Sources */ = {isa = PBXBuildFile; };
 		83B93D1F221CE06100F556C0 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D1E221CE06100F556C0 /* Application.swift */; };
 		83B93D22221CEB9800F556C0 /* UserDefaults+AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D21221CEB9800F556C0 /* UserDefaults+AppGroup.swift */; };
@@ -517,6 +525,7 @@
 		832146F32243ACCE008ECC22 /* KeyFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyFactory.swift; sourceTree = "<group>"; };
 		832146F92244CCF4008ECC22 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		832146FB2244CD43008ECC22 /* MessagesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewModel.swift; sourceTree = "<group>"; };
+		83245A88237172F60046632E /* KeyboardModeManager+RedPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyboardModeManager+RedPacket.swift"; sourceTree = "<group>"; };
 		8325E46C222CBFBC00EE9B83 /* KeyboardLayoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardLayoutManager.swift; sourceTree = "<group>"; };
 		8325E46F222CC11800EE9B83 /* OptionFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionFieldView.swift; sourceTree = "<group>"; };
 		8325E471222CCD4F00EE9B83 /* SuggestionStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionStackView.swift; sourceTree = "<group>"; };
@@ -544,6 +553,8 @@
 		833FF390224F97D900EFE0A9 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		833FF393224F9D8100EFE0A9 /* KeyboardInterpretor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardInterpretor.swift; sourceTree = "<group>"; };
 		834CA61822659EE900AC8355 /* FullAccessHintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullAccessHintView.swift; sourceTree = "<group>"; };
+		836F23C32373BF2900F938E6 /* RedPacketRecipientSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedPacketRecipientSelectViewController.swift; sourceTree = "<group>"; };
+		836F23C42373BF2900F938E6 /* RedPacketRecipientSelectViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RedPacketRecipientSelectViewController.xib; sourceTree = "<group>"; };
 		837833542248840600F2C0BF /* TCTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCTypes.swift; sourceTree = "<group>"; };
 		8378335D2248F1DE00F2C0BF /* HUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUD.swift; sourceTree = "<group>"; };
 		837833622249C33B00F2C0BF /* TCDBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCDBManager.swift; sourceTree = "<group>"; };
@@ -561,6 +572,11 @@
 		83783386224CC23400F2C0BF /* ContactEditTextCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactEditTextCell.xib; sourceTree = "<group>"; };
 		8378338A224DFED100F2C0BF /* SubKeyCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubKeyCardCell.swift; sourceTree = "<group>"; };
 		8378338B224DFED100F2C0BF /* SubKeyCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SubKeyCardCell.xib; sourceTree = "<group>"; };
+		83955B76237271EF00161498 /* EditingRedPacketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingRedPacketViewController.swift; sourceTree = "<group>"; };
+		83955B77237271EF00161498 /* EditingRedPacketViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditingRedPacketViewController.xib; sourceTree = "<group>"; };
+		83955B7C2372986200161498 /* RedPacketSplitMethodProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedPacketSplitMethodProvider.swift; sourceTree = "<group>"; };
+		83955B7F23729B6B00161498 /* RedPacketWalletProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedPacketWalletProvider.swift; sourceTree = "<group>"; };
+		83955B8223729E8C00161498 /* RedPacketProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedPacketProperty.swift; sourceTree = "<group>"; };
 		83B93D0D221CDC0200F556C0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		83B93D0E221CDC0200F556C0 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		83B93D1E221CE06100F556C0 /* Application.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Application.swift; sourceTree = "<group>"; };
@@ -885,6 +901,7 @@
 		83214685223F4011008ECC22 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				83955B75237271C700161498 /* RedPacket */,
 				8320AF4822B64C8D00843FE7 /* Introduction */,
 				83214686223F4019008ECC22 /* MainTab */,
 				832146A0223F5FBE008ECC22 /* Contacts */,
@@ -1072,6 +1089,14 @@
 			path = Messages;
 			sourceTree = "<group>";
 		};
+		83245A87237172D70046632E /* RedPacket */ = {
+			isa = PBXGroup;
+			children = (
+				83245A88237172F60046632E /* KeyboardModeManager+RedPacket.swift */,
+			);
+			path = RedPacket;
+			sourceTree = "<group>";
+		};
 		8325E46E222CC0AF00EE9B83 /* TypingMode */ = {
 			isa = PBXGroup;
 			children = (
@@ -1140,6 +1165,20 @@
 				83783386224CC23400F2C0BF /* ContactEditTextCell.xib */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		83955B75237271C700161498 /* RedPacket */ = {
+			isa = PBXGroup;
+			children = (
+				83955B76237271EF00161498 /* EditingRedPacketViewController.swift */,
+				83955B77237271EF00161498 /* EditingRedPacketViewController.xib */,
+				83955B7C2372986200161498 /* RedPacketSplitMethodProvider.swift */,
+				83955B7F23729B6B00161498 /* RedPacketWalletProvider.swift */,
+				83955B8223729E8C00161498 /* RedPacketProperty.swift */,
+				836F23C32373BF2900F938E6 /* RedPacketRecipientSelectViewController.swift */,
+				836F23C42373BF2900F938E6 /* RedPacketRecipientSelectViewController.xib */,
+			);
+			path = RedPacket;
 			sourceTree = "<group>";
 		};
 		83B93D11221CDC3400F556C0 /* Support Files */ = {
@@ -1258,6 +1297,7 @@
 		83B93D56221E547A00F556C0 /* ExtraViews */ = {
 			isa = PBXGroup;
 			children = (
+				83245A87237172D70046632E /* RedPacket */,
 				83DFC73922578EAC00993160 /* InterpretResult */,
 				8325E475222CCEC900EE9B83 /* PickingRecipientsMode */,
 				8325E46E222CC0AF00EE9B83 /* TypingMode */,
@@ -1781,6 +1821,8 @@
 				8378337D224C990100F2C0BF /* SourceCodePro-Regular.otf in Resources */,
 				8325E49E222F8FBD00EE9B83 /* SF-Pro-Text-Semibold.otf in Resources */,
 				DBF6B2D5232F9113008F83AE /* SF-Pro-Text-Light.otf in Resources */,
+				836F23C62373BF2900F938E6 /* RedPacketRecipientSelectViewController.xib in Resources */,
+				83955B7B237271EF00161498 /* EditingRedPacketViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2160,6 +2202,7 @@
 				83B93D51221E2DCA00F556C0 /* KeyboardInputTraits.swift in Sources */,
 				DB6AA3F42275B69C00A7ADDF /* String.swift in Sources */,
 				83B93D43221D7E4400F556C0 /* KeyboardKeyBackground.swift in Sources */,
+				83955B8423729E8C00161498 /* RedPacketProperty.swift in Sources */,
 				8325E47C222D10A500EE9B83 /* SuggestionButton.swift in Sources */,
 				837833652249C34400F2C0BF /* TCDBManager.swift in Sources */,
 				83FF06592250D9DA0003BC0D /* MessageDBAction.swift in Sources */,
@@ -2177,6 +2220,7 @@
 				DB6AA3ED2273247C00A7ADDF /* KeyFactory+BCOpenPGP.swift in Sources */,
 				83B93D49221D7E8900F556C0 /* ImageKey.swift in Sources */,
 				833FF392224F97D900EFE0A9 /* Message.swift in Sources */,
+				83955B8123729B6B00161498 /* RedPacketWalletProvider.swift in Sources */,
 				83B93D55221E546C00F556C0 /* KeyboardModeManager.swift in Sources */,
 				83B93D63221E71CC00F556C0 /* SelectedRecipientView.swift in Sources */,
 				83B93E8A222411C300F556C0 /* UIView+blinking.swift in Sources */,
@@ -2188,7 +2232,9 @@
 				83B93D3E221D4AED00F556C0 /* Direction.swift in Sources */,
 				8378337A224BA43700F2C0BF /* ContactDBAction.swift in Sources */,
 				83DFC73C2258D0EF00993160 /* Assets.swift in Sources */,
+				83245A89237172F60046632E /* KeyboardModeManager+RedPacket.swift in Sources */,
 				83B93D53221E33C600F556C0 /* ForwardingView.swift in Sources */,
+				836F23C52373BF2900F938E6 /* RedPacketRecipientSelectViewController.swift in Sources */,
 				83B93D65221E825300F556C0 /* DoneActionButton.swift in Sources */,
 				83B93D5E221E6D1E00F556C0 /* UIImage+Color.swift in Sources */,
 				8325E477222CD0E700EE9B83 /* SeparatorView.swift in Sources */,
@@ -2213,6 +2259,7 @@
 				83B93D47221D7E7200F556C0 /* KeyboardKey.swift in Sources */,
 				DBFC72A72272DEA300860C34 /* TCKey.swift in Sources */,
 				83DFC73E2259BF6D00993160 /* InterpretResultView.swift in Sources */,
+				83955B7E2372986200161498 /* RedPacketSplitMethodProvider.swift in Sources */,
 				8325E472222CCD4F00EE9B83 /* SuggestionStackView.swift in Sources */,
 				DBBBC196224E29D70080790F /* KeychainMappable.swift in Sources */,
 				DB3B58E52282930600879834 /* WormholdService.swift in Sources */,
@@ -2233,6 +2280,7 @@
 				8325E4A5222F8FDA00EE9B83 /* Fonts.swift in Sources */,
 				8325E479222CD48200EE9B83 /* ActionButton.swift in Sources */,
 				83DFC72D2252EF3100993160 /* KeyRecordDBAction.swift in Sources */,
+				83955B79237271EF00161498 /* EditingRedPacketViewController.swift in Sources */,
 				8325E4A82230FEC500EE9B83 /* UIInputViewController+TextProxy.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

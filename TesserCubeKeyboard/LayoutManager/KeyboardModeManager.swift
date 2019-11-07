@@ -14,6 +14,7 @@ enum KeyboardMode {
     case editingRecipients
     case cannotDecrypt
     case interpretResult
+    case editingRedPacket
     
     var keyboardExtraHeight: CGFloat {
         switch self {
@@ -25,6 +26,8 @@ enum KeyboardMode {
             return metrics[.cannotDecryptBanner]!
         case .interpretResult:
             return metrics[.interpretResultBanner]!
+        case .editingRedPacket:
+            return metrics[.redPacketBanner]!
         }
     }
 }
@@ -46,6 +49,8 @@ class KeyboardModeManager: NSObject {
     var cannotDecryptView: InterpretFailView?
     
     var interpretResultView: InterpretResultView?
+    
+    var editingRedPacketViewControllerNaviVC: UIViewController?
     
     var listener: [KeyboardModeListener] = []
     
@@ -84,6 +89,7 @@ class KeyboardModeManager: NSObject {
     
     private func updateMode() {
         removeRecommendView()
+        removeEditingRedPacketView()
         removeCannotDecryptView()
         removeInterpretResultView()
         
@@ -96,6 +102,14 @@ class KeyboardModeManager: NSObject {
                 keyboardVC?.adjustHeight(delta: mode.keyboardExtraHeight)
                 optionsView.setFullAccessHintViewVisible(false)
                 addRecommendView()
+            } else {
+                optionsView.setFullAccessHintViewVisible(true)
+            }
+        case .editingRedPacket:
+            if let hasAccess = keyboardVC?.hasFullAccess, hasAccess {
+                keyboardVC?.adjustHeight(delta: mode.keyboardExtraHeight)
+                optionsView.setFullAccessHintViewVisible(false)
+                addEditingRedPacketView()
             } else {
                 optionsView.setFullAccessHintViewVisible(true)
             }
@@ -301,12 +315,22 @@ extension KeyboardModeManager: ActionsViewDelegate {
 
                 keyboardVC?.removeAllBeforeContent()
                 keyboardVC?.textDocumentProxy.insertText(message.encryptedMessage)
+                optionsView.removeAllSelectedRecipients()
             } catch {
                 consolePrint(error.localizedDescription)
                 toastAlerter.alert(message: error.localizedDescription, in: keyboardVC!.view)
             }
-            optionsView.removeAllSelectedRecipients()
+            
             break
+        case .redPacket:
+            guard !optionsView.selectedContacts.isEmpty else {
+                //TODO: i18n
+                toastAlerter.alert(message: L10n.Keyboard.Alert.noSelectedRecipient, in: keyboardVC!.view)
+                return
+            }
+            button.isSelected = !button.isSelected
+            Self.shared.mode = button.isSelected ? .editingRedPacket : .editingRecipients
+            return;
         case .modeChange:
             break
         }
