@@ -186,6 +186,8 @@
 		A525A0BAED3E0A2C1C06591F /* Pods_TesserCubeComposeAction.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E0EAF428FF778E8B22035F9 /* Pods_TesserCubeComposeAction.framework */; };
 		C5D98E8849B78D615F101C81 /* Pods_TesserCubeKeyboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E62BCA2B022300EA53474B /* Pods_TesserCubeKeyboard.framework */; };
 		DB0758D0224895B40046FBFD /* MessageCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0758CF224895B40046FBFD /* MessageCardCell.swift */; };
+		DB0ABA09237549E000AD3B7F /* WalletCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0ABA08237549E000AD3B7F /* WalletCardTableViewCell.swift */; };
+		DB0ABA0B237553E500AD3B7F /* UIViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0ABA0A237553E500AD3B7F /* UIViewPreview.swift */; };
 		DB0BABE523504B3400F3E37E /* PreviewStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BABE423504B3400F3E37E /* PreviewStub.swift */; };
 		DB1169A022E182730099BA25 /* strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83783382224CB7F400F2C0BF /* strings.swift */; };
 		DB1169A122E182730099BA25 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83214694223F4CA0008ECC22 /* Assets.swift */; };
@@ -652,6 +654,8 @@
 		C4B47F3F675F18B88219CF0D /* Pods-TesserCubeComposeAction.rp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.rp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.rp.xcconfig"; sourceTree = "<group>"; };
 		CD61A591DC1BC1878431DF4A /* Pods-TesserCubeComposeAction.rp release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.rp release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.rp release.xcconfig"; sourceTree = "<group>"; };
 		DB0758CF224895B40046FBFD /* MessageCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCardCell.swift; sourceTree = "<group>"; };
+		DB0ABA08237549E000AD3B7F /* WalletCardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCardTableViewCell.swift; sourceTree = "<group>"; };
+		DB0ABA0A237553E500AD3B7F /* UIViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPreview.swift; sourceTree = "<group>"; };
 		DB0BABE423504B3400F3E37E /* PreviewStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewStub.swift; sourceTree = "<group>"; };
 		DB0D9F3723152006007C293F /* FileProvider.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FileProvider.framework; path = System/Library/Frameworks/FileProvider.framework; sourceTree = SDKROOT; };
 		DB1169CA22E185640099BA25 /* NotificationName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationName.swift; sourceTree = "<group>"; };
@@ -904,6 +908,7 @@
 				8313F69722476ADD00C09C2D /* ShareUtil.swift */,
 				83C12EDF2332209D009DB359 /* DMSPGPUserIDTranslator.swift */,
 				DB0BABE423504B3400F3E37E /* PreviewStub.swift */,
+				DB0ABA0A237553E500AD3B7F /* UIViewPreview.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1606,6 +1611,7 @@
 			children = (
 				DBEE8957237282350080C194 /* WalletsViewController.swift */,
 				DBEE895A237292B90080C194 /* WalletsViewController+Previews.swift */,
+				DB0ABA08237549E000AD3B7F /* WalletCardTableViewCell.swift */,
 			);
 			path = WalletsScene;
 			sourceTree = "<group>";
@@ -2249,6 +2255,7 @@
 				8325E4A4222F8FDA00EE9B83 /* Fonts.swift in Sources */,
 				839E647B23320751005C21FA /* (null) in Sources */,
 				DBB81AE1225DFF7A003D63C6 /* UIScreen.swift in Sources */,
+				DB0ABA09237549E000AD3B7F /* WalletCardTableViewCell.swift in Sources */,
 				DB44999A228C244F000B7E8A /* MessageDigitalSignatureSettingsViewController.swift in Sources */,
 				DB616C0922A4CBB4002768B4 /* UILabel.swift in Sources */,
 				832146CB2240AEC0008ECC22 /* ImageUtil.swift in Sources */,
@@ -2291,6 +2298,7 @@
 				83214688223F40BC008ECC22 /* MainTabbarViewController.swift in Sources */,
 				8304E995221BF10000122637 /* AppDelegate.swift in Sources */,
 				831C831422CC9BEB008DE52C /* ImportPublicKeyConfirmViewController.swift in Sources */,
+				DB0ABA0B237553E500AD3B7F /* UIViewPreview.swift in Sources */,
 				DB0758D0224895B40046FBFD /* MessageCardCell.swift in Sources */,
 				83FE346222B74E980077C1A5 /* MainTabbarViewController+IntroWizard.swift in Sources */,
 				83C90B43231678B90048743A /* GenerateKeyData.swift in Sources */,
