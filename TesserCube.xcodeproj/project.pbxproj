@@ -366,6 +366,12 @@
 		DBBBC196224E29D70080790F /* KeychainMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBBC194224E29D70080790F /* KeychainMappable.swift */; };
 		DBBBC198224E29E50080790F /* ContactMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBBC197224E29E50080790F /* ContactMappable.swift */; };
 		DBBBC199224E29E50080790F /* ContactMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBBC197224E29E50080790F /* ContactMappable.swift */; };
+		DBC19D832375006900170151 /* BackupMnemonicCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D822375006900170151 /* BackupMnemonicCollectionViewModel.swift */; };
+		DBC19D85237502B500170151 /* ConfirmMnemonicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D84237502B500170151 /* ConfirmMnemonicViewController.swift */; };
+		DBC19D872375059500170151 /* ConfirmMnemonicCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D862375059500170151 /* ConfirmMnemonicCollectionViewModel.swift */; };
+		DBC19D89237509E300170151 /* ImportWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D88237509E300170151 /* ImportWalletViewController.swift */; };
+		DBC19D8C23750A8300170151 /* PassphraseTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D8B23750A8300170151 /* PassphraseTextField.swift */; };
+		DBC19D8E23750B0B00170151 /* ImportMnemonicCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC19D8D23750B0B00170151 /* ImportMnemonicCollectionViewModel.swift */; };
 		DBC24B1423026BA800A4AE8D /* WordSuggestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC24B1323026BA800A4AE8D /* WordSuggestionService.swift */; };
 		DBC24B1523026BA800A4AE8D /* WordSuggestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC24B1323026BA800A4AE8D /* WordSuggestionService.swift */; };
 		DBC7DEBD2248C7F600DA4C3E /* RecipientContactPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC7DEBC2248C7F600DA4C3E /* RecipientContactPickerView.swift */; };
@@ -382,6 +388,10 @@
 		DBEE895D237294DE0080C194 /* NavigationControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEE895C237294DE0080C194 /* NavigationControllerRepresentable.swift */; };
 		DBEE895F237297FB0080C194 /* CreateWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEE895E237297FB0080C194 /* CreateWalletViewController.swift */; };
 		DBEE89612372A3B90080C194 /* PasswordTextFieldTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEE89602372A3B90080C194 /* PasswordTextFieldTableViewCell.swift */; };
+		DBEE89652372B87E0080C194 /* BackupMnemonicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEE89642372B87E0080C194 /* BackupMnemonicViewController.swift */; };
+		DBEE89682372DC160080C194 /* MnemonicCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEE89672372DC160080C194 /* MnemonicCollectionView.swift */; };
+		DBEE896A2372DC3F0080C194 /* MnemonicCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEE89692372DC3F0080C194 /* MnemonicCollectionViewCell.swift */; };
+		DBEE896C2372DE8B0080C194 /* MnemonicCollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEE896B2372DE8B0080C194 /* MnemonicCollectionViewModel.swift */; };
 		DBF6B2A9232F43C7008F83AE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6B2A8232F43C7008F83AE /* UIColor.swift */; };
 		DBF6B2AA232F5479008F83AE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6B2A8232F43C7008F83AE /* UIColor.swift */; };
 		DBF6B2AB232F5479008F83AE /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6B2A8232F43C7008F83AE /* UIColor.swift */; };
@@ -686,6 +696,12 @@
 		DBBA87F52248B8F500B290AC /* ComposeMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeMessageViewController.swift; sourceTree = "<group>"; };
 		DBBBC194224E29D70080790F /* KeychainMappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainMappable.swift; sourceTree = "<group>"; };
 		DBBBC197224E29E50080790F /* ContactMappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactMappable.swift; sourceTree = "<group>"; };
+		DBC19D822375006900170151 /* BackupMnemonicCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupMnemonicCollectionViewModel.swift; sourceTree = "<group>"; };
+		DBC19D84237502B500170151 /* ConfirmMnemonicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmMnemonicViewController.swift; sourceTree = "<group>"; };
+		DBC19D862375059500170151 /* ConfirmMnemonicCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmMnemonicCollectionViewModel.swift; sourceTree = "<group>"; };
+		DBC19D88237509E300170151 /* ImportWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportWalletViewController.swift; sourceTree = "<group>"; };
+		DBC19D8B23750A8300170151 /* PassphraseTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseTextField.swift; sourceTree = "<group>"; };
+		DBC19D8D23750B0B00170151 /* ImportMnemonicCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportMnemonicCollectionViewModel.swift; sourceTree = "<group>"; };
 		DBC24B1323026BA800A4AE8D /* WordSuggestionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordSuggestionService.swift; sourceTree = "<group>"; };
 		DBC7DEBC2248C7F600DA4C3E /* RecipientContactPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientContactPickerView.swift; sourceTree = "<group>"; };
 		DBC7DEC02248D49E00DA4C3E /* ComposeMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeMessageViewModel.swift; sourceTree = "<group>"; };
@@ -700,6 +716,10 @@
 		DBEE895C237294DE0080C194 /* NavigationControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationControllerRepresentable.swift; sourceTree = "<group>"; };
 		DBEE895E237297FB0080C194 /* CreateWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletViewController.swift; sourceTree = "<group>"; };
 		DBEE89602372A3B90080C194 /* PasswordTextFieldTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextFieldTableViewCell.swift; sourceTree = "<group>"; };
+		DBEE89642372B87E0080C194 /* BackupMnemonicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupMnemonicViewController.swift; sourceTree = "<group>"; };
+		DBEE89672372DC160080C194 /* MnemonicCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicCollectionView.swift; sourceTree = "<group>"; };
+		DBEE89692372DC3F0080C194 /* MnemonicCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicCollectionViewCell.swift; sourceTree = "<group>"; };
+		DBEE896B2372DE8B0080C194 /* MnemonicCollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicCollectionViewModel.swift; sourceTree = "<group>"; };
 		DBF01ECD22A53BEE004711F1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		DBF01ECE22A53BEE004711F1 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		DBF6B2A8232F43C7008F83AE /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
@@ -1498,6 +1518,24 @@
 			path = ComposeMessageScene;
 			sourceTree = "<group>";
 		};
+		DBC19D8A237509E700170151 /* ImportWalletScene */ = {
+			isa = PBXGroup;
+			children = (
+				DBC19D8F23750E3000170151 /* View */,
+				DBC19D88237509E300170151 /* ImportWalletViewController.swift */,
+			);
+			path = ImportWalletScene;
+			sourceTree = "<group>";
+		};
+		DBC19D8F23750E3000170151 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DBC19D8B23750A8300170151 /* PassphraseTextField.swift */,
+				DBC19D8D23750B0B00170151 /* ImportMnemonicCollectionViewModel.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		DBC7DEC32248DAAA00DA4C3E /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -1521,6 +1559,7 @@
 			children = (
 				DBEE89622372A5E90080C194 /* WalletsScene */,
 				DBEE89632372A5F50080C194 /* CreateWalletScene */,
+				DBC19D8A237509E700170151 /* ImportWalletScene */,
 			);
 			path = Wallets;
 			sourceTree = "<group>";
@@ -1537,10 +1576,25 @@
 		DBEE89632372A5F50080C194 /* CreateWalletScene */ = {
 			isa = PBXGroup;
 			children = (
-				DBEE89602372A3B90080C194 /* PasswordTextFieldTableViewCell.swift */,
+				DBEE89662372C4810080C194 /* View */,
 				DBEE895E237297FB0080C194 /* CreateWalletViewController.swift */,
+				DBEE89642372B87E0080C194 /* BackupMnemonicViewController.swift */,
+				DBC19D84237502B500170151 /* ConfirmMnemonicViewController.swift */,
 			);
 			path = CreateWalletScene;
+			sourceTree = "<group>";
+		};
+		DBEE89662372C4810080C194 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DBEE89602372A3B90080C194 /* PasswordTextFieldTableViewCell.swift */,
+				DBEE89672372DC160080C194 /* MnemonicCollectionView.swift */,
+				DBEE89692372DC3F0080C194 /* MnemonicCollectionViewCell.swift */,
+				DBEE896B2372DE8B0080C194 /* MnemonicCollectionViewModel.swift */,
+				DBC19D822375006900170151 /* BackupMnemonicCollectionViewModel.swift */,
+				DBC19D862375059500170151 /* ConfirmMnemonicCollectionViewModel.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2080,12 +2134,15 @@
 				8313F6932247165F00C09C2D /* FloatingActionGroup.swift in Sources */,
 				DB8D7313231E38FD005D15DD /* KeyRecord.swift in Sources */,
 				832146CD2240B135008ECC22 /* TCBaseViewController.swift in Sources */,
+				DBC19D8C23750A8300170151 /* PassphraseTextField.swift in Sources */,
 				DB1449732313F9CF000FA38E /* BrokenMessageViewController.swift in Sources */,
+				DBEE896C2372DE8B0080C194 /* MnemonicCollectionViewModel.swift in Sources */,
 				DB3B58E22282929700879834 /* WormholdService.swift in Sources */,
 				83783383224CB7F500F2C0BF /* strings.swift in Sources */,
 				DB66FE6A224A330D00D82704 /* String.swift in Sources */,
 				8378338C224DFED100F2C0BF /* SubKeyCardCell.swift in Sources */,
 				8335283322C6FF1E006E19BC /* ImportPrivateKeyConfirmViewController.swift in Sources */,
+				DBC19D872375059500170151 /* ConfirmMnemonicCollectionViewModel.swift in Sources */,
 				83783379224BA43700F2C0BF /* ContactDBAction.swift in Sources */,
 				832146FC2244CD43008ECC22 /* MessagesViewModel.swift in Sources */,
 				832146E7224339EB008ECC22 /* CreateNewKeyViewController.swift in Sources */,
@@ -2117,6 +2174,7 @@
 				832146E222422024008ECC22 /* TCKey.swift in Sources */,
 				DBA0ACF422F800010088F03B /* SceneDelegate.swift in Sources */,
 				832146F42243ACCE008ECC22 /* KeyFactory.swift in Sources */,
+				DBEE89652372B87E0080C194 /* BackupMnemonicViewController.swift in Sources */,
 				DB8D730F231E0EF0005D15DD /* MeViewModel+ContextMenuActionTableViewDelegate.swift in Sources */,
 				DB8D7311231E2791005D15DD /* ProfileService+KeyRecord.swift in Sources */,
 				8316ADAB22CB4E1000246E5A /* ConfirmContactCell.swift in Sources */,
@@ -2132,16 +2190,21 @@
 				832146A5223F604F008ECC22 /* BaseNavigationController.swift in Sources */,
 				8378337F224CB06B00F2C0BF /* ContactEditViewController.swift in Sources */,
 				DB1449742314F1E1000FA38E /* InterpretActionViewModel.swift in Sources */,
+				DBEE89682372DC160080C194 /* MnemonicCollectionView.swift in Sources */,
+				DBC19D89237509E300170151 /* ImportWalletViewController.swift in Sources */,
 				DBD63FDD229682E400E46FDC /* KeyFactory+TCKey.swift in Sources */,
+				DBEE896A2372DC3F0080C194 /* MnemonicCollectionViewCell.swift in Sources */,
 				832146B3223F8725008ECC22 /* TCCardView.swift in Sources */,
 				8320AF4A22B64D1C00843FE7 /* IntroWizardViewController.swift in Sources */,
 				8313F69622475AC600C09C2D /* SharePublicKeyActivity.swift in Sources */,
 				832146DA2241FAC6008ECC22 /* PasteKeyViewController.swift in Sources */,
+				DBC19D832375006900170151 /* BackupMnemonicCollectionViewModel.swift in Sources */,
 				832146BA223F8AA1008ECC22 /* KeyCardCell.swift in Sources */,
 				8313F69D22477CA000C09C2D /* UIViewController+Alert.swift in Sources */,
 				DBEE8958237282350080C194 /* WalletsViewController.swift in Sources */,
 				832146FA2244CCF4008ECC22 /* MessagesViewController.swift in Sources */,
 				DBEE895F237297FB0080C194 /* CreateWalletViewController.swift in Sources */,
+				DBC19D8E23750B0B00170151 /* ImportMnemonicCollectionViewModel.swift in Sources */,
 				DB449995228C1CEF000B7E8A /* SettingsTableViewCell.swift in Sources */,
 				DB1169D722E19B100099BA25 /* MessageCardViewController.swift in Sources */,
 				83C12EE02332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */,
@@ -2159,6 +2222,7 @@
 				83DFC72C2252EF3100993160 /* KeyRecordDBAction.swift in Sources */,
 				DB15695923277FD900220926 /* ProfileService+Contact.swift in Sources */,
 				832146B1223F7D98008ECC22 /* ProfileService.swift in Sources */,
+				DBC19D85237502B500170151 /* ConfirmMnemonicViewController.swift in Sources */,
 				DB66FE6D224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */,
 				832146AA223F6756008ECC22 /* UIViewController+EmptyView.swift in Sources */,
 				DBEE89612372A3B90080C194 /* PasswordTextFieldTableViewCell.swift in Sources */,

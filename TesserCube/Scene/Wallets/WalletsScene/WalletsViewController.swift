@@ -28,7 +28,7 @@ extension WalletsViewController {
         }
         alertController.addAction(createWalletAction)
         let importWalletAction = UIAlertAction(title: "Import Wallet", style: .default) { _ in
-            // TODO:
+            Coordinator.main.present(scene: .importWallet, from: self, transition: .modal, completion: nil)
         }
         alertController.addAction(importWalletAction)
         let cancelAction = UIAlertAction(title: L10n.Common.Button.cancel, style: .cancel, handler: nil)
@@ -41,6 +41,3 @@ extension WalletsViewController {
     
 }
 
-extension WalletsViewController {
-
-}
