@@ -7,10 +7,8 @@
 //
 
 import Foundation
-#if DEBUG
-#if FLEX
+#if DEBUG && FLEX && canImport(FLEX)
 import FLEX
-#endif
 #endif
 import SwifterSwift
 import IQKeyboardManagerSwift
@@ -39,7 +37,7 @@ class Application: NSObject {
         UIApplication.shared.applicationSupportsShakeToEdit = true
 
         if SwifterSwift.isInDebuggingMode || SwifterSwift.isInTestFlight {
-            #if FLEX
+            #if DEBUG && FLEX && canImport(FLEX)
             FLEXManager.shared().showExplorer()
             #endif
         } else {

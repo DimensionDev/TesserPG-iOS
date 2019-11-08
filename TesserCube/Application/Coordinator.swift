@@ -38,6 +38,10 @@ class Coordinator {
         case importKeyConfirm(key: TCKey, passphrase: String?)
         case interpretAction(message: String)
         case brokenMessage(message: String?)
+        case createWallet
+        case backupMnemonic(viewModel: BackupMnemonicCollectionViewModel)
+        case confirmMnemonic(viewModel: ConfirmMnemonicCollectionViewModel)
+        case importWallet
     }
     
     enum URLHost: String {
@@ -168,6 +172,20 @@ extension Coordinator {
         case .brokenMessage(let message):
             let vc = BrokenMessageViewController()
             vc.viewModel.message.accept(message)
+            return vc
+        case .createWallet:
+            let vc = CreateWalletViewController()
+            return vc
+        case .backupMnemonic(let viewModel):
+            let vc = BackupMnemonicViewController()
+            vc.viewModel = viewModel
+            return vc
+        case .confirmMnemonic(let viewModel):
+            let vc = ConfirmMnemonicViewController()
+            vc.viewModel = viewModel
+            return vc
+        case .importWallet:
+            let vc = ImportWalletViewController()
             return vc
         }
     }

@@ -2,19 +2,26 @@ PODS:
   - AlignedCollectionViewFlowLayout (1.1.2)
   - BigInt (3.1.0):
     - SipHash (~> 1.2)
+  - BlueCryptor (1.0.32)
   - ConsolePrint (0.1.0)
+  - CryptoSwift (0.13.1)
   - DateToolsSwift (4.0.0)
   - DeepDiff (2.0.1)
   - DeviceKit (1.11.0)
+  - DMS_HDWallet_Cocoa (0.1.9):
+    - BigInt (~> 3.1)
+    - BlueCryptor (~> 1.0.23)
+    - CryptoSwift (~> 0.13.1)
+    - secp256k1.swift
   - DMSGoPGP (0.0.17)
   - Eureka (4.3.1)
   - FLEX (2.4.0)
   - GRDB.swift (3.7.0)
   - GRDBCipher (3.7.0):
     - SQLCipher (~> 3.4.1)
-  - IQKeyboardManagerSwift (6.4.2)
+  - IQKeyboardManagerSwift (6.5.2)
   - keccak.c (0.1.3)
-  - KeychainAccess (3.2.0)
+  - KeychainAccess (3.2.1)
   - MMWormhole (2.0.0):
     - MMWormhole/Core (= 2.0.0)
   - MMWormhole/Core (2.0.0)
@@ -27,11 +34,11 @@ PODS:
     - PromiseKit/CorePromise
   - PromiseKit/UIKit (6.11.0):
     - PromiseKit/CorePromise
-  - Realm (3.18.0):
-    - Realm/Headers (= 3.18.0)
-  - Realm/Headers (3.18.0)
-  - RealmSwift (3.18.0):
-    - Realm (= 3.18.0)
+  - Realm (3.20.0):
+    - Realm/Headers (= 3.20.0)
+  - Realm/Headers (3.20.0)
+  - RealmSwift (3.20.0):
+    - Realm (= 3.20.0)
   - RxAtomic (4.4.2)
   - RxBlocking (4.5.0):
     - RxSwift (>= 4.4.2, ~> 4.4)
@@ -40,7 +47,9 @@ PODS:
   - RxSwift (4.4.2):
     - RxAtomic (>= 4.4.2, ~> 4.4)
   - scrypt.c (0.1.1)
+  - SearchTextField (1.2.4)
   - secp256k1.c (0.1.2)
+  - secp256k1.swift (0.1.6)
   - SipHash (1.2.2)
   - SnapKit (4.2.0)
   - SQLCipher (3.4.2):
@@ -84,17 +93,19 @@ DEPENDENCIES:
   - DateToolsSwift (~> 4.0.0)
   - DeepDiff (~> 2.0.1)
   - DeviceKit (~> 1.11.0)
+  - DMS_HDWallet_Cocoa (~> 0.1.9)
   - DMSGoPGP (~> 0.0.17)
   - Eureka (~> 4.3.1)
   - FLEX (~> 2.4.0)
   - GRDB.swift (~> 3.7.0)
   - GRDBCipher (~> 3.7.0)
-  - IQKeyboardManagerSwift (~> 6.4.2)
+  - IQKeyboardManagerSwift (~> 6.5.0)
   - KeychainAccess (~> 3.2.0)
   - MMWormhole (~> 2.0.0)
   - RxBlocking (~> 4.0)
   - RxCocoa (~> 4.4.2)
   - RxSwift (~> 4.4.2)
+  - SearchTextField
   - SnapKit (~> 4.2.0)
   - SVProgressHUD (from `https://github.com/getaaron/SVProgressHUD.git`, branch `dark-mode`)
   - SwifterSwift (~> 4.6.0)
@@ -108,7 +119,9 @@ SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - AlignedCollectionViewFlowLayout
     - BigInt
+    - BlueCryptor
     - ConsolePrint
+    - CryptoSwift
     - DateToolsSwift
     - DeepDiff
     - DeviceKit
@@ -129,6 +142,7 @@ SPEC REPOS:
     - RxCocoa
     - RxSwift
     - scrypt.c
+    - SearchTextField
     - secp256k1.c
     - SipHash
     - SnapKit
@@ -139,6 +153,9 @@ SPEC REPOS:
     - "UITextView+Placeholder"
     - web3swift.pod
     - WordSuggestion
+  https://github.com/SujiTech/Specs.git:
+    - DMS_HDWallet_Cocoa
+    - secp256k1.swift
 
 EXTERNAL SOURCES:
   SVProgressHUD:
@@ -147,34 +164,39 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   SVProgressHUD:
-    :commit: e0751029e2befc68e3a0feeffbca240adde9eb08
+    :commit: d95da4a829f1c78847a2b10c3549010717fe36a7
     :git: https://github.com/getaaron/SVProgressHUD.git
 
 SPEC CHECKSUMS:
   AlignedCollectionViewFlowLayout: ee2ef451e741ec08f8e0967d828001e2f051c20a
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
+  BlueCryptor: b0aee3d9b8f367b49b30de11cda90e1735571c24
   ConsolePrint: 695d494f0a2595d1792ec19483f2aa16e4501c19
+  CryptoSwift: ff68c35a53e03177d31aaa2c1e8b3e010aeed6cb
   DateToolsSwift: 875d97ff9e3a5d54abdd67a269b3f51c757b71ab
   DeepDiff: 1944bb2c841ab238a66b31de1faa7627f3ca84bd
   DeviceKit: a3a86f8dddbe1317a9a243cdf9646858bf135dce
+  DMS_HDWallet_Cocoa: 670be29d9576514d2d097b698bd6943b3cad5e01
   DMSGoPGP: fd0970ab6941eb4a5b6cb2f8846ca9ab9a9151a6
   Eureka: 28ea296f06710f6745266b71f17862048941a32d
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
   GRDB.swift: 51cc9e57ae8ff7083a9d674c97925aa1de06aac5
   GRDBCipher: a3066d2953508039ea8fb423a1ba14c7b6d888be
-  IQKeyboardManagerSwift: 79a3ec200dfb41cb66a89b8575417b5378107c5d
+  IQKeyboardManagerSwift: c75366f1f19590e8caeae45fcd5815c9289d6099
   keccak.c: 859583afdaccb4e4fcc0f0096064d101580313f4
-  KeychainAccess: 3b1bf8a77eb4c6ea1ce9404c292e48f948954c6b
+  KeychainAccess: d5470352939ced6d6f7fb51cb2e67aae51fc294f
   MMWormhole: 0cd3fd35a9118b2e2d762b499f54eeaace0be791
   PromiseKit: e4863d06976e7dee5e41c04fc7371c16b3600292
-  Realm: 7b3d04740facf45e958a514b466a32b04f1113d6
-  RealmSwift: c817b5f374668cf08f649afb05f55d92a787649c
+  Realm: 8b2ca5bc6479a91f379b6b42b5922e396cd5ba5a
+  RealmSwift: 1949ef26a279e1845bd51d591b9103adfcd121df
   RxAtomic: d00e97c10db88c6f08540e0bf2752fc5a2404167
   RxBlocking: 79413e4d916f44bb3e113c5b2cc059e36fe58910
   RxCocoa: 477990dc3b4c3ff55fb0ac77e1cc06244e0aaec8
   RxSwift: 74c29b693c8e42b0f64400e8b06564575742d649
   scrypt.c: b42ae06183251329d2b2c620c226fb541a4a3592
+  SearchTextField: 40dc3cc57def5a211f263cac263622c163bbc25a
   secp256k1.c: db47b726585d80f027423682eb369729e61b3b20
+  secp256k1.swift: 2695e9586a624642d8090603bf9b7dfad142a699
   SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   SQLCipher: f9fcf29b2e59ced7defc2a2bdd0ebe79b40d4990
@@ -186,6 +208,6 @@ SPEC CHECKSUMS:
   web3swift.pod: e3bd1c18a84e9fc1c4bfab8ebc0754b0806a7bcd
   WordSuggestion: 424d96dd2cfe4259c72959f9bdcffc864f0e65d4
 
-PODFILE CHECKSUM: 407bf0a7d18959e59c8f85d1165dd18b50393d14
+PODFILE CHECKSUM: a93e52e8258455ff4175f90b23a8da2b3b1a84ae
 
-COCOAPODS: 1.8.3
+COCOAPODS: 1.8.4
