@@ -15,6 +15,7 @@ protocol ActionsViewDelegate: class {
 
 enum ActionType {
     case encrypt
+    case redPacket
     case modeChange
     
     func disabledImage(theme: Theme) -> UIImage? {
@@ -30,6 +31,8 @@ enum ActionType {
             switch self {
             case .encrypt:
                 return #imageLiteral(resourceName: "button_lock_normal")
+            case .redPacket:
+                return #imageLiteral(resourceName: "button_interpret_normal")
             case .modeChange:
                 return #imageLiteral(resourceName: "button_modeChange_icon")
             }
@@ -37,6 +40,8 @@ enum ActionType {
             switch self {
             case .encrypt:
                 return #imageLiteral(resourceName: "button_lock_normal_dark")
+            case .redPacket:
+                return #imageLiteral(resourceName: "button_interpret_normal_dark")
             case .modeChange:
                 return #imageLiteral(resourceName: "button_modeChange_icon_dark")
             }
@@ -86,6 +91,8 @@ enum ActionType {
         switch self {
         case .encrypt:
             return L10n.Keyboard.Button.encrypt
+        case .redPacket:
+            return "Red Packet" //TODO: i18n
         case .modeChange:
             return nil
         }
@@ -97,6 +104,7 @@ class ActionsView: UIView, Thematic {
     weak var delegate: ActionsViewDelegate?
     
     var encryptButton: ActionButton?
+    var redPacketButton: ActionButton?
     var modeChangeButton: ActionButton?
     
     var actions: [ActionType] = [.modeChange] {
@@ -183,6 +191,9 @@ class ActionsView: UIView, Thematic {
             case .encrypt:
                 encryptButton = button
                 buttonSize = ActionButton.expandSize
+            case .redPacket:
+                redPacketButton = button
+                buttonSize = ActionButton.expandSize
             case .modeChange:
                 modeChangeButton = button
                 buttonSize = ActionButton.defaultSize
@@ -207,6 +218,15 @@ class ActionsView: UIView, Thematic {
     
     func setButtonsTitleVisible(_ visible: Bool) {
         encryptButton?.isTitleVisible = visible
+        redPacketButton?.isTitleVisible = visible
+        
+        let width = visible ? ActionButton.expandSize : ActionButton.defaultSize;
+        encryptButton?.snp.remakeConstraints { make in
+            make.size.equalTo(width)
+        }
+        redPacketButton?.snp.remakeConstraints { make in
+            make.size.equalTo(width)
+        }
     }
     
     @objc
@@ -217,6 +237,9 @@ class ActionsView: UIView, Thematic {
             KeyboardModeManager.shared.mode = sender.isSelected ? .editingRecipients : .typing
         case .encrypt:
             delegate?.actionsView(self, didClick: sender.action, button: sender)
+        case .redPacket:
+            delegate?.actionsView(self, didClick: sender.action, button: sender)
+            return
         }
     }
 }
