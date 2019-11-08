@@ -188,6 +188,10 @@
 		DB0758D0224895B40046FBFD /* MessageCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0758CF224895B40046FBFD /* MessageCardCell.swift */; };
 		DB0ABA09237549E000AD3B7F /* WalletCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0ABA08237549E000AD3B7F /* WalletCardTableViewCell.swift */; };
 		DB0ABA0B237553E500AD3B7F /* UIViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0ABA0A237553E500AD3B7F /* UIViewPreview.swift */; };
+		DB0ABA18237585B500AD3B7F /* WalletService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0ABA17237585B500AD3B7F /* WalletService.swift */; };
+		DB0ABA19237585B800AD3B7F /* WalletService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0ABA17237585B500AD3B7F /* WalletService.swift */; };
+		DB0ABA1A237585B900AD3B7F /* WalletService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0ABA17237585B500AD3B7F /* WalletService.swift */; };
+		DB0ABA1B237585B900AD3B7F /* WalletService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0ABA17237585B500AD3B7F /* WalletService.swift */; };
 		DB0BABE523504B3400F3E37E /* PreviewStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BABE423504B3400F3E37E /* PreviewStub.swift */; };
 		DB1169A022E182730099BA25 /* strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83783382224CB7F400F2C0BF /* strings.swift */; };
 		DB1169A122E182730099BA25 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83214694223F4CA0008ECC22 /* Assets.swift */; };
@@ -656,6 +660,7 @@
 		DB0758CF224895B40046FBFD /* MessageCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCardCell.swift; sourceTree = "<group>"; };
 		DB0ABA08237549E000AD3B7F /* WalletCardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCardTableViewCell.swift; sourceTree = "<group>"; };
 		DB0ABA0A237553E500AD3B7F /* UIViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPreview.swift; sourceTree = "<group>"; };
+		DB0ABA17237585B500AD3B7F /* WalletService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletService.swift; sourceTree = "<group>"; };
 		DB0BABE423504B3400F3E37E /* PreviewStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewStub.swift; sourceTree = "<group>"; };
 		DB0D9F3723152006007C293F /* FileProvider.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FileProvider.framework; path = System/Library/Frameworks/FileProvider.framework; sourceTree = SDKROOT; };
 		DB1169CA22E185640099BA25 /* NotificationName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationName.swift; sourceTree = "<group>"; };
@@ -1022,6 +1027,7 @@
 				833FF38C224F97BD00EFE0A9 /* ProfileService+Message.swift */,
 				DBC24B1323026BA800A4AE8D /* WordSuggestionService.swift */,
 				DB3B58E12282929700879834 /* WormholdService.swift */,
+				DB0ABA17237585B500AD3B7F /* WalletService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -2300,6 +2306,7 @@
 				831C831422CC9BEB008DE52C /* ImportPublicKeyConfirmViewController.swift in Sources */,
 				DB0ABA0B237553E500AD3B7F /* UIViewPreview.swift in Sources */,
 				DB0758D0224895B40046FBFD /* MessageCardCell.swift in Sources */,
+				DB0ABA18237585B500AD3B7F /* WalletService.swift in Sources */,
 				83FE346222B74E980077C1A5 /* MainTabbarViewController+IntroWizard.swift in Sources */,
 				83C90B43231678B90048743A /* GenerateKeyData.swift in Sources */,
 				DB75454B2296A7C400B4E1EF /* CreateKeyOption.swift in Sources */,
@@ -2356,6 +2363,7 @@
 				83B93D55221E546C00F556C0 /* KeyboardModeManager.swift in Sources */,
 				83B93D63221E71CC00F556C0 /* SelectedRecipientView.swift in Sources */,
 				83B93E8A222411C300F556C0 /* UIView+blinking.swift in Sources */,
+				DB0ABA19237585B800AD3B7F /* WalletService.swift in Sources */,
 				83DFC73F2259F0E700993160 /* TCCardView.swift in Sources */,
 				83B93D4F221D89FD00F556C0 /* KeyboardLayout.swift in Sources */,
 				8325E4AA22310B1900EE9B83 /* SuggestHelper.swift in Sources */,
@@ -2465,6 +2473,7 @@
 				DB63A0E022DD9AFF00C2DDA6 /* TCCardView.swift in Sources */,
 				DB63A11B22E0670200C2DDA6 /* TCBaseViewController.swift in Sources */,
 				DB63A10C22DEF75100C2DDA6 /* InterpretActionViewModel.swift in Sources */,
+				DB0ABA1A237585B900AD3B7F /* WalletService.swift in Sources */,
 				834DB06E23175B1C004E6F50 /* DMSPGPError.swift in Sources */,
 				DB63A0FB22DDCB6500C2DDA6 /* TCErrors.swift in Sources */,
 				DB63A11C22E0671B00C2DDA6 /* RecipientContactPickerView.swift in Sources */,
@@ -2526,6 +2535,7 @@
 				DB1169D822E19BD80099BA25 /* MessagesViewModel.swift in Sources */,
 				DB1169AF22E1830A0099BA25 /* Message.swift in Sources */,
 				DB1169A022E182730099BA25 /* strings.swift in Sources */,
+				DB0ABA1B237585B900AD3B7F /* WalletService.swift in Sources */,
 				DB1169B922E183AD0099BA25 /* TCDBManager.swift in Sources */,
 				83C12EE32332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */,
 				DB1169D022E1859F0099BA25 /* String+Localization.swift in Sources */,
