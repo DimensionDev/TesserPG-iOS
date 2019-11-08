@@ -14,6 +14,7 @@ enum KeyboardMode {
     case editingRecipients
     case cannotDecrypt
     case interpretResult
+    case editingRedPacket
     
     var keyboardExtraHeight: CGFloat {
         switch self {
@@ -25,6 +26,8 @@ enum KeyboardMode {
             return metrics[.cannotDecryptBanner]!
         case .interpretResult:
             return metrics[.interpretResultBanner]!
+        case .editingRedPacket:
+            return metrics[.redPacketBanner]!
         }
     }
 }
@@ -46,6 +49,8 @@ class KeyboardModeManager: NSObject {
     var cannotDecryptView: InterpretFailView?
     
     var interpretResultView: InterpretResultView?
+    
+    var editingRedPacketViewControllerNaviVC: UIViewController?
     
     var listener: [KeyboardModeListener] = []
     
@@ -84,6 +89,7 @@ class KeyboardModeManager: NSObject {
     
     private func updateMode() {
         removeRecommendView()
+        removeEditingRedPacketView()
         removeCannotDecryptView()
         removeInterpretResultView()
         
@@ -96,6 +102,14 @@ class KeyboardModeManager: NSObject {
                 keyboardVC?.adjustHeight(delta: mode.keyboardExtraHeight)
                 optionsView.setFullAccessHintViewVisible(false)
                 addRecommendView()
+            } else {
+                optionsView.setFullAccessHintViewVisible(true)
+            }
+        case .editingRedPacket:
+            if let hasAccess = keyboardVC?.hasFullAccess, hasAccess {
+                keyboardVC?.adjustHeight(delta: mode.keyboardExtraHeight)
+                optionsView.setFullAccessHintViewVisible(false)
+                addEditingRedPacketView()
             } else {
                 optionsView.setFullAccessHintViewVisible(true)
             }
@@ -117,6 +131,19 @@ class KeyboardModeManager: NSObject {
             let tempText = inputRecipientTextView.inputTextField.text ?? ""
             inputRecipientTextView.inputTextField.text = (tempText + key)
             inputRecipientTextView.inputTextField.repositionCursor()
+        } else if mode == .editingRedPacket, let redPacketViewControllerNaviVC = editingRedPacketViewControllerNaviVC {
+            if let selectRecipientsVC = redPacketViewControllerNaviVC.children.last as? RedPacketRecipientSelectViewController {
+                let inputRecipientTextView = selectRecipientsVC.recipientInputView
+                let tempText = inputRecipientTextView.inputTextField.text ?? ""
+                inputRecipientTextView.inputTextField.text = (tempText + key)
+                inputRecipientTextView.inputTextField.repositionCursor()
+            }
+            if let editingRedPacketVC = redPacketViewControllerNaviVC.children.last as? EditingRedPacketViewController {
+                let inputRecipientTextView = editingRedPacketVC.amountInputView
+                let tempText = inputRecipientTextView!.inputTextField.text ?? ""
+                inputRecipientTextView!.inputTextField.text = (tempText + key)
+                inputRecipientTextView!.inputTextField.repositionCursor()
+            }
         } else {
             keyboardVC?.textDocumentProxy.insertText(key)
             contextDidChange()
@@ -131,6 +158,23 @@ class KeyboardModeManager: NSObject {
                 inputRecipientTextView.inputTextField.text = String(tempText[tempText.startIndex ..< tempText.index(before: tempText.endIndex)])
                 inputRecipientTextView.inputTextField.repositionCursor()
             }
+        } else if mode == .editingRedPacket, let redPacketViewControllerNaviVC = editingRedPacketViewControllerNaviVC {
+            if let selectRecipientsVC = redPacketViewControllerNaviVC.children.last as? RedPacketRecipientSelectViewController {
+                let inputRecipientTextView = selectRecipientsVC.recipientInputView
+                let tempText = inputRecipientTextView.inputTextField.text ?? ""
+                if !tempText.isEmpty {
+                    inputRecipientTextView.inputTextField.text = String(tempText[tempText.startIndex ..< tempText.index(before: tempText.endIndex)])
+                    inputRecipientTextView.inputTextField.repositionCursor()
+                }
+            }
+            if let editingRedPacketVC = redPacketViewControllerNaviVC.children.last as? EditingRedPacketViewController {
+                let inputRecipientTextView = editingRedPacketVC.amountInputView
+                let tempText = inputRecipientTextView!.inputTextField.text ?? ""
+                if !tempText.isEmpty {
+                    inputRecipientTextView!.inputTextField.text = String(tempText[tempText.startIndex ..< tempText.index(before: tempText.endIndex)])
+                    inputRecipientTextView!.inputTextField.repositionCursor()
+                }
+            }
         } else {
             keyboardVC?.textDocumentProxy.deleteBackward()
             contextDidChange()
@@ -141,6 +185,16 @@ class KeyboardModeManager: NSObject {
         if mode == .editingRecipients, let recipientView = recommendView {
             let inputRecipientTextView = recipientView.recipientInputView
             return inputRecipientTextView.inputTextField.text
+        } else if mode == .editingRedPacket, let redPacketViewControllerNaviVC = editingRedPacketViewControllerNaviVC {
+            if let selectRecipientsVC = redPacketViewControllerNaviVC.children.last as? RedPacketRecipientSelectViewController {
+                let inputRecipientTextView = selectRecipientsVC.recipientInputView
+                return inputRecipientTextView.inputTextField.text
+            }
+            if let editingRedPacketVC = redPacketViewControllerNaviVC.children.last as? EditingRedPacketViewController {
+                let inputRecipientTextView = editingRedPacketVC.amountInputView
+                return inputRecipientTextView!.inputTextField.text
+            }
+            return keyboardVC?.textDocumentProxy.documentContextBeforeInput
         } else {
             return keyboardVC?.textDocumentProxy.documentContextBeforeInput
         }
@@ -215,10 +269,36 @@ extension KeyboardModeManager: RecommendRecipientsViewDelegate {
     }
 }
 
+extension KeyboardModeManager: RedPacketRecipientSelectViewControllerDelegate {
+    func redPacketRecipientSelectViewController(_ viewController: RedPacketRecipientSelectViewController, didSelect contactInfo: FullContactInfo) {
+        let selectedData = optionsView.selectedContacts
+        if selectedData.contains(where: { (data) -> Bool in
+            return data.contact.id == contactInfo.contact.id
+        }) {
+            // This should not happen
+            print(" This should not happen, account: \(contactInfo.contact.name)")
+        } else {
+            optionsView.addSelectedRecipient(contactInfo)
+        }
+    }
+    
+    func redPacketRecipientSelectViewController(_ viewController: RedPacketRecipientSelectViewController, didDeselect contactInfo: FullContactInfo) {
+        let selectedData = optionsView.selectedContacts
+        if selectedData.contains(where: { (data) -> Bool in
+            return data.contact.id == contactInfo.contact.id
+        }) {
+            optionsView.removeSelectedRecipient(contactInfo)
+        }
+    }
+}
+
 extension KeyboardModeManager: SelectedRecipientViewDelegate {
     func selectedRecipientView(_ view: SelectedRecipientView, didClick contactInfo: FullContactInfo) {
         optionsView.updateLayout(mode: mode)
         recommendView?.reloadRecipients()
+        if let redPacketRecipietnVC = editingRedPacketViewControllerNaviVC?.children.last as? RedPacketRecipientSelectViewController {
+            redPacketRecipietnVC.reloadRecipients()
+        }
     }
 }
 
@@ -301,12 +381,17 @@ extension KeyboardModeManager: ActionsViewDelegate {
 
                 keyboardVC?.removeAllBeforeContent()
                 keyboardVC?.textDocumentProxy.insertText(message.encryptedMessage)
+                optionsView.removeAllSelectedRecipients()
             } catch {
                 consolePrint(error.localizedDescription)
                 toastAlerter.alert(message: error.localizedDescription, in: keyboardVC!.view)
             }
-            optionsView.removeAllSelectedRecipients()
+            
             break
+        case .redPacket:
+            button.isSelected = !button.isSelected
+            Self.shared.mode = button.isSelected ? .editingRedPacket : .editingRecipients
+            return;
         case .modeChange:
             break
         }
