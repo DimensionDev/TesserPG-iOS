@@ -10,6 +10,7 @@ import UIKit
 
 class BackupMnemonicViewController: TCBaseViewController {
 
+    private let walletCardTableViewCell = WalletCardTableViewCell()
     private let nextButton: TCActionButton = {
         let button = TCActionButton()
         button.color = .systemBlue
@@ -39,23 +40,20 @@ class BackupMnemonicViewController: TCBaseViewController {
         navigationItem.hidesBackButton = true
 
         // Layout wallet card cell
-        let walletCardCell = UIView()
-        walletCardCell.backgroundColor = .systemPurple
-        walletCardCell.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(walletCardCell)
+        walletCardTableViewCell.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(walletCardTableViewCell)
         NSLayoutConstraint.activate([
-            walletCardCell.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 24),
-            walletCardCell.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            walletCardCell.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-            walletCardCell.heightAnchor.constraint(equalToConstant: 106)
+            walletCardTableViewCell.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 24),
+            walletCardTableViewCell.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            walletCardTableViewCell.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
-        walletCardCell.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        // walletCardCell.setContentHuggingPriority(.defaultHigh, for: .vertical)
 
         // Layout mnemonic collection view
         mnemonicCollectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(mnemonicCollectionView)
         NSLayoutConstraint.activate([
-            mnemonicCollectionView.topAnchor.constraint(equalTo: walletCardCell.bottomAnchor, constant: 24),
+            mnemonicCollectionView.topAnchor.constraint(equalTo: walletCardTableViewCell.bottomAnchor, constant: 24),
             mnemonicCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             view.trailingAnchor.constraint(equalTo: mnemonicCollectionView.trailingAnchor, constant: 16),
             mnemonicCollectionView.heightAnchor.constraint(equalToConstant: MnemonicCollectionView.height)
