@@ -28,7 +28,8 @@ def common_pods
   pod 'DMSGoPGP', '~> 0.0.17'
 
   pod 'WordSuggestion', '~> 0.2.1'
-  pod 'web3swift.pod'
+  
+  pod 'Web3/ContractABI'
   pod 'DMS_HDWallet_Cocoa', '~> 0.1.9'
 end
 
