@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DMS_HDWallet_Cocoa
 
 class CreateWalletViewController: TCBaseViewController {
 
@@ -15,21 +16,22 @@ class CreateWalletViewController: TCBaseViewController {
         case confirmPassphrase
     }
 
-    let tableView: UITableView = {
+    private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.keyboardDismissMode = .interactive
         tableView.register(PasswordTextFieldTableViewCell.self, forCellReuseIdentifier: String(describing: PasswordTextFieldTableViewCell.self))
         return tableView
     }()
 
-    let sections: [[TableViewCellType]] = [
+    private let sections: [[TableViewCellType]] = [
        [
            .passphrase,
            .confirmPassphrase,
         ],
     ]
 
-    var createWalletButtonBottomLayoutConstraint: NSLayoutConstraint!
-    let createWalletButton: TCActionButton = {
+    private var createWalletButtonBottomLayoutMarginLayoutConstraint: NSLayoutConstraint!
+    private let createWalletButton: TCActionButton = {
         let button = TCActionButton()
         button.color = .systemBlue
         button.setTitleColor(.white, for: .normal)
@@ -64,16 +66,18 @@ class CreateWalletViewController: TCBaseViewController {
         createWalletButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(createWalletButton)
 
-        let createWalletButtonBottomLowPriorityLayoutConstraint = view.bottomAnchor.constraint(greaterThanOrEqualTo: createWalletButton.bottomAnchor, constant: 16)
-        createWalletButtonBottomLowPriorityLayoutConstraint.priority = .defaultLow
-        createWalletButtonBottomLayoutConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: createWalletButton.bottomAnchor)
+        let createWalletButtonBottomLayoutConstraint = view.bottomAnchor.constraint(greaterThanOrEqualTo: createWalletButton.bottomAnchor, constant: 16)
+        createWalletButtonBottomLayoutMarginLayoutConstraint = view.layoutMarginsGuide.bottomAnchor.constraint(equalTo: createWalletButton.bottomAnchor)
+        createWalletButtonBottomLayoutMarginLayoutConstraint.priority = .defaultLow
         NSLayoutConstraint.activate([
             createWalletButton.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
             createWalletButton.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
-            createWalletButtonBottomLowPriorityLayoutConstraint,
+            createWalletButtonBottomLayoutMarginLayoutConstraint,
             createWalletButtonBottomLayoutConstraint,
         ])
 
+        // Bind button action
+        createWalletButton.addTarget(self, action: #selector(CreateWalletViewController.createWalletButtonPressed(_:)), for: .touchUpInside)
     }
 
 }
@@ -92,6 +96,14 @@ extension CreateWalletViewController {
 
     @objc private func closeBarButtonItemPressed(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
+    }
+
+    @objc private func createWalletButtonPressed(_ sender: UIButton) {
+        let mnemonic = Mnemonic.create()
+        // TODO: save to keychain
+
+        let viewModel = BackupMnemonicCollectionViewModel(mnemonic: mnemonic)
+        Coordinator.main.present(scene: .backupMnemonic(viewModel: viewModel), from: self, transition: .detail, completion: nil)
     }
 
 }
@@ -120,6 +132,19 @@ extension CreateWalletViewController: UITableViewDataSource {
 
             return cell
         }
+    }
+
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+extension CreateWalletViewController: UIAdaptivePresentationControllerDelegate {
+
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return traitCollection.horizontalSizeClass == .compact ? .fullScreen : .pageSheet
+    }
+
+    func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
+        return false
     }
 
 }

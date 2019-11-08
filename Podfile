@@ -1,3 +1,4 @@
+source 'https://github.com/SujiTech/Specs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 platform :ios, '11.0'
@@ -27,6 +28,7 @@ def common_pods
   pod 'DMSGoPGP', '~> 0.0.17'
 
   pod 'WordSuggestion', '~> 0.2.1'
+  pod 'DMS_HDWallet_Cocoa', '~> 0.1.9'
 end
 
 def common_ui_pods
@@ -44,7 +46,8 @@ target 'TesserCube' do
   pod 'SVProgressHUD', :git => 'https://github.com/getaaron/SVProgressHUD.git', :branch => 'dark-mode'
   pod 'IQKeyboardManagerSwift', '~> 6.5.0'
   pod 'Eureka', '~> 4.3.1'
-
+  pod "SearchTextField"
+  
   # DEBUG
   pod 'FLEX', '~> 2.4.0', :configurations => ['Debug']
 
