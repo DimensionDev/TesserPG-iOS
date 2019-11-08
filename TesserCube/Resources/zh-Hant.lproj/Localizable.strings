@@ -68,6 +68,7 @@
 
 "MainTabbarViewController.TabBarItem.Contacts.title" = "聯絡人";
 "MainTabbarViewController.TabBarItem.Messages.title" = "消息";
+"MainTabbarViewController.TabBarItem.Wallets.title" = "錢包";
 "MainTabbarViewController.TabBarItem.Me.title" = "我";
 
 "MessagesViewController.SegmentedControl.timeline" = "時間線";

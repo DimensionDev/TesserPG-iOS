@@ -68,6 +68,7 @@
 
 "MainTabbarViewController.TabBarItem.Contacts.title" = "Contacts";
 "MainTabbarViewController.TabBarItem.Messages.title" = "Messages";
+"MainTabbarViewController.TabBarItem.Wallets.title" = "Wallets";
 "MainTabbarViewController.TabBarItem.Me.title" = "Me";
 
 "MessagesViewController.SegmentedControl.timeline" = "Timeline";
