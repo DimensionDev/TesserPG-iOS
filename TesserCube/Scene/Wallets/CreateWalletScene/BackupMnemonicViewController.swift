@@ -54,7 +54,7 @@ class BackupMnemonicViewController: TCBaseViewController {
             walletCardTableView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 24),
             walletCardTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             walletCardTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            walletCardTableView.heightAnchor.constraint(equalToConstant: 106 + WalletCardTableViewCell.cardVerticalMargin * 2)
+            walletCardTableView.heightAnchor.constraint(equalToConstant: 120 + WalletCardTableViewCell.cardVerticalMargin * 2)
         ])
 
         // Layout mnemonic collection view
@@ -159,14 +159,25 @@ extension BackupMnemonicViewController: UITableViewDataSource {
 
 #if canImport(SwiftUI) && DEBUG
 import SwiftUI
+import DMS_HDWallet_Cocoa
 
 @available(iOS 13.0, *)
 struct MnemonicViewController_Previews: PreviewProvider {
 
     static var previews: some View {
-        NavigationControllerRepresenable(rootViewController: BackupMnemonicViewController())
+        let rootViewController = BackupMnemonicViewController()
+        let mnemonic = Mnemonic.create()
+        let wallet = Wallet(mnemonic: mnemonic, passphrase: "")
+        rootViewController.viewModel = BackupMnemonicCollectionViewModel(wallet: wallet)
+        return Group {
+            NavigationControllerRepresenable(rootViewController: rootViewController)
+                .environment(\.colorScheme, .light)
+            NavigationControllerRepresenable(rootViewController: rootViewController)
+                .environment(\.colorScheme, .dark)
+        }
     }
 
 }
 
 #endif
+   

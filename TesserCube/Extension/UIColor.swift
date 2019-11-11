@@ -135,6 +135,16 @@ extension UIColor {
         }
     }()
 
+    static let _tertiarySystemBackground: UIColor = {
+        let _tertiarySystemBackground = UIColor.white
+
+        if #available(iOS 13.0, *) {
+            return .tertiarySystemBackground
+        } else {
+            return _tertiarySystemBackground
+        }
+    }()
+
 }
 
 extension UIColor {
