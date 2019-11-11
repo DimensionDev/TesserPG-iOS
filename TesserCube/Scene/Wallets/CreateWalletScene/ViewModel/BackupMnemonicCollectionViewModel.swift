@@ -10,12 +10,10 @@ import UIKit
 
 final public class BackupMnemonicCollectionViewModel: MnemonicCollectionViewModel {
 
-    let mnemonic: [String]
+    let wallet: Wallet
 
-    public init(mnemonic: [String]) {
-        assert(mnemonic.count == 12)
-        self.mnemonic = mnemonic
-
+    public init(wallet: Wallet) {
+        self.wallet = wallet
         super.init()
     }
 
@@ -29,6 +27,7 @@ extension BackupMnemonicCollectionViewModel {
 
     public override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = super.collectionView(collectionView, cellForItemAt: indexPath) as! MnemonicCollectionViewCell
+        let mnemonic = wallet.mnemonic
         cell.wordTextField.text = mnemonic[indexPath.item]
         cell.wordTextField.isEnabled = false
         return cell
