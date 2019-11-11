@@ -12,7 +12,8 @@ import SwiftUI
 @available(iOS 13.0, *)
 struct WalletsViewController_Preview: PreviewProvider {
     static var previews: some View {
-        NavigationControllerRepresenable(rootViewController: WalletsViewController())
+        let rootViewController = WalletsViewController()
+        return NavigationControllerRepresenable(rootViewController: rootViewController)
     }
 }
 #endif
