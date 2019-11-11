@@ -38,7 +38,7 @@ public class MnemonicCollectionView: UICollectionView {
 
         allowsMultipleSelection = true
 
-        backgroundColor = UIColor.black.withAlphaComponent(0.02)    // magic number from sketch
+        backgroundColor = ._secondarySystemBackground
         layer.cornerRadius = 5
         layer.masksToBounds = true
 

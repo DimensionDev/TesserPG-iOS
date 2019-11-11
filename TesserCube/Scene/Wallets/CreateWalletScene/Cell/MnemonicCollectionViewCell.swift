@@ -18,8 +18,8 @@ final public class MnemonicCollectionViewCell: UICollectionViewCell {
 
     public override func prepareForReuse() {
         super.prepareForReuse()
-        wordTextField.textColor = .black
-        cardView.backgroundColor = .white
+        wordTextField.textColor = ._label
+        cardView.backgroundColor = ._systemBackground
     }
 
     public override init(frame: CGRect) {
@@ -34,7 +34,7 @@ final public class MnemonicCollectionViewCell: UICollectionViewCell {
             cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
         cardView.layer.masksToBounds = true
-        cardView.backgroundColor = .white
+        cardView.backgroundColor = ._systemBackground
 
         wordTextField.translatesAutoresizingMaskIntoConstraints = false
         cardView.addSubview(wordTextField)
