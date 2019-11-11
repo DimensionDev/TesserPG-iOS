@@ -7,9 +7,24 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 import DMS_HDWallet_Cocoa
 
+class CreateWalletViewModel {
+
+    public let passpharse = BehaviorRelay(value: "")
+    public let confirmPasspharse = BehaviorRelay(value: "")
+
+    init() {
+
+    }
+
+}
+
 class CreateWalletViewController: TCBaseViewController {
+
+    private let viewModel = CreateWalletViewModel()
 
     enum TableViewCellType {
         case passphrase
@@ -61,6 +76,7 @@ class CreateWalletViewController: TCBaseViewController {
 
         // Setup tableView
         tableView.dataSource = self
+        tableView.delegate = self
 
         // Layout Button
         createWalletButton.translatesAutoresizingMaskIntoConstraints = false
@@ -84,6 +100,16 @@ class CreateWalletViewController: TCBaseViewController {
 
 extension CreateWalletViewController {
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        guard let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? PasswordTextFieldTableViewCell else {
+            return
+        }
+
+        cell.passphraseTextField.becomeFirstResponder()
+    }
+
     override func viewSafeAreaInsetsDidChange() {
         super.viewSafeAreaInsetsDidChange()
 
@@ -99,10 +125,19 @@ extension CreateWalletViewController {
     }
 
     @objc private func createWalletButtonPressed(_ sender: UIButton) {
-        let mnemonic = Mnemonic.create()
-        // TODO: save to keychain
+        guard viewModel.passpharse.value == viewModel.confirmPasspharse.value else {
+            let alertController = UIAlertController(title: "Error", message: "Password didn't match.\nTry again.", preferredStyle: .alert)
+            let okAction = UIAlertAction(title: L10n.Common.Button.ok, style: .default, handler: nil)
+            alertController.addAction(okAction)
+            present(alertController, animated: true, completion: nil)
+            return
+        }
 
-        let viewModel = BackupMnemonicCollectionViewModel(mnemonic: mnemonic)
+        let mnemonic = Mnemonic.create()
+        let wallet = Wallet(mnemonic: mnemonic, passphrase: viewModel.passpharse.value)
+        WalletService.default.append(wallet: wallet)
+
+        let viewModel = BackupMnemonicCollectionViewModel(wallet: wallet)
         Coordinator.main.present(scene: .backupMnemonic(viewModel: viewModel), from: self, transition: .detail, completion: nil)
     }
 
@@ -131,6 +166,25 @@ extension CreateWalletViewController: UITableViewDataSource {
             cell.passphraseTextField.placeholder = "Confirm Password"
 
             return cell
+        }
+    }
+
+}
+
+// MARK: - UITableViewDelegate
+extension CreateWalletViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let cell = cell as? PasswordTextFieldTableViewCell else {
+            fatalError()
+        }
+
+        switch sections[indexPath.section][indexPath.row] {
+        case .passphrase:
+            cell.passphraseTextField.rx.text.orEmpty.bind(to: viewModel.passpharse).disposed(by: cell.disposeBag)
+
+        case .confirmPassphrase:
+            cell.passphraseTextField.rx.text.orEmpty.bind(to: viewModel.confirmPasspharse).disposed(by: cell.disposeBag)
         }
     }
 

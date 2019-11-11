@@ -1461,6 +1461,33 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		DB0ABA1F2379237000AD3B7F /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				DBEE89602372A3B90080C194 /* PasswordTextFieldTableViewCell.swift */,
+				DBEE89692372DC3F0080C194 /* MnemonicCollectionViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		DB0ABA202379238B00AD3B7F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DBC19D822375006900170151 /* BackupMnemonicCollectionViewModel.swift */,
+				DBC19D862375059500170151 /* ConfirmMnemonicCollectionViewModel.swift */,
+				DBEE896B2372DE8B0080C194 /* MnemonicCollectionViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		DB0ABA212379239D00AD3B7F /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				DB0ABA08237549E000AD3B7F /* WalletCardTableViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		DB1169D222E19A470099BA25 /* InterpretMessageScene */ = {
 			isa = PBXGroup;
 			children = (
@@ -1617,7 +1644,7 @@
 			children = (
 				DBEE8957237282350080C194 /* WalletsViewController.swift */,
 				DBEE895A237292B90080C194 /* WalletsViewController+Previews.swift */,
-				DB0ABA08237549E000AD3B7F /* WalletCardTableViewCell.swift */,
+				DB0ABA212379239D00AD3B7F /* Cell */,
 			);
 			path = WalletsScene;
 			sourceTree = "<group>";
@@ -1625,6 +1652,8 @@
 		DBEE89632372A5F50080C194 /* CreateWalletScene */ = {
 			isa = PBXGroup;
 			children = (
+				DB0ABA202379238B00AD3B7F /* ViewModel */,
+				DB0ABA1F2379237000AD3B7F /* Cell */,
 				DBEE89662372C4810080C194 /* View */,
 				DBEE895E237297FB0080C194 /* CreateWalletViewController.swift */,
 				DBEE89642372B87E0080C194 /* BackupMnemonicViewController.swift */,
@@ -1636,12 +1665,7 @@
 		DBEE89662372C4810080C194 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				DBEE89602372A3B90080C194 /* PasswordTextFieldTableViewCell.swift */,
 				DBEE89672372DC160080C194 /* MnemonicCollectionView.swift */,
-				DBEE89692372DC3F0080C194 /* MnemonicCollectionViewCell.swift */,
-				DBEE896B2372DE8B0080C194 /* MnemonicCollectionViewModel.swift */,
-				DBC19D822375006900170151 /* BackupMnemonicCollectionViewModel.swift */,
-				DBC19D862375059500170151 /* ConfirmMnemonicCollectionViewModel.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";

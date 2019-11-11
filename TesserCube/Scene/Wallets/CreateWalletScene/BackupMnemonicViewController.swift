@@ -10,6 +10,14 @@ import UIKit
 
 class BackupMnemonicViewController: TCBaseViewController {
 
+    private let walletCardTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.isScrollEnabled = false
+        tableView.separatorStyle = .none
+        tableView.register(WalletCardTableViewCell.self, forCellReuseIdentifier: String(describing: WalletCardTableViewCell.self))
+        tableView.tableFooterView = UIView()
+        return tableView
+    }()
     private let walletCardTableViewCell = WalletCardTableViewCell()
     private let nextButton: TCActionButton = {
         let button = TCActionButton()
@@ -39,21 +47,21 @@ class BackupMnemonicViewController: TCBaseViewController {
         title = "New Wallet Created"
         navigationItem.hidesBackButton = true
 
-        // Layout wallet card cell
-        walletCardTableViewCell.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(walletCardTableViewCell)
+        // Layout wallet card tableView
+        walletCardTableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(walletCardTableView)
         NSLayoutConstraint.activate([
-            walletCardTableViewCell.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 24),
-            walletCardTableViewCell.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            walletCardTableViewCell.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            walletCardTableView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 24),
+            walletCardTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            walletCardTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            walletCardTableView.heightAnchor.constraint(equalToConstant: 106 + WalletCardTableViewCell.cardVerticalMargin * 2)
         ])
-        // walletCardCell.setContentHuggingPriority(.defaultHigh, for: .vertical)
 
         // Layout mnemonic collection view
         mnemonicCollectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(mnemonicCollectionView)
         NSLayoutConstraint.activate([
-            mnemonicCollectionView.topAnchor.constraint(equalTo: walletCardTableViewCell.bottomAnchor, constant: 24),
+            mnemonicCollectionView.topAnchor.constraint(equalTo: walletCardTableView.bottomAnchor, constant: 24),
             mnemonicCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             view.trailingAnchor.constraint(equalTo: mnemonicCollectionView.trailingAnchor, constant: 16),
             mnemonicCollectionView.heightAnchor.constraint(equalToConstant: MnemonicCollectionView.height)
@@ -84,6 +92,10 @@ class BackupMnemonicViewController: TCBaseViewController {
             skipBackupButton.topAnchor.constraint(equalTo: nextButton.bottomAnchor, constant: 20),
         ])
 
+        // Setup wallet card tableView
+        walletCardTableView.dataSource = self
+        walletCardTableView.reloadData()
+        
         // Bind button action
         nextButton.addTarget(self, action: #selector(BackupMnemonicViewController.nextButtonPressed(_:)), for: .touchUpInside)
         skipBackupButton.addTarget(self, action: #selector(BackupMnemonicViewController.skipBackupButtonPressed(_:)), for: .touchUpInside)
@@ -94,7 +106,7 @@ class BackupMnemonicViewController: TCBaseViewController {
 extension BackupMnemonicViewController {
 
     @objc private func nextButtonPressed(_ sender: UIButton) {
-        let viewModel = ConfirmMnemonicCollectionViewModel(mnemonic: self.viewModel.mnemonic)
+        let viewModel = ConfirmMnemonicCollectionViewModel(mnemonic: self.viewModel.wallet.mnemonic)
         Coordinator.main.present(scene: .confirmMnemonic(viewModel: viewModel), from: self, transition: .detail, completion: nil)
     }
 
@@ -113,6 +125,34 @@ extension BackupMnemonicViewController: UIAdaptivePresentationControllerDelegate
 
     func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
         return false
+    }
+
+}
+
+// MARK: - UITableViewDataSource
+extension BackupMnemonicViewController: UITableViewDataSource {
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        guard tableView === walletCardTableView else {
+            return 0
+        }
+
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard tableView === walletCardTableView else {
+            return 0
+        }
+
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = walletCardTableViewCell
+        let model = WalletModel(wallet: viewModel.wallet)
+        WalletsViewModel.configure(cell: cell, with: model)
+        return cell
     }
 
 }

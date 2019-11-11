@@ -33,7 +33,7 @@ final class WalletCardTableViewCell: UITableViewCell {
 
     let cardView: TCCardView = {
         let cardView = TCCardView()
-        cardView.backgroundColor = .systemPurple
+        cardView.cardBackgroundColor = .systemPurple
         return cardView
     }()
     let headerLabel: UILabel = {
@@ -45,8 +45,9 @@ final class WalletCardTableViewCell: UITableViewCell {
     }()
     let captionLabel: UILabel = {
         let label = UILabel()
-        label.text = "****************"
+        label.text = "********************\n********************"
         label.font = FontFamily.SourceCodeProMedium.regular.font(size: 14)
+        label.numberOfLines = 2
         label.textColor = .white
         return label
     }()
@@ -64,6 +65,15 @@ final class WalletCardTableViewCell: UITableViewCell {
         label.textColor = .white
         return label
     }()
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        headerLabel.text = "****"
+        captionLabel.text = "********************\n********************"
+        balanceLabel.text = "Balance:"
+        balanceAmountLabel.text = "0 ETH"
+    }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -121,6 +131,9 @@ final class WalletCardTableViewCell: UITableViewCell {
             balanceAmountLabel.centerYAnchor.constraint(equalTo: balanceLabel.centerYAnchor),
             balanceAmountLabel.trailingAnchor.constraint(equalTo: cardView.layoutMarginsGuide.trailingAnchor),
         ])
+
+        // Setup appearance
+        selectionStyle = .none
     }
 
 }
