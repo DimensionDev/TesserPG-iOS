@@ -1,0 +1,112 @@
+//
+//  WalletService.swift
+//  TesserCube
+//
+//  Created by Cirno MainasuK on 2019-11-8.
+//  Copyright © 2019 Sujitech. All rights reserved.
+//
+
+import RxSwift
+import RxCocoa
+import KeychainAccess
+import DMS_HDWallet_Cocoa
+
+final public class WalletService {
+
+    private let keychain: Keychain
+    private let disposeBag = DisposeBag()
+
+    private let wallets: BehaviorRelay<[Wallet]>       // persistence to keychain, walletViewModels drives
+    public let walletModels: BehaviorRelay<[WalletModel]>
+
+    // MARK: - Singleton
+    public static let `default` = WalletService(keychain: Keychain(service: "com.Sujitech.TesserCube", accessGroup: "7LFDZ96332.com.Sujitech.TesserCube"))
+
+    private init(keychain: Keychain) {
+        self.keychain = keychain
+
+        let decoder = JSONDecoder()
+        if let walletsData = keychain[data: "wallets"],
+        let  walletsDatas = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(walletsData) as? [Data] {
+            let wallets = (walletsDatas.compactMap { try? decoder.decode(Wallet.self, from: $0) })
+            self.wallets = BehaviorRelay(value: wallets)
+            let models = wallets.map { WalletModel(wallet: $0) }
+            self.walletModels = BehaviorRelay(value: models)
+        } else {
+            self.wallets = BehaviorRelay(value: [])
+            self.walletModels = BehaviorRelay(value: [])
+        }
+
+        walletModels.asDriver()
+            .map { $0.map { $0.wallet} }
+            .drive(wallets)
+            .disposed(by: disposeBag)
+
+        wallets.asDriver()
+            .drive(onNext: { [weak self] wallets in
+                guard let `self` = self else { return }
+                self.save()
+            })
+        .disposed(by: disposeBag)
+    }
+
+}
+
+extension WalletService {
+
+    private func save() {
+        let encoder = JSONEncoder()
+        let walletDatas = wallets.value.compactMap { try! encoder.encode($0) }
+
+        do {
+            let walletsData = try NSKeyedArchiver.archivedData(withRootObject: walletDatas, requiringSecureCoding: true)
+            keychain[data: "wallets"] = walletsData
+        } catch {
+            assertionFailure(error.localizedDescription)
+        }
+    }
+
+}
+
+extension WalletService {
+
+    func append(wallets: [Wallet]) {
+        var models = walletModels.value
+        let old = models.map { $0.wallet }
+        let new = wallets.filter { !old.contains($0) }
+        models.append(contentsOf: new.map { WalletModel(wallet: $0) })
+        walletModels.accept(models)
+    }
+
+    func append(wallet: Wallet) {
+        append(wallets: [wallet])
+    }
+
+    func remove(wallet: Wallet) {
+        let vms = walletModels.value.filter { $0.wallet != wallet }
+        walletModels.accept(vms)
+    }
+
+}
+
+public struct Wallet: Codable {
+    public let mnemonic: [String]
+    public let passphrase: String
+}
+
+extension Wallet: Equatable {
+    public static func == (lhs: Wallet, rhs: Wallet) -> Bool {
+        return lhs.mnemonic == rhs.mnemonic && lhs.passphrase == rhs.passphrase
+    }
+}
+
+public class WalletModel {
+    let wallet: Wallet
+    let hdWallet: HDWallet?
+    // let balance = BehaviorRelay<BigUInt>(value: BigUInt(0))
+
+    public init(wallet: Wallet) {
+        self.wallet = wallet
+        self.hdWallet = try? HDWallet(mnemonic: wallet.mnemonic, passphrase: wallet.passphrase, network: .mainnet(.ether))
+    }
+}
