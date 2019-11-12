@@ -84,6 +84,15 @@ class WalletsViewController: TCBaseViewController {
         return tableView
     }()
 
+    private lazy var bottomActionsView: UIStackView = {
+        let stackView = UIStackView(frame: .zero)
+        stackView.spacing = 12
+        stackView.axis = .vertical
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .fill
+        return stackView
+    }()
+
     override func configUI() {
         super.configUI()
 
@@ -100,6 +109,15 @@ class WalletsViewController: TCBaseViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
 
+        // Layout bottom actions view
+        bottomActionsView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bottomActionsView)
+        NSLayoutConstraint.activate([
+            bottomActionsView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor),
+            bottomActionsView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor),
+            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: bottomActionsView.bottomAnchor, constant: 15),
+        ])
+
         // Setup tableView
         WalletService.default.walletModels.asDriver()
             .drive(viewModel.walletModels)
@@ -107,10 +125,69 @@ class WalletsViewController: TCBaseViewController {
         tableView.dataSource = viewModel
         viewModel.walletModels.asDriver()
             .drive(onNext: { [weak self] _ in
+                self?.reloadActionsView()
                 self?.tableView.reloadData()
             })
             .disposed(by: disposeBag)
         tableView.delegate = self
+    }
+
+}
+
+extension WalletsViewController {
+
+    private func reloadActionsView() {
+        bottomActionsView.arrangedSubviews.forEach {
+            bottomActionsView.removeArrangedSubview($0)
+            $0.removeFromSuperview()
+        }
+
+        // Not layout button when have data
+        guard viewModel.walletModels.value.isEmpty else {
+            return
+        }
+
+        var actionViews = [UIView]()
+
+        let actionPromptLabel: UILabel = {
+            let label = UILabel(frame: .zero)
+            label.font = FontFamily.SFProDisplay.regular.font(size: 17)
+            label.textAlignment = .center
+            label.textColor = ._label
+            label.text = "Create or import wallet to start using."
+            return label
+        }()
+
+        let createWalletButton: TCActionButton = {
+            let button = TCActionButton(frame: .zero)
+            button.color = .systemBlue
+            button.setTitleColor(.white, for: .normal)
+            button.setTitle("Create Wallet", for: .normal)
+            button.rx.tap.bind {
+                Coordinator.main.present(scene: .createWallet, from: self, transition: .modal, completion: nil)
+            }
+            .disposed(by: disposeBag)
+            return button
+        }()
+
+        let importKeyButton: TCActionButton = {
+            let button = TCActionButton(frame: .zero)
+            button.color = ._secondarySystemBackground
+            button.setTitleColor(._label, for: .normal)
+            button.setTitle("Import Wallet", for: .normal)
+            button.rx.tap.bind {
+                Coordinator.main.present(scene: .importWallet, from: self, transition: .modal, completion: nil)
+            }
+            .disposed(by: disposeBag)
+            return button
+        }()
+
+        actionViews.append(actionPromptLabel)
+        actionViews.append(createWalletButton)
+        actionViews.append(importKeyButton)
+
+        bottomActionsView.addArrangedSubviews(actionViews)
+        bottomActionsView.setNeedsLayout()
     }
 
 }
@@ -139,6 +216,22 @@ extension WalletsViewController {
 
 // MARK: - UITableViewDelegate
 extension WalletsViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return UIView()
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 20 - WalletCardTableViewCell.cardVerticalMargin
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 20 - WalletCardTableViewCell.cardVerticalMargin
+    }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // guard cell for walletModels data

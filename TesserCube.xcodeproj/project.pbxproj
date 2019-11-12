@@ -1642,9 +1642,9 @@
 		DBEE89622372A5E90080C194 /* WalletsScene */ = {
 			isa = PBXGroup;
 			children = (
+				DB0ABA212379239D00AD3B7F /* Cell */,
 				DBEE8957237282350080C194 /* WalletsViewController.swift */,
 				DBEE895A237292B90080C194 /* WalletsViewController+Previews.swift */,
-				DB0ABA212379239D00AD3B7F /* Cell */,
 			);
 			path = WalletsScene;
 			sourceTree = "<group>";
