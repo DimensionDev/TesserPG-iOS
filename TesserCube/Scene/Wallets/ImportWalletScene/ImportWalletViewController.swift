@@ -8,16 +8,33 @@
 
 import UIKit
 import RxSwift
+import DMS_HDWallet_Cocoa
 
 class ImportWalletViewController: TCBaseViewController {
 
     private let disposeBag = DisposeBag()
 
-    private let scrollView = UIScrollView()
+    // Fix iPhone SE keyboard overlap issue
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.alwaysBounceVertical = false
+        scrollView.keyboardDismissMode = .interactive
+        scrollView.preservesSuperviewLayoutMargins = true
+        scrollView.showsVerticalScrollIndicator = false
+        return scrollView
+    }()
     private var scrollViewContentLayoutGuideHeight: NSLayoutConstraint!
     private var scrollViewContentLayoutGuideBottomToDoneButtonBottom: NSLayoutConstraint!
 
-    let passphraseTextField = PassphraseTextField()
+    let passwordTableViewCell = PasswordTextFieldTableViewCell()
+    let passwordTableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.isScrollEnabled = false
+        tableView.register(PasswordTextFieldTableViewCell.self, forCellReuseIdentifier: String(describing: PasswordTextFieldTableViewCell.self))
+        return tableView
+    }()
+
+    // let passphraseTextField = PassphraseTextField()
     let importButton: TCActionButton = {
         let button = TCActionButton()
         button.color = .systemBlue
@@ -43,6 +60,7 @@ class ImportWalletViewController: TCBaseViewController {
         } else {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(ImportWalletViewController.closeBarButtonItemPressed(_:)))
         }
+        view.backgroundColor = ._systemGroupedBackground
 
         // Layout content scroll view
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -54,11 +72,6 @@ class ImportWalletViewController: TCBaseViewController {
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             scrollView.contentLayoutGuide.widthAnchor.constraint(equalTo: view.widthAnchor),
         ])
-
-        scrollView.alwaysBounceVertical = true
-        scrollView.keyboardDismissMode = .interactive
-        // scrollView.backgroundColor = .viewBackgroundGray
-        scrollView.preservesSuperviewLayoutMargins = true
         scrollViewContentLayoutGuideHeight = scrollView.contentLayoutGuide.heightAnchor.constraint(greaterThanOrEqualToConstant: 0)
 
         // Layout input mnemonic collection view
@@ -73,13 +86,14 @@ class ImportWalletViewController: TCBaseViewController {
         mnemonicCollectionView.setContentHuggingPriority(.defaultLow, for: .vertical)
         mnemonicCollectionView.setContentCompressionResistancePriority(.required, for: .vertical)
 
-        passphraseTextField.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.addSubview(passphraseTextField)
+        // Layout password tableView
+        passwordTableView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(passwordTableView)
         NSLayoutConstraint.activate([
-            passphraseTextField.topAnchor.constraint(equalTo: mnemonicCollectionView.bottomAnchor, constant: 20),
-            passphraseTextField.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
-            passphraseTextField.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
-            passphraseTextField.heightAnchor.constraint(equalToConstant: 44),
+            passwordTableView.topAnchor.constraint(equalTo: mnemonicCollectionView.bottomAnchor),
+            passwordTableView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            passwordTableView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            passwordTableView.heightAnchor.constraint(equalToConstant: 20 + 44 + 20),
         ])
 
         // Layout import button
@@ -87,13 +101,13 @@ class ImportWalletViewController: TCBaseViewController {
         scrollView.addSubview(importButton)
         scrollViewContentLayoutGuideBottomToDoneButtonBottom = scrollView.contentLayoutGuide.bottomAnchor.constraint(equalTo: importButton.bottomAnchor, constant: 0)
         NSLayoutConstraint.activate([
-            importButton.topAnchor.constraint(greaterThanOrEqualTo: passphraseTextField.bottomAnchor, constant: 20),
+            importButton.topAnchor.constraint(greaterThanOrEqualTo: passwordTableView.bottomAnchor, constant: 20),
             importButton.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
             importButton.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
             importButton.heightAnchor.constraint(equalToConstant: 50),
             scrollViewContentLayoutGuideBottomToDoneButtonBottom
         ])
-
+        // Layout activity idecator over imoprt button
         activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(activityIndicatorView)
         NSLayoutConstraint.activate([
@@ -104,14 +118,25 @@ class ImportWalletViewController: TCBaseViewController {
         //importButton.setTitle(L10n.ImportMemonicViewController.ImportButton.title, for: .normal)
         //importButton.addTarget(self, action: #selector(ImportMemonicViewController.importButtonPressed(_:)), for: .touchUpInside)
 
-        passphraseTextField.isSecureTextEntry = true
-        passphraseTextField.keyboardType = .asciiCapable
-        passphraseTextField.autocorrectionType = .no
-        passphraseTextField.autocapitalizationType = .none
-        passphraseTextField.enablesReturnKeyAutomatically = true
-        passphraseTextField.returnKeyType = .done
-        passphraseTextField.delegate = self
+//        passphraseTextField.isSecureTextEntry = true
+//        passphraseTextField.keyboardType = .asciiCapable
+//        passphraseTextField.autocorrectionType = .no
+//        passphraseTextField.autocapitalizationType = .none
+//        passphraseTextField.enablesReturnKeyAutomatically = true
+//        passphraseTextField.returnKeyType = .done
+//        passphraseTextField.delegate = self
 
+        // Tweak mnemonic collection view appearance
+        mnemonicCollectionView.backgroundColor = ._systemGray5
+
+        // Setup password tableView
+        passwordTableView.dataSource = self
+        passwordTableViewCell.passphraseTextField.delegate = self
+
+        // Bind import button action target
+        importButton.addTarget(self, action: #selector(ImportWalletViewController.importButtonPressed(_:)), for: .touchUpInside)
+
+        // Setup activity indicator
         activityIndicatorView.hidesWhenStopped = true
         activityIndicatorView.stopAnimating()
 
@@ -127,20 +152,34 @@ class ImportWalletViewController: TCBaseViewController {
         scrollViewContentLayoutGuideBottomToDoneButtonBottom.constant = view.safeAreaInsets.bottom > 0 ? 0 : 26
     }
 
-    public override func viewLayoutMarginsDidChange() {
-        super.viewLayoutMarginsDidChange()
-
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: view.layoutMargins.left, height: 1))
-        passphraseTextField.leftViewMode = .always
-        passphraseTextField.leftView = paddingView
-    }
-
 }
 
 extension ImportWalletViewController {
 
     @objc private func closeBarButtonItemPressed(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
+    }
+
+    @objc private func importButtonPressed(_ sender: UIButton) {
+        let alertController = UIAlertController(title: "Error", message: "", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: L10n.Common.Button.ok, style: .default, handler: nil)
+        alertController.addAction(okAction)
+
+        do {
+            let mnemonic = viewModel.mnemonic
+            let passphrase = passwordTableViewCell.passphraseTextField.text ?? ""
+            let wallet = Wallet(mnemonic: mnemonic, passphrase: passphrase)
+            _ = try HDWallet(mnemonic: mnemonic, passphrase: passphrase, network: .mainnet(.ether))
+            WalletService.default.append(wallet: wallet)
+            dismiss(animated: true, completion: nil)
+        } catch HDWalletError.invalidMnemonic {
+            alertController.message = "Inavlid Mnemonic.\n Please try again"
+            present(alertController, animated: true, completion: nil)
+        } catch {
+            alertController.message = "Import failed due to \(error.localizedDescription)"
+            present(alertController, animated: true, completion: nil)
+        }
+
     }
 
 }
@@ -162,7 +201,9 @@ extension ImportWalletViewController: UIAdaptivePresentationControllerDelegate {
 extension ImportWalletViewController: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+        if textField === passwordTableViewCell.passphraseTextField {
+            textField.resignFirstResponder()
+        }
         return false
     }
 }
@@ -170,8 +211,45 @@ extension ImportWalletViewController: UITextFieldDelegate {
 // MARK: - ImportMnemonicCollectionViewModelDelegate
 extension ImportWalletViewController: ImportMnemonicCollectionViewModelDelegate {
 
+    // Move focus from mnemonic last cell to password textField
     func importMnemonicCollectionViewModel(_ viewModel: ImportMnemonicCollectionViewModel, lastTextFieldReturn textField: UITextField) {
-        passphraseTextField.becomeFirstResponder()
+        passwordTableViewCell.passphraseTextField.becomeFirstResponder()
     }
 
 }
+
+// MARK: - UITableViewDataSource
+extension ImportWalletViewController: UITableViewDataSource {
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = passwordTableViewCell
+        cell.passphraseTextField.placeholder = "Password"
+        return cell
+    }
+
+}
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+
+@available(iOS 13.0, *)
+struct ImportWalletViewController_Preview: PreviewProvider {
+
+    static var previews: some View {
+        let rootViewController = ImportWalletViewController()
+
+        return Group {
+            NavigationControllerRepresenable(rootViewController: rootViewController)
+        }
+    }
+
+}
+#endif

@@ -47,6 +47,11 @@ final public class MnemonicCollectionViewCell: UICollectionViewCell {
 
         wordTextField.textAlignment = .center
         wordTextField.font = FontFamily.SFProDisplay.regular.font(size: 15.0)
+
+        //wordTextField.theme.fontColor = ._label
+        //wordTextField.theme.bgColor = ._secondarySystemBackground
+        //wordTextField.theme.borderColor = ._tertiarySystemBackground
+        //wordTextField.theme.separatorColor = ._separator
     }
 
     required init?(coder aDecoder: NSCoder) {
