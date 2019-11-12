@@ -67,18 +67,16 @@ extension MnemonicCollectionViewCell {
 
     public override var isSelected: Bool {
         didSet {
-            wordTextField.textColor = isSelected ? UIColor.black.withAlphaComponent(0.1) : .black
-            cardView.backgroundColor = isSelected ? UIColor.white.withAlphaComponent(0.6) : .white
+            wordTextField.textColor = isSelected ? ._tertiaryLabel : ._label
+            cardView.backgroundColor = isSelected ? ._tertiarySystemBackground : ._systemBackground
         }
     }
 
     public override var isHighlighted: Bool {
         didSet {
-            wordTextField.textColor = isHighlighted ? UIColor.black.withAlphaComponent(0.1) : .black
-            cardView.backgroundColor = isHighlighted ? UIColor.white.withAlphaComponent(0.6) : .white
+            wordTextField.textColor = isHighlighted ? ._tertiaryLabel : ._label
+            cardView.backgroundColor = isHighlighted ? ._tertiarySystemBackground : ._systemBackground
         }
     }
 
 }
-
-
