@@ -40,6 +40,9 @@ final public class PasswordTextFieldTableViewCell: UITableViewCell {
         passphraseTextField.font = .systemFont(ofSize: 17.0)
         passphraseTextField.isSecureTextEntry = true
         passphraseTextField.keyboardType = .asciiCapable
+        passphraseTextField.returnKeyType = .done
+        passphraseTextField.autocorrectionType = .no
+        passphraseTextField.autocapitalizationType = .none
     }
 
     required init?(coder aDecoder: NSCoder) {

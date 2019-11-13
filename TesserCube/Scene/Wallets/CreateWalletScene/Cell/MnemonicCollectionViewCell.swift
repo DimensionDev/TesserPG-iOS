@@ -18,8 +18,8 @@ final public class MnemonicCollectionViewCell: UICollectionViewCell {
 
     public override func prepareForReuse() {
         super.prepareForReuse()
-        wordTextField.textColor = .black
-        cardView.backgroundColor = .white
+        wordTextField.textColor = ._label
+        cardView.backgroundColor = ._systemBackground
     }
 
     public override init(frame: CGRect) {
@@ -34,7 +34,7 @@ final public class MnemonicCollectionViewCell: UICollectionViewCell {
             cardView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
         cardView.layer.masksToBounds = true
-        cardView.backgroundColor = .white
+        cardView.backgroundColor = ._systemBackground
 
         wordTextField.translatesAutoresizingMaskIntoConstraints = false
         cardView.addSubview(wordTextField)
@@ -47,6 +47,11 @@ final public class MnemonicCollectionViewCell: UICollectionViewCell {
 
         wordTextField.textAlignment = .center
         wordTextField.font = FontFamily.SFProDisplay.regular.font(size: 15.0)
+
+        //wordTextField.theme.fontColor = ._label
+        //wordTextField.theme.bgColor = ._secondarySystemBackground
+        //wordTextField.theme.borderColor = ._tertiarySystemBackground
+        //wordTextField.theme.separatorColor = ._separator
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -67,18 +72,16 @@ extension MnemonicCollectionViewCell {
 
     public override var isSelected: Bool {
         didSet {
-            wordTextField.textColor = isSelected ? UIColor.black.withAlphaComponent(0.1) : .black
-            cardView.backgroundColor = isSelected ? UIColor.white.withAlphaComponent(0.6) : .white
+            wordTextField.textColor = isSelected ? ._tertiaryLabel : ._label
+            cardView.backgroundColor = isSelected ? ._tertiarySystemBackground : ._systemBackground
         }
     }
 
     public override var isHighlighted: Bool {
         didSet {
-            wordTextField.textColor = isHighlighted ? UIColor.black.withAlphaComponent(0.1) : .black
-            cardView.backgroundColor = isHighlighted ? UIColor.white.withAlphaComponent(0.6) : .white
+            wordTextField.textColor = isHighlighted ? ._tertiaryLabel : ._label
+            cardView.backgroundColor = isHighlighted ? ._tertiarySystemBackground : ._systemBackground
         }
     }
 
 }
-
-

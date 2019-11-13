@@ -419,7 +419,7 @@ extension MessagesViewController: UITableViewDelegate {
         }
 
         if !tableView.isEditing {
-            let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath)
+            let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath, isContextMenu: false)
             let alertController: UIAlertController = {
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                 let alertActions = actions.map { $0.alertAction }
@@ -468,7 +468,7 @@ extension MessagesViewController: UITableViewDelegate {
             self.messageCardCell(cell, expandButtonPressed: cell.expandButton)
         }
 
-        let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath)
+        let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath, isContextMenu: true)
         let children = actions.compactMap { $0.menuElement }
 
         return UIContextMenuConfiguration(

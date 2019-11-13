@@ -391,6 +391,8 @@
 		DBC7DEC12248D49E00DA4C3E /* ComposeMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC7DEC02248D49E00DA4C3E /* ComposeMessageViewModel.swift */; };
 		DBD63FDD229682E400E46FDC /* KeyFactory+TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */; };
 		DBD63FE02296864200E46FDC /* KeyFactory+TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */; };
+		DBD6887B237AB13A00B5B663 /* WalletsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD6887A237AB13A00B5B663 /* WalletsViewModel.swift */; };
+		DBD6887E237AB25600B5B663 /* WalletsViewModel+ContextMenuActionTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD6887D237AB25600B5B663 /* WalletsViewModel+ContextMenuActionTableViewDelegate.swift */; };
 		DBD98FDB2334B7B7003A952B /* CryptoPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD98FDA2334B7B7003A952B /* CryptoPublicKey.swift */; };
 		DBD98FDC2334B7B7003A952B /* CryptoPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD98FDA2334B7B7003A952B /* CryptoPublicKey.swift */; };
 		DBD98FDD2334B7B7003A952B /* CryptoPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD98FDA2334B7B7003A952B /* CryptoPublicKey.swift */; };
@@ -732,6 +734,8 @@
 		DBCE91DF23320EF30000A9F3 /* UITests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UITests.xctestplan; sourceTree = "<group>"; };
 		DBD638E5227EDC6B00E10BF2 /* JRE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JRE.framework; path = "../../../Java/j2objc-2.4/frameworks/JRE.framework"; sourceTree = "<group>"; };
 		DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyFactory+TCKey.swift"; sourceTree = "<group>"; };
+		DBD6887A237AB13A00B5B663 /* WalletsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletsViewModel.swift; sourceTree = "<group>"; };
+		DBD6887D237AB25600B5B663 /* WalletsViewModel+ContextMenuActionTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WalletsViewModel+ContextMenuActionTableViewDelegate.swift"; sourceTree = "<group>"; };
 		DBD98FDA2334B7B7003A952B /* CryptoPublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoPublicKey.swift; sourceTree = "<group>"; };
 		DBE13D78224CCC0B004850A6 /* TCDBManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCDBManagerTests.swift; sourceTree = "<group>"; };
 		DBEE8957237282350080C194 /* WalletsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletsViewController.swift; sourceTree = "<group>"; };
@@ -1621,6 +1625,15 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		DBD6887C237AB13D00B5B663 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DBD6887A237AB13A00B5B663 /* WalletsViewModel.swift */,
+				DBD6887D237AB25600B5B663 /* WalletsViewModel+ContextMenuActionTableViewDelegate.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		DBD98FDF2334B7BB003A952B /* DMSGoPGP */ = {
 			isa = PBXGroup;
 			children = (
@@ -1642,9 +1655,10 @@
 		DBEE89622372A5E90080C194 /* WalletsScene */ = {
 			isa = PBXGroup;
 			children = (
+				DBD6887C237AB13D00B5B663 /* ViewModel */,
+				DB0ABA212379239D00AD3B7F /* Cell */,
 				DBEE8957237282350080C194 /* WalletsViewController.swift */,
 				DBEE895A237292B90080C194 /* WalletsViewController+Previews.swift */,
-				DB0ABA212379239D00AD3B7F /* Cell */,
 			);
 			path = WalletsScene;
 			sourceTree = "<group>";
@@ -2288,6 +2302,7 @@
 				DB0ABA09237549E000AD3B7F /* WalletCardTableViewCell.swift in Sources */,
 				DB44999A228C244F000B7E8A /* MessageDigitalSignatureSettingsViewController.swift in Sources */,
 				DB616C0922A4CBB4002768B4 /* UILabel.swift in Sources */,
+				DBD6887B237AB13A00B5B663 /* WalletsViewModel.swift in Sources */,
 				832146CB2240AEC0008ECC22 /* ImageUtil.swift in Sources */,
 				83783387224CC23400F2C0BF /* ContactEditTextCell.swift in Sources */,
 				DB8D7315231E3920005D15DD /* Email.swift in Sources */,
@@ -2313,6 +2328,7 @@
 				83214695223F4CA0008ECC22 /* Assets.swift in Sources */,
 				83B93D22221CEB9800F556C0 /* UserDefaults+AppGroup.swift in Sources */,
 				832146B6223F89A8008ECC22 /* CALayer+Shadow.swift in Sources */,
+				DBD6887E237AB25600B5B663 /* WalletsViewModel+ContextMenuActionTableViewDelegate.swift in Sources */,
 				8313F69B22476F5500C09C2D /* SharePosterViewController.swift in Sources */,
 				837833632249C33B00F2C0BF /* TCDBManager.swift in Sources */,
 				833FF38D224F97BD00EFE0A9 /* ProfileService+Message.swift in Sources */,
