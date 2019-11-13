@@ -204,7 +204,7 @@ extension MessagesViewModel {
 // MARK: - ContextMenuActionTableViewDelegate
 extension MessagesViewModel: ContextMenuActionTableViewDelegate {
 
-    func tableView(_ tableView: UITableView, presentingViewController: UIViewController, actionsforRowAt indexPath: IndexPath) -> [ContextMenuAction] {
+    func tableView(_ tableView: UITableView, presentingViewController: UIViewController, actionsforRowAt indexPath: IndexPath, isContextMenu: Bool) -> [ContextMenuAction] {
         guard let cell = tableView.cellForRow(at: indexPath) as? MessageCardCell else {
             return []
         }

@@ -130,7 +130,7 @@ extension MeViewModel {
 // MARK: - ContextMenuActionTableViewDelegate
 extension MeViewModel: ContextMenuActionTableViewDelegate {
 
-    func tableView(_ tableView: UITableView, presentingViewController: UIViewController, actionsforRowAt indexPath: IndexPath) -> [ContextMenuAction] {
+    func tableView(_ tableView: UITableView, presentingViewController: UIViewController, actionsforRowAt indexPath: IndexPath, isContextMenu: Bool) -> [ContextMenuAction] {
         guard let cell = tableView.cellForRow(at: indexPath) as? KeyCardCell,
         case let .TCKey(key) = cell.keyValue else {
             return []
