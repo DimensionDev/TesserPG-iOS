@@ -27,6 +27,15 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "8304E990221BF10000122637"
+            BuildableName = "TesserCube.app"
+            BlueprintName = "TesserCube"
+            ReferencedContainer = "container:TesserCube.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <Testables>
          <TestableReference
             skipped = "NO">
@@ -48,18 +57,17 @@
                ReferencedContainer = "container:TesserCube.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "DB03DD4C237BF8DF00D96201"
+               BuildableName = "Web3Tests.xctest"
+               BlueprintName = "Web3Tests"
+               ReferencedContainer = "container:TesserCube.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8304E990221BF10000122637"
-            BuildableName = "TesserCube.app"
-            BlueprintName = "TesserCube"
-            ReferencedContainer = "container:TesserCube.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -83,8 +91,6 @@
             ReferencedContainer = "container:TesserCube.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

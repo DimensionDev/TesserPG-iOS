@@ -184,7 +184,22 @@
 		83FF06582250D9DA0003BC0D /* MessageDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF06572250D9DA0003BC0D /* MessageDBAction.swift */; };
 		83FF06592250D9DA0003BC0D /* MessageDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FF06572250D9DA0003BC0D /* MessageDBAction.swift */; };
 		A525A0BAED3E0A2C1C06591F /* Pods_TesserCubeComposeAction.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E0EAF428FF778E8B22035F9 /* Pods_TesserCubeComposeAction.framework */; };
+		B90DD1347A4D697EB35F0125 /* Pods_Web3Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C845B363E47F3F7DBFE61CBE /* Pods_Web3Tests.framework */; };
 		C5D98E8849B78D615F101C81 /* Pods_TesserCubeKeyboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 54E62BCA2B022300EA53474B /* Pods_TesserCubeKeyboard.framework */; };
+		DB03DD50237BF8DF00D96201 /* Web3Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB03DD4F237BF8DF00D96201 /* Web3Tests.swift */; };
+		DB03DD5B237BF9A900D96201 /* Web3Tests.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = DB03DD5A237BF9A800D96201 /* Web3Tests.xctestplan */; };
+		DB03DD5D237BFD4F00D96201 /* WalletService+Web3.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB03DD5C237BFD4F00D96201 /* WalletService+Web3.swift */; };
+		DB03DD5E237BFD4F00D96201 /* WalletService+Web3.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB03DD5C237BFD4F00D96201 /* WalletService+Web3.swift */; };
+		DB03DD5F237BFD4F00D96201 /* WalletService+Web3.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB03DD5C237BFD4F00D96201 /* WalletService+Web3.swift */; };
+		DB03DD60237BFD4F00D96201 /* WalletService+Web3.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB03DD5C237BFD4F00D96201 /* WalletService+Web3.swift */; };
+		DB03DD63237C104F00D96201 /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB03DD62237C104F00D96201 /* Wallet.swift */; };
+		DB03DD64237C104F00D96201 /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB03DD62237C104F00D96201 /* Wallet.swift */; };
+		DB03DD65237C104F00D96201 /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB03DD62237C104F00D96201 /* Wallet.swift */; };
+		DB03DD66237C104F00D96201 /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB03DD62237C104F00D96201 /* Wallet.swift */; };
+		DB03DD68237C105B00D96201 /* WalletModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB03DD67237C105B00D96201 /* WalletModel.swift */; };
+		DB03DD69237C105B00D96201 /* WalletModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB03DD67237C105B00D96201 /* WalletModel.swift */; };
+		DB03DD6A237C105B00D96201 /* WalletModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB03DD67237C105B00D96201 /* WalletModel.swift */; };
+		DB03DD6B237C105B00D96201 /* WalletModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB03DD67237C105B00D96201 /* WalletModel.swift */; };
 		DB0758D0224895B40046FBFD /* MessageCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0758CF224895B40046FBFD /* MessageCardCell.swift */; };
 		DB0ABA09237549E000AD3B7F /* WalletCardTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0ABA08237549E000AD3B7F /* WalletCardTableViewCell.swift */; };
 		DB0ABA0B237553E500AD3B7F /* UIViewPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0ABA0A237553E500AD3B7F /* UIViewPreview.swift */; };
@@ -417,8 +432,8 @@
 		DBF6B2D6232F9113008F83AE /* SF-Pro-Text-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = DBF6B2D3232F9112008F83AE /* SF-Pro-Text-Light.otf */; };
 		DBF6B2D7232F9113008F83AE /* SF-Pro-Text-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = DBF6B2D3232F9112008F83AE /* SF-Pro-Text-Light.otf */; };
 		DBFC72A72272DEA300860C34 /* TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146E122422024008ECC22 /* TCKey.swift */; };
+		DDB2630BA9D2E34BB6E37203 /* Pods_TesserCubeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D98CDCA3DB4EED054F9EDFD /* Pods_TesserCubeTests.framework */; };
 		E1274EE8AEE0608EE39A1F31 /* Pods_TesserCube.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 829EC06ABC2887E5DB724F5B /* Pods_TesserCube.framework */; };
-		E605970E17096EDED17503F3 /* Pods_TesserCubeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F203D9B4CDFBB0FD0E45FB6D /* Pods_TesserCubeTests.framework */; };
 		EA3A30F1DEAE9F030E6346A2 /* Pods_TesserCubeInterpretAction.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F14CF0BD6C2C55A0BFF1B2B0 /* Pods_TesserCubeInterpretAction.framework */; };
 /* End PBXBuildFile section */
 
@@ -443,6 +458,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 83B93D29221D22FA00F556C0;
 			remoteInfo = TesserCubeKeyboard;
+		};
+		DB03DD52237BF8DF00D96201 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8304E989221BF10000122637 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8304E990221BF10000122637;
+			remoteInfo = TesserCube;
 		};
 		DB63A0D722DD82EE00C2DDA6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -479,11 +501,15 @@
 /* Begin PBXFileReference section */
 		03698CC6E2986F14532C6D66 /* Pods-TesserCubeInterpretAction.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeInterpretAction.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeInterpretAction/Pods-TesserCubeInterpretAction.debug.xcconfig"; sourceTree = "<group>"; };
 		086B4F13E3832DC05CEC251C /* Pods-TesserCubeInterpretAction.rp release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeInterpretAction.rp release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeInterpretAction/Pods-TesserCubeInterpretAction.rp release.xcconfig"; sourceTree = "<group>"; };
+		0D8B333C6DD7FA17A2F49439 /* Pods-Web3Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Web3Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Web3Tests/Pods-Web3Tests.release.xcconfig"; sourceTree = "<group>"; };
 		1D6C82C2A9C781F0F411CCEF /* Pods-TesserCubeInterpretAction.rp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeInterpretAction.rp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeInterpretAction/Pods-TesserCubeInterpretAction.rp.xcconfig"; sourceTree = "<group>"; };
+		1FA029F1074B312AC19C8C28 /* Pods-Web3Tests.rp release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Web3Tests.rp release.xcconfig"; path = "Pods/Target Support Files/Pods-Web3Tests/Pods-Web3Tests.rp release.xcconfig"; sourceTree = "<group>"; };
+		225311E337029D6ED6369C91 /* Pods-TesserCube-TesserCubeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube-TesserCubeTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube-TesserCubeTests/Pods-TesserCube-TesserCubeTests.release.xcconfig"; sourceTree = "<group>"; };
 		23A4444BC35B6DAB5A8039E3 /* Pods-TesserCubeKeyboard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeKeyboard.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeKeyboard/Pods-TesserCubeKeyboard.release.xcconfig"; sourceTree = "<group>"; };
 		34254D2B33B9D38AA6A8B02B /* Pods-TesserCubeKeyboard.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeKeyboard.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeKeyboard/Pods-TesserCubeKeyboard.debug stub.xcconfig"; sourceTree = "<group>"; };
 		3F48C327DBA5DF3CB907C24F /* Pods-TesserCubeKeyboard.rp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeKeyboard.rp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeKeyboard/Pods-TesserCubeKeyboard.rp.xcconfig"; sourceTree = "<group>"; };
 		433A84EFFA67237E885331BD /* Pods-TesserCubeTests.debug pgp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.debug pgp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.debug pgp.xcconfig"; sourceTree = "<group>"; };
+		45D232377A1031338C62A1D5 /* Pods-Web3Tests.rp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Web3Tests.rp.xcconfig"; path = "Pods/Target Support Files/Pods-Web3Tests/Pods-Web3Tests.rp.xcconfig"; sourceTree = "<group>"; };
 		47231CE0AB21C16DA6B3C73E /* Pods-TesserCubeInterpretAction.debug pgp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeInterpretAction.debug pgp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeInterpretAction/Pods-TesserCubeInterpretAction.debug pgp.xcconfig"; sourceTree = "<group>"; };
 		4E0EAF428FF778E8B22035F9 /* Pods_TesserCubeComposeAction.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesserCubeComposeAction.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		525C523BA501BF227682DAE3 /* Pods-TesserCubeKeyboard.rp release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeKeyboard.rp release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeKeyboard/Pods-TesserCubeKeyboard.rp release.xcconfig"; sourceTree = "<group>"; };
@@ -493,6 +519,7 @@
 		5836A11F534936E25D0543C8 /* Pods-TesserCubeKeyboard.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeKeyboard.xctest.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeKeyboard/Pods-TesserCubeKeyboard.xctest.xcconfig"; sourceTree = "<group>"; };
 		6AAD1C52FBF55BCAC977EEFC /* Pods-TesserCube.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.release.xcconfig"; sourceTree = "<group>"; };
 		6C37B876F4476EE0FA92731A /* Pods-TesserCubeInterpretAction.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeInterpretAction.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeInterpretAction/Pods-TesserCubeInterpretAction.release.xcconfig"; sourceTree = "<group>"; };
+		6D98CDCA3DB4EED054F9EDFD /* Pods_TesserCubeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesserCubeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7112DB4AE49E17D103598460 /* Pods-TesserCube.rp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.rp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.rp.xcconfig"; sourceTree = "<group>"; };
 		7EF90BCA089A470E45638176 /* Pods-TesserCubeTests.rp release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.rp release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.rp release.xcconfig"; sourceTree = "<group>"; };
 		829EC06ABC2887E5DB724F5B /* Pods_TesserCube.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesserCube.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -641,6 +668,7 @@
 		83DFC73622577B9800993160 /* WormHole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WormHole.swift; sourceTree = "<group>"; };
 		83DFC73A22578ED800993160 /* InterpretFailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretFailView.swift; sourceTree = "<group>"; };
 		83DFC73D2259BF6D00993160 /* InterpretResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretResultView.swift; sourceTree = "<group>"; };
+		83E20D4A79351A071AB66613 /* Pods-TesserCube-TesserCubeTests.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube-TesserCubeTests.xctest.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube-TesserCubeTests/Pods-TesserCube-TesserCubeTests.xctest.xcconfig"; sourceTree = "<group>"; };
 		83FE345B22B72DEC0077C1A5 /* IntroSpotlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroSpotlight.swift; sourceTree = "<group>"; };
 		83FE345D22B730CE0077C1A5 /* IntroArrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroArrow.swift; sourceTree = "<group>"; };
 		83FE345F22B73AD70077C1A5 /* IntroCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroCardView.swift; sourceTree = "<group>"; };
@@ -649,6 +677,7 @@
 		84957C7609515FCFA95F42A3 /* Pods-TesserCubeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.release.xcconfig"; sourceTree = "<group>"; };
 		9B17EDD1F3A38E5966DCBA34 /* Pods-TesserCubeTests.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.debug stub.xcconfig"; sourceTree = "<group>"; };
 		9C1A99D94821B29F622B677D /* Pods-TesserCube.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.debug stub.xcconfig"; sourceTree = "<group>"; };
+		A6FAC5E1C65A9E541B8D05F4 /* Pods-Web3Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Web3Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Web3Tests/Pods-Web3Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		AC77612245CA0D2E11ECCE70 /* Pods-TesserCube.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.xctest.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.xctest.xcconfig"; sourceTree = "<group>"; };
 		B639829F9F1E75874A6F4CC4 /* Pods-TesserCubeComposeAction.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.xctest.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.xctest.xcconfig"; sourceTree = "<group>"; };
 		B9140FA57B00A5B2BD89FABF /* Pods-TesserCube.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.debug.xcconfig"; sourceTree = "<group>"; };
@@ -658,7 +687,16 @@
 		C00CE558B320642C1C2EECE7 /* Pods-TesserCubeComposeAction.debug pgp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.debug pgp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.debug pgp.xcconfig"; sourceTree = "<group>"; };
 		C0A9D10AB1612B0483E24D78 /* Pods-TesserCube.debug pgp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.debug pgp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.debug pgp.xcconfig"; sourceTree = "<group>"; };
 		C4B47F3F675F18B88219CF0D /* Pods-TesserCubeComposeAction.rp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.rp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.rp.xcconfig"; sourceTree = "<group>"; };
+		C845B363E47F3F7DBFE61CBE /* Pods_Web3Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Web3Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD61A591DC1BC1878431DF4A /* Pods-TesserCubeComposeAction.rp release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.rp release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.rp release.xcconfig"; sourceTree = "<group>"; };
+		DA4BA9F77ED34C4461C413B7 /* Pods-TesserCube-TesserCubeTests.rp release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube-TesserCubeTests.rp release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube-TesserCubeTests/Pods-TesserCube-TesserCubeTests.rp release.xcconfig"; sourceTree = "<group>"; };
+		DB03DD4D237BF8DF00D96201 /* Web3Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Web3Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB03DD4F237BF8DF00D96201 /* Web3Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Web3Tests.swift; sourceTree = "<group>"; };
+		DB03DD51237BF8DF00D96201 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DB03DD5A237BF9A800D96201 /* Web3Tests.xctestplan */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Web3Tests.xctestplan; sourceTree = "<group>"; };
+		DB03DD5C237BFD4F00D96201 /* WalletService+Web3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WalletService+Web3.swift"; sourceTree = "<group>"; };
+		DB03DD62237C104F00D96201 /* Wallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wallet.swift; sourceTree = "<group>"; };
+		DB03DD67237C105B00D96201 /* WalletModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletModel.swift; sourceTree = "<group>"; };
 		DB0758CF224895B40046FBFD /* MessageCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCardCell.swift; sourceTree = "<group>"; };
 		DB0ABA08237549E000AD3B7F /* WalletCardTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCardTableViewCell.swift; sourceTree = "<group>"; };
 		DB0ABA0A237553E500AD3B7F /* UIViewPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewPreview.swift; sourceTree = "<group>"; };
@@ -752,13 +790,15 @@
 		DBF6B2A8232F43C7008F83AE /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		DBF6B2AD232F6950008F83AE /* UIColor+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Keyboard.swift"; sourceTree = "<group>"; };
 		DBF6B2D3232F9112008F83AE /* SF-Pro-Text-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Light.otf"; sourceTree = "<group>"; };
+		DC536FCBC846DFD11B1869DC /* Pods-TesserCube-TesserCubeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube-TesserCubeTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube-TesserCubeTests/Pods-TesserCube-TesserCubeTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DCB938676101FF1A21579C50 /* Pods-TesserCubeInterpretAction.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeInterpretAction.xctest.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeInterpretAction/Pods-TesserCubeInterpretAction.xctest.xcconfig"; sourceTree = "<group>"; };
 		DDADE9070E9C7B3A44C27B2D /* Pods-TesserCubeInterpretAction.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeInterpretAction.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeInterpretAction/Pods-TesserCubeInterpretAction.debug stub.xcconfig"; sourceTree = "<group>"; };
 		DEF9838D11942FF42767A6F7 /* Pods-TesserCubeTests.rp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.rp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.rp.xcconfig"; sourceTree = "<group>"; };
+		E0A0CACC76683F1CFD6F4CE9 /* Pods-TesserCube-TesserCubeTests.rp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube-TesserCubeTests.rp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube-TesserCubeTests/Pods-TesserCube-TesserCubeTests.rp.xcconfig"; sourceTree = "<group>"; };
+		E9C7E90B5832067373ED7B80 /* Pods-Web3Tests.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Web3Tests.xctest.xcconfig"; path = "Pods/Target Support Files/Pods-Web3Tests/Pods-Web3Tests.xctest.xcconfig"; sourceTree = "<group>"; };
 		ED5112F3F342C6B4F96019B9 /* Pods-TesserCubeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.debug.xcconfig"; sourceTree = "<group>"; };
 		F0EC992A1DF4CED75A30F54D /* Pods-TesserCubeComposeAction.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.debug stub.xcconfig"; sourceTree = "<group>"; };
 		F14CF0BD6C2C55A0BFF1B2B0 /* Pods_TesserCubeInterpretAction.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesserCubeInterpretAction.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F203D9B4CDFBB0FD0E45FB6D /* Pods_TesserCubeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesserCubeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F68C7284388FF0277EBF3184 /* Pods-TesserCubeTests.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.xctest.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.xctest.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -775,7 +815,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E605970E17096EDED17503F3 /* Pods_TesserCubeTests.framework in Frameworks */,
+				DDB2630BA9D2E34BB6E37203 /* Pods_TesserCubeTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -791,6 +831,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				C5D98E8849B78D615F101C81 /* Pods_TesserCubeKeyboard.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DB03DD4A237BF8DF00D96201 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B90DD1347A4D697EB35F0125 /* Pods_Web3Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -822,6 +870,7 @@
 				83B93D2B221D22FA00F556C0 /* TesserCubeKeyboard */,
 				DB63A0CE22DD82EE00C2DDA6 /* TesserCubeInterpretAction */,
 				DB63A13722E17D3300C2DDA6 /* TesserCubeComposeAction */,
+				DB03DD4E237BF8DF00D96201 /* Web3Tests */,
 				8304E992221BF10000122637 /* Products */,
 				8304E9C5221BF1DD00122637 /* Frameworks */,
 				D1FFF0FDB0B433C2937C6F21 /* Pods */,
@@ -837,6 +886,7 @@
 				83B93D2A221D22FA00F556C0 /* TesserCubeKeyboard.appex */,
 				DB63A0CD22DD82EE00C2DDA6 /* TesserCubeInterpretAction.appex */,
 				DB63A13622E17D3300C2DDA6 /* TesserCubeComposeAction.appex */,
+				DB03DD4D237BF8DF00D96201 /* Web3Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -860,6 +910,7 @@
 				8304E9C4221BF1CD00122637 /* TesserCube.entitlements */,
 				DBCE91DE23320EE30000A9F3 /* UnitTests.xctestplan */,
 				DBCE91DF23320EF30000A9F3 /* UITests.xctestplan */,
+				DB03DD5A237BF9A800D96201 /* Web3Tests.xctestplan */,
 				8304E9A0221BF10100122637 /* Info.plist */,
 			);
 			path = TesserCube;
@@ -893,9 +944,10 @@
 				8304E9C6221BF1DD00122637 /* AuthenticationServices.framework */,
 				829EC06ABC2887E5DB724F5B /* Pods_TesserCube.framework */,
 				54E62BCA2B022300EA53474B /* Pods_TesserCubeKeyboard.framework */,
-				F203D9B4CDFBB0FD0E45FB6D /* Pods_TesserCubeTests.framework */,
 				F14CF0BD6C2C55A0BFF1B2B0 /* Pods_TesserCubeInterpretAction.framework */,
 				4E0EAF428FF778E8B22035F9 /* Pods_TesserCubeComposeAction.framework */,
+				6D98CDCA3DB4EED054F9EDFD /* Pods_TesserCubeTests.framework */,
+				C845B363E47F3F7DBFE61CBE /* Pods_Web3Tests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1032,6 +1084,7 @@
 				DBC24B1323026BA800A4AE8D /* WordSuggestionService.swift */,
 				DB3B58E12282929700879834 /* WormholdService.swift */,
 				DB0ABA17237585B500AD3B7F /* WalletService.swift */,
+				DB03DD5C237BFD4F00D96201 /* WalletService+Web3.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -1108,6 +1161,8 @@
 				DBBBC194224E29D70080790F /* KeychainMappable.swift */,
 				DB1327142253651C00BD7B98 /* KeyBridge.swift */,
 				83C90B42231678B90048743A /* GenerateKeyData.swift */,
+				DB03DD62237C104F00D96201 /* Wallet.swift */,
+				DB03DD67237C105B00D96201 /* WalletModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1453,8 +1508,27 @@
 				525C523BA501BF227682DAE3 /* Pods-TesserCubeKeyboard.rp release.xcconfig */,
 				DEF9838D11942FF42767A6F7 /* Pods-TesserCubeTests.rp.xcconfig */,
 				7EF90BCA089A470E45638176 /* Pods-TesserCubeTests.rp release.xcconfig */,
+				DC536FCBC846DFD11B1869DC /* Pods-TesserCube-TesserCubeTests.debug.xcconfig */,
+				E0A0CACC76683F1CFD6F4CE9 /* Pods-TesserCube-TesserCubeTests.rp.xcconfig */,
+				DA4BA9F77ED34C4461C413B7 /* Pods-TesserCube-TesserCubeTests.rp release.xcconfig */,
+				83E20D4A79351A071AB66613 /* Pods-TesserCube-TesserCubeTests.xctest.xcconfig */,
+				225311E337029D6ED6369C91 /* Pods-TesserCube-TesserCubeTests.release.xcconfig */,
+				A6FAC5E1C65A9E541B8D05F4 /* Pods-Web3Tests.debug.xcconfig */,
+				45D232377A1031338C62A1D5 /* Pods-Web3Tests.rp.xcconfig */,
+				1FA029F1074B312AC19C8C28 /* Pods-Web3Tests.rp release.xcconfig */,
+				E9C7E90B5832067373ED7B80 /* Pods-Web3Tests.xctest.xcconfig */,
+				0D8B333C6DD7FA17A2F49439 /* Pods-Web3Tests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		DB03DD4E237BF8DF00D96201 /* Web3Tests */ = {
+			isa = PBXGroup;
+			children = (
+				DB03DD4F237BF8DF00D96201 /* Web3Tests.swift */,
+				DB03DD51237BF8DF00D96201 /* Info.plist */,
+			);
+			path = Web3Tests;
 			sourceTree = "<group>";
 		};
 		DB0758D1224895B90046FBFD /* Cell */ = {
@@ -1768,6 +1842,25 @@
 			productReference = 83B93D2A221D22FA00F556C0 /* TesserCubeKeyboard.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		DB03DD4C237BF8DF00D96201 /* Web3Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DB03DD59237BF8DF00D96201 /* Build configuration list for PBXNativeTarget "Web3Tests" */;
+			buildPhases = (
+				A94F8382CC0C6D5952D4058D /* [CP] Check Pods Manifest.lock */,
+				DB03DD49237BF8DF00D96201 /* Sources */,
+				DB03DD4A237BF8DF00D96201 /* Frameworks */,
+				DB03DD4B237BF8DF00D96201 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DB03DD53237BF8DF00D96201 /* PBXTargetDependency */,
+			);
+			name = Web3Tests;
+			productName = Web3Tests;
+			productReference = DB03DD4D237BF8DF00D96201 /* Web3Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		DB63A0CC22DD82EE00C2DDA6 /* TesserCubeInterpretAction */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = DB63A0DE22DD82EE00C2DDA6 /* Build configuration list for PBXNativeTarget "TesserCubeInterpretAction" */;
@@ -1810,7 +1903,7 @@
 		8304E989221BF10000122637 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1020;
+				LastSwiftUpdateCheck = 1120;
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = Sujitech;
 				TargetAttributes = {
@@ -1866,6 +1959,10 @@
 							};
 						};
 					};
+					DB03DD4C237BF8DF00D96201 = {
+						CreatedOnToolsVersion = 11.2.1;
+						TestTargetID = 8304E990221BF10000122637;
+					};
 					DB63A0CC22DD82EE00C2DDA6 = {
 						CreatedOnToolsVersion = 10.2.1;
 						SystemCapabilities = {
@@ -1917,6 +2014,7 @@
 				DB63A13522E17D3300C2DDA6 /* TesserCubeComposeAction */,
 				8304E9A4221BF10200122637 /* TesserCubeTests */,
 				8304E9AF221BF10200122637 /* TesserCubeUITests */,
+				DB03DD4C237BF8DF00D96201 /* Web3Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -1930,6 +2028,7 @@
 				DB63A11022DF2CBB00C2DDA6 /* Menlo.ttc in Resources */,
 				8325E495222F8FBD00EE9B83 /* SF-Pro-Text-Regular.otf in Resources */,
 				8378337C224C990100F2C0BF /* SourceCodePro-Regular.otf in Resources */,
+				DB03DD5B237BF9A900D96201 /* Web3Tests.xctestplan in Resources */,
 				8325E49D222F8FBD00EE9B83 /* SF-Pro-Text-Semibold.otf in Resources */,
 				DBF6B2D4232F9113008F83AE /* SF-Pro-Text-Light.otf in Resources */,
 				8316ADAC22CB4E1000246E5A /* ConfirmContactCell.xib in Resources */,
@@ -1982,6 +2081,13 @@
 				8325E49E222F8FBD00EE9B83 /* SF-Pro-Text-Semibold.otf in Resources */,
 				DBF6B2D5232F9113008F83AE /* SF-Pro-Text-Light.otf in Resources */,
 				83955B7B237271EF00161498 /* EditingRedPacketViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DB03DD4B237BF8DF00D96201 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2127,6 +2233,28 @@
 			shellPath = /bin/sh;
 			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
 		};
+		A94F8382CC0C6D5952D4058D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Web3Tests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		BA365843081ECDE68FC0F58E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2232,6 +2360,7 @@
 				8335283322C6FF1E006E19BC /* ImportPrivateKeyConfirmViewController.swift in Sources */,
 				DBC19D872375059500170151 /* ConfirmMnemonicCollectionViewModel.swift in Sources */,
 				83783379224BA43700F2C0BF /* ContactDBAction.swift in Sources */,
+				DB03DD63237C104F00D96201 /* Wallet.swift in Sources */,
 				832146FC2244CD43008ECC22 /* MessagesViewModel.swift in Sources */,
 				832146E7224339EB008ECC22 /* CreateNewKeyViewController.swift in Sources */,
 				DBC24B1423026BA800A4AE8D /* WordSuggestionService.swift in Sources */,
@@ -2282,6 +2411,7 @@
 				DBC19D89237509E300170151 /* ImportWalletViewController.swift in Sources */,
 				DBD63FDD229682E400E46FDC /* KeyFactory+TCKey.swift in Sources */,
 				DBEE896A2372DC3F0080C194 /* MnemonicCollectionViewCell.swift in Sources */,
+				DB03DD5D237BFD4F00D96201 /* WalletService+Web3.swift in Sources */,
 				832146B3223F8725008ECC22 /* TCCardView.swift in Sources */,
 				8320AF4A22B64D1C00843FE7 /* IntroWizardViewController.swift in Sources */,
 				8313F69622475AC600C09C2D /* SharePublicKeyActivity.swift in Sources */,
@@ -2293,6 +2423,7 @@
 				832146FA2244CCF4008ECC22 /* MessagesViewController.swift in Sources */,
 				DBEE895F237297FB0080C194 /* CreateWalletViewController.swift in Sources */,
 				DBC19D8E23750B0B00170151 /* ImportMnemonicCollectionViewModel.swift in Sources */,
+				DB03DD68237C105B00D96201 /* WalletModel.swift in Sources */,
 				DB449995228C1CEF000B7E8A /* SettingsTableViewCell.swift in Sources */,
 				DB1169D722E19B100099BA25 /* MessageCardViewController.swift in Sources */,
 				83C12EE02332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */,
@@ -2389,6 +2520,7 @@
 				DB8D7316231E393D005D15DD /* Email.swift in Sources */,
 				8325E47E222D254200EE9B83 /* UIImage+RoundCorners.swift in Sources */,
 				DBD63FE02296864200E46FDC /* KeyFactory+TCKey.swift in Sources */,
+				DB03DD64237C104F00D96201 /* Wallet.swift in Sources */,
 				837833582248897C00F2C0BF /* KeyFactory.swift in Sources */,
 				83DFC73B22578ED800993160 /* InterpretFailView.swift in Sources */,
 				833FF389224E3CBC00EFE0A9 /* ToastAlerter.swift in Sources */,
@@ -2408,6 +2540,7 @@
 				83B93D4F221D89FD00F556C0 /* KeyboardLayout.swift in Sources */,
 				8325E4AA22310B1900EE9B83 /* SuggestHelper.swift in Sources */,
 				83B93E882223CCF700F556C0 /* RecipientInputView.swift in Sources */,
+				DB03DD5E237BFD4F00D96201 /* WalletService+Web3.swift in Sources */,
 				DB449991228C1417000B7E8A /* MessageDigitalSignatureSettings.swift in Sources */,
 				83B93D3E221D4AED00F556C0 /* Direction.swift in Sources */,
 				8378337A224BA43700F2C0BF /* ContactDBAction.swift in Sources */,
@@ -2443,6 +2576,7 @@
 				8325E472222CCD4F00EE9B83 /* SuggestionStackView.swift in Sources */,
 				DBBBC196224E29D70080790F /* KeychainMappable.swift in Sources */,
 				DB3B58E52282930600879834 /* WormholdService.swift in Sources */,
+				DB03DD69237C105B00D96201 /* WalletModel.swift in Sources */,
 				DBF6B2AA232F5479008F83AE /* UIColor.swift in Sources */,
 				DB1327162253651C00BD7B98 /* KeyBridge.swift in Sources */,
 				DB15695F23278EA200220926 /* FetchableRecord+all.swift in Sources */,
@@ -2465,6 +2599,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DB03DD49237BF8DF00D96201 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DB03DD50237BF8DF00D96201 /* Web3Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		DB63A0C922DD82EE00C2DDA6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2473,6 +2615,7 @@
 				DB63A0FF22DDCBB600C2DDA6 /* String.swift in Sources */,
 				DB63A12622E06F0D00C2DDA6 /* UIViewController+EmptyView.swift in Sources */,
 				DB63A12122E068D700C2DDA6 /* ContactCell.swift in Sources */,
+				DB03DD65237C104F00D96201 /* Wallet.swift in Sources */,
 				DB63A0F522DDCAE600C2DDA6 /* Contact.swift in Sources */,
 				DB63A0FC22DDCB9100C2DDA6 /* ContactDBAction.swift in Sources */,
 				DB63A10922DEF41700C2DDA6 /* TCActionButton.swift in Sources */,
@@ -2482,6 +2625,7 @@
 				DB63A10222DDCCF100C2DDA6 /* KeyFactory+BCOpenPGP.swift in Sources */,
 				DB63A12722E06F1700C2DDA6 /* ListEmptyView.swift in Sources */,
 				DB63A10722DDD18100C2DDA6 /* MessagesViewModel.swift in Sources */,
+				DB03DD5F237BFD4F00D96201 /* WalletService+Web3.swift in Sources */,
 				DB63A0F822DDCB0E00C2DDA6 /* WormholdService.swift in Sources */,
 				DB63A11A22E066ED00C2DDA6 /* ComposeMessageViewModel.swift in Sources */,
 				DB63A0DF22DD939C00C2DDA6 /* MessageCardCell.swift in Sources */,
@@ -2527,6 +2671,7 @@
 				DB63A10322DDCD0300C2DDA6 /* KeyRecordDBAction.swift in Sources */,
 				DB63A12822E06F8200C2DDA6 /* ContactListViewModel.swift in Sources */,
 				DB63A11622E0607C00C2DDA6 /* ContactMappable.swift in Sources */,
+				DB03DD6A237C105B00D96201 /* WalletModel.swift in Sources */,
 				DB63A0FA22DDCB4500C2DDA6 /* KeyFactory.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2543,7 +2688,9 @@
 				DB1169A222E182730099BA25 /* Fonts.swift in Sources */,
 				DB1169C722E185020099BA25 /* ContactCell.swift in Sources */,
 				834DB06F23175B1C004E6F50 /* DMSPGPError.swift in Sources */,
+				DB03DD66237C104F00D96201 /* Wallet.swift in Sources */,
 				DB1169D922E19C0F0099BA25 /* MessageCardCell.swift in Sources */,
+				DB03DD6B237C105B00D96201 /* WalletModel.swift in Sources */,
 				DB1169DF22E19CA00099BA25 /* MessageCardTableViewController.swift in Sources */,
 				DBF6B2AC232F5479008F83AE /* UIColor.swift in Sources */,
 				DB1169B122E183390099BA25 /* ContactMappable.swift in Sources */,
@@ -2578,6 +2725,7 @@
 				DB0ABA1B237585B900AD3B7F /* WalletService.swift in Sources */,
 				DB1169B922E183AD0099BA25 /* TCDBManager.swift in Sources */,
 				83C12EE32332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */,
+				DB03DD60237BFD4F00D96201 /* WalletService+Web3.swift in Sources */,
 				DB1169D022E1859F0099BA25 /* String+Localization.swift in Sources */,
 				DB1169AD22E183010099BA25 /* KeychainMappable.swift in Sources */,
 				DB1169BE22E183E50099BA25 /* TCErrors.swift in Sources */,
@@ -2612,6 +2760,11 @@
 			isa = PBXTargetDependency;
 			target = 83B93D29221D22FA00F556C0 /* TesserCubeKeyboard */;
 			targetProxy = 83B93D2F221D22FA00F556C0 /* PBXContainerItemProxy */;
+		};
+		DB03DD53237BF8DF00D96201 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8304E990221BF10000122637 /* TesserCube */;
+			targetProxy = DB03DD52237BF8DF00D96201 /* PBXContainerItemProxy */;
 		};
 		DB63A0D822DD82EE00C2DDA6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2917,6 +3070,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCubeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TesserCube.app/TesserCube";
@@ -2940,6 +3094,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCubeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TesserCube.app/TesserCube";
@@ -3047,6 +3202,117 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		DB03DD54237BF8DF00D96201 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A6FAC5E1C65A9E541B8D05F4 /* Pods-Web3Tests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = Web3Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tessercube.Web3Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TesserCube.app/TesserCube";
+			};
+			name = Debug;
+		};
+		DB03DD55237BF8DF00D96201 /* RP */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 45D232377A1031338C62A1D5 /* Pods-Web3Tests.rp.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = Web3Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tessercube.Web3Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TesserCube.app/TesserCube";
+			};
+			name = RP;
+		};
+		DB03DD56237BF8DF00D96201 /* RP Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1FA029F1074B312AC19C8C28 /* Pods-Web3Tests.rp release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = Web3Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tessercube.Web3Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TesserCube.app/TesserCube";
+			};
+			name = "RP Release";
+		};
+		DB03DD57237BF8DF00D96201 /* XCTest */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E9C7E90B5832067373ED7B80 /* Pods-Web3Tests.xctest.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = Web3Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tessercube.Web3Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TesserCube.app/TesserCube";
+			};
+			name = XCTest;
+		};
+		DB03DD58237BF8DF00D96201 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0D8B333C6DD7FA17A2F49439 /* Pods-Web3Tests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7LFDZ96332;
+				INFOPLIST_FILE = Web3Tests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tessercube.Web3Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TesserCube.app/TesserCube";
 			};
 			name = Release;
 		};
@@ -3361,6 +3627,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCubeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TesserCube.app/TesserCube";
@@ -3591,6 +3858,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCubeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TesserCube.app/TesserCube";
@@ -3821,6 +4089,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCubeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TesserCube.app/TesserCube";
@@ -3907,6 +4176,18 @@
 				DBEE8952237281E40080C194 /* RP Release */,
 				DBCE91E2233212D90000A9F3 /* XCTest */,
 				83B93D34221D22FA00F556C0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DB03DD59237BF8DF00D96201 /* Build configuration list for PBXNativeTarget "Web3Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DB03DD54237BF8DF00D96201 /* Debug */,
+				DB03DD55237BF8DF00D96201 /* RP */,
+				DB03DD56237BF8DF00D96201 /* RP Release */,
+				DB03DD57237BF8DF00D96201 /* XCTest */,
+				DB03DD58237BF8DF00D96201 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

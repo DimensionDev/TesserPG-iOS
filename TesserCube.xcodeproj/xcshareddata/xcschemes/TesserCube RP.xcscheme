@@ -38,11 +38,14 @@
       </MacroExpansion>
       <TestPlans>
          <TestPlanReference
-            reference = "container:TesserCube/UnitTests.xctestplan"
-            default = "YES">
+            reference = "container:TesserCube/UnitTests.xctestplan">
          </TestPlanReference>
          <TestPlanReference
             reference = "container:TesserCube/UITests.xctestplan">
+         </TestPlanReference>
+         <TestPlanReference
+            reference = "container:TesserCube/Web3Tests.xctestplan"
+            default = "YES">
          </TestPlanReference>
       </TestPlans>
       <Testables>
@@ -63,6 +66,16 @@
                BlueprintIdentifier = "8304E9AF221BF10200122637"
                BuildableName = "TesserCubeUITests.xctest"
                BlueprintName = "TesserCubeUITests"
+               ReferencedContainer = "container:TesserCube.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "DB03DD4C237BF8DF00D96201"
+               BuildableName = "Web3Tests.xctest"
+               BlueprintName = "Web3Tests"
                ReferencedContainer = "container:TesserCube.xcodeproj">
             </BuildableReference>
          </TestableReference>

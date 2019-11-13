@@ -10,8 +10,11 @@ import RxSwift
 import RxCocoa
 import KeychainAccess
 import DMS_HDWallet_Cocoa
+import Web3
 
 final public class WalletService {
+
+    static let web3 = Web3(rpcURL: "https://ropsten.infura.io/v3/823d2b1356e24d7fbd3b1ae954c6db19")
 
     private let keychain: Keychain
     private let disposeBag = DisposeBag()
@@ -30,7 +33,7 @@ final public class WalletService {
         let  walletsDatas = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(walletsData) as? [Data] {
             let wallets = (walletsDatas.compactMap { try? decoder.decode(Wallet.self, from: $0) })
             self.wallets = BehaviorRelay(value: wallets)
-            let models = wallets.map { WalletModel(wallet: $0) }
+            let models = wallets.compactMap { try? WalletModel(wallet: $0) }
             self.walletModels = BehaviorRelay(value: models)
         } else {
             self.wallets = BehaviorRelay(value: [])
@@ -70,11 +73,12 @@ extension WalletService {
 
 extension WalletService {
 
+    // Only valid wallet appended
     func append(wallets: [Wallet]) {
         var models = walletModels.value
         let old = models.map { $0.wallet }
         let new = wallets.filter { !old.contains($0) }
-        models.append(contentsOf: new.map { WalletModel(wallet: $0) })
+        models.append(contentsOf: new.compactMap { try? WalletModel(wallet: $0) })
         walletModels.accept(models)
     }
 
@@ -87,26 +91,4 @@ extension WalletService {
         walletModels.accept(vms)
     }
 
-}
-
-public struct Wallet: Codable {
-    public let mnemonic: [String]
-    public let passphrase: String
-}
-
-extension Wallet: Equatable {
-    public static func == (lhs: Wallet, rhs: Wallet) -> Bool {
-        return lhs.mnemonic == rhs.mnemonic && lhs.passphrase == rhs.passphrase
-    }
-}
-
-public class WalletModel {
-    let wallet: Wallet
-    let hdWallet: HDWallet?
-    // let balance = BehaviorRelay<BigUInt>(value: BigUInt(0))
-
-    public init(wallet: Wallet) {
-        self.wallet = wallet
-        self.hdWallet = try? HDWallet(mnemonic: wallet.mnemonic, passphrase: wallet.passphrase, network: .mainnet(.ether))
-    }
 }

@@ -180,8 +180,12 @@ extension BackupMnemonicViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = walletCardTableViewCell
-        let model = WalletModel(wallet: viewModel.wallet)
+
+        guard let model = try? WalletModel(wallet: viewModel.wallet) else {
+            return cell
+        }
         WalletsViewModel.configure(cell: cell, with: model)
+        
         return cell
     }
 
