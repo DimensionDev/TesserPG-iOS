@@ -133,6 +133,7 @@ final class WalletCardTableViewCell: UITableViewCell {
         ])
 
         // Setup appearance
+        clipsToBounds = false
         selectionStyle = .none
     }
 

@@ -135,6 +135,16 @@ extension UIColor {
         }
     }()
 
+    static let _tertiarySystemBackground: UIColor = {
+        let _tertiarySystemBackground = UIColor.white
+
+        if #available(iOS 13.0, *) {
+            return .tertiarySystemBackground
+        } else {
+            return _tertiarySystemBackground
+        }
+    }()
+
 }
 
 extension UIColor {
@@ -169,4 +179,18 @@ extension UIColor {
         }
     }()
 
+}
+
+extension UIColor {
+
+    static let _separator: UIColor = {
+        let _separator = UIColor(displayP3Red: 60.0/255.0, green: 60.0/255.0, blue: 67.0/255.0, alpha: 0.29)
+
+        if #available(iOS 13.0, *) {
+            return .separator
+        } else {
+            return _separator
+        }
+    }()
+    
 }

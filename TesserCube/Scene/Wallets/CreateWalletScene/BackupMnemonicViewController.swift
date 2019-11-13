@@ -16,9 +16,28 @@ class BackupMnemonicViewController: TCBaseViewController {
         tableView.separatorStyle = .none
         tableView.register(WalletCardTableViewCell.self, forCellReuseIdentifier: String(describing: WalletCardTableViewCell.self))
         tableView.tableFooterView = UIView()
+        tableView.clipsToBounds = false
         return tableView
     }()
     private let walletCardTableViewCell = WalletCardTableViewCell()
+
+    var viewModel: BackupMnemonicCollectionViewModel!
+    lazy var mnemonicCollectionView: MnemonicCollectionView = {
+        let collectionView = MnemonicCollectionView(viewModel: viewModel)
+        viewModel.collectionView = collectionView
+        return collectionView
+    }()
+
+    private let middleHintLabel: UILabel = {
+        let label = UILabel()
+        label.font = FontFamily.SFProDisplay.regular.font(size: 17.0)
+        label.textColor = ._secondaryLabel
+        label.text = "Keep the 12 words carefully.\nWrite on paper. Do not take screenshot.\nThis is the only way to recover your key, if lost."
+        label.numberOfLines = 3
+        label.textAlignment = .center
+        return label
+    }()
+
     private let nextButton: TCActionButton = {
         let button = TCActionButton()
         button.color = .systemBlue
@@ -34,34 +53,37 @@ class BackupMnemonicViewController: TCBaseViewController {
         return button
     }()
 
-    var viewModel: BackupMnemonicCollectionViewModel!
-    lazy var mnemonicCollectionView: MnemonicCollectionView = {
-        let collectionView = MnemonicCollectionView(viewModel: viewModel)
-        viewModel.collectionView = collectionView
-        return collectionView
-    }()
-
     override func configUI() {
         super.configUI()
 
         title = "New Wallet Created"
         navigationItem.hidesBackButton = true
 
-        // Layout wallet card tableView
-        walletCardTableView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(walletCardTableView)
-        NSLayoutConstraint.activate([
-            walletCardTableView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 24),
-            walletCardTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            walletCardTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            walletCardTableView.heightAnchor.constraint(equalToConstant: 106 + WalletCardTableViewCell.cardVerticalMargin * 2)
-        ])
+        let shouldAddCard = view.height > 700
+
+        if shouldAddCard {
+            // Layout wallet card tableView
+            walletCardTableView.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(walletCardTableView)
+            NSLayoutConstraint.activate([
+                walletCardTableView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 24),
+                walletCardTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                walletCardTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                walletCardTableView.heightAnchor.constraint(equalToConstant: 120 + WalletCardTableViewCell.cardVerticalMargin * 2)
+            ])
+        }
 
         // Layout mnemonic collection view
+        let mnemonicCollectionViewTopConstraint: NSLayoutConstraint
+        if shouldAddCard {
+            mnemonicCollectionViewTopConstraint = mnemonicCollectionView.topAnchor.constraint(equalTo: walletCardTableView.bottomAnchor, constant: 24)
+        } else {
+            mnemonicCollectionViewTopConstraint = mnemonicCollectionView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 24)
+        }
         mnemonicCollectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(mnemonicCollectionView)
         NSLayoutConstraint.activate([
-            mnemonicCollectionView.topAnchor.constraint(equalTo: walletCardTableView.bottomAnchor, constant: 24),
+            mnemonicCollectionViewTopConstraint,
             mnemonicCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             view.trailingAnchor.constraint(equalTo: mnemonicCollectionView.trailingAnchor, constant: 16),
             mnemonicCollectionView.heightAnchor.constraint(equalToConstant: MnemonicCollectionView.height)
@@ -81,6 +103,14 @@ class BackupMnemonicViewController: TCBaseViewController {
             skipBackupButton.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
             skipBackupButton.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
             skipBackupButton.heightAnchor.constraint(equalToConstant: 50),
+        ])
+
+        middleHintLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(middleHintLabel)
+        NSLayoutConstraint.activate([
+            middleHintLabel.topAnchor.constraint(equalTo: mnemonicCollectionView.bottomAnchor, constant: 20),
+            middleHintLabel.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            middleHintLabel.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
         ])
 
         nextButton.translatesAutoresizingMaskIntoConstraints = false
@@ -159,14 +189,40 @@ extension BackupMnemonicViewController: UITableViewDataSource {
 
 #if canImport(SwiftUI) && DEBUG
 import SwiftUI
+import DMS_HDWallet_Cocoa
 
 @available(iOS 13.0, *)
 struct MnemonicViewController_Previews: PreviewProvider {
 
     static var previews: some View {
-        NavigationControllerRepresenable(rootViewController: BackupMnemonicViewController())
+        let rootViewController = BackupMnemonicViewController()
+        let mnemonic = Mnemonic.create()
+        let wallet = Wallet(mnemonic: mnemonic, passphrase: "")
+        rootViewController.viewModel = BackupMnemonicCollectionViewModel(wallet: wallet)
+        return Group {
+            NavigationControllerRepresenable(rootViewController: rootViewController)
+                .environment(\.colorScheme, .light)
+            NavigationControllerRepresenable(rootViewController: rootViewController)
+                .environment(\.colorScheme, .dark)
+            NavigationControllerRepresenable(rootViewController: rootViewController)
+                .environment(\.colorScheme, .light)
+                .previewDevice(PreviewDevice(stringLiteral: "iPhone SE"))
+            NavigationControllerRepresenable(rootViewController: rootViewController)
+                .environment(\.colorScheme, .light)
+                .previewDevice(PreviewDevice(stringLiteral: "iPhone 8"))
+            NavigationControllerRepresenable(rootViewController: rootViewController)
+                .environment(\.colorScheme, .light)
+                .previewDevice(PreviewDevice(stringLiteral: "iPhone 8 Plus"))
+            NavigationControllerRepresenable(rootViewController: rootViewController)
+                .environment(\.colorScheme, .light)
+                .previewDevice(PreviewDevice(stringLiteral: "iPhone X"))
+            NavigationControllerRepresenable(rootViewController: rootViewController)
+                .environment(\.colorScheme, .light)
+                .previewDevice(PreviewDevice(stringLiteral: "iPhone XR"))
+        }
     }
 
 }
 
 #endif
+   

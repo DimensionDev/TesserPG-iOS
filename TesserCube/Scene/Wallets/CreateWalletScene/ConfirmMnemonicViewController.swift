@@ -128,7 +128,37 @@ class ConfirmMnemonicViewController: TCBaseViewController {
 extension ConfirmMnemonicViewController {
 
     @objc private func doneButtonPressed(_ sender: UIButton) {
+        guard viewModel.isConfimed.value else {
+            let alertController = UIAlertController(title: "Wrong order", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: L10n.Common.Button.ok, style: .default, handler: nil)
+            alertController.addAction(okAction)
+            present(alertController, animated: true, completion: nil)
+
+            return
+        }
+
         dismiss(animated: true, completion: nil)
     }
 
 }
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+import DMS_HDWallet_Cocoa
+
+@available(iOS 13.0, *)
+struct ConfirmMnemonicViewController_Preview: PreviewProvider {
+    static var previews: some View {
+        let rootViewController = ConfirmMnemonicViewController()
+        let mnemonic = Mnemonic.create()
+        rootViewController.viewModel = ConfirmMnemonicCollectionViewModel(mnemonic: mnemonic)
+
+        return Group {
+            NavigationControllerRepresenable(rootViewController: rootViewController)
+                .environment(\.colorScheme, .light)
+            NavigationControllerRepresenable(rootViewController: rootViewController)
+            .environment(\.colorScheme, .dark)
+        }
+    }
+}
+#endif
