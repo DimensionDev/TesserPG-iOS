@@ -7,69 +7,7 @@
 //
 
 import UIKit
-
 import RxSwift
-import RxCocoa
-
-class WalletsViewModel: NSObject {
-
-    let walletModels = BehaviorRelay<[WalletModel]>(value: [])
-
-    override init() {
-        super.init()
-    }
-
-}
-
-// MARK: - UITableViewDataSource
-extension WalletsViewModel: UITableViewDataSource {
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return walletModels.value.isEmpty ? 1 : 0
-        case 1:
-            return walletModels.value.count
-        default:
-            return 0
-        }
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: WalletCardTableViewCell.self), for: indexPath) as! WalletCardTableViewCell
-
-        switch indexPath.section {
-        case 1:
-            let model = walletModels.value[indexPath.row]
-            WalletsViewModel.configure(cell: cell, with: model)
-        default:
-            break
-        }
-
-        return cell
-    }
-
-}
-
-extension WalletsViewModel {
-
-    static func configure(cell: WalletCardTableViewCell, with model: WalletModel) {
-        let address = try? model.hdWallet?.address()
-        cell.headerLabel.text = address.flatMap { "0x" + $0.suffix(4) }
-        cell.captionLabel.text = address
-//            cell.captionLabel.text = {
-//                guard let address = address else { return nil }
-//                let raw = address.removingPrefix("0x")
-//                return "0x" + raw.prefix(20) + "\n" + raw.suffix(20)
-//            }()
-            // TODO: Balance
-    }
-
-}
 
 class WalletsViewController: TCBaseViewController {
 
@@ -222,6 +160,10 @@ extension WalletsViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        guard section == 1 else {
+            return .leastNonzeroMagnitude
+        }
+
         return 20 - WalletCardTableViewCell.cardVerticalMargin
     }
 
@@ -230,6 +172,10 @@ extension WalletsViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        guard section == 1 else {
+            return .leastNonzeroMagnitude
+        }
+        
         return 20 - WalletCardTableViewCell.cardVerticalMargin
     }
 
@@ -240,29 +186,15 @@ extension WalletsViewController: UITableViewDelegate {
             return
         }
 
-        let model = viewModel.walletModels.value[indexPath.row]
-        let service = WalletService.default
-        let walletName = cell.headerLabel.text
-        
-        let alertController = UIAlertController(title: nil, message: walletName, preferredStyle: .actionSheet)
-        let deleteAction = UIAlertAction(title: L10n.Common.Button.delete, style: .destructive) { [weak self] _ in
-            let confirmDeleteAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            let title = ["Yes. Delete", walletName].compactMap { $0 }.joined(separator: " ")
-            let deleteAction = UIAlertAction(title: title, style: .destructive) { _ in
-                service.remove(wallet: model.wallet)
+        let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath, isContextMenu: false)
+        let alertController: UIAlertController = {
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let alertActions = actions.map { $0.alertAction }
+            for alertAction in alertActions {
+                alertController.addAction(alertAction)
             }
-            confirmDeleteAlertController.addAction(deleteAction)
-            let cancelAction = UIAlertAction(title: L10n.Common.Button.cancel, style: .cancel, handler: nil)
-            confirmDeleteAlertController.addAction(cancelAction)
-            if let popoverPresentationController = confirmDeleteAlertController.popoverPresentationController {
-                popoverPresentationController.sourceView = cell
-            }
-            self?.present(confirmDeleteAlertController, animated: true, completion: nil)
-        }
-        alertController.addAction(deleteAction)
-
-        let cancelAction = UIAlertAction(title: L10n.Common.Button.cancel, style: .cancel, handler: nil)
-        alertController.addAction(cancelAction)
+            return alertController
+        }()
 
         if let popoverPresentationController = alertController.popoverPresentationController {
             popoverPresentationController.sourceView = cell
@@ -271,6 +203,36 @@ extension WalletsViewController: UITableViewDelegate {
         DispatchQueue.main.async {
             self.present(alertController, animated: true, completion: nil)
         }
+    }
+
+    @available(iOS 13.0, *)
+    func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        guard indexPath.section == 1,
+        let cell = tableView.cellForRow(at: indexPath) as? WalletCardTableViewCell else {
+            return nil
+        }
+
+        let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath, isContextMenu: true)
+        let children = actions.compactMap { $0.menuElement }
+
+        return UIContextMenuConfiguration(
+            identifier: indexPath as NSCopying,
+            previewProvider: nil,
+            actionProvider: { _ in
+                return UIMenu(title: "", image: nil, identifier: nil, options: [], children: children)
+            })
+    }
+
+    @available(iOS 13.0, *)
+    func tableView(_ tableView: UITableView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+        guard let indexPath = configuration.identifier as? IndexPath,
+        let cell = tableView.cellForRow(at: indexPath) as? WalletCardTableViewCell else {
+            return nil
+        }
+
+        let center = CGPoint(x: cell.bounds.midX, y: cell.bounds.midY)
+        let previewTarget = UIPreviewTarget(container: cell, center: center)
+        return UITargetedPreview(view: cell.cardView, parameters: UIPreviewParameters(), target: previewTarget)
     }
 
 }
