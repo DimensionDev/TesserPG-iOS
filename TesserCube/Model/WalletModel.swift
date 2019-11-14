@@ -21,8 +21,8 @@ public class WalletModel {
     private let updateBalanceTrigger = PublishSubject<Void>()
 
     // Output
-    let balance = BehaviorRelay<BigUInt>(value: BigUInt(0))
-    let balanceInDecimal: Driver<Decimal>
+    let balance = BehaviorRelay<BigUInt?>(value: nil)
+    let balanceInDecimal: Driver<Decimal?>
 
     // Misc.
     let hdWallet: HDWallet
@@ -33,9 +33,11 @@ public class WalletModel {
         self.hdWallet = try HDWallet(mnemonic: wallet.mnemonic, passphrase: wallet.passphrase, network: .mainnet(.ether))
         self.address = try hdWallet.address()
 
-        balanceInDecimal = balance.asDriver().map { balance in
-            return Decimal(string: String(balance)) ?? Decimal(0) / HDWallet.CoinType.ether.exponent
-        }
+        balanceInDecimal = balance.asDriver()
+            .map { balance in
+                guard let balance = balance else { return nil }
+                return Decimal(string: String(balance)) ?? Decimal(0) / HDWallet.CoinType.ether.exponent
+            }
 
         defer {
             updateBalance()
