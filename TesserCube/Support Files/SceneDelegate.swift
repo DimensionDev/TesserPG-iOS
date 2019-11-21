@@ -24,6 +24,11 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         window = UIWindow(windowScene: windowScene)
         window?.makeKeyAndVisible()
+
+        #if XCTEST
+        return
+        #endif
+
         Coordinator.main.present(scene: .main(message: nil, window: window!), from: nil, completion: {
             guard let url = connectionOptions.urlContexts.first?.url else {
                 return

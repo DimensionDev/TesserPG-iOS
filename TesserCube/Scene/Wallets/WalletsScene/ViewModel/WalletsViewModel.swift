@@ -57,15 +57,21 @@ extension WalletsViewModel: UITableViewDataSource {
 extension WalletsViewModel {
 
     static func configure(cell: WalletCardTableViewCell, with model: WalletModel) {
-        let address = try? model.hdWallet?.address()
-        cell.headerLabel.text = address.flatMap { "0x" + $0.suffix(4) }
+        let address = model.address
+        cell.headerLabel.text = "0x" + address.suffix(4)
         cell.captionLabel.text = address
 //            cell.captionLabel.text = {
 //                guard let address = address else { return nil }
 //                let raw = address.removingPrefix("0x")
 //                return "0x" + raw.prefix(20) + "\n" + raw.suffix(20)
 //            }()
-            // TODO: Balance
+        model.balanceInDecimal.asDriver()
+            .map { decimal in
+                guard let decimal = decimal else { return "- ETH" }
+                return decimal.string + " ETH"
+            }
+            .drive(cell.balanceAmountLabel.rx.text)
+            .disposed(by: cell.disposeBag)
     }
 
 }

@@ -52,7 +52,7 @@ extension RecipientContactPickerViewModel: UICollectionViewDataSource {
                 ContactPickerTagCollectionViewCell.self), for: indexPath) as! ContactPickerTagCollectionViewCell
             let tag = _tags[indexPath.row]
             cell.nameLabel.text = tag.name
-            cell.shortID = String(tag.shortID).separate(every: 4, with: "\n")
+            cell.shortID = tag.shortID.separate(every: 4, with: "\n")
             cell.isInvalid = tag.contact == nil
             return cell
 
