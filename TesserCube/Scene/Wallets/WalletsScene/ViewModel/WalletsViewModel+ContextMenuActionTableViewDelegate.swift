@@ -13,12 +13,14 @@ extension WalletsViewModel {
     enum Action: ContextMenuAction {
 
         case copyWalletAddress(address: String)
+        case backupMnemonic(wallet: Wallet, presentingViewController: UIViewController)
         case deleteWallet(wallet: Wallet, presentingViewController: UIViewController, cell: WalletCardTableViewCell, isContextMenu: Bool)
         case cancel
 
         var title: String {
             switch self {
             case .copyWalletAddress:    return "Copy Wallet Address"
+            case .backupMnemonic:       return "Backup Mnemonic"
             case .deleteWallet:         return "Delete"
             case .cancel:               return L10n.Common.Button.cancel
             }
@@ -32,6 +34,7 @@ extension WalletsViewModel {
             if #available(iOS 13.0, *) {
                 switch self {
                 case .copyWalletAddress:    return UIImage(systemName: "doc.on.doc")
+                case .backupMnemonic:       return UIImage(systemName: "pencil.circle")
                 case .deleteWallet:         return UIImage(systemName: "trash")
                 default:                    return nil
                 }
@@ -71,6 +74,9 @@ extension WalletsViewModel {
                 switch self {
                 case let .copyWalletAddress(address):
                     UIPasteboard.general.string = address
+                case let .backupMnemonic(wallet, presentingViewController):
+                    let viewModel = BackupMnemonicCollectionViewModel(wallet: wallet)
+                    Coordinator.main.present(scene: .backupMnemonic(viewModel: viewModel), from: presentingViewController, transition: .modal, completion: nil)
                 case let .deleteWallet(wallet, presentingViewController, cell, isContextMenu):
                     if isContextMenu {
                         WalletService.default.remove(wallet: wallet)
@@ -145,6 +151,7 @@ extension WalletsViewModel: ContextMenuActionTableViewDelegate {
         // - Cancel
         return [
             Action.copyWalletAddress(address: cell.captionLabel.text ?? ""),
+            Action.backupMnemonic(wallet: wallet, presentingViewController: presentingViewController),
             Action.deleteWallet(wallet: wallet, presentingViewController: presentingViewController, cell: cell, isContextMenu: isContextMenu),
             Action.cancel
         ]

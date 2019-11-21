@@ -35,10 +35,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // setup window in SceneDelegate
         } else {
             window = UIWindow(frame: UIScreen.main.bounds)
-
-            // Make it the key window first since navigator works by finding the key window
             window?.makeKeyAndVisible()
+
+            #if XCTEST
+            // do nothing
+            #else
+            // Make it the key window first since navigator works by finding the key window
             Coordinator.main.present(scene: .main(message: nil, window: window!), from: nil)
+            #endif
         }
 
         return true

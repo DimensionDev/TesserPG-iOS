@@ -1,0 +1,24 @@
+{
+  "configurations" : [
+    {
+      "id" : "22B27525-1907-4031-93BE-D3D0D60BB4F8",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:TesserCube.xcodeproj",
+        "identifier" : "DB03DD4C237BF8DF00D96201",
+        "name" : "Web3Tests"
+      }
+    }
+  ],
+  "version" : 1
+}

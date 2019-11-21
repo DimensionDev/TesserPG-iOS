@@ -7,8 +7,11 @@
 //
 
 import UIKit
+import RxSwift
 
 final class WalletCardTableViewCell: UITableViewCell {
+
+    var disposeBag = DisposeBag()
 
     static let SFAlternativesFormFont: UIFont = {
         let descriptor = FontFamily.SFProDisplay.medium.font(size: 17)!.fontDescriptor
@@ -60,7 +63,7 @@ final class WalletCardTableViewCell: UITableViewCell {
     }()
     let balanceAmountLabel: UILabel = {
         let label = UILabel()
-        label.text = "0 ETH"
+        label.text = "- ETH"
         label.font = WalletCardTableViewCell.SFAlternativesFormFont
         label.textColor = .white
         return label
@@ -69,10 +72,12 @@ final class WalletCardTableViewCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
 
+        disposeBag = DisposeBag()
+
         headerLabel.text = "****"
         captionLabel.text = "********************\n********************"
         balanceLabel.text = "Balance:"
-        balanceAmountLabel.text = "0 ETH"
+        balanceAmountLabel.text = "- ETH"
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

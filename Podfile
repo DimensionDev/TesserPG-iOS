@@ -18,7 +18,6 @@ def common_pods
   pod 'RxSwift', '~> 4.4.2'
   pod 'RxCocoa', '~> 4.4.2'
 
-  # pod 'DMSOpenPGP', '~> 0.1.4'
   pod 'KeychainAccess', '~> 3.2.0'
 
   pod 'GRDB.swift', '~> 3.7.0'
@@ -30,6 +29,9 @@ def common_pods
   pod 'WordSuggestion', '~> 0.2.1'
   
   pod 'Web3/ContractABI', '~> 0.4.1'
+  pod 'Web3/HTTPExtension', '~> 0.4.1'
+  pod 'Web3/PromiseKit', '~> 0.4.1'
+
   pod 'DMS_HDWallet_Cocoa', '~> 0.2.1'
 end
 
@@ -57,6 +59,11 @@ target 'TesserCube' do
     inherit! :search_paths
     # Pods for testing
     pod 'RxBlocking', '~> 4.0'
+  end
+
+  target 'Web3Tests' do
+    inherit! :search_paths
+    # Pods for testing
   end
 
 end

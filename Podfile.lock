@@ -23,6 +23,7 @@ PODS:
   - MMWormhole (2.0.0):
     - MMWormhole/Core (= 2.0.0)
   - MMWormhole/Core (2.0.0)
+  - PromiseKit/CorePromise (6.12.0)
   - Realm (3.21.0):
     - Realm/Headers (= 3.21.0)
   - Realm/Headers (3.21.0)
@@ -70,6 +71,11 @@ PODS:
     - BigInt (~> 4.0)
     - CryptoSwift (~> 1.0)
     - secp256k1.swift (~> 0.1)
+  - Web3/HTTPExtension (0.4.1):
+    - Web3/Core
+  - Web3/PromiseKit (0.4.1):
+    - PromiseKit/CorePromise (~> 6.0)
+    - Web3/Core
   - WordSuggestion (0.2.1):
     - RealmSwift
 
@@ -99,6 +105,8 @@ DEPENDENCIES:
   - SwiftLint (~> 0.30.1)
   - "UITextView+Placeholder (~> 1.3.1)"
   - Web3/ContractABI (~> 0.4.1)
+  - Web3/HTTPExtension (~> 0.4.1)
+  - Web3/PromiseKit (~> 0.4.1)
   - WordSuggestion (~> 0.2.1)
 
 SPEC REPOS:
@@ -119,6 +127,7 @@ SPEC REPOS:
     - IQKeyboardManagerSwift
     - KeychainAccess
     - MMWormhole
+    - PromiseKit
     - Realm
     - RealmSwift
     - RxAtomic
@@ -166,6 +175,7 @@ SPEC CHECKSUMS:
   IQKeyboardManagerSwift: c75366f1f19590e8caeae45fcd5815c9289d6099
   KeychainAccess: d5470352939ced6d6f7fb51cb2e67aae51fc294f
   MMWormhole: 0cd3fd35a9118b2e2d762b499f54eeaace0be791
+  PromiseKit: c06835ba442ce5454ce3cdde470232804a6e4ff8
   Realm: 38e9dcb19104b58407167d99f70d4995f7c16023
   RealmSwift: 3183cc1ad48378fbcd634311b22c0e6c44021152
   RxAtomic: d00e97c10db88c6f08540e0bf2752fc5a2404167
@@ -184,6 +194,6 @@ SPEC CHECKSUMS:
   Web3: a4eb0d0cdedbef3f0e4c97ea83a4232a1b1f952b
   WordSuggestion: 424d96dd2cfe4259c72959f9bdcffc864f0e65d4
 
-PODFILE CHECKSUM: 0acc7fd6b7a94468af29de37c79e843befd8798c
+PODFILE CHECKSUM: ed70ba9877c42d7706ed4beed9bc29ec329dd8e5
 
 COCOAPODS: 1.8.4
