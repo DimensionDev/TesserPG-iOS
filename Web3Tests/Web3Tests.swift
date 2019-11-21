@@ -322,7 +322,3 @@ extension Web3Tests {
     
 }
 
-
-//extension EthereumAddress {
-//    static let testAddress = try! EthereumAddress(hex: "0x0000000000000000000000000000000000000000", eip55: false)
-//}
