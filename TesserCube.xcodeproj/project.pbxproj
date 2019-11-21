@@ -404,6 +404,8 @@
 		DBC24B1523026BA800A4AE8D /* WordSuggestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC24B1323026BA800A4AE8D /* WordSuggestionService.swift */; };
 		DBC7DEBD2248C7F600DA4C3E /* RecipientContactPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC7DEBC2248C7F600DA4C3E /* RecipientContactPickerView.swift */; };
 		DBC7DEC12248D49E00DA4C3E /* ComposeMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC7DEC02248D49E00DA4C3E /* ComposeMessageViewModel.swift */; };
+		DBC9CEDC2383E8CB009E13C5 /* redpacket.json in Resources */ = {isa = PBXBuildFile; fileRef = DBC9CEDB2383E8CB009E13C5 /* redpacket.json */; };
+		DBC9CEDE2383F5DA009E13C5 /* redpacket.bin in Resources */ = {isa = PBXBuildFile; fileRef = DBC9CEDD2383F5DA009E13C5 /* redpacket.bin */; };
 		DBD63FDD229682E400E46FDC /* KeyFactory+TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */; };
 		DBD63FE02296864200E46FDC /* KeyFactory+TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */; };
 		DBD6887B237AB13A00B5B663 /* WalletsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD6887A237AB13A00B5B663 /* WalletsViewModel.swift */; };
@@ -768,6 +770,8 @@
 		DBC24B1323026BA800A4AE8D /* WordSuggestionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordSuggestionService.swift; sourceTree = "<group>"; };
 		DBC7DEBC2248C7F600DA4C3E /* RecipientContactPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientContactPickerView.swift; sourceTree = "<group>"; };
 		DBC7DEC02248D49E00DA4C3E /* ComposeMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeMessageViewModel.swift; sourceTree = "<group>"; };
+		DBC9CEDB2383E8CB009E13C5 /* redpacket.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = redpacket.json; sourceTree = "<group>"; };
+		DBC9CEDD2383F5DA009E13C5 /* redpacket.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = redpacket.bin; sourceTree = "<group>"; };
 		DBCE91DE23320EE30000A9F3 /* UnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitTests.xctestplan; sourceTree = "<group>"; };
 		DBCE91DF23320EF30000A9F3 /* UITests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UITests.xctestplan; sourceTree = "<group>"; };
 		DBD638E5227EDC6B00E10BF2 /* JRE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JRE.framework; path = "../../../Java/j2objc-2.4/frameworks/JRE.framework"; sourceTree = "<group>"; };
@@ -1525,6 +1529,8 @@
 		DB03DD4E237BF8DF00D96201 /* Web3Tests */ = {
 			isa = PBXGroup;
 			children = (
+				DBC9CEDD2383F5DA009E13C5 /* redpacket.bin */,
+				DBC9CEDB2383E8CB009E13C5 /* redpacket.json */,
 				DB03DD4F237BF8DF00D96201 /* Web3Tests.swift */,
 				DB03DD51237BF8DF00D96201 /* Info.plist */,
 			);
@@ -2088,6 +2094,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBC9CEDC2383E8CB009E13C5 /* redpacket.json in Resources */,
+				DBC9CEDE2383F5DA009E13C5 /* redpacket.bin in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
