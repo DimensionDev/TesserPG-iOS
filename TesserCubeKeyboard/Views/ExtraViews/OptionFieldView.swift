@@ -9,22 +9,7 @@
 import UIKit
 import SnapKit
 
-
-extension KeyboardMode {
-    var actions: [ActionType] {
-        switch self {
-        case .typing,
-             .cannotDecrypt,
-             .interpretResult:
-            return [.modeChange]
-        case .editingRecipients,
-             .editingRedPacket:
-            return [.encrypt, .redPacket, .modeChange]
-        }
-    }
-}
-
-class OptionFieldView: UIView, KeyboardModeListener {
+class OptionFieldView: UIView {
     
     var actionsView: ActionsView!
     var suggestionView: SuggestionView?
@@ -134,12 +119,37 @@ class OptionFieldView: UIView, KeyboardModeListener {
         
     }
     
+    
+    
+    @objc
+    private func fullAccessHintViewDidTapped(_ sender: UITapGestureRecognizer) {
+        #if TARGET_IS_EXTENSION
+        UIApplication.sharedApplication().openContainerAppForFullAccess()
+        #endif
+    }
+}
+
+#if TARGET_IS_EXTENSION
+extension OptionFieldView {
+    
+    func updateLayout(mode: KeyboardMode) {
+        // always show action title
+        let noRecipients = selectedRecipientsView?.contactInfos.isEmpty ?? true;
+        actionsView.setButtonsTitleVisible(noRecipients)
+        
+    }
+
+}
+
+// MARK: - KeyboardModeListener
+extension OptionFieldView: KeyboardModeListener {
+    
     func update(mode: KeyboardMode) {
         switch mode {
         case .typing:
             actionsView.actions = mode.actions
             actionsView.resetButtonStatus()
-//            updateLayout(mode: mode)
+            //            updateLayout(mode: mode)
             suggestionView?.isHidden = false
             selectedRecipientsView?.isHidden = true
         case .editingRecipients:
@@ -152,33 +162,29 @@ class OptionFieldView: UIView, KeyboardModeListener {
         }
         updateLayout(mode: mode)
     }
-    
-    func updateLayout(mode: KeyboardMode) {
-        // always show action title
-        let noRecipients = selectedRecipientsView?.contactInfos.isEmpty ?? true;
-        actionsView.setButtonsTitleVisible(noRecipients)
-        
-    }
-    
-    @objc
-    private func fullAccessHintViewDidTapped(_ sender: UITapGestureRecognizer) {
-        UIApplication.sharedApplication().openContainerAppForFullAccess()
-    }
+
 }
+#endif
 
 extension OptionFieldView {
     func addSelectedRecipient(_ contactInfo: FullContactInfo) {
         selectedRecipientsView?.addContactInfo(contactInfo)
+        #if TARGET_IS_EXTENSION
         updateLayout(mode: KeyboardModeManager.shared.mode)
+        #endif
     }
     
     func removeSelectedRecipient(_ contactInfo: FullContactInfo) {
         selectedRecipientsView?.removeContactInfo(contactInfo)
+        #if TARGET_IS_EXTENSION
         updateLayout(mode: KeyboardModeManager.shared.mode)
+        #endif
     }
     
     func removeAllSelectedRecipients() {
         selectedRecipientsView?.removeAllContactInfos()
+        #if TARGET_IS_EXTENSION
         updateLayout(mode: KeyboardModeManager.shared.mode)
+        #endif
     }
 }

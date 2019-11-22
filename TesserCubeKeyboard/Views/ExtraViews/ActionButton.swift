@@ -48,7 +48,10 @@ class ActionButton: UIButton, Thematic {
             setTitle(nil, for: .normal)
         }
         setBackgroundImage(UIImage.placeholder(color: UIColor.clear), for: .normal)
+        
+        #if TARGET_IS_EXTENSION
         updateColor(theme: KeyboardModeManager.shared.currentTheme)
+        #endif
     }
     
     func updateColor(theme: Theme) {

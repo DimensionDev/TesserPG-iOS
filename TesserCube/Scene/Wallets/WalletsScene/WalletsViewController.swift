@@ -79,14 +79,17 @@ extension WalletsViewController {
             bottomActionsView.removeArrangedSubview($0)
             $0.removeFromSuperview()
         }
-
-        // Not layout button when have data
-        guard viewModel.walletModels.value.isEmpty else {
-            return
+        
+        if viewModel.walletModels.value.isEmpty {
+            layoutWalletActions()
+        } else {
+            layoutRedPacketActions()
         }
-
+    }
+    
+    private func layoutWalletActions() {
         var actionViews = [UIView]()
-
+        
         let actionPromptLabel: UILabel = {
             let label = UILabel(frame: .zero)
             label.font = FontFamily.SFProDisplay.regular.font(size: 17)
@@ -95,7 +98,7 @@ extension WalletsViewController {
             label.text = "Create or import wallet to start using."
             return label
         }()
-
+        
         let createWalletButton: TCActionButton = {
             let button = TCActionButton(frame: .zero)
             button.color = .systemBlue
@@ -107,7 +110,7 @@ extension WalletsViewController {
             .disposed(by: disposeBag)
             return button
         }()
-
+        
         let importKeyButton: TCActionButton = {
             let button = TCActionButton(frame: .zero)
             button.color = ._secondarySystemBackground
@@ -119,11 +122,32 @@ extension WalletsViewController {
             .disposed(by: disposeBag)
             return button
         }()
-
+        
         actionViews.append(actionPromptLabel)
         actionViews.append(createWalletButton)
         actionViews.append(importKeyButton)
+        
+        bottomActionsView.addArrangedSubviews(actionViews)
+        bottomActionsView.setNeedsLayout()
+    }
+    
+    private func layoutRedPacketActions() {
+        var actionViews = [UIView]()
+        
+        let sendRedPacketButton: TCActionButton = {
+            let button = TCActionButton(frame: .zero)
+            button.color = .systemBlue
+            button.setTitleColor(.white, for: .normal)
+            button.setTitle("Send Red Packet", for: .normal)
+            button.rx.tap.bind {
+                Coordinator.main.present(scene: .sendRedPacket, from: self, transition: .modal, completion: nil)
+            }
+            .disposed(by: disposeBag)
+            return button
+        }()
 
+        actionViews.append(sendRedPacketButton)
+        
         bottomActionsView.addArrangedSubviews(actionViews)
         bottomActionsView.setNeedsLayout()
     }

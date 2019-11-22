@@ -33,9 +33,11 @@ extension RedPacketWalletProvider: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: String(describing: Self.self))
+        let cell = UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
+        cell.contentView.backgroundColor = ._secondarySystemGroupedBackground
         cell.selectionStyle = .none
         cell.textLabel?.text = wallets[indexPath.row]
+        
         if (wallets[indexPath.row] == selectedWallet) {
             cell.accessoryType = .checkmark
         } else {
