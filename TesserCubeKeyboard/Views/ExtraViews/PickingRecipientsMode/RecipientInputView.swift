@@ -155,7 +155,9 @@ class RecipientInputView: UIView, Thematic {
             make.width.equalTo(inputTextField.snp.width)
         }
         
+        #if TARGET_IS_EXTENSION
         updateColor(theme: KeyboardModeManager.shared.currentTheme)
+        #endif
     }
     
     func updateColor(theme: Theme) {

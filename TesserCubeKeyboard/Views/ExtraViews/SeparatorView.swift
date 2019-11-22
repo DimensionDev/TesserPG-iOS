@@ -37,7 +37,10 @@ class SeparatorView: UIView, Thematic {
             make.height.equalTo(SeparatorView.separatorHeight)
             make.top.equalToSuperview().offset(14.5)
         }
+        
+        #if TARGET_IS_EXTENSION
         updateColor(theme: KeyboardModeManager.shared.currentTheme)
+        #endif
     }
     
     func updateColor(theme: Theme) {

@@ -166,13 +166,12 @@ extension Web3Tests {
         
         
         let parameters: [ABIEncodable] = {
-            let _hashes: [BigUInt] = {
-                let uuid = UUID().uuidString    // UUID. keep it down and use later
+            let uuids = [UUID().uuidString, UUID().uuidString]
+            let _hashes: [BigUInt] = uuids.map { uuid in
                 let hash = SHA3(variant: .keccak256).calculate(for: uuid.bytes)
                 print("\(uuid): \(hash.toHexString())")
-                return [BigUInt(hash)]
-            }()
-            
+                return BigUInt(hash)
+            }
             let ifrandom: Bool = true
             let expirationTime: BigUInt = {
                 let nextWeek = Calendar.current.date(byAdding: .day, value: 7, to: Date())!
@@ -210,7 +209,8 @@ extension Web3Tests {
         XCTAssertNotNil(nonce)
         
         // create deploy contract transaction
-        let value = EthereumQuantity(quantity: 200000.gwei)
+        let minValue: BigUInt = 1000000.gwei    // 0.001 eth
+        let value = EthereumQuantity(quantity: 2 * minValue)
         let transaction = invocation.createTransaction(nonce: nonce, from: ethereumAddress, value: value, gas: 3000000, gasPrice: EthereumQuantity(quantity: 1.gwei))
         let generatedHexString = transaction?.data.hex()
         XCTAssertNotNil(generatedHexString)
@@ -238,8 +238,12 @@ extension Web3Tests {
     }
     
     func testClaim() {
+//        8090D64A-03A6-4E2A-B457-9A0376696F8E: e8d00d64ea4f3e30fc4852ca85b8bc4f197f156f8d82b15dc4ce382997071e49
+//        338D6AE4-F1BC-40CD-B036-0210686F5585: 0c527fcadc18c377b7abcd9de269aaa4e511320d596e89f3ca624524e0cb2b87
+//        0x77eea65e929f6dd14dc9629be29418057078551247baa41a4c02dfc5fe6a0c52
         let chainID: EthereumQuantity = 4   // rinkeby
-        let uuid = "AFDF65A9-F419-4BD6-A924-1D209695F3C8"
+        let contractAddressHex = "0x1d3a88693d408f8a7add6c5d975f13a743f1c71d"
+        let uuid = "338D6AE4-F1BC-40CD-B036-0210686F5585"
         
         // Ganache test account
         let mnemonic = ["flower", "parent", "dizzy", "mercy", "sentence", "wall", "weird", "measure", "chicken", "shoulder", "broom", "island"]
@@ -255,7 +259,7 @@ extension Web3Tests {
             let data = try! Data(contentsOf: URL(fileURLWithPath: path!))
             return data
         }()
-        let contractAddress = try! EthereumAddress(hex: "0xf6b38ff43ec872fa0c02a2ebf9099ca4f1e5eecf", eip55: false)
+        let contractAddress = try! EthereumAddress(hex: contractAddressHex, eip55: false)
         let contract = try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: contractAddress)
         
         let claimCall = contract["claim"]
@@ -293,10 +297,27 @@ extension Web3Tests {
         wait(for: [callExpectation], timeout: 30)
         
         XCTAssertNotNil(transactionHash)
+        print(transactionHash)
+        
+        let check = Web3Tests.checkClaimEvent(web3: web3, contract: contract, transactionHash: transactionHash!, in: self)
+        wait(for: [check], timeout: 30)
+    }
+    
+    func testCheckClaimEvent() {
+        let contractAddressHex = "0x87c2d764950754bebdc3d0fb7a93c61862826497"
+        let transactionHash = EthereumData(Data(hex: "0xcfc06f9ba00671982bda3220de19ac8400fc4125e8c4b2b590fcab0f18542bff").bytes)
+        
+        let contractABIData: Data = {
+            let path = Bundle(for: Web3Tests.self).path(forResource: "redpacket", ofType: "json")
+            let data = try! Data(contentsOf: URL(fileURLWithPath: path!))
+            return data
+        }()
+        let contractAddress = try! EthereumAddress(hex: contractAddressHex, eip55: false)
+        let contract = try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: contractAddress)
         
         // Check emitted event log
         let receiptExpectation = expectation(description: "receiptExpectation")
-        web3.eth.getTransactionReceipt(transactionHash: transactionHash!) { response in
+        web3.eth.getTransactionReceipt(transactionHash: transactionHash) { response in
             guard let receipt = response.result else {
                 XCTFail()
                 return
@@ -307,6 +328,7 @@ extension Web3Tests {
                 return
             }
             
+            print(receipt?.logs)
             for event in contract.events {
                 for log in logs {
                     let result = try? ABI.decodeLog(event: event, from: log)
@@ -318,6 +340,99 @@ extension Web3Tests {
             receiptExpectation.fulfill()
         }
         wait(for: [receiptExpectation], timeout: 10)
+    }
+    
+    static func checkClaimEvent(web3: Web3, contract: EthereumContract, transactionHash: EthereumData, in testCase: XCTestCase) -> XCTestExpectation {
+        // Check emitted event log
+        let checkExpectation = testCase.expectation(description: "receiptExpectation")
+        web3.eth.getTransactionReceipt(transactionHash: transactionHash) { response in
+            guard let receipt = response.result else {
+                XCTFail()
+                return
+            }
+            
+            guard let logs = receipt?.logs else {
+                XCTFail()
+                return
+            }
+            
+            print(receipt?.logs)
+            for event in contract.events {
+                for log in logs {
+                    let result = try? ABI.decodeLog(event: event, from: log)
+                    print(event.name)
+                    print(result)
+                }
+            }
+            
+            checkExpectation.fulfill()
+        }
+        
+        return checkExpectation
+    }
+    
+    func testCheckAvaiability() {
+        let contractAddressHex = "0x87c2d764950754bebdc3d0fb7a93c61862826497"
+        // let transactionHash = EthereumData(Data(hex: "0xcfc06f9ba00671982bda3220de19ac8400fc4125e8c4b2b590fcab0f18542bff").bytes)
+        
+        let contractABIData: Data = {
+            let path = Bundle(for: Web3Tests.self).path(forResource: "redpacket", ofType: "json")
+            let data = try! Data(contentsOf: URL(fileURLWithPath: path!))
+            return data
+        }()
+        let contractAddress = try! EthereumAddress(hex: contractAddressHex, eip55: false)
+        let contract = try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: contractAddress)
+    
+        
+        let checkAvailabilityExpectation = expectation(description: "check_availability")
+        let checkAvailabilityInvocation = contract["check_availability"]!()
+        
+        checkAvailabilityInvocation.method.outputs
+        
+        checkAvailabilityInvocation.call { resultDict, error in
+            guard let dict = resultDict else {
+                XCTFail()
+                return
+            }
+            
+            print(dict)
+            checkAvailabilityExpectation.fulfill()
+            
+        }
+    
+        wait(for: [checkAvailabilityExpectation], timeout: 30.0)
+    }
+    
+    func testCheckClaimedList() {
+        let contractAddressHex = "0x87c2d764950754bebdc3d0fb7a93c61862826497"
+        // let transactionHash = EthereumData(Data(hex: "0xcfc06f9ba00671982bda3220de19ac8400fc4125e8c4b2b590fcab0f18542bff").bytes)
+        
+        let contractABIData: Data = {
+            let path = Bundle(for: Web3Tests.self).path(forResource: "redpacket", ofType: "json")
+            let data = try! Data(contentsOf: URL(fileURLWithPath: path!))
+            return data
+        }()
+        let contractAddress = try! EthereumAddress(hex: contractAddressHex, eip55: false)
+        let contract = try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: contractAddress)
+    
+        
+        let checkClaimedListExpectation = expectation(description: "check_claimed_list")
+        let checkClaimedListInvocation = contract["check_claimed_list"]!()
+        
+        checkClaimedListInvocation.method.outputs
+        
+        checkClaimedListInvocation.call { resultDict, error in
+            guard let dict = resultDict else {
+                XCTFail()
+                return
+            }
+            
+            print(dict)
+            checkClaimedListExpectation.fulfill()
+            
+        }
+    
+        wait(for: [checkClaimedListExpectation], timeout: 30.0)
     }
     
 }
