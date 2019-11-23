@@ -207,6 +207,7 @@
 		DB0ABA1A237585B900AD3B7F /* WalletService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0ABA17237585B500AD3B7F /* WalletService.swift */; };
 		DB0ABA1B237585B900AD3B7F /* WalletService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0ABA17237585B500AD3B7F /* WalletService.swift */; };
 		DB0BABE523504B3400F3E37E /* PreviewStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BABE423504B3400F3E37E /* PreviewStub.swift */; };
+		DB0F101C2389278F00F49D2C /* RecipientCellTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8325E48A222F6D4500EE9B83 /* RecipientCellTableViewCell.xib */; };
 		DB1169A022E182730099BA25 /* strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83783382224CB7F400F2C0BF /* strings.swift */; };
 		DB1169A122E182730099BA25 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83214694223F4CA0008ECC22 /* Assets.swift */; };
 		DB1169A222E182730099BA25 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E4A3222F8FDA00EE9B83 /* Fonts.swift */; };
@@ -2111,6 +2112,7 @@
 				DBF6B2D4232F9113008F83AE /* SF-Pro-Text-Light.otf in Resources */,
 				8316ADAC22CB4E1000246E5A /* ConfirmContactCell.xib in Resources */,
 				832146BB223F8AA1008ECC22 /* KeyCardCell.xib in Resources */,
+				DB0F101C2389278F00F49D2C /* RecipientCellTableViewCell.xib in Resources */,
 				8321469C223F5113008ECC22 /* InfoPlist.strings in Resources */,
 				8325E4A1222F8FBD00EE9B83 /* SourceCodePro-Medium.ttf in Resources */,
 				8325E49B222F8FBD00EE9B83 /* SF-Pro-Display-Bold.otf in Resources */,

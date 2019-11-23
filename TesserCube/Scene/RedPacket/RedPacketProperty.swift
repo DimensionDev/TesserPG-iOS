@@ -24,9 +24,10 @@ class RedPacketProperty {
         }
     }
     
-    var amount: Int = 0
+    var walletModel: WalletModel?
+    var amount: Decimal = 0
     var splitType: SplitType = .average
-    
-    var sharesCount: Int = 1
-    var wallet: TestWallet?
+    var shareCount: Int = 1
+    var sender: TCKey?
+    var contactInfos: [FullContactInfo] = []    // selected red packet recipients
 }

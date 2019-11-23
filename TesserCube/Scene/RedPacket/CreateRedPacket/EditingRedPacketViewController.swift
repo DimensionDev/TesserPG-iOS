@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import os
 import RxSwift
 import RxCocoa
 
@@ -56,13 +57,48 @@ final class EditingRedPacketViewModel: NSObject {
     let selectRedPacketSenderTableViewCell = SelectRedPacketSenderTableViewCell()
     
     override init() {
-        walletProvider = RedPacketWalletProvider(tableView: selectWalletTableViewCell.tableView)
+        walletProvider = RedPacketWalletProvider(tableView: selectWalletTableViewCell.tableView, walletModels: WalletService.default.walletModels.value)
+        
         splitMethodProvider = RedPacketSplitMethodProvider(redPacketProperty: redPacketProperty, tableView: selectRedPacketSplitModeTableViewCell.tableView)
         
+        super.init()
+        
+        walletProvider?.selectWalletModel.asDriver()
+            .drive(onNext: { [weak self] selectWalletModel in
+                self?.redPacketProperty.walletModel = selectWalletModel
+            })
+            .disposed(by: disposeBag)
+        inputRedPacketAmountTableViewCell.amount.asDriver()
+            .drive(onNext: { [weak self] amount in
+                self?.redPacketProperty.amount = amount
+            })
+            .disposed(by: disposeBag)
+        splitMethodProvider?.selectedSplitType.asDriver()
+            .drive(onNext: { [weak self] type in
+                self?.redPacketProperty.splitType = type
+            })
+            .disposed(by: disposeBag)
+        inputRedPacketShareTableViewCell.share.asDriver()
+            .drive(onNext: { [weak self] share in
+                self?.redPacketProperty.shareCount = share
+            })
+            .disposed(by: disposeBag)
+        selectRedPacketSenderTableViewCell.viewModel.selectedKey.asDriver()
+            .drive(onNext: { [weak self] sender in
+                self?.redPacketProperty.sender = sender
+            })
+            .disposed(by: disposeBag)
+        
+        // Bind share to amount to setup validator
         inputRedPacketShareTableViewCell.share.asDriver()
             .map { Decimal($0) * Decimal(0.001) }
             .drive(inputRedPacketAmountTableViewCell.minimalAmount)
             .disposed(by: disposeBag)
+    }
+    
+    deinit {
+        os_log("%{public}s[%{public}ld], %{public}s", ((#file as NSString).lastPathComponent), #line, #function)
+
     }
     
 }
@@ -156,6 +192,14 @@ class EditingRedPacketViewController: UIViewController {
         super.viewDidLoad()
         
         title = "Send Red Packet"
+        #if !TARGET_IS_EXTENSION
+        if #available(iOS 13.0, *) {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(EditingRedPacketViewController.closeBarButtonItemPressed(_:)))
+        } else {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(EditingRedPacketViewController.closeBarButtonItemPressed(_:)))
+        }
+        #endif
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(EditingRedPacketViewController.nextBarButtonItemClicked(_:)))
     
         // Layout tableView
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -176,11 +220,6 @@ class EditingRedPacketViewController: UIViewController {
 //        configUI()
     }
     
-    private func configNavBar() {
-//        navigationController?.navigationBar.barTintColor = UIColor._tertiarySystemGroupedBackground
-//        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(nextBarButtonItemClicked))
-    }
-    
     private func configUI() {
 //        amountInputView.inputTextField.keyboardType = .numbersAndPunctuation
 //        sharesValueLabel.text = "\(redPacketProperty.sharesCount)"
@@ -191,16 +230,26 @@ class EditingRedPacketViewController: UIViewController {
 //        configUI()
 //    }
     
-//    @objc
-//    private func nextBarButtonItemClicked() {
-//        let selectRecipientsVC = RedPacketRecipientSelectViewController()
-////        recommendView?.updateColor(theme: currentTheme)
-//        #if TARGET_IS_EXTENSION
-//        selectRecipientsVC.delegate = KeyboardModeManager.shared
-//        selectRecipientsVC.optionFieldView = optionsView
-//        #endif
-//        navigationController?.pushViewController(selectRecipientsVC, animated: true)
-//    }
+}
+
+extension EditingRedPacketViewController {
+    
+    @objc private func closeBarButtonItemPressed(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func nextBarButtonItemClicked(_ sender: UIBarButtonItem) {
+        let selectRecipientsVC = RedPacketRecipientSelectViewController()
+        //        recommendView?.updateColor(theme: currentTheme)
+        #if TARGET_IS_EXTENSION
+        selectRecipientsVC.delegate = KeyboardModeManager.shared
+        selectRecipientsVC.optionFieldView = optionsView
+        #else
+        selectRecipientsVC.delegate = self
+        #endif
+        navigationController?.pushViewController(selectRecipientsVC, animated: true)
+    }
+    
 }
 
 // MARK: - UITableViewDelegate
@@ -221,6 +270,24 @@ extension EditingRedPacketViewController: UIAdaptivePresentationControllerDelega
     
     func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return .fullScreen
+    }
+    
+}
+
+// MAKR: - RedPacketRecipientSelectViewControllerDelegate
+extension EditingRedPacketViewController: RedPacketRecipientSelectViewControllerDelegate {
+    
+    func redPacketRecipientSelectViewController(_ viewController: RedPacketRecipientSelectViewController, didSelect contactInfo: FullContactInfo) {
+        let isContains = viewModel.redPacketProperty.contactInfos.contains { $0.contact.id == contactInfo.contact.id }
+        guard !isContains else {
+            return
+        }
+        
+        viewModel.redPacketProperty.contactInfos.append(contactInfo)
+    }
+    
+    func redPacketRecipientSelectViewController(_ viewController: RedPacketRecipientSelectViewController, didDeselect contactInfo: FullContactInfo) {
+        viewModel.redPacketProperty.contactInfos.removeAll { $0.contact.id == contactInfo.contact.id }
     }
     
 }

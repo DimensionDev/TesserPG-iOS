@@ -140,6 +140,18 @@ extension WalletsViewController {
             button.setTitleColor(.white, for: .normal)
             button.setTitle("Send Red Packet", for: .normal)
             button.rx.tap.bind {
+                guard !WalletService.default.walletModels.value.isEmpty else {
+                    let alertController = UIAlertController(title: "Error", message: "Please create a wallet first", preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: L10n.Common.Button.ok, style: .default, handler: nil)
+                    alertController.addAction(okAction)
+                    
+                    DispatchQueue.main.async { [weak self] in
+                        self?.present(alertController, animated: true, completion: nil)
+                    }
+                    
+                    return
+                }
+                
                 Coordinator.main.present(scene: .sendRedPacket, from: self, transition: .modal, completion: nil)
             }
             .disposed(by: disposeBag)

@@ -189,6 +189,7 @@ extension Coordinator {
             let vc = ImportWalletViewController()
             return vc
         case .sendRedPacket:
+            assert(!WalletService.default.walletModels.value.isEmpty, "Should present alert if no wallet") 
             let vc = EditingRedPacketViewController()
             return vc
         }

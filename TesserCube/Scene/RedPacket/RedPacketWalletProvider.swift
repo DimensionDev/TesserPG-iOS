@@ -7,18 +7,36 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class RedPacketWalletProvider: NSObject {
-    var wallets: [String]
     
-    var selectedWallet: String
+    // Input
+    let walletModels: [WalletModel]
+    private(set) weak var tableView: UITableView?
     
-    init(tableView: UITableView) {
-        wallets = ["0x1191", "0x3389"] //TODO: Real wallets
-        selectedWallet = wallets[0]
+    // Output
+    private(set) var selectIndexPath = IndexPath(row: 0, section: 0) {
+        didSet {
+            if selectIndexPath.row < walletModels.count {
+                selectWalletModel.accept(walletModels[selectIndexPath.row])
+            } else {
+                selectWalletModel.accept(nil)
+            }
+        }
+    }
+    let selectWalletModel = BehaviorRelay<WalletModel?>(value: nil)
+    
+    init(tableView: UITableView, walletModels: [WalletModel]) {
+        self.tableView = tableView
+        self.walletModels = walletModels
+        
         super.init()
+                
         tableView.delegate = self
         tableView.dataSource = self
+        
         tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .none)
     }
     
@@ -29,20 +47,18 @@ class RedPacketWalletProvider: NSObject {
 
 extension RedPacketWalletProvider: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return wallets.count
+        return walletModels.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "DefaultCell")
+        
         cell.contentView.backgroundColor = ._secondarySystemGroupedBackground
         cell.selectionStyle = .none
-        cell.textLabel?.text = wallets[indexPath.row]
+        cell.textLabel?.text =  walletModels[indexPath.row].address
         
-        if (wallets[indexPath.row] == selectedWallet) {
-            cell.accessoryType = .checkmark
-        } else {
-            cell.accessoryType = .none
-        }
+        cell.accessoryType = indexPath == selectIndexPath ? .checkmark : .none
+        
         return cell
     }
 }
@@ -50,10 +66,11 @@ extension RedPacketWalletProvider: UITableViewDataSource {
 extension RedPacketWalletProvider: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        selectedWallet = wallets[indexPath.row]
+        selectIndexPath = indexPath
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .none
+        selectIndexPath = indexPath
     }
 }

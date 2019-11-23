@@ -12,9 +12,6 @@ import RxCocoa
 
 final class InputRedPacketAmoutTableViewCell: UITableViewCell, LeftDetailStyle {
     
-    let disposeBag = DisposeBag()
-    let minimalAmount = BehaviorRelay(value: Decimal(0.001))     // 0.001 ETH
-    
     private let decimalFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -47,6 +44,14 @@ final class InputRedPacketAmoutTableViewCell: UITableViewCell, LeftDetailStyle {
         label.textColor = ._secondaryLabel
         return label
     }()
+    
+    let disposeBag = DisposeBag()
+    
+    // Input
+    let minimalAmount = BehaviorRelay(value: Decimal(0.001))     // 0.001 ETH
+    
+    // Output
+    let amount = BehaviorRelay<Decimal>(value: Decimal(0))
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -103,6 +108,16 @@ final class InputRedPacketAmoutTableViewCell: UITableViewCell, LeftDetailStyle {
         
         // Setup amountTextField
         amountTextField.delegate = self
+        amountTextField.rx.text.asDriver()
+            .drive(onNext: { [weak self] text in
+                guard let amountText = text, let decimal = Decimal(string: amountText) else {
+                    self?.amount.accept(Decimal(0))
+                    return
+                }
+                
+                self?.amount.accept(decimal)
+            })
+            .disposed(by: disposeBag)
         
         minimalAmount.asDriver()
             .drive(onNext: { [weak self] minimalAmount in
