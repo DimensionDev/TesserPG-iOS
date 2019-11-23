@@ -7,8 +7,61 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
+
+final class SelectRedPacketSenderViewModel: NSObject {
+    
+    let disposeBag = DisposeBag()
+    
+    // Input
+    let keys: BehaviorRelay<[TCKey]>
+    let selectedKey = BehaviorRelay<TCKey?>(value: nil)
+    
+    // Output
+    let senderName: Driver<String>
+    let senderShortID: Driver<String>
+    
+    override init() {
+        let secretKeys = ProfileService.default.keys.value.filter { key in
+            return key.hasSecretKey && key.hasPublicKey
+        }
+        keys = BehaviorRelay<[TCKey]>(value: secretKeys)
+
+        ProfileService.default.keys.asDriver()
+            .map { $0.filter { $0.hasSecretKey && $0.hasPublicKey } }
+            .drive(keys)
+            .disposed(by: disposeBag)
+        
+        senderName = selectedKey.asDriver()
+            .map { $0?.name ?? L10n.Common.Label.nameNone }
+        senderShortID = selectedKey.asDriver()
+            .map { $0?.shortIdentifier ?? "" }
+        
+        super.init()
+        
+        selectedKey.accept(keys.value.first)
+    }
+}
+
+// MARK: - UIPickerViewDataSource
+extension SelectRedPacketSenderViewModel: UIPickerViewDataSource {
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return keys.value.count + 1 // [none]
+    }
+    
+}
+
 
 final class SelectRedPacketSenderTableViewCell: UITableViewCell, LeftDetailStyle {
+    
+    let disposeBag = DisposeBag()
+    let viewModel = SelectRedPacketSenderViewModel()
     
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -21,13 +74,19 @@ final class SelectRedPacketSenderTableViewCell: UITableViewCell, LeftDetailStyle
         view.backgroundColor = ._secondarySystemGroupedBackground
         return view
     }()
+    private let senderPickerView: UIPickerView = {
+        let pickerView = UIPickerView()
+        return pickerView
+    }()
     private(set) lazy var senderTextField: UITextField = {
         let textField = UITextField()
+        textField.inputView = senderPickerView
         return textField
     }()
     let dropDownArrowImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = Asset.arrowDropDown24px.image
+        imageView.tintColor = ._secondaryLabel
         return imageView
     }()
     
@@ -84,17 +143,52 @@ final class SelectRedPacketSenderTableViewCell: UITableViewCell, LeftDetailStyle
         dropDownArrowImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         dropDownArrowImageView.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         
-        // Bind stepper target & action
-//        shareStepper.rx.value.asDriver()
-//            .map { Int($0) }
-//            .drive(share)
-//            .disposed(by: disposeBag)
-//
-//        // Setup Stepper label
-//        share.asDriver()
-//            .map { String($0) }
-//            .drive(shareLabel.rx.text)
-//            .disposed(by: disposeBag)
+        // Bind picker data
+        senderPickerView.delegate = self
+        senderPickerView.dataSource = viewModel
+
+        viewModel.keys.asDriver()
+            .drive(onNext: { [weak self] _ in
+                self?.senderPickerView.reloadAllComponents()
+            })
+            .disposed(by: disposeBag)
+        viewModel.senderName.drive(senderTextField.rx.text).disposed(by: disposeBag)
+    }
+    
+}
+
+// MARK: - UIPickerViewDelegate
+extension SelectRedPacketSenderTableViewCell: UIPickerViewDelegate {
+    
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        let label = (view as? UILabel) ?? UILabel()
+        label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
+
+        switch row {
+        case 0..<viewModel.keys.value.count:
+            let key = viewModel.keys.value[row]
+            label.text = [key.name, "(\(key.shortIdentifier))"]
+                .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+                .filter { !$0.isEmpty }
+                .joined(separator: " ")
+
+        default:
+            label.text = L10n.Common.Label.nameNone
+
+        }
+
+        return label
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        guard row < viewModel.keys.value.count else {
+            viewModel.selectedKey.accept(nil)
+            return
+        }
+
+        let key =  viewModel.keys.value[row]
+        viewModel.selectedKey.accept(key)
     }
     
 }
