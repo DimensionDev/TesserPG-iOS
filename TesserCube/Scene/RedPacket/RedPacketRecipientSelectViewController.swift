@@ -88,17 +88,14 @@ class RedPacketRecipientSelectViewController: UIViewController {
     
     private func configUI() {
         view.backgroundColor = UIColor._tertiarySystemGroupedBackground
-        titleLabelView.addSubview(titleLabel)
         
+        #if TARGET_IS_EXTENSION
+        titleLabelView.addSubview(titleLabel)
         titleLabelView.addSubview(recipientInputView)
         recipientInputView.inputTextField.textFieldIsSelected = true
         recipientInputView.inputTextField.customDelegate = self
-        recipientsTableView.delegate = self
-        recipientsTableView.dataSource = self
         
         view.addSubview(titleLabelView)
-        view.addSubview(recipientsTableView)
-        
         view.bringSubviewToFront(titleLabelView)
         
         titleLabel.snp.makeConstraints { make in
@@ -118,10 +115,16 @@ class RedPacketRecipientSelectViewController: UIViewController {
             make.top.equalTo(self.view.layoutMarginsGuide)
             make.height.equalTo(titleLabelHeight)
         }
+        #endif
         
+        view.addSubview(recipientsTableView)
         recipientsTableView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+            #if TARGET_IS_EXTENSION
             make.top.equalTo(titleLabelView.snp.bottom)
+            #else
+            make.top.equalToSuperview()
+            #endif
+            make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
         }
         
@@ -130,6 +133,9 @@ class RedPacketRecipientSelectViewController: UIViewController {
 //            make.top.equalTo(recipientsTableView.snp.bottom).offset(16)
 //        }
         
+        // Setup recipientsTableView
+        recipientsTableView.delegate = self
+        recipientsTableView.dataSource = self
         bindData()
     }
     

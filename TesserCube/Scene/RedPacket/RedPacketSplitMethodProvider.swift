@@ -7,16 +7,21 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class RedPacketSplitMethodProvider: NSObject {
     
-    var selectedSplitType: RedPacketProperty.SplitType
+    let selectedSplitType: BehaviorRelay<RedPacketProperty.SplitType>
     
     init(redPacketProperty: RedPacketProperty, tableView: UITableView) {
-        selectedSplitType = redPacketProperty.splitType
+        selectedSplitType = BehaviorRelay(value: redPacketProperty.splitType)
+        
         super.init()
+        
         tableView.delegate = self
         tableView.dataSource = self
+        
         tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .none)
     }
     
@@ -34,7 +39,8 @@ extension RedPacketSplitMethodProvider: UITableViewDataSource {
         let cell = UITableViewCell(style: .default, reuseIdentifier: String(describing: Self.self))
         cell.selectionStyle = .none
         cell.textLabel?.text = RedPacketProperty.SplitType.allCases[indexPath.row].title
-        if RedPacketProperty.SplitType.allCases[indexPath.row] == selectedSplitType {
+        
+        if RedPacketProperty.SplitType.allCases[indexPath.row] == selectedSplitType.value {
             cell.accessoryType = .checkmark
         } else {
             cell.accessoryType = .none
@@ -46,7 +52,9 @@ extension RedPacketSplitMethodProvider: UITableViewDataSource {
 extension RedPacketSplitMethodProvider: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        selectedSplitType = RedPacketProperty.SplitType.allCases[indexPath.row]
+        
+        let type = RedPacketProperty.SplitType.allCases[indexPath.row]
+        selectedSplitType.accept(type)
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
