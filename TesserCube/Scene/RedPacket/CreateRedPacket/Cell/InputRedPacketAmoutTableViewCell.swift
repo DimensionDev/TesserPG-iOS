@@ -7,8 +7,22 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 final class InputRedPacketAmoutTableViewCell: UITableViewCell, LeftDetailStyle {
+    
+    let disposeBag = DisposeBag()
+    let minimalAmount = BehaviorRelay(value: Decimal(0.001))     // 0.001 ETH
+    
+    private let decimalFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.minimumIntegerDigits = 1
+        formatter.maximumFractionDigits = 9 // percision to 1gwei
+        formatter.groupingSeparator = ""
+        return formatter
+    }()
         
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -21,10 +35,10 @@ final class InputRedPacketAmoutTableViewCell: UITableViewCell, LeftDetailStyle {
         view.backgroundColor = ._secondarySystemGroupedBackground
         return view
     }()
-    let amountTextField: UITextField = {
+    lazy var amountTextField: UITextField = {
         let textField = UITextField()
         textField.keyboardType = .decimalPad
-        textField.placeholder = "0.0"
+        textField.placeholder = self.decimalFormatter.string(from: self.minimalAmount.value as NSNumber)
         return textField
     }()
     let coinCurrencyUnitLabel: UILabel = {
@@ -86,6 +100,64 @@ final class InputRedPacketAmoutTableViewCell: UITableViewCell, LeftDetailStyle {
         ])
         coinCurrencyUnitLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         coinCurrencyUnitLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        
+        // Setup amountTextField
+        amountTextField.delegate = self
+        
+        minimalAmount.asDriver()
+            .drive(onNext: { [weak self] minimalAmount in
+                guard let `self` = self else { return }
+                let minimalAmountText = self.decimalFormatter.string(from: minimalAmount as NSNumber)
+                
+                // Update placeholder
+                self.amountTextField.placeholder = minimalAmountText
+                
+                // Update text if less than min amount value
+                if let text = self.amountTextField.text,
+                let amount = Decimal(string: text), amount < minimalAmount {
+                    self.amountTextField.text = minimalAmountText
+                }
+            })
+            .disposed(by: disposeBag)
+        
+    }
+    
+}
+
+// MARK: - UITextFieldDelegate
+extension InputRedPacketAmoutTableViewCell: UITextFieldDelegate {
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard textField === amountTextField else {
+            return true
+        }
+        
+        // empty
+        if string.isEmpty {
+            return true
+        }
+        
+        guard Decimal(string: string) != nil else {
+            return false
+        }
+        
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        guard textField === amountTextField else {
+            return
+        }
+        
+        guard let text = textField.text, let decimal = Decimal(string: text) else {
+            return
+        }
+        
+        if decimal < minimalAmount.value {
+            textField.text = decimalFormatter.string(from: minimalAmount.value as NSNumber)
+        } else {
+            textField.text = decimalFormatter.string(from: decimal as NSNumber)
+        }
     }
     
 }
