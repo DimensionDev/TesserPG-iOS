@@ -78,12 +78,13 @@ class RedPacketRecipientSelectViewController: UIViewController {
 
     private func configNavBar() {
         title = "Select Recipients"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Send", style: .plain, target: self, action: #selector(createRedPacketButtonDidClicked))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Send", style: .plain, target: self, action: #selector(RedPacketRecipientSelectViewController.sendBarButtonItemDidPressed(_:)))
     }
     
     @objc
-    private func createRedPacketButtonDidClicked() {
-
+    private func sendBarButtonItemDidPressed(_ sender: UIBarButtonItem) {
+        let viewController = CreatedRedPacketViewController()
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
     private func configUI() {
