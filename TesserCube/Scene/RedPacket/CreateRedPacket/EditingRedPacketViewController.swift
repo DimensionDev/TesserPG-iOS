@@ -7,8 +7,12 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 final class EditingRedPacketViewModel: NSObject {
+    
+    let disposeBag = DisposeBag()
     
     enum TableViewCellType {
         case walletSelect           // select a wallet to send red packet
@@ -38,6 +42,7 @@ final class EditingRedPacketViewModel: NSObject {
     
     var redPacketProperty = RedPacketProperty()
     
+    // Hold all cell instance in view model
     let selectWalletTableViewCell = SelectWalletTableViewCell()
     var walletProvider: RedPacketWalletProvider?
     
@@ -53,6 +58,11 @@ final class EditingRedPacketViewModel: NSObject {
     override init() {
         walletProvider = RedPacketWalletProvider(tableView: selectWalletTableViewCell.tableView)
         splitMethodProvider = RedPacketSplitMethodProvider(redPacketProperty: redPacketProperty, tableView: selectRedPacketSplitModeTableViewCell.tableView)
+        
+        inputRedPacketShareTableViewCell.share.asDriver()
+            .map { Decimal($0) * Decimal(0.001) }
+            .drive(inputRedPacketAmountTableViewCell.minimalAmount)
+            .disposed(by: disposeBag)
     }
     
 }
