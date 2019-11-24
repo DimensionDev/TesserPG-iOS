@@ -240,6 +240,7 @@ extension EditingRedPacketViewController {
     
     @objc private func nextBarButtonItemClicked(_ sender: UIBarButtonItem) {
         let selectRecipientsVC = RedPacketRecipientSelectViewController()
+        selectRecipientsVC.redPacketProperty = viewModel.redPacketProperty
         //        recommendView?.updateColor(theme: currentTheme)
         #if TARGET_IS_EXTENSION
         selectRecipientsVC.delegate = KeyboardModeManager.shared

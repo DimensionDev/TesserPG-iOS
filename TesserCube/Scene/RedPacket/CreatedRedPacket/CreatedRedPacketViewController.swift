@@ -61,6 +61,7 @@ extension CreatedRedPacketViewController {
         
         title = "Red Packet Created"
         navigationItem.hidesBackButton = true
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(CreatedRedPacketViewController.doneBarButtonItemPressed(_:)))
         
         // Layout tableView
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -83,6 +84,51 @@ extension CreatedRedPacketViewController {
         
         // Setup tableView
         tableView.dataSource = viewModel
+
+        // Setup bottomActionsView
+        #if !TARGET_IS_EXTENSION
+        reloadActionsView()
+        #endif
+    }
+    
+}
+
+#if !TARGET_IS_EXTENSION
+extension CreatedRedPacketViewController {
+    
+    private func reloadActionsView() {
+        bottomActionsView.arrangedSubviews.forEach { subview in
+            bottomActionsView.removeArrangedSubview(subview)
+            subview.removeFromSuperview()
+        }
+        
+        let hintLabel: UILabel = {
+            let label = UILabel()
+            label.numberOfLines = 0
+            label.text = "Recipients may interpret the hint with Tesercube to open the Red Packet."
+            label.font = FontFamily.SFProDisplay.regular.font(size: 20)
+            label.lineBreakMode = .byWordWrapping
+            label.textAlignment = .center
+            return label
+        }()
+        let shareRedPacketButton: TCActionButton = {
+            let button = TCActionButton()
+            button.color = .systemBlue
+            button.setTitle("Share Red Packet", for: .normal)
+            button.setTitleColor(.white, for: .normal)
+            return button
+        }()
+        
+        bottomActionsView.addArrangedSubview(hintLabel)
+        bottomActionsView.addArrangedSubview(shareRedPacketButton)
+    }
+}
+#endif
+
+extension CreatedRedPacketViewController {
+    
+    @objc private func doneBarButtonItemPressed(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
     }
     
 }

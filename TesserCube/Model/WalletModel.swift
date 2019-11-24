@@ -36,7 +36,7 @@ public class WalletModel {
         balanceInDecimal = balance.asDriver()
             .map { balance in
                 guard let balance = balance else { return nil }
-                return Decimal(string: String(balance)) ?? Decimal(0) / HDWallet.CoinType.ether.exponent
+                return (Decimal(string: String(balance)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
             }
 
         defer {
