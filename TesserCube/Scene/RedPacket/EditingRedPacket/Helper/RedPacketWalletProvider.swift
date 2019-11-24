@@ -37,7 +37,9 @@ class RedPacketWalletProvider: NSObject {
         tableView.delegate = self
         tableView.dataSource = self
         
-        tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .none)
+        // Select first
+        tableView.selectRow(at: selectIndexPath, animated: false, scrollPosition: .none)
+        selectWalletModel.accept(walletModels.first)
     }
     
     override init() {

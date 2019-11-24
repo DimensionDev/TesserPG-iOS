@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import BigInt
+import DMS_HDWallet_Cocoa
 
 class RedPacketProperty {
     
@@ -29,5 +31,29 @@ class RedPacketProperty {
     var splitType: SplitType = .average
     var shareCount: Int = 1
     var sender: TCKey?
-    var contactInfos: [FullContactInfo] = []    // selected red packet recipients
+    
+    // selected red packet recipients
+    var contactInfos: [FullContactInfo] = [] {
+        didSet {
+            uuids = contactInfos.map { _ in UUID().uuidString }
+        }
+    }
+    var uuids: [String] = []
+}
+
+extension RedPacketProperty {
+    
+    var amountInWei: BigUInt? {
+        let wei = HDWallet.CoinType.ether.exponent * amount
+        let weiInString: String = {
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            formatter.minimumIntegerDigits = 1
+            formatter.groupingSeparator = ""
+            
+            return formatter.string(from: wei as NSNumber)!
+        }()
+        return BigUInt(weiInString)
+    }
+    
 }

@@ -17,11 +17,11 @@ class Web3Tests: XCTestCase {
 
     override func setUp() {
         // rinkeby
-        // let web3 = Web3(rpcURL: "https://rinkeby.infura.io/v3/823d2b1356e24d7fbd3b1ae954c6db19")
+        web3 = Web3(rpcURL: "https://rinkeby.infura.io/v3/823d2b1356e24d7fbd3b1ae954c6db19")
         
         // local
         // let web3 = Web3(rpcURL: "HTTP://127.0.0.1:7545")
-        web3 = Web3(rpcURL: "HTTP://127.0.0.1:8545")
+        // web3 = Web3(rpcURL: "HTTP://127.0.0.1:8545")
     }
 
     func testSmoke() {
@@ -191,10 +191,14 @@ extension Web3Tests {
         XCTAssertEqual(invocation.parameters.count, 3)
         XCTAssertEqual(invocation.byteCode, contractByteCode)
         
+        // Rinkeby test account
+        let mnemonic = ["ensure", "fossil", "scan", "dash", "tomato", "country", "draft", "organ", "loud", "garbage", "keen", "cat"]
+        let passphrase = "dimension"
         
         // Ganache test account
-        let mnemonic = ["flower", "parent", "dizzy", "mercy", "sentence", "wall", "weird", "measure", "chicken", "shoulder", "broom", "island"]
-        let wallet = try! HDWallet(mnemonic: mnemonic, passphrase: "", network: .mainnet(.ether))
+        // let mnemonic = ["flower", "parent", "dizzy", "mercy", "sentence", "wall", "weird", "measure", "chicken", "shoulder", "broom", "island"]
+        // let passphrase = ""
+        let wallet = try! HDWallet(mnemonic: mnemonic, passphrase: passphrase, network: .mainnet(.ether))
         let address = try! wallet.address()
         let ethereumAddress = try! EthereumAddress(hex: address, eip55: false)
 
@@ -222,19 +226,38 @@ extension Web3Tests {
         let signedTransaction = try! transaction!.sign(with: privateKey, chainId: chainID)
         XCTAssertNotNil(signedTransaction)
         
+        var transactionHash: EthereumData?
         // send transaction
         let deployExpectation = expectation(description: "delpoy")
         web3.eth.sendRawTransaction(transaction: signedTransaction) { response in
             switch response.status {
             case let .success(data):
                 print(data.hex())
+                transactionHash = data
                 deployExpectation.fulfill()
 
             case let .failure(error):
                 XCTFail(error.localizedDescription)
             }
         }
-        wait(for: [deployExpectation], timeout: 300)
+        wait(for: [deployExpectation], timeout: 30)
+        
+        var contractAddress: EthereumData?
+        let contractExpectation = expectation(description: "contractExpectation")
+        XCTAssertNotNil(transactionHash)
+        web3.eth.getTransactionReceipt(transactionHash: transactionHash!) { response in
+            guard let result = response.result else {
+                XCTFail()
+                return
+            }
+            
+            contractAddress = result?.contractAddress
+            XCTAssertNotNil(contractAddress)
+            print("Contract: \(contractAddress?.hex() ?? "nil")")
+            contractExpectation.fulfill()
+            
+        }
+        wait(for: [contractExpectation], timeout: 30)
     }
     
     func testClaim() {

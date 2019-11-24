@@ -14,7 +14,9 @@ import Web3
 
 final public class WalletService {
 
-    static let web3 = Web3(rpcURL: "https://ropsten.infura.io/v3/823d2b1356e24d7fbd3b1ae954c6db19")
+    static let web3 = Web3(rpcURL: "https://rinkeby.infura.io/v3/823d2b1356e24d7fbd3b1ae954c6db19")
+    static let chainID: EthereumQuantity = 4   // rinkeby
+
 
     private let keychain: Keychain
     private let disposeBag = DisposeBag()

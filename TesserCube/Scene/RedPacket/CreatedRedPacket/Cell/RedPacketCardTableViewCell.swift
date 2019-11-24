@@ -36,36 +36,44 @@ final class RedPacketCardTableViewCell: UITableViewCell {
 
     let cardView: TCCardView = {
         let cardView = TCCardView()
-        cardView.cardBackgroundColor = .systemPurple
+        cardView.cardBackgroundColor = .systemRed
         return cardView
     }()
-    let headerLabel: UILabel = {
+    let nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "****"
-        label.font = FontFamily.SFProDisplay.medium.font(size: 20)
-        label.textColor = .white
+        label.font = FontFamily.SFProDisplay.bold.font(size: 14)
+        label.textColor = .systemYellow
         return label
     }()
-    let captionLabel: UILabel = {
+    let emailLabel: UILabel = {
         let label = UILabel()
-        label.text = "********************\n********************"
-        label.font = FontFamily.SourceCodeProMedium.regular.font(size: 14)
-        label.numberOfLines = 2
-        label.textColor = .white
+        label.font = FontFamily.SFProDisplay.regular.font(size: 14)
+        label.textColor = .systemYellow
         return label
     }()
-    let balanceLabel: UILabel = {
+    let redPacketStatusLabel: UILabel = {
         let label = UILabel()
-        label.text = "Balance:"
-        label.font = FontFamily.SFProDisplay.medium.font(size: 17)
-        label.textColor = .white
+        label.font = FontFamily.SFProDisplay.regular.font(size: 22)
+        label.textColor = .systemYellow
         return label
     }()
-    let balanceAmountLabel: UILabel = {
+    let redPacketDetailLabel: UILabel = {
         let label = UILabel()
-        label.text = "- ETH"
-        label.font = RedPacketCardTableViewCell.SFAlternativesFormFont
-        label.textColor = .white
+        label.font = FontFamily.SFProText.regular.font(size: 14)
+        label.textColor = .systemYellow
+        return label
+    }()
+    let createdDateLabel: UILabel = {
+        let label = UILabel()
+        label.font = FontFamily.SFProText.regular.font(size: 14)
+        label.textColor = .systemYellow
+        return label
+    }()
+    let indicatorLabel: UILabel = {
+        let label = UILabel()
+        label.font = FontFamily.SFProText.regular.font(size: 14)
+        label.textColor = .systemYellow
+        label.textAlignment = .right
         return label
     }()
 
@@ -73,11 +81,6 @@ final class RedPacketCardTableViewCell: UITableViewCell {
         super.prepareForReuse()
 
         disposeBag = DisposeBag()
-
-        headerLabel.text = "****"
-        captionLabel.text = "********************\n********************"
-        balanceLabel.text = "Balance:"
-        balanceAmountLabel.text = "- ETH"
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -93,9 +96,10 @@ final class RedPacketCardTableViewCell: UITableViewCell {
         backgroundColor = .clear
         
         // - Card
-        //  - Header
-        //  - Caption
-        //  - Balance + BalanceAmount
+        //  - Name | Mail
+        //  - RedPacketStatus
+        //  - RedPacketDetail
+        //  - CreatedDate | Indicator
         cardView.layoutMargins = UIEdgeInsets(top: 12, left: 16, bottom: 12, right: 16)
         cardView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(cardView)
@@ -105,39 +109,64 @@ final class RedPacketCardTableViewCell: UITableViewCell {
             cardView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: cardView.bottomAnchor, constant: RedPacketCardTableViewCell.cardVerticalMargin),
         ])
-
-        headerLabel.translatesAutoresizingMaskIntoConstraints = false
-        cardView.addSubview(headerLabel)
+        
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(nameLabel)
         NSLayoutConstraint.activate([
-            headerLabel.topAnchor.constraint(equalTo: cardView.layoutMarginsGuide.topAnchor),
-            headerLabel.leadingAnchor.constraint(equalTo: cardView.layoutMarginsGuide.leadingAnchor),
-            headerLabel.trailingAnchor.constraint(equalTo: cardView.layoutMarginsGuide.trailingAnchor),
+            nameLabel.topAnchor.constraint(equalTo: cardView.layoutMarginsGuide.topAnchor),
+            nameLabel.leadingAnchor.constraint(equalTo: cardView.layoutMarginsGuide.leadingAnchor),
+        ])
+        nameLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        nameLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        
+        emailLabel.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(emailLabel)
+        NSLayoutConstraint.activate([
+            emailLabel.firstBaselineAnchor.constraint(equalTo: nameLabel.firstBaselineAnchor),
+            emailLabel.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 4),
+            emailLabel.trailingAnchor.constraint(equalTo: cardView.layoutMarginsGuide.trailingAnchor),
         ])
 
-        captionLabel.translatesAutoresizingMaskIntoConstraints = false
-        cardView.addSubview(captionLabel)
+        redPacketStatusLabel.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(redPacketStatusLabel)
         NSLayoutConstraint.activate([
-            captionLabel.topAnchor.constraint(equalToSystemSpacingBelow: headerLabel.bottomAnchor, multiplier: 1.0),
-            captionLabel.leadingAnchor.constraint(equalTo: cardView.layoutMarginsGuide.leadingAnchor),
-            captionLabel.trailingAnchor.constraint(equalTo: cardView.layoutMarginsGuide.trailingAnchor),
+            redPacketStatusLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
+            redPacketStatusLabel.leadingAnchor.constraint(equalTo: cardView.layoutMarginsGuide.leadingAnchor),
+            redPacketStatusLabel.trailingAnchor.constraint(equalTo: cardView.layoutMarginsGuide.trailingAnchor),
+        ])
+        redPacketStatusLabel.setContentHuggingPriority(.defaultLow, for: .vertical)
+
+        redPacketDetailLabel.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(redPacketDetailLabel)
+        NSLayoutConstraint.activate([
+            redPacketDetailLabel.topAnchor.constraint(equalTo: redPacketStatusLabel.bottomAnchor, constant: 8),
+            redPacketDetailLabel.leadingAnchor.constraint(equalTo: cardView.layoutMarginsGuide.leadingAnchor),
+            redPacketDetailLabel.trailingAnchor.constraint(equalTo: cardView.layoutMarginsGuide.trailingAnchor),
         ])
 
-        balanceLabel.translatesAutoresizingMaskIntoConstraints = false
-        cardView.addSubview(balanceLabel)
+        createdDateLabel.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(createdDateLabel)
         NSLayoutConstraint.activate([
-            balanceLabel.topAnchor.constraint(equalToSystemSpacingBelow: captionLabel.bottomAnchor, multiplier: 1.0),
-            balanceLabel.leadingAnchor.constraint(equalTo: cardView.layoutMarginsGuide.leadingAnchor),
-            cardView.layoutMarginsGuide.bottomAnchor.constraint(equalTo: balanceLabel.bottomAnchor),
+            createdDateLabel.topAnchor.constraint(equalTo: redPacketDetailLabel.bottomAnchor),
+            createdDateLabel.leadingAnchor.constraint(equalTo: cardView.layoutMarginsGuide.leadingAnchor),
+            cardView.layoutMarginsGuide.bottomAnchor.constraint(equalTo: createdDateLabel.bottomAnchor),
         ])
-        balanceLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-
-        balanceAmountLabel.translatesAutoresizingMaskIntoConstraints = false
-        cardView.addSubview(balanceAmountLabel)
+        
+        indicatorLabel.translatesAutoresizingMaskIntoConstraints = false
+        cardView.addSubview(indicatorLabel)
         NSLayoutConstraint.activate([
-            balanceAmountLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: balanceLabel.trailingAnchor, multiplier: 1.0),
-            balanceAmountLabel.centerYAnchor.constraint(equalTo: balanceLabel.centerYAnchor),
-            balanceAmountLabel.trailingAnchor.constraint(equalTo: cardView.layoutMarginsGuide.trailingAnchor),
+            indicatorLabel.firstBaselineAnchor.constraint(equalTo: createdDateLabel.firstBaselineAnchor),
+            indicatorLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: createdDateLabel.trailingAnchor, multiplier: 1.0),
+            indicatorLabel.trailingAnchor.constraint(equalTo: cardView.layoutMarginsGuide.trailingAnchor),
         ])
+        indicatorLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        
+        nameLabel.text = "Name"
+        emailLabel.text = "(name@mail.com)"
+        redPacketStatusLabel.text = "Outgoing Red Packet"
+        redPacketDetailLabel.text = "Giving 0.2 ETH / 3 shares"
+        createdDateLabel.text = "2 hr ago created"
+        indicatorLabel.text = "Publishing…"
 
         // Setup appearance
         clipsToBounds = false
@@ -155,7 +184,7 @@ struct RedPacketCardTableViewCell_Preview: PreviewProvider {
         UIViewPreview {
             return RedPacketCardTableViewCell()
         }
-        .previewLayout(.fixed(width: 414, height: 122))
+        .previewLayout(.sizeThatFits)
     }
 }
 #endif
