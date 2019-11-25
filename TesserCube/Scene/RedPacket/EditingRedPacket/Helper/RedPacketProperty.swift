@@ -29,15 +29,15 @@ class RedPacketProperty {
     var walletModel: WalletModel?
     var amount: Decimal = 0
     var splitType: SplitType = .average
-    var shareCount: Int = 1
+    var shareCount: Int = 1 {
+        didSet {
+            uuids = (0..<shareCount).map { _ in UUID().uuidString }
+        }
+    }
     var sender: TCKey?
     
     // selected red packet recipients
-    var contactInfos: [FullContactInfo] = [] {
-        didSet {
-            uuids = contactInfos.map { _ in UUID().uuidString }
-        }
-    }
+    var contactInfos: [FullContactInfo] = []
     private(set) var uuids: [String] = []
 }
 
