@@ -58,6 +58,14 @@ final class CreatedRedPacketViewModel: NSObject {
             .disposed(by: disposeBag)
     }
     
+    deinit {
+        redPacketNotificationToken?.invalidate()
+    }
+    
+}
+
+extension CreatedRedPacketViewModel {
+    
     func deployRedPacketContract() {
         Observable.just(redPacketProperty)
             .withLatestFrom(isDeploying) { ($0, $1) }     // (redPacketProperty, isDeploying)
@@ -107,10 +115,31 @@ final class CreatedRedPacketViewModel: NSObject {
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] contractAddress in
                 guard let `self` = self else { return }
-                // update red packet contractAddress & status
-                try! self.realm.write {
-                    self.redPacket.contractAddress = contractAddress.hex()
-                    self.redPacket.status = .normal
+                
+                let contractAddressHex = contractAddress.hex()
+
+                assert(self.redPacketProperty.sender != nil)
+                let sender = self.redPacketProperty.sender!
+                
+                let recipients = self.redPacketProperty.contactInfos.compactMap { $0.keys.first }
+                
+                do {
+                    // Encrypt message without sign
+                    let messageBody = CreatedRedPacketViewModel.messageBody(for: self.redPacketProperty, contractAddress: contractAddressHex)
+                    let armored = try KeyFactory.encryptMessage(messageBody, signatureKey: nil, recipients: recipients)
+                    
+                    var message = Message(id: nil, senderKeyId: "", senderKeyUserId: "", composedAt: self.redPacket.createdAt as Date, interpretedAt: nil, isDraft: false, rawMessage: messageBody, encryptedMessage: armored)
+                    let messageInDB = try ProfileService.default.addMessage(&message, recipientKeys: recipients)
+
+                    self.message.accept(messageInDB)
+                    
+                    // update red packet contractAddress & status
+                    try! self.realm.write {
+                        self.redPacket.contractAddress = contractAddressHex
+                        self.redPacket.status = .normal
+                    }
+                } catch {
+                    self.error.accept(error)
                 }
                 os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, contractAddress.hex())
             }, onError: { error in
@@ -120,8 +149,21 @@ final class CreatedRedPacketViewModel: NSObject {
             .disposed(by: disposeBag)
     }
     
-    deinit {
-        redPacketNotificationToken?.invalidate()
+}
+
+extension CreatedRedPacketViewModel {
+    
+    static func messageBody(for redPacketProperty: RedPacketProperty, contractAddress: String) -> String {
+        let senderPublicKeyFingerprint = redPacketProperty.sender?.fingerprint ?? ""
+        let senderUserID = redPacketProperty.sender?.userID ?? ""
+        let uuids = redPacketProperty.uuids.joined(separator: "\n")
+        return """
+        -----BEGIN RED PACKET-----
+        \(senderPublicKeyFingerprint):\(senderUserID)
+        \(contractAddress)
+        \(uuids)
+        -----END RED PACKET-----
+        """
     }
     
 }

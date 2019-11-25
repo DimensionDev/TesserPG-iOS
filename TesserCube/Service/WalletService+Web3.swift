@@ -44,7 +44,7 @@ extension WalletService {
                 print("\(uuid): \(hash.toHexString())")
                 return BigUInt(hash)
             }
-            let ifrandom: Bool = true
+            let ifrandom: Bool = redPacketProperty.splitType == .random
             let expirationTime: BigUInt = {
                 let nextWeek = Calendar.current.date(byAdding: .day, value: 7, to: Date())!
                 return BigUInt(nextWeek.timeIntervalSince1970)
