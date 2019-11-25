@@ -131,6 +131,10 @@ final class InputRedPacketAmoutTableViewCell: UITableViewCell, LeftDetailStyle {
                 if let text = self.amountTextField.text,
                 let amount = Decimal(string: text), amount < minimalAmount {
                     self.amountTextField.text = minimalAmountText
+                } else {
+                    // only placeholder display
+                    // manually update amount data model
+                    self.amount.accept(minimalAmount)
                 }
             })
             .disposed(by: disposeBag)

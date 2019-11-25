@@ -149,7 +149,7 @@ extension WalletService {
             }
             
             let _createContractTransaction: EthereumTransaction? = {
-                let value = EthereumQuantity(quantity: redPacketProperty.amountInWei!)
+                let value = EthereumQuantity(quantity: redPacketProperty.amountInWei)
                 let gas: EthereumQuantity = 3000000
                 let gasPrice = EthereumQuantity(quantity: 1.gwei)
                 return invocation.createTransaction(nonce: nonce, from: walletAddress, value: value, gas: gas, gasPrice: gasPrice)
@@ -182,8 +182,7 @@ extension WalletService {
             throw Error.invalidWallet
         }
         
-        guard redPacketProperty.amount > redPacketMinAmount,
-        let _ = redPacketProperty.amountInWei else {
+        guard redPacketProperty.amount >= redPacketMinAmount else {
             throw Error.invalidAmount
         }
         
