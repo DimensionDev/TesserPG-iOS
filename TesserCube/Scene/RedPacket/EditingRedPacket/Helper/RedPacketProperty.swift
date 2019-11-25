@@ -31,7 +31,7 @@ class RedPacketProperty {
     var splitType: SplitType = .average
     var shareCount: Int = 1 {
         didSet {
-            uuids = (0..<shareCount).map { _ in UUID().uuidString }
+            uuids = (0..<shareCount).map { _ in UUID().uuidString.lowercased() }
         }
     }
     var sender: TCKey?

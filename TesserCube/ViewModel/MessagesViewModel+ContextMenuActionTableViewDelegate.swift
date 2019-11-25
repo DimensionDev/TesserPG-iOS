@@ -205,61 +205,72 @@ extension MessagesViewModel {
 extension MessagesViewModel: ContextMenuActionTableViewDelegate {
 
     func tableView(_ tableView: UITableView, presentingViewController: UIViewController, actionsforRowAt indexPath: IndexPath, isContextMenu: Bool) -> [ContextMenuAction] {
-        guard let cell = tableView.cellForRow(at: indexPath) as? MessageCardCell else {
-            return []
-        }
         let message = messages.value[indexPath.row]
 
-        if message.isDraft {
-            // Draft:
-            //  - Edit
-            //  - Finish Draft (markAsFinished)
-            //  - Delete
-            //  - Cancel
-            return [
-                Action.edit(message: message, presentingViewController: presentingViewController),
-                Action.finishDraft(message: message, presentingViewController: presentingViewController, disposeBag: self.disposeBag),
-                Action.delete(message: message, presentingViewController: presentingViewController, cell: cell),
-                Action.cancel,
-            ]
-        } else {
-            let isSignedByOthers: Bool = {
-                let signatureKey = ProfileService.default.keys.value
-                    .filter { $0.hasSecretKey }
-                    .first(where: { key in key.longIdentifier == message.senderKeyId })
-                return signatureKey == nil && message.composedAt == nil
-            }()
-
-            if isSignedByOthers {
-                // Sign by other so message is not editable
-                // Message from others:
-                //  - Copy Message Content
-                //  - COpy Enctyped Message
+        if let cell = tableView.cellForRow(at: indexPath) as? MessageCardCell {
+            if message.isDraft {
+                // Draft:
+                //  - Edit
+                //  - Finish Draft (markAsFinished)
                 //  - Delete
                 //  - Cancel
                 return [
-                    Action.copyMessageContent(message: message),
-                    Action.copyPayload(message: message),
+                    Action.edit(message: message, presentingViewController: presentingViewController),
+                    Action.finishDraft(message: message, presentingViewController: presentingViewController, disposeBag: self.disposeBag),
                     Action.delete(message: message, presentingViewController: presentingViewController, cell: cell),
                     Action.cancel,
                 ]
             } else {
-                // Compose on this device and is editable
-                // Message from self:
-                //  - Share Encrypted Message
-                //  - Copy Message Content
-                //  - Re-Compose
-                //  - Delete
-                //  - Cancel
-                return [
-                    Action.shareArmoredMessage(message: message, presentingViewController: presentingViewController, cell: cell),
-                    Action.copyMessageContent(message: message),
-                    Action.recomposeMessage(message: message, presentingViewController: presentingViewController),
-                    Action.delete(message: message, presentingViewController: presentingViewController, cell: cell),
-                    Action.cancel,
-                ]
-            }
-        }   // end if … else …
+                let isSignedByOthers: Bool = {
+                    let signatureKey = ProfileService.default.keys.value
+                        .filter { $0.hasSecretKey }
+                        .first(where: { key in key.longIdentifier == message.senderKeyId })
+                    return signatureKey == nil && message.composedAt == nil
+                }()
+
+                if isSignedByOthers {
+                    // Sign by other so message is not editable
+                    // Message from others:
+                    //  - Copy Message Content
+                    //  - COpy Enctyped Message
+                    //  - Delete
+                    //  - Cancel
+                    return [
+                        Action.copyMessageContent(message: message),
+                        Action.copyPayload(message: message),
+                        Action.delete(message: message, presentingViewController: presentingViewController, cell: cell),
+                        Action.cancel,
+                    ]
+                } else {
+                    // Compose on this device and is editable
+                    // Message from self:
+                    //  - Share Encrypted Message
+                    //  - Copy Message Content
+                    //  - Re-Compose
+                    //  - Delete
+                    //  - Cancel
+                    return [
+                        Action.shareArmoredMessage(message: message, presentingViewController: presentingViewController, cell: cell),
+                        Action.copyMessageContent(message: message),
+                        Action.recomposeMessage(message: message, presentingViewController: presentingViewController),
+                        Action.delete(message: message, presentingViewController: presentingViewController, cell: cell),
+                        Action.cancel,
+                    ]
+                }
+            }   // end if … else …
+        }   // MessageCardCell
+        
+        if let cell = tableView.cellForRow(at: indexPath) as? RedPacketCardTableViewCell {
+            // Red Packet:
+            //  - Delete
+            //  - Cancel
+            return [
+                Action.delete(message: message, presentingViewController: presentingViewController, cell: cell),
+                Action.cancel,
+            ]
+        }
+        
+        return []
     }
 
 }

@@ -117,10 +117,6 @@ extension CreatedRedPacketViewModel {
                 guard let `self` = self else { return }
                 
                 let contractAddressHex = contractAddress.hex()
-
-                assert(self.redPacketProperty.sender != nil)
-                let sender = self.redPacketProperty.sender!
-                
                 let recipients = self.redPacketProperty.contactInfos.compactMap { $0.keys.first }
                 
                 do {
