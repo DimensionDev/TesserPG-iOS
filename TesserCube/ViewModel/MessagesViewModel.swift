@@ -176,33 +176,7 @@ extension MessagesViewModel {
     func configureDataSource(tableView: UITableView) {
         diffableDataSource = MultipleSelectableDiffableTableViewDataSource<Section, Message>(tableView: tableView) { [weak self] tableView, indexPath, message -> UITableViewCell? in
             guard let `self` = self else { return nil }
-
-            let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: MessageCardCell.self), for: indexPath) as! MessageCardCell
-            MessagesViewModel.configure(messageCardCell: cell, with: message)
-
-            guard let id = message.id else { return cell }
-            // cell expand logic
-            if let isExpand = self.messageExpandedIDDict[id],
-            let maxNumberOfLines = self.messageMaxNumberOfLinesIDDict[id] {
-                cell.messageLabel.numberOfLines = isExpand ? 0 : 4
-                cell.extraBackgroundViewHeightConstraint.constant = maxNumberOfLines > 4 ? 44 : 0
-                let title = isExpand ? L10n.MessageCardCell.Button.Expand.collapse : L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
-                cell.expandButton.setTitle(title, for: .normal)
-            } else {
-                cell.messageLabel.layoutIfNeeded()
-                let maxNumberOfLines = cell.messageLabel.maxNumberOfLines
-                self.messageExpandedIDDict[id] = false
-                self.messageMaxNumberOfLinesIDDict[id] = maxNumberOfLines
-                cell.messageLabel.numberOfLines = 4
-                cell.extraBackgroundViewHeightConstraint.constant = maxNumberOfLines > 4 ? 44 : 0
-                let title = L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
-                cell.expandButton.setTitle(title, for: .normal)
-            }
-
-            cell.setNeedsLayout()
-            cell.layoutIfNeeded()
-
-           return cell
+            return self.constructTableViewCell(for: tableView, atIndexPath: indexPath, with: message)
         }   // end let dataSource = …
     }   // end func configureDataSource(:) { … }
     // swiftlint:enable force_cast
@@ -223,33 +197,8 @@ extension MessagesViewModel: UITableViewDataSource {
     // swiftlint:disable force_cast
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // TODO: update data source when contact changed
-
-        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: MessageCardCell.self), for: indexPath) as! MessageCardCell
         let message = messages.value[indexPath.row]
-        MessagesViewModel.configure(messageCardCell: cell, with: message)
-
-        // cell expand logic
-        if let isExpand = messageExpandedDict[indexPath],
-        let maxNumberOfLines = messageMaxNumberOfLinesDict[indexPath] {
-            cell.messageLabel.numberOfLines = isExpand ? 0 : 4
-            cell.extraBackgroundViewHeightConstraint.constant = maxNumberOfLines > 4 ? 44 : 0
-            let title = isExpand ? L10n.MessageCardCell.Button.Expand.collapse : L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
-            cell.expandButton.setTitle(title, for: .normal)
-        } else {
-            cell.messageLabel.layoutIfNeeded()
-            let maxNumberOfLines = cell.messageLabel.maxNumberOfLines
-            messageExpandedDict[indexPath] = false
-            messageMaxNumberOfLinesDict[indexPath] = maxNumberOfLines
-            cell.messageLabel.numberOfLines = 4
-            cell.extraBackgroundViewHeightConstraint.constant = maxNumberOfLines > 4 ? 44 : 0
-            let title = L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
-            cell.expandButton.setTitle(title, for: .normal)
-        }
-
-        cell.setNeedsLayout()
-        cell.layoutIfNeeded()
-        
-        return cell
+        return constructTableViewCell(for: tableView, atIndexPath: indexPath, with: message)
     }
     // swiftlint:enable force_cast
 
@@ -260,6 +209,48 @@ extension MessagesViewModel: UITableViewDataSource {
 }
 
 extension MessagesViewModel {
+    
+    private func constructTableViewCell(for tableView: UITableView, atIndexPath indexPath: IndexPath, with message: Message) -> UITableViewCell {
+        
+        let isRedPacket = RedPacketService.validate(message: message)
+        
+        if isRedPacket {
+            let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RedPacketCardTableViewCell.self), for: indexPath) as! RedPacketCardTableViewCell
+            if let redPacket = RedPacketService.shared.redPacket(from: message) {
+                CreatedRedPacketViewModel.configure(cell: cell, with: redPacket)
+            } else {
+                assertionFailure()
+            }
+            return cell
+            
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: MessageCardCell.self), for: indexPath) as! MessageCardCell
+            MessagesViewModel.configure(messageCardCell: cell, with: message)
+            
+            // cell expand logic
+            if let isExpand = messageExpandedDict[indexPath],
+                let maxNumberOfLines = messageMaxNumberOfLinesDict[indexPath] {
+                cell.messageLabel.numberOfLines = isExpand ? 0 : 4
+                cell.extraBackgroundViewHeightConstraint.constant = maxNumberOfLines > 4 ? 44 : 0
+                let title = isExpand ? L10n.MessageCardCell.Button.Expand.collapse : L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
+                cell.expandButton.setTitle(title, for: .normal)
+            } else {
+                cell.messageLabel.layoutIfNeeded()
+                let maxNumberOfLines = cell.messageLabel.maxNumberOfLines
+                messageExpandedDict[indexPath] = false
+                messageMaxNumberOfLinesDict[indexPath] = maxNumberOfLines
+                cell.messageLabel.numberOfLines = 4
+                cell.extraBackgroundViewHeightConstraint.constant = maxNumberOfLines > 4 ? 44 : 0
+                let title = L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
+                cell.expandButton.setTitle(title, for: .normal)
+            }
+            
+            cell.setNeedsLayout()
+            cell.layoutIfNeeded()
+            
+            return cell
+        }
+    }
 
     // configure cell UI
     static func configure(messageCardCell cell: MessageCardCell, with message: Message) {

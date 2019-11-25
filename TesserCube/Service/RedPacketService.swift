@@ -44,3 +44,52 @@ final class RedPacketService {
     private init() { }
 
 }
+
+extension RedPacketService {
+    
+    static func validate(message: Message) -> Bool {
+        let rawMessage = message.rawMessage.trimmingCharacters(in: .whitespacesAndNewlines)
+        return rawMessage.hasPrefix("-----BEGIN RED PACKET-----") && rawMessage.hasSuffix("-----END RED PACKET-----")
+    }
+    
+    static func contractAddress(for message: Message) -> String? {
+        guard validate(message: message) else {
+            return nil
+        }
+        
+        let scanner = Scanner(string: message.rawMessage.trimmingCharacters(in: .whitespacesAndNewlines))
+        scanner.charactersToBeSkipped = nil
+        // Jump to begin
+        scanner.scanUpTo("-----BEGIN RED PACKET-----", into: nil)
+        // Read -----BEGIN RED PACKET-----\r\n
+        scanner.scanUpToCharacters(from: .newlines, into: nil)
+        scanner.scanCharacters(from: .newlines, into: nil)
+        // Read [fingerprint]:[userID]
+        scanner.scanUpToCharacters(from: .newlines, into: nil)
+        scanner.scanCharacters(from: .newlines, into: nil)
+        
+        var contractAddress: NSString?
+        scanner.scanUpToCharacters(from: .newlines, into: &contractAddress)
+        
+        return contractAddress as String?
+    }
+    
+}
+
+
+extension RedPacketService {
+    
+    func redPacket(from message: Message) -> RedPacket? {
+        guard let contractAddress = RedPacketService.contractAddress(for: message) else {
+            return nil
+        }
+        
+        let results = realm?.objects(RedPacket.self).filter { $0.contractAddress == contractAddress }
+        guard let redPacket = results?.first else {
+            return nil
+        }
+        
+        return redPacket
+    }
+    
+}

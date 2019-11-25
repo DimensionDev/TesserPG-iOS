@@ -93,6 +93,7 @@ class MessagesViewController: TCBaseViewController {
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 220
         tableView.register(MessageCardCell.self, forCellReuseIdentifier: String(describing: MessageCardCell.self))
+        tableView.register(RedPacketCardTableViewCell.self, forCellReuseIdentifier: String(describing: RedPacketCardTableViewCell.self))
         tableView.backgroundColor = .clear
         tableView.keyboardDismissMode = .interactive
         tableView.preservesSuperviewLayoutMargins = true
