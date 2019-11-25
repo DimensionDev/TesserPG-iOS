@@ -38,12 +38,12 @@ class RedPacketProperty {
             uuids = contactInfos.map { _ in UUID().uuidString }
         }
     }
-    var uuids: [String] = []
+    private(set) var uuids: [String] = []
 }
 
 extension RedPacketProperty {
     
-    var amountInWei: BigUInt? {
+    var amountInWei: BigUInt {
         let wei = HDWallet.CoinType.ether.exponent * amount
         let weiInString: String = {
             let formatter = NumberFormatter()
@@ -53,7 +53,7 @@ extension RedPacketProperty {
             
             return formatter.string(from: wei as NSNumber)!
         }()
-        return BigUInt(weiInString)
+        return BigUInt(weiInString)!
     }
     
 }

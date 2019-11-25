@@ -21,6 +21,12 @@ final class SelectWalletTableViewCell: UITableViewCell, LeftDetailStyle {
         tableView.separatorInset = .zero
         return tableView
     }()
+    let walletBalanceLabel: UILabel = {
+        let label = UILabel()
+        label.font = FontFamily.SFProText.regular.font(size: 12)
+        label.textColor = ._secondaryLabel
+        return label
+    }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -50,7 +56,15 @@ final class SelectWalletTableViewCell: UITableViewCell, LeftDetailStyle {
             tableView.topAnchor.constraint(equalTo: contentView.topAnchor),
             detailLeadingLayoutConstraint,
             tableView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+        ])
+        
+        walletBalanceLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(walletBalanceLabel)
+        NSLayoutConstraint.activate([
+            walletBalanceLabel.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 8),
+            walletBalanceLabel.leadingAnchor.constraint(equalTo: tableView.leadingAnchor),
+            walletBalanceLabel.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
+            contentView.layoutMarginsGuide.bottomAnchor.constraint(equalTo: walletBalanceLabel.bottomAnchor),
         ])
     }
     

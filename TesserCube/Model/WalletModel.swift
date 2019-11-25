@@ -46,8 +46,10 @@ public class WalletModel {
         // setup
         updateBalanceTrigger.asObserver()
             .flatMapLatest { WalletService.getBalance(for: self.address).asObservable() }
-            .asDriver(onErrorJustReturn: BigUInt(0))
-            .drive(balance)
+            .subscribe(onNext: { balance in
+                // ignore error case
+                self.balance.accept(balance)
+            })
             .disposed(by: disposeBag)
     }
 

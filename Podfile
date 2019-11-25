@@ -71,6 +71,7 @@ end
 
 target 'TesserCubeKeyboard' do
   common_pods
+  pod 'SVProgressHUD', :git => 'https://github.com/getaaron/SVProgressHUD.git', :branch => 'dark-mode'
 end
 
 target 'TesserCubeInterpretAction' do

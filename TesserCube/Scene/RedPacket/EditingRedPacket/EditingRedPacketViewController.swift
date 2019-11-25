@@ -10,6 +10,7 @@ import UIKit
 import os
 import RxSwift
 import RxCocoa
+import BigInt
 
 final class EditingRedPacketViewModel: NSObject {
     
@@ -43,6 +44,9 @@ final class EditingRedPacketViewModel: NSObject {
     
     var redPacketProperty = RedPacketProperty()
     
+    // FIXME:
+    // move Input & Output out of tableViewCell
+    
     // Hold all cell instance in view model
     let selectWalletTableViewCell = SelectWalletTableViewCell()
     var walletProvider: RedPacketWalletProvider?
@@ -65,8 +69,38 @@ final class EditingRedPacketViewModel: NSObject {
         
         walletProvider?.selectWalletModel.asDriver()
             .drive(onNext: { [weak self] selectWalletModel in
+                selectWalletModel?.updateBalance()
                 self?.redPacketProperty.walletModel = selectWalletModel
             })
+            .disposed(by: disposeBag)
+        walletProvider?.selectWalletModel.asDriver()
+            .flatMapLatest { walletModel -> Driver<String> in
+                guard let walletModel = walletModel else {
+                    return Driver.just("Current balance: - ")
+                }
+                
+                return walletModel.balanceInDecimal.asDriver()
+                    .map { decimal in
+                        let placeholder = "Current balance: - "
+                        guard let decimal = decimal else {
+                            return placeholder
+                        }
+                        
+                        let formatter: NumberFormatter = {
+                            let formatter = NumberFormatter()
+                            formatter.numberStyle = .decimal
+                            formatter.minimumFractionDigits = 1
+                            formatter.minimumIntegerDigits = 1
+                            formatter.maximumFractionDigits = 9     // percision to 1gwei
+                            return formatter
+                        }()
+                        
+                        return formatter.string(from: decimal as NSNumber).flatMap { decimalString in
+                            return "Current balance: \(decimalString) ETH"
+                        } ?? placeholder
+                    }
+            }
+            .drive(selectWalletTableViewCell.walletBalanceLabel.rx.text)
             .disposed(by: disposeBag)
         inputRedPacketAmountTableViewCell.amount.asDriver()
             .drive(onNext: { [weak self] amount in
@@ -239,6 +273,37 @@ extension EditingRedPacketViewController {
     }
     
     @objc private func nextBarButtonItemClicked(_ sender: UIBarButtonItem) {
+        view.endEditing(true)
+        
+        let alertController = UIAlertController(title: "Error", message: nil, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        
+        guard let selectWalletModel = viewModel.walletProvider?.selectWalletModel.value else {
+            alertController.message = "Please select valid wallet"
+            present(alertController, animated: true, completion: nil)
+            return
+        }
+        
+        guard let balance = selectWalletModel.balance.value else {
+            alertController.message = "Wallet balance inquiry failed"
+            present(alertController, animated: true, completion: nil)
+            return
+        }
+        
+        let minAmountInWei = BigUInt(viewModel.inputRedPacketShareTableViewCell.share.value) * 1000000.gwei  // 0.001 ETH
+        guard balance > minAmountInWei else {
+            alertController.message = "Insufficient wallet balance"
+            present(alertController, animated: true, completion: nil)
+            return
+        }
+        
+        guard balance > viewModel.redPacketProperty.amountInWei else {
+            alertController.message = "Insufficient wallet balance"
+            present(alertController, animated: true, completion: nil)
+            return
+        }
+        
         let selectRecipientsVC = RedPacketRecipientSelectViewController()
         selectRecipientsVC.redPacketProperty = viewModel.redPacketProperty
         //        recommendView?.updateColor(theme: currentTheme)
