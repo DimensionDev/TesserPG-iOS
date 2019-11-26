@@ -11,6 +11,7 @@ import os
 import RxSwift
 import RxCocoa
 import BigInt
+import DMS_HDWallet_Cocoa
 
 final class EditingRedPacketViewModel: NSObject {
     
@@ -301,6 +302,12 @@ extension EditingRedPacketViewController {
             alertController.message = "Insufficient wallet balance"
             present(alertController, animated: true, completion: nil)
             return
+        }
+        
+        // FIXME:
+        let minAmountDecimal = (Decimal(string: String(minAmountInWei)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
+        if viewModel.redPacketProperty.amount < minAmountDecimal {
+            viewModel.redPacketProperty.amount = minAmountDecimal
         }
         
         let selectRecipientsVC = RedPacketRecipientSelectViewController()
