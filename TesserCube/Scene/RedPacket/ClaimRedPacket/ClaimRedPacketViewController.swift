@@ -76,10 +76,8 @@ extension ClaimRedPacketViewModel {
     
         Observable.combineLatest(checkAvailablity, nonce)
             .flatMapLatest { checkAvailblity, nonce -> Observable<BigUInt> in
-                let (balance, remains) = checkAvailblity
-                let remainsNumber = UInt(remains)
-                let index = uuids.count - Int(remainsNumber)
-                let uuid = uuids[index]
+                let (balance, index) = checkAvailblity
+                let uuid = uuids[Int(index)]
                 return WalletService.claim(for: contractAddress, with: uuid, from: walletAddress, use: privateKey, nonce: nonce)
                     .asObservable()
                     .trackActivity(self.activityIndicator)
