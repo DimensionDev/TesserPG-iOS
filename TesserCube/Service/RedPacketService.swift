@@ -74,13 +74,47 @@ extension RedPacketService {
         return contractAddress as String?
     }
     
+    static func uuids(for message: Message) -> [String] {
+        guard validate(message: message) else {
+            return []
+        }
+        
+        let scanner = Scanner(string: message.rawMessage.trimmingCharacters(in: .whitespacesAndNewlines))
+        scanner.charactersToBeSkipped = nil
+        // Jump to begin
+        scanner.scanUpTo("-----BEGIN RED PACKET-----", into: nil)
+        // Read -----BEGIN RED PACKET-----\r\n
+        scanner.scanUpToCharacters(from: .newlines, into: nil)
+        scanner.scanCharacters(from: .newlines, into: nil)
+        // Read [fingerprint]:[userID]
+        scanner.scanUpToCharacters(from: .newlines, into: nil)
+        scanner.scanCharacters(from: .newlines, into: nil)
+        // Read contract address
+        scanner.scanUpToCharacters(from: .newlines, into: nil)
+        scanner.scanCharacters(from: .newlines, into: nil)
+        
+        var uuids: NSString?
+        scanner.scanUpTo("-----END RED PACKET-----", into: &uuids)
+        
+        guard let uuidsString = uuids?.trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: "\n") else {
+            return []
+        }
+        
+        return uuidsString as [String]
+    }
+    
 }
-
 
 extension RedPacketService {
     
     func redPacket(from message: Message) -> RedPacket? {
         guard let contractAddress = RedPacketService.contractAddress(for: message) else {
+            return nil
+        }
+        
+        let uuids = RedPacketService.uuids(for: message)
+        
+        guard !uuids.isEmpty else {
             return nil
         }
         
