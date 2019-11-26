@@ -46,6 +46,7 @@ final class CreatedRedPacketViewModel: NSObject {
         redPacket.senderUserID = redPacketProperty.sender?.userID ?? ""
         redPacket.share = redPacketProperty.uuids.count
         redPacket.amount = redPacketProperty.amountInWei
+        redPacket.uuids.append(objectsIn: redPacketProperty.uuids)
         
         // Add red packet to realm
         try! realm.write {
@@ -140,6 +141,9 @@ extension CreatedRedPacketViewModel {
                 os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, contractAddress.hex())
             }, onError: { error in
                 self.error.accept(error)
+                try! self.realm.write {
+                    self.redPacket.status = .fail
+                }
                 os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
             })
             .disposed(by: disposeBag)
@@ -220,7 +224,7 @@ extension CreatedRedPacketViewModel {
         case .claimed:
             let amountInDecimal = (Decimal(string: String(redPacket.claimAmount)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
             let amountInDecimalString = formatter.string(from: amountInDecimal as NSNumber) ?? "-"
-            cell.redPacketStatusLabel.text = "Sent \(amountInDecimalString) ETH"
+            cell.redPacketStatusLabel.text = "Claimed \(amountInDecimalString) ETH"
             cell.indicatorLabel.text = ""
         case .expired:
             cell.redPacketStatusLabel.text = "Too late to get any"
@@ -343,6 +347,17 @@ extension CreatedRedPacketViewController {
             }
         }
         
+        viewModel.error.asDriver()
+            .drive(onNext: { [weak self] error in
+                guard let `self` = self, let error = error else { return }
+                let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alertController.addAction(okAction)
+                self.present(alertController, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+        
+        // Teigger delpoy action
         viewModel.deployRedPacketContract()
     }
     

@@ -187,7 +187,6 @@ class EditingRedPacketViewController: UIViewController {
     
     let tableView: DynamicTableView = {
         let tableView = DynamicTableView()
-        tableView.register(SelectWalletTableViewCell.self, forCellReuseIdentifier: String(describing: SelectWalletTableViewCell.self))
         tableView.tableFooterView = UIView()
         tableView.backgroundColor = ._systemGroupedBackground
         tableView.separatorStyle = .none

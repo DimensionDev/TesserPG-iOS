@@ -49,7 +49,7 @@ class MainTabbarViewController: UITabBarController {
             case .messages:
                 return Asset.mainTabMessages.image
             case .wallets:
-                return nil  // TODO:
+                return Asset.mainTabWallet.image
             case .me:
                 return Asset.mainTabMe.image
             }

@@ -18,12 +18,14 @@ extension WalletService {
         return Decimal(0.001)
     }
     
+    public static var redPacketContractABIData: Data {
+        let path = Bundle(for: WalletService.self).path(forResource: "redpacket", ofType: "json")
+        let data = try! Data(contentsOf: URL(fileURLWithPath: path!))
+        return data
+    }
+    
     public static var redPacketContract: DynamicContract {
-        let contractABIData: Data = {
-            let path = Bundle(for: WalletService.self).path(forResource: "redpacket", ofType: "json")
-            let data = try! Data(contentsOf: URL(fileURLWithPath: path!))
-            return data
-        }()
+        let contractABIData = redPacketContractABIData
         return try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: nil)
     }
     
@@ -172,6 +174,109 @@ extension WalletService {
             return cancelable
         }
     }
+    
+    static func checkAvailablity(for contractAddress: EthereumAddress) -> Single<(BigUInt, BigUInt)> {
+        let contractABIData = WalletService.redPacketContractABIData
+        let contract = try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: contractAddress)
+        let checkAvailabilityInvocation = contract["check_availability"]!()
+        
+        return Single.create { single in
+            let cancelable = Disposables.create { }
+            
+            os_log("%{public}s[%{public}ld], %{public}s: checkAvailabilityInvocation.call", ((#file as NSString).lastPathComponent), #line, #function)
+            checkAvailabilityInvocation.call { dict, error in
+
+                guard let dict = dict,
+                let balance = dict["balance"] as? BigUInt,
+                let remainingNumber = dict["remaining_number"] as? BigUInt else {
+                    single(.error(Error.checkAvailabilityFail))
+                    return
+                }
+                
+                single(.success((balance, remainingNumber)))
+            }
+            
+            return cancelable
+        }
+    }
+    
+    static func claim(for contractAddress: EthereumAddress, with uuid: String, from walletAddress: EthereumAddress, use privateKey: EthereumPrivateKey, nonce: EthereumQuantity) -> Single<BigUInt> {
+        let contractABIData = WalletService.redPacketContractABIData
+        let contract = try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: contractAddress)
+        let claimInvocation = contract["claim"]!(uuid, BigUInt.randomInteger(withMaximumWidth: 32))
+        
+        guard let claimTransaction = claimInvocation.createTransaction(nonce: nonce, from: walletAddress, value: 0, gas: 210000, gasPrice: EthereumQuantity(quantity: 1.gwei)) else {
+            return Single.error(Error.invalidWallet)
+        }
+        
+        guard let signedClaimTransaction = try? claimTransaction.sign(with: privateKey, chainId: chainID) else {
+            return Single.error(Error.invalidWallet)
+        }
+        
+        let transactionHash = Single<EthereumData>.create { single in
+            let cancelable = Disposables.create { }
+            web3.eth.sendRawTransaction(transaction: signedClaimTransaction) { response in
+                switch response.status {
+                case let .success(transactionHash):
+                    os_log("%{public}s[%{public}ld], %{public}s: claim transactionHash %s", ((#file as NSString).lastPathComponent), #line, #function, transactionHash.hex())
+
+                    single(.success(transactionHash))
+                case let .failure(error):
+                    single(.error(Error.claimTransactionFail))
+                }
+            }
+
+            return cancelable
+        }
+        
+        return transactionHash.flatMap { transactionHash -> Single<BigUInt> in
+            return Single.create { single in
+                web3.eth.getTransactionReceipt(transactionHash: transactionHash) { response in
+                    guard let receipt = response.result,
+                    let logs = receipt?.logs else {
+                        single(.error(Error.claimTransactionReceiptResponsePending))
+                        return
+                    }
+                    
+                    guard let successEvent = (contract.events.filter { $0.name == "ClaimSuccess" }.first) else {
+                        assertionFailure()
+                        single(.error(Error.claimTransactionReceiptResponsePending))
+                        return
+                    }
+                    
+                    var claimed: BigUInt? = nil
+                    for log in logs {
+                        if let result = try? ABI.decodeLog(event: successEvent, from: log),
+                        let claimedValue = result["claimed_value"] as? BigUInt {
+                            claimed = claimedValue
+                            break
+                        } else {
+                            continue
+                        }
+                    }
+                    
+                    if let claimed = claimed {
+                        single(.success(claimed))
+                    } else {
+                        single(.error(Error.claimTransactionReceiptResponsePending))
+                    }
+                }
+                
+                return Disposables.create { }
+            }
+            .retryWhen({ error -> Observable<Int> in
+                return error.enumerated().flatMap({ index, element -> Observable<Int> in
+                    os_log("%{public}s[%{public}ld], %{public}s: claim receipt check retry %s times", ((#file as NSString).lastPathComponent), #line, #function, String(index + 1))
+                    // retry 6 times
+                    guard index < 6 else {
+                        return Observable.error(element)
+                    }
+                    // retry every 10.0 sec
+                    return Observable.timer(10.0, scheduler: MainScheduler.instance)
+                })
+            })
+        }
+    }
 
 }
 
@@ -210,6 +315,11 @@ extension WalletService {
 
         case contractConstructFail
         case contractConstructReceiptResponsePending
+        case contractAddressInvalid
+        
+        case checkAvailabilityFail
+        case claimTransactionFail
+        case claimTransactionReceiptResponsePending
         
         case insufficientGas
     }

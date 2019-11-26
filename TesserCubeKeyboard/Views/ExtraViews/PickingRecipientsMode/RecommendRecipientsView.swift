@@ -11,17 +11,6 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-struct FullContactInfo: Equatable {
-    
-    var contact: Contact
-    var emails: [Email]
-    var keys: [TCKey]
-    
-    static func == (lhs: FullContactInfo, rhs: FullContactInfo) -> Bool {
-        return lhs.contact.id == rhs.contact.id
-    }
-}
-
 protocol RecommendRecipientsViewDelegate: class {
     func recommendRecipientsView(_ view: RecommendRecipientsView, didSelect contactInfo: FullContactInfo)
 }
