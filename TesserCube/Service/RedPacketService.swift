@@ -21,7 +21,7 @@ final class RedPacketService {
         try? FileManager.default.createDirectory(at: config.fileURL!.deletingLastPathComponent(), withIntermediateDirectories: true, attributes: nil)
         
         // setup migration
-        let schemeVersion: UInt64 = 1
+        let schemeVersion: UInt64 = 2
         config.schemaVersion = schemeVersion
         config.migrationBlock = { migration, oldSchemeVersion in
             if oldSchemeVersion < 1 {

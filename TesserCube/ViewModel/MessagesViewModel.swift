@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import DateToolsSwift
+import RealmSwift
 
 // Fix multiple selection not enable default in UIDiffableTableViewDataSource issue
 @available(iOS 13.0, *)
@@ -79,6 +80,10 @@ class MessagesViewModel: NSObject {
     // For diffable datasource
     var messageExpandedIDDict: [Int64: Bool] = [:]
     var messageMaxNumberOfLinesIDDict: [Int64: Int] = [:]
+    
+    // red packet realm listener
+    var redPacketNotificationToken: NotificationToken?
+
     
     override init() {
         hasMessages = messages.asDriver().map { !$0.isEmpty }
@@ -165,6 +170,10 @@ class MessagesViewModel: NSObject {
             .map { !$0.isEmpty }
             .drive(deleteBarButtonItemIsEnable)
             .disposed(by: disposeBag)
+    }
+    
+    deinit {
+        redPacketNotificationToken?.invalidate()
     }
     
 }

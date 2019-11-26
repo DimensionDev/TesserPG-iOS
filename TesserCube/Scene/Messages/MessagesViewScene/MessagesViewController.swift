@@ -6,6 +6,7 @@
 //  Copyright © 2019 Sujitech. All rights reserved.
 //
 
+import os
 import UIKit
 import SwifterSwift
 import SnapKit
@@ -280,6 +281,13 @@ class MessagesViewController: TCBaseViewController {
 
         viewModel.selectedMessageType.asDriver().debug().drive().disposed(by: disposeBag)
         viewModel.searchText.asDriver().debug().drive().disposed(by: disposeBag)
+        
+        
+        // Update tableView when red packet update
+        viewModel.redPacketNotificationToken = RedPacketService.shared.realm?.objects(RedPacket.self).observe { [weak self] change in
+            self?.tableView.reloadData()
+            os_log("%{public}s[%{public}ld], %{public}s", ((#file as NSString).lastPathComponent), #line, #function)
+        }
     }
 
     private func reloadActionsView() {

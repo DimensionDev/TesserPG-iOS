@@ -23,6 +23,9 @@ extension MessagesViewModel {
         // draft
         case edit(message: Message, presentingViewController: UIViewController)
         case finishDraft(message: Message, presentingViewController: UIViewController, disposeBag: DisposeBag)
+        
+        // red packet
+        case claim(message: Message, redPacket: RedPacket, presentingViewController: UIViewController)
 
         case delete(message: Message, presentingViewController: UIViewController, cell: UITableViewCell)
         case cancel
@@ -41,6 +44,7 @@ extension MessagesViewModel {
             case .recomposeMessage:     return L10n.MessagesViewController.Action.Button.reCompose
             case .edit:                 return L10n.Common.Button.edit
             case .finishDraft:          return L10n.MessagesViewController.Action.Button.markAsFinished
+            case .claim:                return "Claim"
             case .delete:               return L10n.Common.Button.delete
             case .cancel:               return L10n.Common.Button.cancel
             }
@@ -59,6 +63,8 @@ extension MessagesViewModel {
                     return UIImage(systemName: "square.and.pencil")
                 case .finishDraft:
                     return UIImage(systemName: "signature")
+                case .claim:
+                    return UIImage(systemName: "envelope.open")
                 case .delete:
                     return UIImage(systemName: "trash")
                 default:
@@ -142,6 +148,9 @@ extension MessagesViewModel {
                             presentingViewController.showSimpleAlert(title: L10n.Common.Alert.error, message: message)
                         })
                         .disposed(by: disposeBag)
+                case let .claim(message, redPacket, presentingViewController):
+                    let viewModel = ClaimRedPacketViewModel(redPacket: redPacket)
+                    Coordinator.main.present(scene: .claimRedPacket(viewModel: viewModel), from: presentingViewController, transition: .modal, completion: nil)
 
                 case let .delete(message, presentingViewController, cell):
                     if #available(iOS 13.0, *) {
@@ -260,17 +269,32 @@ extension MessagesViewModel: ContextMenuActionTableViewDelegate {
             }   // end if … else …
         }   // MessageCardCell
         
-        if let cell = tableView.cellForRow(at: indexPath) as? RedPacketCardTableViewCell {
+        if let cell = tableView.cellForRow(at: indexPath) as? RedPacketCardTableViewCell,
+        let redPacket = RedPacketService.shared.redPacket(from: message) {
             // Red Packet:
             //  - Delete
             //  - Cancel
-            return [
-                Action.delete(message: message, presentingViewController: presentingViewController, cell: cell),
-                Action.cancel,
-            ]
+            
+            switch redPacket.status {
+            case .initial, .pending, .fail, .claimed, .expired:
+                return [
+                    Action.shareArmoredMessage(message: message, presentingViewController: presentingViewController, cell: cell),
+                    Action.delete(message: message, presentingViewController: presentingViewController, cell: cell),
+                    Action.cancel,
+                ]
+            case .incoming, .normal:
+                return [
+                    Action.claim(message: message, redPacket: redPacket, presentingViewController: presentingViewController),
+                    Action.shareArmoredMessage(message: message, presentingViewController: presentingViewController, cell: cell),
+                    Action.delete(message: message, presentingViewController: presentingViewController, cell: cell),
+                    Action.cancel,
+                ]
+            }
         }
         
-        return []
+        return [
+            Action.cancel,
+        ]
     }
 
 }

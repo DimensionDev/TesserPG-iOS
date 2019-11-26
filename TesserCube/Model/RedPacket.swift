@@ -17,6 +17,8 @@ import BigInt
     @objc public dynamic var senderUserID: String = ""
     @objc public dynamic var share: Int = 1
     
+    let uuids = List<String>()
+    
     @objc private dynamic var _amount = "0"
     @objc private dynamic var _claimAmount = "0"
     @objc private dynamic var _status = RedPacketStatus.initial.rawValue
