@@ -310,7 +310,7 @@ extension CreatedRedPacketViewController {
 
         // Setup bottomActionsView
         #if !TARGET_IS_EXTENSION
-        reloadActionsView()
+        // reloadActionsView()
         #endif
         
         // Setup viewModel

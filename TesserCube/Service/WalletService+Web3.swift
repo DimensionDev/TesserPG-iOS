@@ -324,3 +324,24 @@ extension WalletService {
         case insufficientGas
     }
 }
+
+extension WalletService.Error: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .invalidWallet: return "Invalid Wallet"
+        case .invalidAmount: return "Red Packet Amount Invalid"
+        case .invalidSender: return "Red Packet Sender Invalid"
+        case .invalidRecipients: return "Red Packet Recipients Invalid"
+            
+        case .contractConstructFail: return "Red Packet Construction Fail"
+        case .contractConstructReceiptResponsePending: return "Red Packet Receipt Lookup Fail"
+        case .contractAddressInvalid: return "Red Packet Not Found"
+            
+        case .checkAvailabilityFail: return "Red Packet Check Fail"
+        case .claimTransactionFail: return "Red Packet Claim Fail"
+        case .claimTransactionReceiptResponsePending: return "Red Packet Claim Lookup Fail"
+            
+        case .insufficientGas: return "Insufficient Gas"
+        }
+    }
+}

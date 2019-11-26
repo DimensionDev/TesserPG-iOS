@@ -78,7 +78,7 @@ extension ClaimRedPacketViewModel {
             .flatMapLatest { checkAvailblity, nonce -> Observable<BigUInt> in
                 let (balance, remains) = checkAvailblity
                 let remainsNumber = UInt(remains)
-                let index = uuids.count - Int(remains)
+                let index = uuids.count - Int(remainsNumber)
                 let uuid = uuids[index]
                 return WalletService.claim(for: contractAddress, with: uuid, from: walletAddress, use: privateKey, nonce: nonce)
                     .asObservable()
@@ -86,7 +86,8 @@ extension ClaimRedPacketViewModel {
             }
             .observeOn(MainScheduler.asyncInstance)
             .debug()
-            .subscribe(onNext: { claimed in
+            .subscribe(onNext: { [weak self] claimed in
+                guard let `self` = self else { return }
                 os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, String(claimed))
                 // claimed
                 // update red packet contractAddress & status
@@ -95,8 +96,9 @@ extension ClaimRedPacketViewModel {
                     self.redPacket.status = .claimed
                 }
 
-            }, onError: { error in
+            }, onError: { [weak self] error in
                 os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
+                self?.error.accept(error)
             })
             .disposed(by: disposeBag)
     }
@@ -225,10 +227,20 @@ extension ClaimRedPacketViewController {
         
         // Setup viewModel
         viewModel.isClaiming.drive(onNext: { [weak self] isClaiming in
-                self?.navigationItem.leftBarButtonItem = isClaiming ? nil : self?.closeBarButtonItem
-                self?.navigationItem.rightBarButtonItem = isClaiming ? self?.activityIndicatorBarButtonItem : nil
-                self?.openRedPacketButton.isEnabled = !isClaiming
-                self?.openRedPacketButton.setTitle(isClaiming ? "Claiming…" : "Open Red Packet", for: .normal)
+            guard let `self` = self else { return }
+                self.navigationItem.leftBarButtonItem = isClaiming ? nil : self.closeBarButtonItem
+                self.navigationItem.rightBarButtonItem = isClaiming ? self.activityIndicatorBarButtonItem : nil
+                self.openRedPacketButton.isEnabled = !isClaiming
+            
+                let title: String = {
+                    if isClaiming {
+                        return "Claiming"
+                    } else {
+                        return self.viewModel.redPacket.status == .claimed ? "Done" : "Open Red Packet"
+                    }
+                }()
+            
+                self.openRedPacketButton.setTitle(title, for: .normal)
             })
             .disposed(by: disposeBag)
 
@@ -277,7 +289,11 @@ extension ClaimRedPacketViewController {
     }
     
     @objc private func openRedPacketButtonPressed(_ sender: UIButton) {
-        viewModel.claimRedPacket()
+        if viewModel.redPacket.status == .claimed {
+            dismiss(animated: true, completion: nil)
+        } else {
+            viewModel.claimRedPacket()
+        }
     }
     
 }
