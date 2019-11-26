@@ -15,7 +15,7 @@ import Web3
 extension WalletService {
     
     public static var redPacketMinAmount: Decimal {
-        return Decimal(0.001)
+        return Decimal(0.01)
     }
     
     public static var redPacketContractABIData: Data {
@@ -47,13 +47,10 @@ extension WalletService {
                 return BigUInt(hash)
             }
             let ifrandom: Bool = redPacketProperty.splitType == .random
-            let expirationTime = BigUInt(integerLiteral: 1)
-            // let expirationTime: BigUInt = {
-            //     let nextWeek = Calendar.current.date(byAdding: .day, value: 7, to: Date())!
-            //     return BigUInt(nextWeek.timeIntervalSince1970)
-            // }()
+            let duration = BigUInt(integerLiteral: 0)   // fallback to default 24h
+            let seed = BigUInt.randomInteger(withMaximumWidth: 32)
             
-            return [_hashes, ifrandom, expirationTime]
+            return [_hashes, ifrandom, duration, seed]
         }()
         
         guard let invocation = redPacketContract.deploy(byteCode: redPacketContractByteCode, parameters: parameters) else {
@@ -188,12 +185,13 @@ extension WalletService {
 
                 guard let dict = dict,
                 let balance = dict["balance"] as? BigUInt,
-                let remainingNumber = dict["remaining_number"] as? BigUInt else {
+                let totalNumber = dict["total"] as? BigUInt,
+                let claimedNumber = dict["claimed"] as? BigUInt else {
                     single(.error(Error.checkAvailabilityFail))
                     return
                 }
                 
-                single(.success((balance, remainingNumber)))
+                single(.success((balance, claimedNumber)))
             }
             
             return cancelable
@@ -203,7 +201,7 @@ extension WalletService {
     static func claim(for contractAddress: EthereumAddress, with uuid: String, from walletAddress: EthereumAddress, use privateKey: EthereumPrivateKey, nonce: EthereumQuantity) -> Single<BigUInt> {
         let contractABIData = WalletService.redPacketContractABIData
         let contract = try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: contractAddress)
-        let claimInvocation = contract["claim"]!(uuid, BigUInt.randomInteger(withMaximumWidth: 32))
+        let claimInvocation = contract["claim"]!(uuid)
         
         guard let claimTransaction = claimInvocation.createTransaction(nonce: nonce, from: walletAddress, value: 0, gas: 210000, gasPrice: EthereumQuantity(quantity: 1.gwei)) else {
             return Single.error(Error.invalidWallet)

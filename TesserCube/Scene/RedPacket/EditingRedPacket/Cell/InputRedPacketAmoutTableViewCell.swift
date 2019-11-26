@@ -48,7 +48,7 @@ final class InputRedPacketAmoutTableViewCell: UITableViewCell, LeftDetailStyle {
     let disposeBag = DisposeBag()
     
     // Input
-    let minimalAmount = BehaviorRelay(value: Decimal(0.001))     // 0.001 ETH
+    let minimalAmount = BehaviorRelay(value: Decimal(0.01))     // 0.01 ETH
     
     // Output
     let amount = BehaviorRelay<Decimal>(value: Decimal(0))

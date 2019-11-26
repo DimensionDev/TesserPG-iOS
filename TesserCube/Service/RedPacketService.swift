@@ -74,6 +74,21 @@ extension RedPacketService {
         return contractAddress as String?
     }
     
+    static func userID(for message: Message) -> String? {
+        guard validate(message: message) else {
+            return nil
+        }
+        
+        let scanner = Scanner(string: message.rawMessage.trimmingCharacters(in: .whitespacesAndNewlines))
+        scanner.charactersToBeSkipped = nil
+        scanner.scanUpTo(":", into: nil)
+        // Read user id
+        var userID: NSString?
+        scanner.scanUpToCharacters(from: .newlines, into: &userID)
+        
+        return userID as String?
+    }
+    
     static func uuids(for message: Message) -> [String] {
         guard validate(message: message) else {
             return []
@@ -114,12 +129,23 @@ extension RedPacketService {
         
         let uuids = RedPacketService.uuids(for: message)
         
-        guard !uuids.isEmpty else {
+        guard !uuids.isEmpty, let userID = RedPacketService.userID(for: message) else {
             return nil
         }
         
         let results = realm?.objects(RedPacket.self).filter { $0.contractAddress == contractAddress }
         guard let redPacket = results?.first else {
+            var redPacket = RedPacket()
+            redPacket.senderUserID = userID
+            redPacket.share = uuids.count
+            redPacket.status = .incoming
+            redPacket.contractAddress = contractAddress
+            redPacket.uuids.append(objectsIn: uuids)
+            
+            try! realm?.write {
+                realm?.add(redPacket)
+            }
+            
             return nil
         }
         

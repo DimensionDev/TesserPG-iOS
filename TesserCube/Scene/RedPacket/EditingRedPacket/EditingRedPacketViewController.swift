@@ -126,7 +126,7 @@ final class EditingRedPacketViewModel: NSObject {
         
         // Bind share to amount to setup validator
         inputRedPacketShareTableViewCell.share.asDriver()
-            .map { Decimal($0) * Decimal(0.001) }
+            .map { Decimal($0) * Decimal(0.01) }        // min value per packet set to 0.01 ETH
             .drive(inputRedPacketAmountTableViewCell.minimalAmount)
             .disposed(by: disposeBag)
     }
