@@ -146,7 +146,7 @@ extension RedPacketService {
                 realm?.add(redPacket)
             }
             
-            return nil
+            return redPacket
         }
         
         return redPacket

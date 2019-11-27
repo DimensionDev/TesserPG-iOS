@@ -285,8 +285,25 @@ class MessagesViewController: TCBaseViewController {
         
         // Update tableView when red packet update
         viewModel.redPacketNotificationToken = RedPacketService.shared.realm?.objects(RedPacket.self).observe { [weak self] change in
-            self?.tableView.reloadData()
-            os_log("%{public}s[%{public}ld], %{public}s", ((#file as NSString).lastPathComponent), #line, #function)
+            guard let `self` = self else { return }
+            os_log("%{public}s[%{public}ld], %{public}s update tableView for red packet", ((#file as NSString).lastPathComponent), #line, #function)
+            if #available(iOS 13.0, *) {
+                guard let dataSource = self.viewModel.diffableDataSource as? UITableViewDiffableDataSource<MessagesViewModel.Section, Message> else {
+                    assertionFailure()
+                    return
+                }
+                
+                var snapsot = NSDiffableDataSourceSnapshot<MessagesViewModel.Section, Message>()
+                snapsot.appendSections([.main])
+                snapsot.appendItems(self.viewModel.messages.value)
+                dataSource.apply(snapsot)
+                
+            } else {
+                // clear cache data when data source changed
+                self.viewModel.messageExpandedDict = [:]
+                self.viewModel.messageMaxNumberOfLinesDict = [:]
+                self.tableView.reloadData()
+            }
         }
     }
 
