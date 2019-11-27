@@ -232,7 +232,7 @@ extension ClaimRedPacketViewController {
             
                 let title: String = {
                     if isClaiming {
-                        return "Claiming"
+                        return "Claiming..."
                     } else {
                         return self.viewModel.redPacket.status == .claimed ? "Done" : "Open Red Packet"
                     }
