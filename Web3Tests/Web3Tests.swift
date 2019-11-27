@@ -395,7 +395,7 @@ extension Web3Tests {
     }
     
     func testCheckAvaiability() {
-        let contractAddressHex = "0x744a327ab72fd77d7d7cc293f6d24e25ac03c803"
+        let contractAddressHex = "0x3f791be566ca5fb9aae055f97a9c42ec76fa6342"
         // let transactionHash = EthereumData(Data(hex: "0xcfc06f9ba00671982bda3220de19ac8400fc4125e8c4b2b590fcab0f18542bff").bytes)
         
         let contractABIData: Data = {
