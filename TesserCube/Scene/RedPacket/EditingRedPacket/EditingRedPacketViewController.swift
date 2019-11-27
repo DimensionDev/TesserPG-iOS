@@ -283,7 +283,7 @@ extension EditingRedPacketViewController {
             return
         }
         
-        let minAmountInWei = BigUInt(viewModel.inputRedPacketShareTableViewCell.share.value) * 1000000.gwei  // 0.001 ETH
+        let minAmountInWei = BigUInt(viewModel.inputRedPacketShareTableViewCell.share.value) * WalletService.redPacketMinAmountInWei
         guard balance > minAmountInWei else {
             alertController.message = "Insufficient wallet balance"
             present(alertController, animated: true, completion: nil)

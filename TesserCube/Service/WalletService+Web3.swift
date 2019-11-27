@@ -14,8 +14,14 @@ import Web3
 
 extension WalletService {
     
+    // per packet. 0.01 ETH
     public static var redPacketMinAmount: Decimal {
         return Decimal(0.01)
+    }
+    
+    // per packet. 0.01 ETH
+    public static var redPacketMinAmountInWei: BigUInt {
+        return 10000000.gwei
     }
     
     public static var redPacketContractABIData: Data {
