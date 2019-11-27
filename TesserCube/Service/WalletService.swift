@@ -13,6 +13,15 @@ import DMS_HDWallet_Cocoa
 import Web3
 
 final public class WalletService {
+    
+    static let balanceDecimalFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.minimumIntegerDigits = 1
+        formatter.maximumFractionDigits = 4
+        formatter.minimumFractionDigits = 1
+        return formatter
+    }()
 
     static let web3 = Web3(rpcURL: "https://rinkeby.infura.io/v3/823d2b1356e24d7fbd3b1ae954c6db19")
     static let chainID: EthereumQuantity = 4   // rinkeby

@@ -195,15 +195,7 @@ extension CreatedRedPacketViewModel {
         cell.nameLabel.text = translator.name
         cell.emailLabel.text = translator.email.flatMap { "<\($0)>"}
         
-        let formatter: NumberFormatter = {
-            let formatter = NumberFormatter()
-            formatter.numberStyle = .decimal
-            formatter.minimumIntegerDigits = 1
-            formatter.minimumFractionDigits = 1
-            formatter.maximumFractionDigits = 9
-            formatter.groupingSeparator = ""
-            return formatter
-        }()
+        let formatter = WalletService.balanceDecimalFormatter
         
         switch redPacket.status {
         case .initial, .pending:

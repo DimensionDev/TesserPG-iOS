@@ -87,15 +87,7 @@ final class EditingRedPacketViewModel: NSObject {
                             return placeholder
                         }
                         
-                        let formatter: NumberFormatter = {
-                            let formatter = NumberFormatter()
-                            formatter.numberStyle = .decimal
-                            formatter.minimumFractionDigits = 1
-                            formatter.minimumIntegerDigits = 1
-                            formatter.maximumFractionDigits = 9     // percision to 1gwei
-                            return formatter
-                        }()
-                        
+                        let formatter = WalletService.balanceDecimalFormatter
                         return formatter.string(from: decimal as NSNumber).flatMap { decimalString in
                             return "Current balance: \(decimalString) ETH"
                         } ?? placeholder
