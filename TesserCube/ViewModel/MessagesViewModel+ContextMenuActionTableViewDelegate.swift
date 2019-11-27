@@ -26,6 +26,7 @@ extension MessagesViewModel {
         
         // red packet
         case claim(message: Message, redPacket: RedPacket, presentingViewController: UIViewController)
+        case refund(message: Message, redPacket: RedPacket, presentingViewController: UIViewController)
 
         case delete(message: Message, presentingViewController: UIViewController, cell: UITableViewCell)
         case cancel
@@ -45,6 +46,7 @@ extension MessagesViewModel {
             case .edit:                 return L10n.Common.Button.edit
             case .finishDraft:          return L10n.MessagesViewController.Action.Button.markAsFinished
             case .claim:                return "Claim"
+            case .refund:               return "Refund"
             case .delete:               return L10n.Common.Button.delete
             case .cancel:               return L10n.Common.Button.cancel
             }
@@ -65,6 +67,8 @@ extension MessagesViewModel {
                     return UIImage(systemName: "signature")
                 case .claim:
                     return UIImage(systemName: "envelope.open")
+                case .refund:
+                    return UIImage(systemName: "envelope.circle")
                 case .delete:
                     return UIImage(systemName: "trash")
                 default:
@@ -151,6 +155,13 @@ extension MessagesViewModel {
                 case let .claim(message, redPacket, presentingViewController):
                     let viewModel = ClaimRedPacketViewModel(redPacket: redPacket)
                     Coordinator.main.present(scene: .claimRedPacket(viewModel: viewModel), from: presentingViewController, transition: .modal, completion: nil)
+                    
+                case let .refund(message, redPacket, presentingViewController):
+                    // TODO:
+                    let alertController = UIAlertController(title: "Refund Fail", message: "Please Refund After Red Packet Expired", preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                    alertController.addAction(okAction)
+                    presentingViewController.present(alertController, animated: true, completion: nil)
 
                 case let .delete(message, presentingViewController, cell):
                     if #available(iOS 13.0, *) {
@@ -278,6 +289,7 @@ extension MessagesViewModel: ContextMenuActionTableViewDelegate {
             switch redPacket.status {
             case .initial, .pending, .fail, .claimed, .expired:
                 return [
+                    Action.refund(message: message, redPacket: redPacket, presentingViewController: presentingViewController),
                     Action.shareArmoredMessage(message: message, presentingViewController: presentingViewController, cell: cell),
                     Action.delete(message: message, presentingViewController: presentingViewController, cell: cell),
                     Action.cancel,
@@ -285,6 +297,7 @@ extension MessagesViewModel: ContextMenuActionTableViewDelegate {
             case .incoming, .normal:
                 return [
                     Action.claim(message: message, redPacket: redPacket, presentingViewController: presentingViewController),
+                    Action.refund(message: message, redPacket: redPacket, presentingViewController: presentingViewController),
                     Action.shareArmoredMessage(message: message, presentingViewController: presentingViewController, cell: cell),
                     Action.delete(message: message, presentingViewController: presentingViewController, cell: cell),
                     Action.cancel,
