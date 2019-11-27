@@ -287,7 +287,7 @@ extension MessagesViewModel: ContextMenuActionTableViewDelegate {
             //  - Cancel
             
             switch redPacket.status {
-            case .initial, .pending, .fail, .claimed, .expired:
+            case .initial, .pending, .fail, .claimed, .empty, .expired:
                 return [
                     Action.refund(message: message, redPacket: redPacket, presentingViewController: presentingViewController),
                     Action.shareArmoredMessage(message: message, presentingViewController: presentingViewController, cell: cell),

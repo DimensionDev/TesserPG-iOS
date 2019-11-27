@@ -216,7 +216,10 @@ extension CreatedRedPacketViewModel {
         case .claimed:
             let amountInDecimal = (Decimal(string: String(redPacket.claimAmount)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
             let amountInDecimalString = formatter.string(from: amountInDecimal as NSNumber) ?? "-"
-            cell.redPacketStatusLabel.text = "Claimed \(amountInDecimalString) ETH"
+            cell.redPacketStatusLabel.text = "Got \(amountInDecimalString) ETH"
+            cell.indicatorLabel.text = ""
+        case .empty:
+            cell.redPacketStatusLabel.text = "Too late to get any"
             cell.indicatorLabel.text = ""
         case .expired:
             cell.redPacketStatusLabel.text = "Too late to get any"

@@ -56,5 +56,6 @@ public enum RedPacketStatus: String {
     case incoming   // recieved red packet
     case normal
     case claimed
+    case empty      // all claimed
     case expired
 }
