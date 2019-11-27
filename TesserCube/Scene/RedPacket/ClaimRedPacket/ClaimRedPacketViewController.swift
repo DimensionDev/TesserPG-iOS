@@ -76,8 +76,12 @@ extension ClaimRedPacketViewModel {
     
         Observable.combineLatest(checkAvailablity, nonce)
             .flatMapLatest { checkAvailblity, nonce -> Observable<BigUInt> in
-                let (balance, index) = checkAvailblity
-                let uuid = uuids[Int(index)]
+                let (balance, _index) = checkAvailblity
+                let index = Int(_index)
+                guard index < uuids.count else {
+                    return Observable.error(WalletService.Error.checkAvailabilityEmpty)
+                }
+                let uuid = uuids[index]
                 return WalletService.claim(for: contractAddress, with: uuid, from: walletAddress, use: privateKey, nonce: nonce)
                     .asObservable()
                     .trackActivity(self.activityIndicator)
@@ -96,7 +100,14 @@ extension ClaimRedPacketViewModel {
 
             }, onError: { [weak self] error in
                 os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
-                self?.error.accept(error)
+                guard let `self` = self else { return }
+                self.error.accept(error)
+                
+                if self.redPacket.status != .claimed {
+                    try! self.realm.write {
+                        self.redPacket.status = .empty
+                    }
+                }
             })
             .disposed(by: disposeBag)
     }

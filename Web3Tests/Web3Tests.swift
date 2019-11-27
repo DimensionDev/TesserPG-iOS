@@ -117,11 +117,25 @@ extension Web3Tests {
     func testTransfer() {
         let expect = expectation(description: "")
 
-        let fromPrivateKey = ""
-        if fromPrivateKey.isEmpty { return }
+        // Rinkeby test account
+        let mnemonic = ["ensure", "fossil", "scan", "dash", "tomato", "country", "draft", "organ", "loud", "garbage", "keen", "cat"]
+        let passphrase = "dimension"
         
-        let fromAddressPrivateKey = try! EthereumPrivateKey(hexPrivateKey: fromPrivateKey)
-        let toEthereumAddress = try! EthereumAddress(hex: "0x16BE9bC703c942574b407Fb1CB512CAeC5F5a0d9", eip55: false)
+        // Ganache test account
+        // let mnemonic = ["flower", "parent", "dizzy", "mercy", "sentence", "wall", "weird", "measure", "chicken", "shoulder", "broom", "island"]
+        // let passphrase = ""
+        let wallet = try! HDWallet(mnemonic: mnemonic, passphrase: passphrase, network: .mainnet(.ether))
+        let address = try! wallet.address()
+        let ethereumAddress = try! EthereumAddress(hex: address, eip55: false)
+        
+        let hexPrivateKey = try! wallet.privateKey().key.toHexString()
+        let privateKey = try! EthereumPrivateKey(hexPrivateKey: "0x" + hexPrivateKey)
+        let fromAddressPrivateKey = privateKey
+        
+//        let fromPrivateKey =
+//        if fromPrivateKey.isEmpty { return }
+        // let fromAddressPrivateKey = try! EthereumPrivateKey(hexPrivateKey: fromPrivateKey)
+        let toEthereumAddress = try! EthereumAddress(hex: "0xDB07c331Bd039f89CC22E0294eE6829Fdaca658e", eip55: false)
 
         firstly {
             web3.eth.getTransactionCount(address: fromAddressPrivateKey.address, block: .latest)
@@ -131,7 +145,7 @@ extension Web3Tests {
                 gasPrice: EthereumQuantity(quantity: 1.gwei),
                 gas: 21000,
                 to: toEthereumAddress,
-                value: EthereumQuantity(quantity: BigUInt(10).power(18)))       // 0.1 ETH
+                value: EthereumQuantity(quantity: BigUInt(1).power(18)))       // 0.1 ETH
             let signedTransaction = try! transaction.sign(with: fromAddressPrivateKey, chainId: 4)
             
             self.web3.eth.sendRawTransaction(transaction: signedTransaction) { response in

@@ -322,6 +322,7 @@ extension WalletService {
         case contractAddressInvalid
         
         case checkAvailabilityFail
+        case checkAvailabilityEmpty
         case claimTransactionFail
         case claimTransactionReceiptResponsePending
         
@@ -342,6 +343,7 @@ extension WalletService.Error: LocalizedError {
         case .contractAddressInvalid: return "Red Packet Not Found"
             
         case .checkAvailabilityFail: return "Red Packet Check Fail"
+        case .checkAvailabilityEmpty: return "All Red Packets Have Been Claimed"
         case .claimTransactionFail: return "Red Packet Claim Fail"
         case .claimTransactionReceiptResponsePending: return "Red Packet Claim Lookup Fail"
             
