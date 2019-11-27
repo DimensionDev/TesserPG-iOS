@@ -314,6 +314,10 @@
 		DB415EAC238CD1E60090C28F /* ClaimRedPacketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB415EAA238CD1E60090C28F /* ClaimRedPacketViewController.swift */; };
 		DB415EAE238D07170090C28F /* TCActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146C4223FC9E4008ECC22 /* TCActionButton.swift */; };
 		DB415EAF238D07400090C28F /* ImageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146CA2240AEC0008ECC22 /* ImageUtil.swift */; };
+		DB415EB1238E1E780090C28F /* DispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB415EB0238E1E780090C28F /* DispatchQueue.swift */; };
+		DB415EB2238E1E780090C28F /* DispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB415EB0238E1E780090C28F /* DispatchQueue.swift */; };
+		DB415EB3238E1E780090C28F /* DispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB415EB0238E1E780090C28F /* DispatchQueue.swift */; };
+		DB415EB4238E1E780090C28F /* DispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB415EB0238E1E780090C28F /* DispatchQueue.swift */; };
 		DB42ECFA2387D21200EB1687 /* DynamicTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB42ECF92387D21200EB1687 /* DynamicTableView.swift */; };
 		DB42ECFB2387D21200EB1687 /* DynamicTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB42ECF92387D21200EB1687 /* DynamicTableView.swift */; };
 		DB42ECFD2387D6B700EB1687 /* InputRedPacketAmoutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB42ECFC2387D6B700EB1687 /* InputRedPacketAmoutTableViewCell.swift */; };
@@ -792,6 +796,7 @@
 		DB415E82238BB7370090C28F /* RedPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedPacket.swift; sourceTree = "<group>"; };
 		DB415EA5238CBF9C0090C28F /* FullContactInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullContactInfo.swift; sourceTree = "<group>"; };
 		DB415EAA238CD1E60090C28F /* ClaimRedPacketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimRedPacketViewController.swift; sourceTree = "<group>"; };
+		DB415EB0238E1E780090C28F /* DispatchQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchQueue.swift; sourceTree = "<group>"; };
 		DB42ECF92387D21200EB1687 /* DynamicTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicTableView.swift; sourceTree = "<group>"; };
 		DB42ECFC2387D6B700EB1687 /* InputRedPacketAmoutTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputRedPacketAmoutTableViewCell.swift; sourceTree = "<group>"; };
 		DB42ECFF2387DC7B00EB1687 /* SelectRedPacketSplitModeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectRedPacketSplitModeTableViewCell.swift; sourceTree = "<group>"; };
@@ -1425,6 +1430,7 @@
 				8313F69C22477CA000C09C2D /* UIViewController+Alert.swift */,
 				83B93D21221CEB9800F556C0 /* UserDefaults+AppGroup.swift */,
 				DB1169CA22E185640099BA25 /* NotificationName.swift */,
+				DB415EB0238E1E780090C28F /* DispatchQueue.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -2560,6 +2566,7 @@
 				8325E486222E768500EE9B83 /* Debounce.swift in Sources */,
 				DB66FE67224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift in Sources */,
 				DB1327152253651C00BD7B98 /* KeyBridge.swift in Sources */,
+				DB415EB1238E1E780090C28F /* DispatchQueue.swift in Sources */,
 				DB415EAB238CD1E60090C28F /* ClaimRedPacketViewController.swift in Sources */,
 				8313F6A62247ACC800C09C2D /* TCErrors.swift in Sources */,
 				83FE345E22B730CE0077C1A5 /* IntroArrow.swift in Sources */,
@@ -2782,6 +2789,7 @@
 				DB4F309922A14C0D0003804B /* DMSPGPError.swift in Sources */,
 				DB0F101F23893B3100F49D2C /* CreatedRedPacketViewController.swift in Sources */,
 				DB15695A23277FD900220926 /* ProfileService+Contact.swift in Sources */,
+				DB415EB2238E1E780090C28F /* DispatchQueue.swift in Sources */,
 				83B93ED9222528AD00F556C0 /* RecommendRecipientsView.swift in Sources */,
 				83DFC7402259F0EC00993160 /* CALayer+Shadow.swift in Sources */,
 				DB42ECFE2387D6B700EB1687 /* InputRedPacketAmoutTableViewCell.swift in Sources */,
@@ -2847,6 +2855,7 @@
 				DB415E91238BFB250090C28F /* WalletModel.swift in Sources */,
 				DB63A0F422DDCAC600C2DDA6 /* ProfileService.swift in Sources */,
 				DB63A10222DDCCF100C2DDA6 /* KeyFactory+BCOpenPGP.swift in Sources */,
+				DB415EB3238E1E780090C28F /* DispatchQueue.swift in Sources */,
 				DB63A12722E06F1700C2DDA6 /* ListEmptyView.swift in Sources */,
 				DB63A10722DDD18100C2DDA6 /* MessagesViewModel.swift in Sources */,
 				DB63A0F822DDCB0E00C2DDA6 /* WormholdService.swift in Sources */,
@@ -2957,6 +2966,7 @@
 				DB1169C022E184310099BA25 /* ComposeMessageViewModel.swift in Sources */,
 				DB1169B822E183990099BA25 /* ContactDBAction.swift in Sources */,
 				DB1169D822E19BD80099BA25 /* MessagesViewModel.swift in Sources */,
+				DB415EB4238E1E780090C28F /* DispatchQueue.swift in Sources */,
 				DB1169AF22E1830A0099BA25 /* Message.swift in Sources */,
 				DB415E8A238BF00D0090C28F /* RedPacket.swift in Sources */,
 				DB1169A022E182730099BA25 /* strings.swift in Sources */,
@@ -3233,7 +3243,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -3267,7 +3277,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -3390,7 +3400,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3421,7 +3431,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3562,7 +3572,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeInterpretAction/TesserCubeInterpretAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3589,7 +3599,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeInterpretAction/TesserCubeInterpretAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3616,7 +3626,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeComposeAction/TesserCubeComposeAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3643,7 +3653,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeComposeAction/TesserCubeComposeAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3739,7 +3749,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -3772,7 +3782,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3802,7 +3812,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeInterpretAction/TesserCubeInterpretAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3829,7 +3839,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeComposeAction/TesserCubeComposeAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3970,7 +3980,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -4003,7 +4013,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -4033,7 +4043,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeInterpretAction/TesserCubeInterpretAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -4060,7 +4070,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeComposeAction/TesserCubeComposeAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -4201,7 +4211,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -4234,7 +4244,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -4264,7 +4274,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeInterpretAction/TesserCubeInterpretAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -4291,7 +4301,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeComposeAction/TesserCubeComposeAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 39;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
