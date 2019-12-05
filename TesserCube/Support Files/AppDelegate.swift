@@ -6,6 +6,7 @@
 //  Copyright © 2019 Sujitech. All rights reserved.
 //
 
+import os
 import UIKit
 import GRDB
 import ConsolePrint
@@ -27,8 +28,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Application.applicationConfigInit(application, launchOptions: launchOptions)
 
         #if DEBUG
-        consolePrint(TCDBManager.dbDirectoryUrl)
-        consolePrint(TCDBManager.dbFilePath)
+        os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, TCDBManager.dbDirectoryUrl.absoluteString)
+        os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, TCDBManager.dbFilePath)
         #endif
 
         if #available(iOS 13, *) {

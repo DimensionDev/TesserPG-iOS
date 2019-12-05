@@ -42,7 +42,9 @@ class RecipientCellTableViewCell: UITableViewCell {
         addressLabel.text = contactInfo?.emails.first?.address
         serialLabel.text = contactInfo?.keys.first?.shortIdentifier
         
+        #if TARGET_IS_EXTENSION
         updateColor(theme: KeyboardModeManager.shared.currentTheme)
+        #endif
     }
 
     // TODO: color

@@ -23,6 +23,10 @@ extension MessagesViewModel {
         // draft
         case edit(message: Message, presentingViewController: UIViewController)
         case finishDraft(message: Message, presentingViewController: UIViewController, disposeBag: DisposeBag)
+        
+        // red packet
+        case claim(message: Message, redPacket: RedPacket, presentingViewController: UIViewController)
+        case refund(message: Message, redPacket: RedPacket, presentingViewController: UIViewController)
 
         case delete(message: Message, presentingViewController: UIViewController, cell: UITableViewCell)
         case cancel
@@ -41,6 +45,8 @@ extension MessagesViewModel {
             case .recomposeMessage:     return L10n.MessagesViewController.Action.Button.reCompose
             case .edit:                 return L10n.Common.Button.edit
             case .finishDraft:          return L10n.MessagesViewController.Action.Button.markAsFinished
+            case .claim:                return "Claim"
+            case .refund:               return "Refund"
             case .delete:               return L10n.Common.Button.delete
             case .cancel:               return L10n.Common.Button.cancel
             }
@@ -59,6 +65,10 @@ extension MessagesViewModel {
                     return UIImage(systemName: "square.and.pencil")
                 case .finishDraft:
                     return UIImage(systemName: "signature")
+                case .claim:
+                    return UIImage(systemName: "envelope.open")
+                case .refund:
+                    return UIImage(systemName: "envelope.circle")
                 case .delete:
                     return UIImage(systemName: "trash")
                 default:
@@ -142,6 +152,16 @@ extension MessagesViewModel {
                             presentingViewController.showSimpleAlert(title: L10n.Common.Alert.error, message: message)
                         })
                         .disposed(by: disposeBag)
+                case let .claim(message, redPacket, presentingViewController):
+                    let viewModel = ClaimRedPacketViewModel(redPacket: redPacket)
+                    Coordinator.main.present(scene: .claimRedPacket(viewModel: viewModel), from: presentingViewController, transition: .modal, completion: nil)
+                    
+                case let .refund(message, redPacket, presentingViewController):
+                    // TODO:
+                    let alertController = UIAlertController(title: "Refund Fail", message: "Please Refund After Red Packet Expired", preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                    alertController.addAction(okAction)
+                    presentingViewController.present(alertController, animated: true, completion: nil)
 
                 case let .delete(message, presentingViewController, cell):
                     if #available(iOS 13.0, *) {
@@ -205,61 +225,89 @@ extension MessagesViewModel {
 extension MessagesViewModel: ContextMenuActionTableViewDelegate {
 
     func tableView(_ tableView: UITableView, presentingViewController: UIViewController, actionsforRowAt indexPath: IndexPath, isContextMenu: Bool) -> [ContextMenuAction] {
-        guard let cell = tableView.cellForRow(at: indexPath) as? MessageCardCell else {
-            return []
-        }
         let message = messages.value[indexPath.row]
 
-        if message.isDraft {
-            // Draft:
-            //  - Edit
-            //  - Finish Draft (markAsFinished)
-            //  - Delete
-            //  - Cancel
-            return [
-                Action.edit(message: message, presentingViewController: presentingViewController),
-                Action.finishDraft(message: message, presentingViewController: presentingViewController, disposeBag: self.disposeBag),
-                Action.delete(message: message, presentingViewController: presentingViewController, cell: cell),
-                Action.cancel,
-            ]
-        } else {
-            let isSignedByOthers: Bool = {
-                let signatureKey = ProfileService.default.keys.value
-                    .filter { $0.hasSecretKey }
-                    .first(where: { key in key.longIdentifier == message.senderKeyId })
-                return signatureKey == nil && message.composedAt == nil
-            }()
-
-            if isSignedByOthers {
-                // Sign by other so message is not editable
-                // Message from others:
-                //  - Copy Message Content
-                //  - COpy Enctyped Message
+        if let cell = tableView.cellForRow(at: indexPath) as? MessageCardCell {
+            if message.isDraft {
+                // Draft:
+                //  - Edit
+                //  - Finish Draft (markAsFinished)
                 //  - Delete
                 //  - Cancel
                 return [
-                    Action.copyMessageContent(message: message),
-                    Action.copyPayload(message: message),
+                    Action.edit(message: message, presentingViewController: presentingViewController),
+                    Action.finishDraft(message: message, presentingViewController: presentingViewController, disposeBag: self.disposeBag),
                     Action.delete(message: message, presentingViewController: presentingViewController, cell: cell),
                     Action.cancel,
                 ]
             } else {
-                // Compose on this device and is editable
-                // Message from self:
-                //  - Share Encrypted Message
-                //  - Copy Message Content
-                //  - Re-Compose
-                //  - Delete
-                //  - Cancel
+                let isSignedByOthers: Bool = {
+                    let signatureKey = ProfileService.default.keys.value
+                        .filter { $0.hasSecretKey }
+                        .first(where: { key in key.longIdentifier == message.senderKeyId })
+                    return signatureKey == nil && message.composedAt == nil
+                }()
+
+                if isSignedByOthers {
+                    // Sign by other so message is not editable
+                    // Message from others:
+                    //  - Copy Message Content
+                    //  - COpy Enctyped Message
+                    //  - Delete
+                    //  - Cancel
+                    return [
+                        Action.copyMessageContent(message: message),
+                        Action.copyPayload(message: message),
+                        Action.delete(message: message, presentingViewController: presentingViewController, cell: cell),
+                        Action.cancel,
+                    ]
+                } else {
+                    // Compose on this device and is editable
+                    // Message from self:
+                    //  - Share Encrypted Message
+                    //  - Copy Message Content
+                    //  - Re-Compose
+                    //  - Delete
+                    //  - Cancel
+                    return [
+                        Action.shareArmoredMessage(message: message, presentingViewController: presentingViewController, cell: cell),
+                        Action.copyMessageContent(message: message),
+                        Action.recomposeMessage(message: message, presentingViewController: presentingViewController),
+                        Action.delete(message: message, presentingViewController: presentingViewController, cell: cell),
+                        Action.cancel,
+                    ]
+                }
+            }   // end if … else …
+        }   // MessageCardCell
+        
+        if let cell = tableView.cellForRow(at: indexPath) as? RedPacketCardTableViewCell,
+        let redPacket = RedPacketService.shared.redPacket(from: message) {
+            // Red Packet:
+            //  - Delete
+            //  - Cancel
+            
+            switch redPacket.status {
+            case .initial, .pending, .fail, .claimed, .empty, .expired:
                 return [
+                    Action.refund(message: message, redPacket: redPacket, presentingViewController: presentingViewController),
                     Action.shareArmoredMessage(message: message, presentingViewController: presentingViewController, cell: cell),
-                    Action.copyMessageContent(message: message),
-                    Action.recomposeMessage(message: message, presentingViewController: presentingViewController),
+                    Action.delete(message: message, presentingViewController: presentingViewController, cell: cell),
+                    Action.cancel,
+                ]
+            case .incoming, .normal:
+                return [
+                    Action.claim(message: message, redPacket: redPacket, presentingViewController: presentingViewController),
+                    Action.refund(message: message, redPacket: redPacket, presentingViewController: presentingViewController),
+                    Action.shareArmoredMessage(message: message, presentingViewController: presentingViewController, cell: cell),
                     Action.delete(message: message, presentingViewController: presentingViewController, cell: cell),
                     Action.cancel,
                 ]
             }
-        }   // end if … else …
+        }
+        
+        return [
+            Action.cancel,
+        ]
     }
 
 }

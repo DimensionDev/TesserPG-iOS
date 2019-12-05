@@ -234,7 +234,9 @@ class ActionsView: UIView, Thematic {
         switch sender.action {
         case .modeChange:
             sender.isSelected = !sender.isSelected
+            #if TARGET_IS_EXTENSION
             KeyboardModeManager.shared.mode = sender.isSelected ? .editingRecipients : .typing
+            #endif
         case .encrypt:
             delegate?.actionsView(self, didClick: sender.action, button: sender)
         case .redPacket:

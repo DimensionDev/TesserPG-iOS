@@ -67,8 +67,12 @@ extension WalletsViewModel {
 //            }()
         model.balanceInDecimal.asDriver()
             .map { decimal in
-                guard let decimal = decimal else { return "- ETH" }
-                return decimal.string + " ETH"
+                guard let decimal = decimal,
+                let decimalString = WalletService.balanceDecimalFormatter.string(from: decimal as NSNumber) else {
+                    return "- ETH"
+                }
+            
+                return decimalString + " ETH"
             }
             .drive(cell.balanceAmountLabel.rx.text)
             .disposed(by: cell.disposeBag)
