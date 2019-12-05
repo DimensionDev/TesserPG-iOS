@@ -17,6 +17,7 @@ def common_pods
 
   pod 'RxSwift', '~> 4.4.2'
   pod 'RxCocoa', '~> 4.4.2'
+  pod "RxSwiftUtilities", '~> 2.1.0'
 
   pod 'KeychainAccess', '~> 3.2.0'
 
@@ -70,6 +71,7 @@ end
 
 target 'TesserCubeKeyboard' do
   common_pods
+  pod 'SVProgressHUD', :git => 'https://github.com/getaaron/SVProgressHUD.git', :branch => 'dark-mode'
 end
 
 target 'TesserCubeInterpretAction' do

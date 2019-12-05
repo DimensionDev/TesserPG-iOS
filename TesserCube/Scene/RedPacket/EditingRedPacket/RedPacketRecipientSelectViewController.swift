@@ -6,10 +6,13 @@
 //  Copyright © 2019 Sujitech. All rights reserved.
 //
 
+import os
 import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import RxSwiftUtilities
+import Web3
 
 protocol RedPacketRecipientSelectViewControllerDelegate: class {
     func redPacketRecipientSelectViewController(_ viewController: RedPacketRecipientSelectViewController, didSelect contactInfo: FullContactInfo)
@@ -21,8 +24,17 @@ class RedPacketRecipientSelectViewController: UIViewController {
     private let titleLabelHeight: CGFloat = 42
     private let tableViewHeight: CGFloat = 122
     
+    weak var delegate: RedPacketRecipientSelectViewControllerDelegate?
+    weak var optionFieldView: OptionFieldView?
+    
+    let disposedBag = DisposeBag()
+    
+    // Input
+    var redPacketProperty: RedPacketProperty!
     private let searchText = BehaviorRelay<String>(value: "")
-    private let disposedBag = DisposeBag()
+    var contacts: [FullContactInfo] = []
+    
+    private lazy var finishBarButtonItem = UIBarButtonItem(title: "Finish", style: .done, target: self, action: #selector(RedPacketRecipientSelectViewController.finishBarButtonItemDidPressed(_:)))
     
     private var titleLabelView: UIView = {
         let view = UIView(frame: .zero)
@@ -40,7 +52,6 @@ class RedPacketRecipientSelectViewController: UIViewController {
     
     var recipientInputView: RecipientInputView = {
         let inputView = RecipientInputView(frame: .zero)
-        
         return inputView
     }()
     
@@ -62,43 +73,53 @@ class RedPacketRecipientSelectViewController: UIViewController {
         return tableView
     }()
     
-    weak var delegate: RedPacketRecipientSelectViewControllerDelegate?
-    
-    var contacts: [FullContactInfo] = []
-    
-    weak var optionFieldView: OptionFieldView?
+}
 
+extension RedPacketRecipientSelectViewController {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         configNavBar()
         configUI()
     }
-
-
-    private func configNavBar() {
-        title = "Select Recipients"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Send", style: .plain, target: self, action: #selector(createRedPacketButtonDidClicked))
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        updateNavigationItem()
     }
     
-    @objc
-    private func createRedPacketButtonDidClicked() {
+}
 
+extension RedPacketRecipientSelectViewController {
+    
+    @objc
+    private func finishBarButtonItemDidPressed(_ sender: UIBarButtonItem) {
+        let viewController = CreatedRedPacketViewController()
+        viewController.viewModel = CreatedRedPacketViewModel(redPacketProperty: redPacketProperty)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+}
+
+extension RedPacketRecipientSelectViewController {
+    
+    private func configNavBar() {
+        title = "Select Recipients"
+        navigationItem.rightBarButtonItem = finishBarButtonItem
     }
     
     private func configUI() {
         view.backgroundColor = UIColor._tertiarySystemGroupedBackground
-        titleLabelView.addSubview(titleLabel)
         
+        #if TARGET_IS_EXTENSION
+        titleLabelView.addSubview(titleLabel)
         titleLabelView.addSubview(recipientInputView)
         recipientInputView.inputTextField.textFieldIsSelected = true
         recipientInputView.inputTextField.customDelegate = self
-        recipientsTableView.delegate = self
-        recipientsTableView.dataSource = self
         
         view.addSubview(titleLabelView)
-        view.addSubview(recipientsTableView)
-        
         view.bringSubviewToFront(titleLabelView)
         
         titleLabel.snp.makeConstraints { make in
@@ -118,17 +139,22 @@ class RedPacketRecipientSelectViewController: UIViewController {
             make.top.equalTo(self.view.layoutMarginsGuide)
             make.height.equalTo(titleLabelHeight)
         }
+        #endif
         
+        view.addSubview(recipientsTableView)
         recipientsTableView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
+            #if TARGET_IS_EXTENSION
             make.top.equalTo(titleLabelView.snp.bottom)
+            #else
+            make.top.equalToSuperview()
+            #endif
+            make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
         }
         
-//        resultLabel.snp.makeConstraints { make in
-//            make.leading.trailing.equalToSuperview()
-//            make.top.equalTo(recipientsTableView.snp.bottom).offset(16)
-//        }
+        // Setup recipientsTableView
+        recipientsTableView.delegate = self
+        recipientsTableView.dataSource = self
         
         bindData()
     }
@@ -157,35 +183,27 @@ class RedPacketRecipientSelectViewController: UIViewController {
             return contactInfo.contact.name.contains(searchText, caseSensitive: false) || contactInfo.emails.first?.address.contains(searchText, caseSensitive: false) ?? false
         }
         return searchedData
-        
-//        let filteredData = allFullContactInfo.filter({ (contactInfo) -> Bool in
-//            if let selectedData = self.optionFieldView?.selectedContacts {
-//                return !selectedData.contains {
-//                    return $0.contact.id == contactInfo.contact.id
-//                }
-//            }
-//            return true
-//        })
-//        if searchText.isEmpty {
-//            return filteredData
-//        } else {
-//            return filteredData.filter { contactInfo -> Bool in
-//                return contactInfo.contact.name.contains(searchText, caseSensitive: false) || contactInfo.emails.first?.address.contains(searchText, caseSensitive: false) ?? false
-//            }
-//        }
-    }
-    
-    private func isContactSelected(_ contact: FullContactInfo) -> Bool {
-        guard let selectedContacts = self.optionFieldView?.selectedContacts else {
-            return false
-        }
-        return selectedContacts.contains(contact)
     }
 
     func reloadRecipients() {
-            // Make searchText send signal as trigger
-            searchText.accept(searchText.value)
+        // Make searchText send signal as trigger
+        searchText.accept(searchText.value)
+    }
+    
+}
+
+extension RedPacketRecipientSelectViewController {
+    
+    // FIXME: works only when table view not filter data
+    private func updateNavigationItem() {
+        guard let selectedRows = recipientsTableView.indexPathsForSelectedRows else {
+            finishBarButtonItem.isEnabled = false
+            return
         }
+        
+        finishBarButtonItem.isEnabled = !selectedRows.isEmpty
+    }
+    
 }
 
 extension RedPacketRecipientSelectViewController: ReceipientTextFieldDelegate {
@@ -198,28 +216,29 @@ extension RedPacketRecipientSelectViewController: ReceipientTextFieldDelegate {
 }
 
 extension RedPacketRecipientSelectViewController: UITableViewDelegate, UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return recipients.count
         return contacts.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 40
+        return 44
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: RecipientCellTableViewCell.identifier, for: indexPath) as! RecipientCellTableViewCell
         cell.selectedBackgroundView = UIView()
         cell.contactInfo = contacts[indexPath.row]
-        cell.setSelected(isContactSelected(contacts[indexPath.row]), animated: false)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         delegate?.redPacketRecipientSelectViewController(self, didSelect: contacts[indexPath.row])
+        updateNavigationItem()
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         delegate?.redPacketRecipientSelectViewController(self, didDeselect: contacts[indexPath.row])
+        updateNavigationItem()
     }
 }

@@ -36,8 +36,10 @@ internal enum Asset {
   internal static let mainTabContacts = ImageAsset(name: "main_tab_contacts")
   internal static let mainTabMe = ImageAsset(name: "main_tab_me")
   internal static let mainTabMessages = ImageAsset(name: "main_tab_messages")
+  internal static let mainTabWallet = ImageAsset(name: "main_tab_wallet")
   internal static let sceneMeImportKey = ImageAsset(name: "scene_me_import_key")
   internal static let mockPoster = ImageAsset(name: "mock_poster")
+  internal static let arrowDropDown24px = ImageAsset(name: "arrow_drop_down_24px")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 

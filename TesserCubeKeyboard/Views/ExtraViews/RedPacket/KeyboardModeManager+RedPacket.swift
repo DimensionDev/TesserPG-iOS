@@ -11,7 +11,7 @@ import UIKit
 extension KeyboardModeManager {
     func addEditingRedPacketView() {
         if editingRedPacketViewControllerNaviVC == nil {
-            let editingRedPacketView = EditingRedPacketViewController(nibName: "EditingRedPacketViewController", bundle: nil)
+            let editingRedPacketView = EditingRedPacketViewController()
             editingRedPacketView.optionsView = optionsView
             editingRedPacketViewControllerNaviVC = UINavigationController(rootViewController: editingRedPacketView)
 //            editingRedPacketView?.updateColor(theme: currentTheme)

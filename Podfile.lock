@@ -36,6 +36,9 @@ PODS:
     - RxSwift (>= 4.4.2, ~> 4.4)
   - RxSwift (4.4.2):
     - RxAtomic (>= 4.4.2, ~> 4.4)
+  - RxSwiftUtilities (2.1.0):
+    - RxCocoa (~> 4.0)
+    - RxSwift (~> 4.0)
   - SearchTextField (1.2.4)
   - secp256k1.swift (0.1.6)
   - SnapKit (4.2.0)
@@ -97,6 +100,7 @@ DEPENDENCIES:
   - RxBlocking (~> 4.0)
   - RxCocoa (~> 4.4.2)
   - RxSwift (~> 4.4.2)
+  - RxSwiftUtilities (~> 2.1.0)
   - SearchTextField
   - SnapKit (~> 4.2.0)
   - SVProgressHUD (from `https://github.com/getaaron/SVProgressHUD.git`, branch `dark-mode`)
@@ -134,6 +138,7 @@ SPEC REPOS:
     - RxBlocking
     - RxCocoa
     - RxSwift
+    - RxSwiftUtilities
     - SearchTextField
     - SnapKit
     - SQLCipher
@@ -182,6 +187,7 @@ SPEC CHECKSUMS:
   RxBlocking: 79413e4d916f44bb3e113c5b2cc059e36fe58910
   RxCocoa: 477990dc3b4c3ff55fb0ac77e1cc06244e0aaec8
   RxSwift: 74c29b693c8e42b0f64400e8b06564575742d649
+  RxSwiftUtilities: b486df7454cc867c3ea626ce24110511159e7044
   SearchTextField: 40dc3cc57def5a211f263cac263622c163bbc25a
   secp256k1.swift: 2695e9586a624642d8090603bf9b7dfad142a699
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
@@ -194,6 +200,6 @@ SPEC CHECKSUMS:
   Web3: a4eb0d0cdedbef3f0e4c97ea83a4232a1b1f952b
   WordSuggestion: 424d96dd2cfe4259c72959f9bdcffc864f0e65d4
 
-PODFILE CHECKSUM: ed70ba9877c42d7706ed4beed9bc29ec329dd8e5
+PODFILE CHECKSUM: c8cb51ad67430921747917e8214c520ef947ed91
 
 COCOAPODS: 1.8.4

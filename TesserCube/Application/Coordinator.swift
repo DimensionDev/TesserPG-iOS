@@ -42,6 +42,8 @@ class Coordinator {
         case backupMnemonic(viewModel: BackupMnemonicCollectionViewModel)
         case confirmMnemonic(viewModel: ConfirmMnemonicCollectionViewModel)
         case importWallet
+        case sendRedPacket
+        case claimRedPacket(viewModel: ClaimRedPacketViewModel)
     }
     
     enum URLHost: String {
@@ -186,6 +188,15 @@ extension Coordinator {
             return vc
         case .importWallet:
             let vc = ImportWalletViewController()
+            return vc
+        case .sendRedPacket:
+            assert(!WalletService.default.walletModels.value.isEmpty, "Should present alert if no wallet") 
+            let vc = EditingRedPacketViewController()
+            return vc
+            
+        case let .claimRedPacket(viewModel):
+            let vc = ClaimRedPacketViewController()
+            vc.viewModel = viewModel
             return vc
         }
     }

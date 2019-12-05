@@ -1,5 +1,5 @@
 //
-//  RedPacketWalletProvider.swift
+//  RedPacketSplitMethodProvider.swift
 //  TesserCube
 //
 //  Created by jk234ert on 11/6/19.
@@ -7,18 +7,21 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
-class RedPacketWalletProvider: NSObject {
-    var wallets: [String]
+class RedPacketSplitMethodProvider: NSObject {
     
-    var selectedWallet: String
+    let selectedSplitType: BehaviorRelay<RedPacketProperty.SplitType>
     
-    init(tableView: UITableView) {
-        wallets = ["0x1191", "0x3389"] //TODO: Real wallets
-        selectedWallet = wallets[0]
+    init(redPacketProperty: RedPacketProperty, tableView: UITableView) {
+        selectedSplitType = BehaviorRelay(value: redPacketProperty.splitType)
+        
         super.init()
+        
         tableView.delegate = self
         tableView.dataSource = self
+        
         tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .none)
     }
     
@@ -27,16 +30,17 @@ class RedPacketWalletProvider: NSObject {
     }
 }
 
-extension RedPacketWalletProvider: UITableViewDataSource {
+extension RedPacketSplitMethodProvider: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return wallets.count
+        return RedPacketProperty.SplitType.allCases.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: String(describing: Self.self))
         cell.selectionStyle = .none
-        cell.textLabel?.text = wallets[indexPath.row]
-        if (wallets[indexPath.row] == selectedWallet) {
+        cell.textLabel?.text = RedPacketProperty.SplitType.allCases[indexPath.row].title
+        
+        if RedPacketProperty.SplitType.allCases[indexPath.row] == selectedSplitType.value {
             cell.accessoryType = .checkmark
         } else {
             cell.accessoryType = .none
@@ -45,10 +49,12 @@ extension RedPacketWalletProvider: UITableViewDataSource {
     }
 }
 
-extension RedPacketWalletProvider: UITableViewDelegate {
+extension RedPacketSplitMethodProvider: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        selectedWallet = wallets[indexPath.row]
+        
+        let type = RedPacketProperty.SplitType.allCases[indexPath.row]
+        selectedSplitType.accept(type)
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {

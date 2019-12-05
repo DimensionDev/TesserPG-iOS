@@ -32,6 +32,21 @@ enum KeyboardMode {
     }
 }
 
+extension KeyboardMode {
+    var actions: [ActionType] {
+        switch self {
+        case .typing,
+             .cannotDecrypt,
+             .interpretResult:
+            return [.modeChange]
+        case .editingRecipients,
+             .editingRedPacket:
+            return [.encrypt, .redPacket, .modeChange]
+        }
+    }
+}
+
+
 protocol KeyboardModeListener {
     func update(mode: KeyboardMode)
 }
