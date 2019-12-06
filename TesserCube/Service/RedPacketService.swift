@@ -135,7 +135,7 @@ extension RedPacketService {
         
         let results = realm?.objects(RedPacket.self).filter { $0.contractAddress == contractAddress }
         guard let redPacket = results?.first else {
-            var redPacket = RedPacket()
+            let redPacket = RedPacket()
             redPacket.senderUserID = userID
             redPacket.share = uuids.count
             redPacket.status = .incoming
