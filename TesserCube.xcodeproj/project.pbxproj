@@ -738,7 +738,6 @@
 		83B93E89222411C300F556C0 /* UIView+blinking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+blinking.swift"; sourceTree = "<group>"; };
 		83B93ED8222528AD00F556C0 /* RecommendRecipientsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendRecipientsView.swift; sourceTree = "<group>"; };
 		83C12EDF2332209D009DB359 /* DMSPGPUserIDTranslator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSPGPUserIDTranslator.swift; sourceTree = "<group>"; };
-		83C12EE42332244D009DB359 /* MeViewModel+ContextMenuActionTableViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MeViewModel+ContextMenuActionTableViewDelegate.swift"; sourceTree = "<group>"; };
 		83C90B42231678B90048743A /* GenerateKeyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateKeyData.swift; sourceTree = "<group>"; };
 		83DFC72B2252EF3100993160 /* KeyRecordDBAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyRecordDBAction.swift; sourceTree = "<group>"; };
 		83DFC73622577B9800993160 /* WormHole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WormHole.swift; sourceTree = "<group>"; };
@@ -1198,7 +1197,6 @@
 		832146BC223F955D008ECC22 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				83C12EE42332244D009DB359 /* MeViewModel+ContextMenuActionTableViewDelegate.swift */,
 				8378336A224B352500F2C0BF /* ContactListViewModel.swift */,
 				832146FB2244CD43008ECC22 /* MessagesViewModel.swift */,
 				DB97AD152317BCD9007594E9 /* MessagesViewModel+ContextMenuActionTableViewDelegate.swift */,
