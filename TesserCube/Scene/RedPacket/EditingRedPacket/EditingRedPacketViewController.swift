@@ -6,8 +6,8 @@
 //  Copyright © 2019 Sujitech. All rights reserved.
 //
 
-import UIKit
 import os
+import UIKit
 import RxSwift
 import RxCocoa
 import BigInt
@@ -17,109 +17,61 @@ final class EditingRedPacketViewModel: NSObject {
     
     let disposeBag = DisposeBag()
     
-    enum TableViewCellType {
-        case walletSelect           // select a wallet to send red packet
-        case amountInput            // input the amount for send
-        case splitModeSelect        // select the packet split mode (avg. or random)
-        case shareInput             // input the count for shares
-        case senderSelect           // select a PGP sender to mark the red packet sender
-
-        var title: String {
-            switch self {
-            case .walletSelect:     return "Wallet"
-            case .amountInput:      return "Amount"
-            case .splitModeSelect:  return "Split"
-            case .shareInput:       return "Shares"
-            case .senderSelect:     return "Send as"
-            }
-        }
-    }
-    
-    private let sections: [[TableViewCellType]] = [
-        [.walletSelect],
-        [.amountInput],
-        [.splitModeSelect],
-        [.shareInput],
-        [.senderSelect],
-    ]
-    
+    // Input
     var redPacketProperty = RedPacketProperty()
     
-    // FIXME:
-    // move Input & Output out of tableViewCell
+    let redPacketSplitType = BehaviorRelay(value: RedPacketProperty.SplitType.average)
     
-    // Hold all cell instance in view model
-    let selectWalletTableViewCell = SelectWalletTableViewCell()
-    var walletProvider: RedPacketWalletProvider?
+    let walletModels = BehaviorRelay<[WalletModel]>(value: [])
+    let walletModel = BehaviorRelay<WalletModel?>(value: nil)
     
-    let inputRedPacketAmountTableViewCell = InputRedPacketAmoutTableViewCell()
+    let amount = BehaviorRelay(value: Decimal(0))
+    let share = BehaviorRelay(value: 1)
     
-    let selectRedPacketSplitModeTableViewCell = SelectRedPacketSplitModeTableViewCell()
-    var splitMethodProvider: RedPacketSplitMethodProvider?
+    let name = BehaviorRelay(value: "")
+    let message = BehaviorRelay(value: "")
     
-    let inputRedPacketShareTableViewCell = InputRedPacketShareTableViewCell()
+    // Output
+    let amountInputCoinCurrencyUnitLabelText: Driver<String>
+    let minimalAmount = BehaviorRelay(value: WalletService.redPacketMinAmount)
     
-    let selectRedPacketSenderTableViewCell = SelectRedPacketSenderTableViewCell()
+    enum TableViewCellType {
+        case wallet                 // select a wallet to send red packet
+        case amount                 // input the amount for send
+        case share                  // input the count for shares
+        case name                   // input the sender name
+        case message                // input the comment message
+    }
+    
+    let sections: [[TableViewCellType]] = [
+        [
+            .wallet,
+        ],
+        [
+            .amount,
+            .share,
+        ],
+        [
+            .name,
+            .message,
+        ],
+    ]
     
     override init() {
-        walletProvider = RedPacketWalletProvider(tableView: selectWalletTableViewCell.tableView, walletModels: WalletService.default.walletModels.value)
-        
-        splitMethodProvider = RedPacketSplitMethodProvider(redPacketProperty: redPacketProperty, tableView: selectRedPacketSplitModeTableViewCell.tableView)
-        
+        amountInputCoinCurrencyUnitLabelText = redPacketSplitType.asDriver()
+            .map { type in type == .average ? "ETH per share" : "ETH" }
+            
         super.init()
         
-        walletProvider?.selectWalletModel.asDriver()
-            .drive(onNext: { [weak self] selectWalletModel in
-                selectWalletModel?.updateBalance()
-                self?.redPacketProperty.walletModel = selectWalletModel
-            })
-            .disposed(by: disposeBag)
-        walletProvider?.selectWalletModel.asDriver()
-            .flatMapLatest { walletModel -> Driver<String> in
-                guard let walletModel = walletModel else {
-                    return Driver.just("Current balance: - ")
-                }
-                
-                return walletModel.balanceInDecimal.asDriver()
-                    .map { decimal in
-                        let placeholder = "Current balance: - "
-                        guard let decimal = decimal else {
-                            return placeholder
-                        }
-                        
-                        let formatter = WalletService.balanceDecimalFormatter
-                        return formatter.string(from: decimal as NSNumber).flatMap { decimalString in
-                            return "Current balance: \(decimalString) ETH"
-                        } ?? placeholder
-                    }
-            }
-            .drive(selectWalletTableViewCell.walletBalanceLabel.rx.text)
-            .disposed(by: disposeBag)
-        inputRedPacketAmountTableViewCell.amount.asDriver()
-            .drive(onNext: { [weak self] amount in
-                self?.redPacketProperty.amount = amount
-            })
-            .disposed(by: disposeBag)
-        splitMethodProvider?.selectedSplitType.asDriver()
-            .drive(onNext: { [weak self] type in
-                self?.redPacketProperty.splitType = type
-            })
-            .disposed(by: disposeBag)
-        inputRedPacketShareTableViewCell.share.asDriver()
-            .drive(onNext: { [weak self] share in
-                self?.redPacketProperty.shareCount = share
-            })
-            .disposed(by: disposeBag)
-        selectRedPacketSenderTableViewCell.viewModel.selectedKey.asDriver()
-            .drive(onNext: { [weak self] sender in
-                self?.redPacketProperty.sender = sender
-            })
+        // Update default select wallet model when wallet model pool change
+        walletModels.asDriver()
+            .map { $0.first }
+            .drive(walletModel)
             .disposed(by: disposeBag)
         
-        // Bind share to amount to setup validator
-        inputRedPacketShareTableViewCell.share.asDriver()
-            .map { Decimal($0) * Decimal(0.01) }        // min value per packet set to 0.01 ETH
-            .drive(inputRedPacketAmountTableViewCell.minimalAmount)
+        share.asDriver()
+            .map { Decimal($0) * WalletService.redPacketMinAmount }
+            .drive(minimalAmount)
             .disposed(by: disposeBag)
     }
     
@@ -142,71 +94,101 @@ extension EditingRedPacketViewModel: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellType = sections[indexPath.section][indexPath.row]
-        let title = cellType.title
+        let cell: UITableViewCell
         
-        switch cellType {
-        case .walletSelect:
-            let cell = selectWalletTableViewCell
-            cell.titleLabel.text = title
-            cell.detailLeadingLayoutConstraint.constant = 100
-            return cell
-        case .amountInput:
-            let cell = inputRedPacketAmountTableViewCell
-            cell.titleLabel.text = title
-            cell.detailLeadingLayoutConstraint.constant = 100
-            return cell
-        case .splitModeSelect:
-            let cell = selectRedPacketSplitModeTableViewCell
-            cell.titleLabel.text = title
-            cell.detailLeadingLayoutConstraint.constant = 100
-            return cell
-        case .shareInput:
-            let cell = inputRedPacketShareTableViewCell
-            cell.titleLabel.text = title
-            cell.detailLeadingLayoutConstraint.constant = 100
-            return cell
-        case .senderSelect:
-            let cell = selectRedPacketSenderTableViewCell
-            cell.titleLabel.text = title
-            cell.detailLeadingLayoutConstraint.constant = 100
-            return cell
+        switch sections[indexPath.section][indexPath.row] {
+        case .wallet:
+            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SelectWalletTableViewCell.self), for: indexPath) as! SelectWalletTableViewCell
+            walletModels.asDriver()
+                .drive(_cell.viewModel.walletModels)
+                .disposed(by: _cell.disposeBag)
+            _cell.viewModel.selectWalletModel.asDriver()
+                .drive(walletModel)
+                .disposed(by: _cell.disposeBag)
+            cell = _cell
+        
+        case .amount:
+            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: InputRedPacketAmoutTableViewCell.self), for: indexPath) as! InputRedPacketAmoutTableViewCell
+            
+            // Bind coin currency unit label text to label
+            amountInputCoinCurrencyUnitLabelText.asDriver()
+                .drive(_cell.coinCurrencyUnitLabel.rx.text)
+                .disposed(by: _cell.disposeBag)
+            
+            _cell.amount.asDriver()
+                .drive(amount)
+                .disposed(by: _cell.disposeBag)
+            
+            minimalAmount.asDriver()
+                .drive(_cell.minimalAmount)
+                .disposed(by: _cell.disposeBag)
+            
+            cell = _cell
+        
+        case .share:
+            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: InputRedPacketShareTableViewCell.self), for: indexPath) as! InputRedPacketShareTableViewCell
+            
+            _cell.share.asDriver()
+                .drive(share)
+                .disposed(by: disposeBag)
+            
+            cell = _cell
+            
+        case .name:
+            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: InputRedPacketSenderTableViewCell.self), for: indexPath) as! InputRedPacketSenderTableViewCell
+            
+            _cell.nameTextField.rx.text.orEmpty.asDriver()
+                .drive(name)
+                .disposed(by: _cell.disposeBag)
+            
+            cell = _cell
+            
+        case .message:
+            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: InputRedPacketMessageTableViewCell.self), for: indexPath) as! InputRedPacketMessageTableViewCell
+            
+            _cell.messageTextField.rx.text.orEmpty.asDriver()
+                .drive(message)
+                .disposed(by: _cell.disposeBag)
+            
+            cell = _cell
         }
+        
+        return cell
     }
     
 }
 
 class EditingRedPacketViewController: UIViewController {
     
-    let tableView: DynamicTableView = {
-        let tableView = DynamicTableView()
-        tableView.tableFooterView = UIView()
-        tableView.backgroundColor = ._systemGroupedBackground
-        tableView.separatorStyle = .none
+    let disposeBag = DisposeBag()
+    
+    let redPacketSplitTypeTableHeaderView = SelectRedPacketSplitModeTableHeaderView()
+    let tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.register(SelectWalletTableViewCell.self, forCellReuseIdentifier: String(describing: SelectWalletTableViewCell.self))
+        
+        tableView.register(InputRedPacketAmoutTableViewCell.self, forCellReuseIdentifier: String(describing: InputRedPacketAmoutTableViewCell.self))
+        tableView.register(InputRedPacketShareTableViewCell.self, forCellReuseIdentifier: String(describing: InputRedPacketShareTableViewCell.self))
+        
+        tableView.register(InputRedPacketSenderTableViewCell.self, forCellReuseIdentifier: String(describing: InputRedPacketSenderTableViewCell.self))
+        tableView.register(InputRedPacketMessageTableViewCell.self, forCellReuseIdentifier: String(describing: InputRedPacketMessageTableViewCell.self))
+        
         return tableView
+    }()
+    let walletSectionFooterView = WalletSectionFooterView()
+    
+    let sendRedPacketButton: TCActionButton = {
+        let button = TCActionButton()
+        button.color = .systemBlue
+        button.setTitle("Send", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        return button
     }()
 
     // TODO:
     weak var amountInputView: RecipientInputView? {
         return nil
     }
-    
-//    @IBOutlet weak var amountTitleLabel: UILabel!
-//    @IBOutlet weak var splitMethodTitleLabel: UILabel!
-//    @IBOutlet weak var sharesTitleLabel: UILabel!
-//    @IBOutlet weak var walletTitleLabel: UILabel!
-//    @IBOutlet weak var currentBalanceTitleLabel: UILabel!
-//
-//    @IBOutlet weak var sharesValueLabel: UILabel!
-//    @IBOutlet weak var sharesStepper: UIStepper!
-//
-//    @IBOutlet weak var splitMethodTableView: UITableView!
-//    @IBOutlet weak var walletTableView: UITableView!
-//
-//    @IBOutlet weak var amountInputView: RecipientInputView!
-//
-//    var wallets: [TestWallet] = []
-//
 
     #if TARGET_IS_EXTENSION
     weak var optionsView: OptionFieldView?
@@ -237,24 +219,82 @@ class EditingRedPacketViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
         
+        // Layout send red packet button
+        sendRedPacketButton.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(sendRedPacketButton)
+        let sendRedPacketButtonBottomLayoutConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: sendRedPacketButton.bottomAnchor)
+        sendRedPacketButtonBottomLayoutConstraint.priority = .defaultLow
+        NSLayoutConstraint.activate([
+            sendRedPacketButton.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            view.layoutMarginsGuide.trailingAnchor.constraint(equalTo: sendRedPacketButton.trailingAnchor),
+            sendRedPacketButtonBottomLayoutConstraint,
+            view.bottomAnchor.constraint(greaterThanOrEqualTo: sendRedPacketButton.bottomAnchor, constant: 16),
+        ])
+        
         // Setup tableView
+        tableView.tableHeaderView = redPacketSplitTypeTableHeaderView
         tableView.dataSource = viewModel
         tableView.delegate = self
-//        wallets = testWallets
-//
-//        configNavBar()
-//        configUI()
+        
+        // Setup view model
+        WalletService.default.walletModels.asDriver()
+            .drive(viewModel.walletModels)
+            .disposed(by: disposeBag)
+        
+        // Bind table view header segmented control to red packet split type
+        redPacketSplitTypeTableHeaderView.modeSegmentedControl.rx.value.asDriver()
+            .drive(onNext: { [weak self] index in
+                guard let `self` = self else { return }
+                switch index {
+                case 0:
+                    self.viewModel.redPacketSplitType.accept(.average)
+                case 1:
+                    self.viewModel.redPacketSplitType.accept(.random)
+                default:
+                    break
+                }
+            })
+            .disposed(by: disposeBag)
+
+        // Bind wallet model balance to wallet section footer view
+        viewModel.walletModel.asDriver()
+            .flatMapLatest { walletModel -> Driver<String> in
+                guard let walletModel = walletModel else {
+                    return Driver.just("Current balance: - ")
+                }
+                
+                return walletModel.balanceInDecimal.asDriver()
+                    .map { decimal in
+                        let placeholder = "Current balance: - "
+                        guard let decimal = decimal else {
+                            return placeholder
+                        }
+                        
+                        let formatter = WalletService.balanceDecimalFormatter
+                        return formatter.string(from: decimal as NSNumber).flatMap { decimalString in
+                            return "Current balance: \(decimalString) ETH"
+                        } ?? placeholder
+                }
+            }
+            .drive(walletSectionFooterView.walletBalanceLabel.rx.text)
+            .disposed(by: disposeBag)
     }
     
-    private func configUI() {
-//        amountInputView.inputTextField.keyboardType = .numbersAndPunctuation
-//        sharesValueLabel.text = "\(redPacketProperty.sharesCount)"
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // ref: https://useyourloaf.com/blog/variable-height-table-view-header/
+        guard let headerView = tableView.tableHeaderView else {
+            return
+        }
+        
+        let size = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        if headerView.frame.size.height != size.height {
+            headerView.frame.size.height = size.height
+            tableView.tableHeaderView = headerView
+            tableView.layoutIfNeeded()
+        }
     }
-
-//    @IBAction func stepperDidClicked(_ sender: UIStepper) {
-//        redPacketProperty.sharesCount = Int(sender.value)
-//        configUI()
-//    }
     
 }
 
@@ -267,51 +307,51 @@ extension EditingRedPacketViewController {
     @objc private func nextBarButtonItemClicked(_ sender: UIBarButtonItem) {
         view.endEditing(true)
         
-        let alertController = UIAlertController(title: "Error", message: nil, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alertController.addAction(okAction)
-        
-        guard let selectWalletModel = viewModel.walletProvider?.selectWalletModel.value else {
-            alertController.message = "Please select valid wallet"
-            present(alertController, animated: true, completion: nil)
-            return
-        }
-        
-        guard let balance = selectWalletModel.balance.value else {
-            alertController.message = "Wallet balance inquiry failed"
-            present(alertController, animated: true, completion: nil)
-            return
-        }
-        
-        let minAmountInWei = BigUInt(viewModel.inputRedPacketShareTableViewCell.share.value) * WalletService.redPacketMinAmountInWei
-        guard balance > minAmountInWei else {
-            alertController.message = "Insufficient wallet balance"
-            present(alertController, animated: true, completion: nil)
-            return
-        }
-        
-        guard balance > viewModel.redPacketProperty.amountInWei else {
-            alertController.message = "Insufficient wallet balance"
-            present(alertController, animated: true, completion: nil)
-            return
-        }
-        
-        // FIXME:
-        let minAmountDecimal = (Decimal(string: String(minAmountInWei)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
-        if viewModel.redPacketProperty.amount < minAmountDecimal {
-            viewModel.redPacketProperty.amount = minAmountDecimal
-        }
-        
-        let selectRecipientsVC = RedPacketRecipientSelectViewController()
-        selectRecipientsVC.redPacketProperty = viewModel.redPacketProperty
-        //        recommendView?.updateColor(theme: currentTheme)
-        #if TARGET_IS_EXTENSION
-        selectRecipientsVC.delegate = KeyboardModeManager.shared
-        selectRecipientsVC.optionFieldView = optionsView
-        #else
-        selectRecipientsVC.delegate = self
-        #endif
-        navigationController?.pushViewController(selectRecipientsVC, animated: true)
+//        let alertController = UIAlertController(title: "Error", message: nil, preferredStyle: .alert)
+//        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+//        alertController.addAction(okAction)
+//
+//        guard let selectWalletModel = viewModel.walletProvider?.selectWalletModel.value else {
+//            alertController.message = "Please select valid wallet"
+//            present(alertController, animated: true, completion: nil)
+//            return
+//        }
+//
+//        guard let balance = selectWalletModel.balance.value else {
+//            alertController.message = "Wallet balance inquiry failed"
+//            present(alertController, animated: true, completion: nil)
+//            return
+//        }
+//
+//        let minAmountInWei = BigUInt(viewModel.inputRedPacketShareTableViewCell.share.value) * WalletService.redPacketMinAmountInWei
+//        guard balance > minAmountInWei else {
+//            alertController.message = "Insufficient wallet balance"
+//            present(alertController, animated: true, completion: nil)
+//            return
+//        }
+//
+//        guard balance > viewModel.redPacketProperty.amountInWei else {
+//            alertController.message = "Insufficient wallet balance"
+//            present(alertController, animated: true, completion: nil)
+//            return
+//        }
+//
+//        // FIXME:
+//        let minAmountDecimal = (Decimal(string: String(minAmountInWei)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
+//        if viewModel.redPacketProperty.amount < minAmountDecimal {
+//            viewModel.redPacketProperty.amount = minAmountDecimal
+//        }
+//
+//        let selectRecipientsVC = RedPacketRecipientSelectViewController()
+//        selectRecipientsVC.redPacketProperty = viewModel.redPacketProperty
+//        //        recommendView?.updateColor(theme: currentTheme)
+//        #if TARGET_IS_EXTENSION
+//        selectRecipientsVC.delegate = KeyboardModeManager.shared
+//        selectRecipientsVC.optionFieldView = optionsView
+//        #else
+//        selectRecipientsVC.delegate = self
+//        #endif
+//        navigationController?.pushViewController(selectRecipientsVC, animated: true)
     }
     
 }
@@ -319,12 +359,42 @@ extension EditingRedPacketViewController {
 // MARK: - UITableViewDelegate
 extension EditingRedPacketViewController: UITableViewDelegate {
     
+    // Section Header
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return UIView()
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 16
+    }
+    
+    // Cell
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 44
+    }
+    
+    // Section Footer
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let sections = viewModel.sections[section]
+        
+        if sections.contains(.wallet) {
+            return walletSectionFooterView
+        }
+        
+        return UIView()
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        let sections = viewModel.sections[section]
+        
+        if sections.contains(.wallet) {
+            return UITableView.automaticDimension
+        }
+        
+        return CGFloat.leastNonzeroMagnitude
     }
     
 }
@@ -362,14 +432,6 @@ struct TestWallet {
     let address: String
     let amount: Int
 }
-//extension EditingRedPacketViewController {
-//    var testWallets: [TestWallet] {
-//        return [
-//            TestWallet(address: "0x1191", amount: 25),
-//            TestWallet(address: "0x3389", amount: 35)
-//        ]
-//    }
-//}
 
 #if canImport(SwiftUI) && DEBUG
 import SwiftUI

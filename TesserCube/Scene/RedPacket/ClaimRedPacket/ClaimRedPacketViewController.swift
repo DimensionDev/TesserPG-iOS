@@ -44,7 +44,7 @@ final class ClaimRedPacketViewModel: NSObject {
         
         super.init()
         
-        walletProvider = RedPacketWalletProvider(tableView: selectWalletTableViewCell.tableView, walletModels: WalletService.default.walletModels.value)
+        walletProvider = RedPacketWalletProvider(tableView: UITableView(), walletModels: WalletService.default.walletModels.value)
     }
     
     deinit {
@@ -134,8 +134,8 @@ extension ClaimRedPacketViewModel: UITableViewDataSource {
             
         case 1:
             let cell = selectWalletTableViewCell
-            cell.titleLabel.text = "Wallet"
-            cell.detailLeadingLayoutConstraint.constant = 100
+//            cell.titleLabel.text = "Wallet"
+//            cell.detailLeadingLayoutConstraint.constant = 100
             return cell
             
         default:
