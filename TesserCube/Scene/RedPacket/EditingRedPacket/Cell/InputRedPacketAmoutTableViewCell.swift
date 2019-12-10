@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class InputRedPacketAmoutTableViewCell: UITableViewCell, LeftDetailStyle {
+final class InputRedPacketAmoutTableViewCell: UITableViewCell {
     
     private let decimalFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -23,21 +23,19 @@ final class InputRedPacketAmoutTableViewCell: UITableViewCell, LeftDetailStyle {
         
     let titleLabel: UILabel = {
         let label = UILabel()
+        label.font = FontFamily.SFProText.regular.font(size: 17)
+        label.text = "Amount"
         return label
     }()
-    var detailLeadingLayoutConstraint: NSLayoutConstraint!
     
-    let detailView: UIView = {
-        let view = UIView()
-        view.backgroundColor = ._secondarySystemGroupedBackground
-        return view
-    }()
     lazy var amountTextField: UITextField = {
         let textField = UITextField()
+        textField.font = FontFamily.SFProText.regular.font(size: 17)
         textField.keyboardType = .decimalPad
         textField.placeholder = self.decimalFormatter.string(from: self.minimalAmount.value as NSNumber)
         return textField
     }()
+    
     let coinCurrencyUnitLabel: UILabel = {
         let label = UILabel()
         label.text = "ETH"
@@ -45,13 +43,18 @@ final class InputRedPacketAmoutTableViewCell: UITableViewCell, LeftDetailStyle {
         return label
     }()
     
-    let disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
     
     // Input
-    let minimalAmount = BehaviorRelay(value: Decimal(0.01))     // 0.01 ETH
+    let minimalAmount = BehaviorRelay(value: WalletService.redPacketMinAmount)
     
     // Output
     let amount = BehaviorRelay<Decimal>(value: Decimal(0))
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = DisposeBag()
+    }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -64,81 +67,68 @@ final class InputRedPacketAmoutTableViewCell: UITableViewCell, LeftDetailStyle {
     }
     
     private func _init() {
-        
         selectionStyle = .none
-        contentView.backgroundColor = ._systemGroupedBackground
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(titleLabel)
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            contentView.bottomAnchor.constraint(equalTo: titleLabel.bottomAnchor),
+            titleLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: 100),
         ])
-        
-        detailView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(detailView)
-        detailLeadingLayoutConstraint = detailView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor)
-        NSLayoutConstraint.activate([
-            detailView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            detailLeadingLayoutConstraint,
-            detailView.trailingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.trailingAnchor),
-            detailView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
-        ])
-        
-        // Layout detail view
+        titleLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+    
         amountTextField.translatesAutoresizingMaskIntoConstraints = false
-        detailView.addSubview(amountTextField)
+        contentView.addSubview(amountTextField)
         NSLayoutConstraint.activate([
-            amountTextField.topAnchor.constraint(equalToSystemSpacingBelow: detailView.topAnchor, multiplier: 1.0),
-            amountTextField.leadingAnchor.constraint(equalToSystemSpacingAfter: detailView.leadingAnchor, multiplier: 1.0),
-            detailView.bottomAnchor.constraint(equalToSystemSpacingBelow: amountTextField.bottomAnchor, multiplier: 1.0),
+            amountTextField.topAnchor.constraint(equalTo: contentView.topAnchor),
+            amountTextField.leadingAnchor.constraint(equalToSystemSpacingAfter: titleLabel.trailingAnchor, multiplier: 1.0),
+            contentView.bottomAnchor.constraint(equalTo: amountTextField.bottomAnchor),
         ])
         
         coinCurrencyUnitLabel.translatesAutoresizingMaskIntoConstraints = false
-        detailView.addSubview(coinCurrencyUnitLabel)
+        contentView.addSubview(coinCurrencyUnitLabel)
         NSLayoutConstraint.activate([
-            coinCurrencyUnitLabel.topAnchor.constraint(equalToSystemSpacingBelow: detailView.topAnchor, multiplier: 1.0),
+            coinCurrencyUnitLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
             coinCurrencyUnitLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: amountTextField.trailingAnchor, multiplier: 1.0),
-            detailView.trailingAnchor.constraint(equalToSystemSpacingAfter: coinCurrencyUnitLabel.trailingAnchor, multiplier: 1.0),
-            detailView.bottomAnchor.constraint(equalToSystemSpacingBelow: coinCurrencyUnitLabel.bottomAnchor, multiplier: 1.0),
+            contentView.layoutMarginsGuide.trailingAnchor.constraint(equalTo: coinCurrencyUnitLabel.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: coinCurrencyUnitLabel.bottomAnchor),
         ])
         coinCurrencyUnitLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        coinCurrencyUnitLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        coinCurrencyUnitLabel.setContentCompressionResistancePriority(.defaultHigh + 1, for: .horizontal)
         
         // Setup amountTextField
         amountTextField.delegate = self
-        amountTextField.rx.text.asDriver()
-            .drive(onNext: { [weak self] text in
-                guard let amountText = text, let decimal = Decimal(string: amountText) else {
-                    self?.amount.accept(Decimal(0))
-                    return
-                }
-                
-                self?.amount.accept(decimal)
-            })
-            .disposed(by: disposeBag)
-        
+
         minimalAmount.asDriver()
             .drive(onNext: { [weak self] minimalAmount in
                 guard let `self` = self else { return }
                 let minimalAmountText = self.decimalFormatter.string(from: minimalAmount as NSNumber)
-                
+
                 // Update placeholder
                 self.amountTextField.placeholder = minimalAmountText
-                
+
                 // Update text if less than min amount value
                 if let text = self.amountTextField.text,
                 let amount = Decimal(string: text), amount < minimalAmount {
                     self.amountTextField.text = minimalAmountText
-                } else {
-                    // only placeholder display
-                    // manually update amount data model
                     self.amount.accept(minimalAmount)
+                } else {
+                    // do nothing
                 }
             })
             .disposed(by: disposeBag)
-        
+    }
+    
+}
+
+extension InputRedPacketAmoutTableViewCell {
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        if selected {
+            amountTextField.becomeFirstResponder()
+        }
     }
     
 }
@@ -151,14 +141,26 @@ extension InputRedPacketAmoutTableViewCell: UITextFieldDelegate {
             return true
         }
         
+        guard let currentText = textField.text else {
+            return false
+        }
+        
+        guard let stringRange = Range(range, in: currentText) else {
+            return false
+        }
+        
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+
         // empty
-        if string.isEmpty {
+        if updatedText.isEmpty {
             return true
         }
         
-        guard Decimal(string: string) != nil else {
+        guard let amountValue = Decimal(string: updatedText) else {
             return false
         }
+        
+        amount.accept(amountValue)
         
         return true
     }
@@ -174,8 +176,10 @@ extension InputRedPacketAmoutTableViewCell: UITextFieldDelegate {
         
         if decimal < minimalAmount.value {
             textField.text = decimalFormatter.string(from: minimalAmount.value as NSNumber)
+            amount.accept(minimalAmount.value)
         } else {
             textField.text = decimalFormatter.string(from: decimal as NSNumber)
+            amount.accept(decimal)
         }
     }
     

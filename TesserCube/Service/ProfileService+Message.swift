@@ -36,7 +36,12 @@ extension ProfileService {
                 }
                 return message
             })
+
+            // Add red packet record into database if possible
+            _ = RedPacketService.shared.redPacket(from: addedMessage)
+            
             return addedMessage
+            
         } catch let error {
             consolePrint(error.localizedDescription)
             throw error
