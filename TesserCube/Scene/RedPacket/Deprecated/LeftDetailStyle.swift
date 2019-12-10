@@ -8,6 +8,10 @@
 
 import UIKit
 
+//protocol UITableViewCellLeftDetailAlternativeStyle {
+//    var detailLeadingLayoutConstraint: NSLayoutConstraint! { get }
+//}
+
 protocol LeftDetailStyle: class {
     var titleLabel: UILabel { get }
     var detailLeadingLayoutConstraint: NSLayoutConstraint! { get }
