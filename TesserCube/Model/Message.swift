@@ -10,7 +10,7 @@ import Foundation
 import GRDB
 
 /// - Note: senderKeyId is lower 16 hex of primary signature key fingerprint. e.g. 58A8B23FAFB1E5C8
-struct Message: Codable, FetchableRecord, MutablePersistableRecord, Equatable {
+struct Message: Codable, FetchableRecord, MutablePersistableRecord {
     var id: Int64?
     var senderKeyId: String         // a.k.a longIdentifier
     var senderKeyUserId: String
@@ -24,15 +24,17 @@ struct Message: Codable, FetchableRecord, MutablePersistableRecord, Equatable {
         id = rowID
     }
     
-    static func == (lhs: Message, rhs: Message) -> Bool {
-        if lhs.encryptedMessage == rhs.encryptedMessage {
-            return true
-        }
-        return lhs.id == rhs.id
-    }
 }
 
-extension Message: Hashable { }
+extension Message: Equatable { }
+
+extension Message: Hashable {
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+}
 
 /// - Note: keyId is lower 16 hex of primary signature key fingerprint. e.g. 58A8B23FAFB1E5C8
 struct MessageRecipient: Codable, FetchableRecord, MutablePersistableRecord {

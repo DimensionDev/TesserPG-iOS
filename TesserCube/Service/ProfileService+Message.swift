@@ -14,13 +14,19 @@ import ConsolePrint
 
 extension ProfileService {
     
+    
+    /// Check armored message if already in database
+    /// - Parameter encryptedMessage: armored PGP message
     func interptedMessage(_ encryptedMessage: String) -> Message? {
-        return messages.value.first { $0.encryptedMessage.trimmingCharacters(in: .whitespacesAndNewlines) == encryptedMessage }
+        let trimmedEncryptedMessage = encryptedMessage.trimmingCharacters(in: .whitespacesAndNewlines)
+        return messages.value.first {
+            $0.encryptedMessage.trimmingCharacters(in: .whitespacesAndNewlines) == trimmedEncryptedMessage
+        }
     }
     
-    func containsMessage(_ message: Message) -> Bool {
-        return messages.value.contains(message)
-    }
+    // func containsMessage(_ message: Message) -> Bool {
+    //     return messages.value.contains(message)
+    // }
     
     @discardableResult
     func addMessage(_ message: inout Message, recipientKeys: [TCKey]) throws -> Message {
@@ -104,11 +110,9 @@ extension ProfileService {
             guard !message.isEmpty else {
                 throw TCError.interpretError(reason: .emptyMessage)
             }
-            
-            let trimmedMessage = message.trimmingCharacters(in: .whitespacesAndNewlines)
-            
+                        
             // Check if message already interpreted
-            if var existMessage = interptedMessage(trimmedMessage) {
+            if var existMessage = interptedMessage(message) {
                 // If yes, just return the message
                 try existMessage.updateInterpretedDate(Date())
                 return existMessage
