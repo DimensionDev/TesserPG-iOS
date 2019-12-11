@@ -143,6 +143,8 @@ class MessagesViewController: TCBaseViewController {
 
         reloadActionsView()
 
+        tableViewEditToolbar.delegate = self
+        
         if let tabBar = tabBarController?.tabBar {
             tableViewEditToolbar.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(tableViewEditToolbar)
@@ -153,7 +155,6 @@ class MessagesViewController: TCBaseViewController {
                 tableViewEditToolbar.bottomAnchor.constraint(equalTo: tabBar.layoutMarginsGuide.bottomAnchor),
             ])  // active in viewDidAppear
 
-            tableViewEditToolbar.delegate = self
         } else {
             assertionFailure()
         }
@@ -351,9 +352,10 @@ extension MessagesViewController {
                     }
                 })
                 .disposed(by: disposeBag)
-    
-            NSLayoutConstraint.activate(tableViewEditToolbarConstraints)
         }
+        
+        // Should always active constraints to fix toolbar disappear issue
+        NSLayoutConstraint.activate(tableViewEditToolbarConstraints)
     }
 
     override func viewDidLayoutSubviews() {
