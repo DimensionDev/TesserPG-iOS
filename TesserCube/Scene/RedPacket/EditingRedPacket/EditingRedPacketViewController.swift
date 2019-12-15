@@ -177,7 +177,7 @@ class EditingRedPacketViewController: UIViewController {
     }()
     let walletSectionFooterView = WalletSectionFooterView()
     
-    let sendRedPacketButton: TCActionButton = {
+    lazy var sendRedPacketButton: TCActionButton = {
         let button = TCActionButton()
         button.color = .systemBlue
         button.setTitle("Send", for: .normal)
@@ -208,9 +208,8 @@ class EditingRedPacketViewController: UIViewController {
         }
         #endif
         
-        #if TARGET_IS_KEYBOARD
-        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: sendRedPacketButton.intrinsicContentSize.height, right: 0)
-        #endif
+        
+     
        
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(EditingRedPacketViewController.nextBarButtonItemClicked(_:)))
     
@@ -224,6 +223,7 @@ class EditingRedPacketViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
         
+        #if !TARGET_IS_KEYBOARD
         // Layout send red packet button
         sendRedPacketButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sendRedPacketButton)
@@ -235,6 +235,7 @@ class EditingRedPacketViewController: UIViewController {
             sendRedPacketButtonBottomLayoutConstraint,
             view.bottomAnchor.constraint(greaterThanOrEqualTo: sendRedPacketButton.bottomAnchor, constant: 16),
         ])
+        #endif
         
         // Setup tableView
         tableView.tableHeaderView = redPacketSplitTypeTableHeaderView
