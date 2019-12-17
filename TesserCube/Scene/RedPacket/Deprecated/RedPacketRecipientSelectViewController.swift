@@ -66,7 +66,6 @@ class RedPacketRecipientSelectViewController: UIViewController {
         tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
         tableView.tableFooterView = UIView(frame: .zero)
-        tableView.register(UINib(nibName: RecipientCellTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: RecipientCellTableViewCell.identifier)
         tableView.allowsMultipleSelectionDuringEditing = true
         tableView.setEditing(true, animated: false)
         
