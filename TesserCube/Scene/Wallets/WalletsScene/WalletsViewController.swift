@@ -16,7 +16,8 @@ class WalletsViewController: TCBaseViewController {
 
     private let tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(WalletCardTableViewCell.self, forCellReuseIdentifier: String(describing: WalletCardTableViewCell.self))
+        tableView.register(WalletPageTableViewCell.self, forCellReuseIdentifier: String(describing: WalletPageTableViewCell.self))
+        tableView.register(RedPacketCardTableViewCell.self, forCellReuseIdentifier: String(describing: RedPacketCardTableViewCell.self))
         tableView.separatorStyle = .none
         tableView.tableFooterView = UIView()
         return tableView
@@ -33,6 +34,8 @@ class WalletsViewController: TCBaseViewController {
 
     override func configUI() {
         super.configUI()
+        
+        viewModel.walletViewController = self
 
         title = L10n.MainTabbarViewController.TabBarItem.Wallets.title
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(WalletsViewController.addBarButtonItemPressed(_:)))
@@ -213,6 +216,17 @@ extension WalletsViewController: UITableViewDelegate {
         }
         
         return 20 - WalletCardTableViewCell.cardVerticalMargin
+    }
+    
+    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let cell = cell as? WalletPageTableViewCell else {
+            return
+        }
+        
+        let child = cell.pageViewController
+        child.willMove(toParent: nil)
+        child.view.removeFromSuperview()
+        child.removeFromParent()
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

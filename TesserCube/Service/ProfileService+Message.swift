@@ -14,7 +14,6 @@ import ConsolePrint
 
 extension ProfileService {
     
-    
     /// Check armored message if already in database
     /// - Parameter encryptedMessage: armored PGP message
     func interptedMessage(_ encryptedMessage: String) -> Message? {

@@ -98,7 +98,6 @@
 		834DB06F23175B1C004E6F50 /* DMSPGPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F309722A14C0D0003804B /* DMSPGPError.swift */; };
 		835294B923279F40000E6170 /* DMSReceipientKeyIDUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831EC43022B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift */; };
 		835294BA23279F40000E6170 /* DMSReceipientKeyIDUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831EC43022B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift */; };
-		836F23C52373BF2900F938E6 /* RedPacketRecipientSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836F23C32373BF2900F938E6 /* RedPacketRecipientSelectViewController.swift */; };
 		837833552248840600F2C0BF /* TCTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837833542248840600F2C0BF /* TCTypes.swift */; };
 		837833562248840600F2C0BF /* TCTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837833542248840600F2C0BF /* TCTypes.swift */; };
 		837833582248897C00F2C0BF /* KeyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146F32243ACCE008ECC22 /* KeyFactory.swift */; };
@@ -342,6 +341,7 @@
 		DB4F309922A14C0D0003804B /* DMSPGPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F309722A14C0D0003804B /* DMSPGPError.swift */; };
 		DB548D5722F931DC005E7EE4 /* KeychainAccessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB548D5622F931DC005E7EE4 /* KeychainAccessTests.swift */; };
 		DB550D382313CF73000660AD /* ContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB550D372313CF73000660AD /* ContextMenu.swift */; };
+		DB5738C923A3846100B883D9 /* BackgroundTaskTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5738C823A3846100B883D9 /* BackgroundTaskTests.swift */; };
 		DB616C0922A4CBB4002768B4 /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB616C0822A4CBB4002768B4 /* UILabel.swift */; };
 		DB63A0D522DD82EE00C2DDA6 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DB63A0D322DD82EE00C2DDA6 /* MainInterface.storyboard */; };
 		DB63A0D922DD82EE00C2DDA6 /* TesserCubeInterpretAction.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = DB63A0CD22DD82EE00C2DDA6 /* TesserCubeInterpretAction.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -434,12 +434,12 @@
 		DB8D7319231E394E005D15DD /* KeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D7312231E38FD005D15DD /* KeyRecord.swift */; };
 		DB8D731B231E394E005D15DD /* KeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D7312231E38FD005D15DD /* KeyRecord.swift */; };
 		DB97AD162317BCD9007594E9 /* MessagesViewModel+ContextMenuActionTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB97AD152317BCD9007594E9 /* MessagesViewModel+ContextMenuActionTableViewDelegate.swift */; };
+		DB9FE9E623A889D400499632 /* WalletPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9FE9E523A889D400499632 /* WalletPageTableViewCell.swift */; };
+		DB9FE9E823A8916900499632 /* WalletCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9FE9E723A8916900499632 /* WalletCardViewController.swift */; };
 		DBA0ACF422F800010088F03B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA0ACF322F800010088F03B /* SceneDelegate.swift */; };
 		DBA78434234C802F0089E130 /* ContactsListViewController+Previews.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA78433234C802F0089E130 /* ContactsListViewController+Previews.swift */; };
 		DBA78436234C91D90089E130 /* MessagesViewController+Previews.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA78435234C91D90089E130 /* MessagesViewController+Previews.swift */; };
 		DBB81AE1225DFF7A003D63C6 /* UIScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB81AE0225DFF7A003D63C6 /* UIScreen.swift */; };
-		DBB933D3239A5FB5003236EB /* SelectRedPacketRecipientsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB933D2239A5FB5003236EB /* SelectRedPacketRecipientsTableViewCell.swift */; };
-		DBB933D4239A5FB5003236EB /* SelectRedPacketRecipientsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB933D2239A5FB5003236EB /* SelectRedPacketRecipientsTableViewCell.swift */; };
 		DBB933D6239E7062003236EB /* WalletSectionFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB933D5239E7062003236EB /* WalletSectionFooterView.swift */; };
 		DBB933D7239E7062003236EB /* WalletSectionFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB933D5239E7062003236EB /* WalletSectionFooterView.swift */; };
 		DBBA87F62248B8F500B290AC /* ComposeMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBA87F52248B8F500B290AC /* ComposeMessageViewController.swift */; };
@@ -464,7 +464,6 @@
 		DBC9CEEB2387B18B009E13C5 /* RedPacketSplitMethodProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83955B7C2372986200161498 /* RedPacketSplitMethodProvider.swift */; };
 		DBC9CEEC2387B199009E13C5 /* RedPacketWalletProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83955B7F23729B6B00161498 /* RedPacketWalletProvider.swift */; };
 		DBC9CEED2387B19F009E13C5 /* RedPacketProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83955B8223729E8C00161498 /* RedPacketProperty.swift */; };
-		DBC9CEEF2387B32F009E13C5 /* RedPacketRecipientSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836F23C32373BF2900F938E6 /* RedPacketRecipientSelectViewController.swift */; };
 		DBC9CEF02387B3BB009E13C5 /* RecommendRecipientsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93ED8222528AD00F556C0 /* RecommendRecipientsView.swift */; };
 		DBC9CEF12387B434009E13C5 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D5A221E575500F556C0 /* Theme.swift */; };
 		DBC9CEF22387B486009E13C5 /* RecipientInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93E872223CCF700F556C0 /* RecipientInputView.swift */; };
@@ -815,6 +814,7 @@
 		DB4F309722A14C0D0003804B /* DMSPGPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSPGPError.swift; sourceTree = "<group>"; };
 		DB548D5622F931DC005E7EE4 /* KeychainAccessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainAccessTests.swift; sourceTree = "<group>"; };
 		DB550D372313CF73000660AD /* ContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenu.swift; sourceTree = "<group>"; };
+		DB5738C823A3846100B883D9 /* BackgroundTaskTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTaskTests.swift; sourceTree = "<group>"; };
 		DB616C0822A4CBB4002768B4 /* UILabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
 		DB63A0CD22DD82EE00C2DDA6 /* TesserCubeInterpretAction.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TesserCubeInterpretAction.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB63A0D122DD82EE00C2DDA6 /* InterpretActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretActionViewController.swift; sourceTree = "<group>"; };
@@ -842,6 +842,8 @@
 		DB8D7312231E38FD005D15DD /* KeyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyRecord.swift; sourceTree = "<group>"; };
 		DB8D7314231E3920005D15DD /* Email.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Email.swift; sourceTree = "<group>"; };
 		DB97AD152317BCD9007594E9 /* MessagesViewModel+ContextMenuActionTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessagesViewModel+ContextMenuActionTableViewDelegate.swift"; sourceTree = "<group>"; };
+		DB9FE9E523A889D400499632 /* WalletPageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletPageTableViewCell.swift; sourceTree = "<group>"; };
+		DB9FE9E723A8916900499632 /* WalletCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCardViewController.swift; sourceTree = "<group>"; };
 		DBA0ACF322F800010088F03B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		DBA78433234C802F0089E130 /* ContactsListViewController+Previews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactsListViewController+Previews.swift"; sourceTree = "<group>"; };
 		DBA78435234C91D90089E130 /* MessagesViewController+Previews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessagesViewController+Previews.swift"; sourceTree = "<group>"; };
@@ -1624,6 +1626,7 @@
 			isa = PBXGroup;
 			children = (
 				DB03DD4F237BF8DF00D96201 /* Web3Tests.swift */,
+				DB5738C823A3846100B883D9 /* BackgroundTaskTests.swift */,
 				DB03DD51237BF8DF00D96201 /* Info.plist */,
 			);
 			path = Web3Tests;
@@ -1660,6 +1663,7 @@
 			isa = PBXGroup;
 			children = (
 				DB0ABA08237549E000AD3B7F /* WalletCardTableViewCell.swift */,
+				DB9FE9E523A889D400499632 /* WalletPageTableViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -1722,6 +1726,7 @@
 				DBC9CF052387CB49009E13C5 /* LeftDetailStyle.swift */,
 				83955B7F23729B6B00161498 /* RedPacketWalletProvider.swift */,
 				DBB933D2239A5FB5003236EB /* SelectRedPacketRecipientsTableViewCell.swift */,
+				836F23C32373BF2900F938E6 /* RedPacketRecipientSelectViewController.swift */,
 			);
 			path = Deprecated;
 			sourceTree = "<group>";
@@ -1878,7 +1883,6 @@
 				DB1C6FD0239F59EF002A37AD /* View */,
 				DBC9CF032387C88E009E13C5 /* Cell */,
 				83955B76237271EF00161498 /* EditingRedPacketViewController.swift */,
-				836F23C32373BF2900F938E6 /* RedPacketRecipientSelectViewController.swift */,
 			);
 			path = EditingRedPacket;
 			sourceTree = "<group>";
@@ -1916,6 +1920,7 @@
 				DBD6887C237AB13D00B5B663 /* ViewModel */,
 				DB0ABA212379239D00AD3B7F /* Cell */,
 				DBEE8957237282350080C194 /* WalletsViewController.swift */,
+				DB9FE9E723A8916900499632 /* WalletCardViewController.swift */,
 				DBEE895A237292B90080C194 /* WalletsViewController+Previews.swift */,
 			);
 			path = WalletsScene;
@@ -2088,7 +2093,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1120;
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = Sujitech;
 				TargetAttributes = {
 					8304E990221BF10000122637 = {
@@ -2645,7 +2650,6 @@
 				DBC9CEF52387B688009E13C5 /* OptionFieldView.swift in Sources */,
 				DBB81AE1225DFF7A003D63C6 /* UIScreen.swift in Sources */,
 				DB0ABA09237549E000AD3B7F /* WalletCardTableViewCell.swift in Sources */,
-				DBB933D3239A5FB5003236EB /* SelectRedPacketRecipientsTableViewCell.swift in Sources */,
 				DB44999A228C244F000B7E8A /* MessageDigitalSignatureSettingsViewController.swift in Sources */,
 				DB616C0922A4CBB4002768B4 /* UILabel.swift in Sources */,
 				DBD6887B237AB13A00B5B663 /* WalletsViewModel.swift in Sources */,
@@ -2657,7 +2661,6 @@
 				DB66FE6F224A3CD600D82704 /* SenderContactPickerView.swift in Sources */,
 				DB4F309822A14C0D0003804B /* DMSPGPError.swift in Sources */,
 				DB550D382313CF73000660AD /* ContextMenu.swift in Sources */,
-				DBC9CEEF2387B32F009E13C5 /* RedPacketRecipientSelectViewController.swift in Sources */,
 				83DFC72C2252EF3100993160 /* KeyRecordDBAction.swift in Sources */,
 				DB15695923277FD900220926 /* ProfileService+Contact.swift in Sources */,
 				832146B1223F7D98008ECC22 /* ProfileService.swift in Sources */,
@@ -2668,6 +2671,7 @@
 				83FE345C22B72DEC0077C1A5 /* IntroSpotlight.swift in Sources */,
 				832146D82241D980008ECC22 /* ImportKeyViewController.swift in Sources */,
 				DB15695E23278EA200220926 /* FetchableRecord+all.swift in Sources */,
+				DB9FE9E623A889D400499632 /* WalletPageTableViewCell.swift in Sources */,
 				832146C5223FC9E4008ECC22 /* TCActionButton.swift in Sources */,
 				DB97AD162317BCD9007594E9 /* MessagesViewModel+ContextMenuActionTableViewDelegate.swift in Sources */,
 				DB42ED062387E56800EB1687 /* InputRedPacketSenderTableViewCell.swift in Sources */,
@@ -2688,6 +2692,7 @@
 				DBD98FDB2334B7B7003A952B /* CryptoPublicKey.swift in Sources */,
 				DB415EA6238CBF9C0090C28F /* FullContactInfo.swift in Sources */,
 				83783377224B9B9B00F2C0BF /* ContactDetailViewController.swift in Sources */,
+				DB9FE9E823A8916900499632 /* WalletCardViewController.swift in Sources */,
 				83FE346022B73AD70077C1A5 /* IntroCardView.swift in Sources */,
 				DBC9CEF72387B706009E13C5 /* SuggestionStackView.swift in Sources */,
 				833FF391224F97D900EFE0A9 /* Message.swift in Sources */,
@@ -2779,7 +2784,6 @@
 				83DFC73C2258D0EF00993160 /* Assets.swift in Sources */,
 				83245A89237172F60046632E /* KeyboardModeManager+RedPacket.swift in Sources */,
 				83B93D53221E33C600F556C0 /* ForwardingView.swift in Sources */,
-				836F23C52373BF2900F938E6 /* RedPacketRecipientSelectViewController.swift in Sources */,
 				83B93D65221E825300F556C0 /* DoneActionButton.swift in Sources */,
 				83B93D5E221E6D1E00F556C0 /* UIImage+Color.swift in Sources */,
 				DB42ED012387DC7B00EB1687 /* SelectRedPacketSplitModeTableHeaderView.swift in Sources */,
@@ -2833,7 +2837,6 @@
 				DB42ED042387E0B800EB1687 /* InputRedPacketShareTableViewCell.swift in Sources */,
 				83B93D5B221E575500F556C0 /* Theme.swift in Sources */,
 				DBB933D7239E7062003236EB /* WalletSectionFooterView.swift in Sources */,
-				DBB933D4239A5FB5003236EB /* SelectRedPacketRecipientsTableViewCell.swift in Sources */,
 				8325E4A5222F8FDA00EE9B83 /* Fonts.swift in Sources */,
 				8325E479222CD48200EE9B83 /* ActionButton.swift in Sources */,
 				DBC9CF072387CB49009E13C5 /* LeftDetailStyle.swift in Sources */,
@@ -2849,6 +2852,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB5738C923A3846100B883D9 /* BackgroundTaskTests.swift in Sources */,
 				DB03DD50237BF8DF00D96201 /* Web3Tests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4213,6 +4217,7 @@
 				);
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = RP;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = "RP Release";

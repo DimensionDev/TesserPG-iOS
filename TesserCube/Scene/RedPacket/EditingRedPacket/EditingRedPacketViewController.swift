@@ -33,7 +33,7 @@ final class EditingRedPacketViewModel: NSObject {
     
     // Output
     let amountInputCoinCurrencyUnitLabelText: Driver<String>
-    let minimalAmount = BehaviorRelay(value: WalletService.redPacketMinAmount)
+    let minimalAmount = BehaviorRelay(value: RedPacketService.redPacketMinAmount)
     
     enum TableViewCellType {
         case wallet                 // select a wallet to send red packet
@@ -70,7 +70,7 @@ final class EditingRedPacketViewModel: NSObject {
             .disposed(by: disposeBag)
         
         share.asDriver()
-            .map { Decimal($0) * WalletService.redPacketMinAmount }
+            .map { Decimal($0) * RedPacketService.redPacketMinAmount }
             .drive(minimalAmount)
             .disposed(by: disposeBag)
     }
@@ -409,6 +409,7 @@ extension EditingRedPacketViewController: UIAdaptivePresentationControllerDelega
 }
 
 // MAKR: - RedPacketRecipientSelectViewControllerDelegate
+/*
 extension EditingRedPacketViewController: RedPacketRecipientSelectViewControllerDelegate {
     
     func redPacketRecipientSelectViewController(_ viewController: RedPacketRecipientSelectViewController, didSelect contactInfo: FullContactInfo) {
@@ -425,6 +426,7 @@ extension EditingRedPacketViewController: RedPacketRecipientSelectViewController
     }
     
 }
+ */
 
 // Mock Testing Data
 
