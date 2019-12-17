@@ -177,7 +177,7 @@ class EditingRedPacketViewController: UIViewController {
     }()
     let walletSectionFooterView = WalletSectionFooterView()
     
-    let sendRedPacketButton: TCActionButton = {
+    lazy var sendRedPacketButton: TCActionButton = {
         let button = TCActionButton()
         button.color = .systemBlue
         button.setTitle("Send", for: .normal)
@@ -207,6 +207,10 @@ class EditingRedPacketViewController: UIViewController {
             navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(EditingRedPacketViewController.closeBarButtonItemPressed(_:)))
         }
         #endif
+        
+        
+     
+       
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(EditingRedPacketViewController.nextBarButtonItemClicked(_:)))
     
         // Layout tableView
@@ -219,6 +223,7 @@ class EditingRedPacketViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
         
+        #if !TARGET_IS_KEYBOARD
         // Layout send red packet button
         sendRedPacketButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sendRedPacketButton)
@@ -230,6 +235,7 @@ class EditingRedPacketViewController: UIViewController {
             sendRedPacketButtonBottomLayoutConstraint,
             view.bottomAnchor.constraint(greaterThanOrEqualTo: sendRedPacketButton.bottomAnchor, constant: 16),
         ])
+        #endif
         
         // Setup tableView
         tableView.tableHeaderView = redPacketSplitTypeTableHeaderView
@@ -397,7 +403,31 @@ extension EditingRedPacketViewController: UITableViewDelegate {
         return CGFloat.leastNonzeroMagnitude
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        #if TARGET_IS_KEYBOARD
+        guard viewModel.sections[indexPath.section][indexPath.row] == .wallet else {
+            return
+        }
+        
+        let walletSelectVC = RedPacketWalletSelectViewController()
+        walletSelectVC.delegate = self
+        walletSelectVC.wallets = viewModel.walletModels.value
+        walletSelectVC.selectedWallet = viewModel.walletModel.value
+        navigationController?.pushViewController(walletSelectVC, animated: true)
+        #endif
+    }
+    
 }
+
+// MARK: - RedPacketWalletSelectViewControllerDelegate
+extension EditingRedPacketViewController: RedPacketWalletSelectViewControllerDelegate {
+    
+    func redPacketWalletSelectViewController(_ viewController: RedPacketWalletSelectViewController, didSelect wallet: WalletModel) {
+        viewModel.walletModel.accept(wallet)
+        viewController.navigationController?.popViewController(animated: true)
+    }
+}
+
 
 // MARK: - UIAdaptivePresentationControllerDelegate
 extension EditingRedPacketViewController: UIAdaptivePresentationControllerDelegate {
