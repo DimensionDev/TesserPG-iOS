@@ -147,12 +147,14 @@ class KeyboardModeManager: NSObject {
             inputRecipientTextView.inputTextField.text = (tempText + key)
             inputRecipientTextView.inputTextField.repositionCursor()
         } else if mode == .editingRedPacket, let redPacketViewControllerNaviVC = editingRedPacketViewControllerNaviVC {
+            /*
             if let selectRecipientsVC = redPacketViewControllerNaviVC.children.last as? RedPacketRecipientSelectViewController {
                 let inputRecipientTextView = selectRecipientsVC.recipientInputView
                 let tempText = inputRecipientTextView.inputTextField.text ?? ""
                 inputRecipientTextView.inputTextField.text = (tempText + key)
                 inputRecipientTextView.inputTextField.repositionCursor()
             }
+             */
             if let editingRedPacketVC = redPacketViewControllerNaviVC.children.last as? EditingRedPacketViewController {
                 let inputRecipientTextView = editingRedPacketVC.amountInputView
                 let tempText = inputRecipientTextView!.inputTextField.text ?? ""
@@ -174,6 +176,7 @@ class KeyboardModeManager: NSObject {
                 inputRecipientTextView.inputTextField.repositionCursor()
             }
         } else if mode == .editingRedPacket, let redPacketViewControllerNaviVC = editingRedPacketViewControllerNaviVC {
+            /*
             if let selectRecipientsVC = redPacketViewControllerNaviVC.children.last as? RedPacketRecipientSelectViewController {
                 let inputRecipientTextView = selectRecipientsVC.recipientInputView
                 let tempText = inputRecipientTextView.inputTextField.text ?? ""
@@ -182,6 +185,7 @@ class KeyboardModeManager: NSObject {
                     inputRecipientTextView.inputTextField.repositionCursor()
                 }
             }
+             */
             if let editingRedPacketVC = redPacketViewControllerNaviVC.children.last as? EditingRedPacketViewController {
                 let inputRecipientTextView = editingRedPacketVC.amountInputView
                 let tempText = inputRecipientTextView!.inputTextField.text ?? ""
@@ -201,10 +205,12 @@ class KeyboardModeManager: NSObject {
             let inputRecipientTextView = recipientView.recipientInputView
             return inputRecipientTextView.inputTextField.text
         } else if mode == .editingRedPacket, let redPacketViewControllerNaviVC = editingRedPacketViewControllerNaviVC {
+            /*
             if let selectRecipientsVC = redPacketViewControllerNaviVC.children.last as? RedPacketRecipientSelectViewController {
                 let inputRecipientTextView = selectRecipientsVC.recipientInputView
                 return inputRecipientTextView.inputTextField.text
             }
+             */
             if let editingRedPacketVC = redPacketViewControllerNaviVC.children.last as? EditingRedPacketViewController {
                 let inputRecipientTextView = editingRedPacketVC.amountInputView
                 return inputRecipientTextView!.inputTextField.text
@@ -284,6 +290,7 @@ extension KeyboardModeManager: RecommendRecipientsViewDelegate {
     }
 }
 
+/*
 extension KeyboardModeManager: RedPacketRecipientSelectViewControllerDelegate {
     func redPacketRecipientSelectViewController(_ viewController: RedPacketRecipientSelectViewController, didSelect contactInfo: FullContactInfo) {
         let selectedData = optionsView.selectedContacts
@@ -306,14 +313,17 @@ extension KeyboardModeManager: RedPacketRecipientSelectViewControllerDelegate {
         }
     }
 }
+ */
 
 extension KeyboardModeManager: SelectedRecipientViewDelegate {
     func selectedRecipientView(_ view: SelectedRecipientView, didClick contactInfo: FullContactInfo) {
         optionsView.updateLayout(mode: mode)
         recommendView?.reloadRecipients()
+        /*
         if let redPacketRecipietnVC = editingRedPacketViewControllerNaviVC?.children.last as? RedPacketRecipientSelectViewController {
             redPacketRecipietnVC.reloadRecipients()
         }
+         */
     }
 }
 

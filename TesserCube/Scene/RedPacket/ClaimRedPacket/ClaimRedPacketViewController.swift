@@ -56,60 +56,60 @@ final class ClaimRedPacketViewModel: NSObject {
 extension ClaimRedPacketViewModel {
     
     func claimRedPacket() {
-        guard let contractAddressHex = redPacket.contractAddress,
-        let contractAddress = try? EthereumAddress(hex: contractAddressHex, eip55: false) else {
-            // Error handle
-            return
-        }
-        
-        guard let walletModel = walletProvider?.selectWalletModel.value,
-        let walletAddress = try? EthereumAddress(hex: walletModel.address, eip55: false),
-        let hexPrivateKey = try? walletModel.hdWallet.privateKey().key.toHexString(),
-        let privateKey = try? EthereumPrivateKey(hexPrivateKey: "0x" + hexPrivateKey) else {
-            // Error handle
-            return
-        }
-        
-        let uuids = Array(redPacket.uuids)
-        let checkAvailablity = WalletService.checkAvailablity(for: contractAddress).asObservable()
-        let nonce = WalletService.getTransactionCount(address: walletAddress, block: .latest).asObservable()
-    
-        Observable.combineLatest(checkAvailablity, nonce)
-            .flatMapLatest { checkAvailblity, nonce -> Observable<BigUInt> in
-                let (balance, _index) = checkAvailblity
-                let index = Int(_index)
-                guard index < uuids.count else {
-                    return Observable.error(WalletService.Error.checkAvailabilityEmpty)
-                }
-                let uuid = uuids[index]
-                return WalletService.claim(for: contractAddress, with: uuid, from: walletAddress, use: privateKey, nonce: nonce)
-                    .asObservable()
-                    .trackActivity(self.activityIndicator)
-            }
-            .observeOn(MainScheduler.asyncInstance)
-            .debug()
-            .subscribe(onNext: { [weak self] claimed in
-                guard let `self` = self else { return }
-                os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, String(claimed))
-                // claimed
-                // update red packet contractAddress & status
-                try! self.realm.write {
-                    self.redPacket.claimAmount = claimed
-                    self.redPacket.status = .claimed
-                }
-
-            }, onError: { [weak self] error in
-                os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
-                guard let `self` = self else { return }
-                self.error.accept(error)
-                
-                if self.redPacket.status != .claimed {
-                    try! self.realm.write {
-                        self.redPacket.status = .empty
-                    }
-                }
-            })
-            .disposed(by: disposeBag)
+//        guard let contractAddressHex = redPacket.contractAddress,
+//        let contractAddress = try? EthereumAddress(hex: contractAddressHex, eip55: false) else {
+//            // Error handle
+//            return
+//        }
+//        
+//        guard let walletModel = walletProvider?.selectWalletModel.value,
+//        let walletAddress = try? EthereumAddress(hex: walletModel.address, eip55: false),
+//        let hexPrivateKey = try? walletModel.hdWallet.privateKey().key.toHexString(),
+//        let privateKey = try? EthereumPrivateKey(hexPrivateKey: "0x" + hexPrivateKey) else {
+//            // Error handle
+//            return
+//        }
+//        
+//        let uuids = Array(redPacket.uuids)
+//        let checkAvailablity = WalletService.checkAvailablity(for: contractAddress).asObservable()
+//        let nonce = WalletService.getTransactionCount(address: walletAddress, block: .latest).asObservable()
+//    
+//        Observable.combineLatest(checkAvailablity, nonce)
+//            .flatMapLatest { checkAvailblity, nonce -> Observable<BigUInt> in
+//                let (balance, _index) = checkAvailblity
+//                let index = Int(_index)
+//                guard index < uuids.count else {
+//                    return Observable.error(WalletService.Error.checkAvailabilityEmpty)
+//                }
+//                let uuid = uuids[index]
+//                return WalletService.claim(for: contractAddress, with: uuid, from: walletAddress, use: privateKey, nonce: nonce)
+//                    .asObservable()
+//                    .trackActivity(self.activityIndicator)
+//            }
+//            .observeOn(MainScheduler.asyncInstance)
+//            .debug()
+//            .subscribe(onNext: { [weak self] claimed in
+//                guard let `self` = self else { return }
+//                os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, String(claimed))
+//                // claimed
+//                // update red packet contractAddress & status
+//                try! self.realm.write {
+//                    self.redPacket.claimAmount = claimed
+//                    self.redPacket.status = .claimed
+//                }
+//
+//            }, onError: { [weak self] error in
+//                os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
+//                guard let `self` = self else { return }
+//                self.error.accept(error)
+//                
+//                if self.redPacket.status != .claimed {
+//                    try! self.realm.write {
+//                        self.redPacket.status = .empty
+//                    }
+//                }
+//            })
+//            .disposed(by: disposeBag)
     }
     
 }

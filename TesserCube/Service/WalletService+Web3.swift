@@ -14,37 +14,11 @@ import Web3
 
 extension WalletService {
     
-    // per packet. 0.002025 ETH
-    public static var redPacketMinAmount: Decimal {
-        return Decimal(0.002025)
-    }
-    
-    // per packet. 0.002025 ETH
-    public static var redPacketMinAmountInWei: BigUInt {
-        return 2025000.gwei
-    }
-    
-    public static var redPacketContractABIData: Data {
-        let path = Bundle(for: WalletService.self).path(forResource: "redpacket", ofType: "json")
-        let data = try! Data(contentsOf: URL(fileURLWithPath: path!))
-        return data
-    }
-    
-    public static var redPacketContract: DynamicContract {
-        let contractABIData = redPacketContractABIData
-        return try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: nil)
-    }
-    
-    public static var redPacketContractByteCode: EthereumData {
-        let contractByteCode: EthereumData = {
-            let path = Bundle(for: WalletService.self).path(forResource: "redpacket", ofType: "bin")
-            let bytesString = try! String(contentsOfFile: path!)
-            return try! EthereumData(ethereumValue: bytesString.trimmingCharacters(in: .whitespacesAndNewlines))
-        }()
-        return contractByteCode
-    }
-    
+    /*
     static func createContractInvocation(for redPacketProperty: RedPacketProperty) throws -> SolidityConstructorInvocation {
+        let redPacketContract = try RedPacketService.redPacketContract(for: nil, web3: web3)
+        let redPacketContractByteCode = RedPacketService.redPacketContractByteCode
+        
         let parameters: [ABIEncodable] = {
             let uuids = redPacketProperty.uuids
             let _hashes: [BigUInt] = uuids.map { uuid in
@@ -65,6 +39,7 @@ extension WalletService {
         
         return invocation
     }
+     */
     
 }
 
@@ -127,6 +102,7 @@ extension WalletService {
     ///
     /// Return deploy transaction hash
     /// - Parameter redPacketProperty: contract detail
+    /*
     static func delopyRedPacket(for redPacketProperty: RedPacketProperty, nonce: EthereumQuantity) -> Single<EthereumData> {
         return Single.create { single in
             let cancelable = Disposables.create { }
@@ -177,9 +153,11 @@ extension WalletService {
             return cancelable
         }
     }
+     */
     
+    /*
     static func checkAvailablity(for contractAddress: EthereumAddress) -> Single<(BigUInt, BigUInt)> {
-        let contractABIData = WalletService.redPacketContractABIData
+        let contractABIData = RedPacketService.redPacketContractABIData
         let contract = try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: contractAddress)
         let checkAvailabilityInvocation = contract["check_availability"]!()
         
@@ -203,9 +181,11 @@ extension WalletService {
             return cancelable
         }
     }
+    */
     
+    /*
     static func claim(for contractAddress: EthereumAddress, with uuid: String, from walletAddress: EthereumAddress, use privateKey: EthereumPrivateKey, nonce: EthereumQuantity) -> Single<BigUInt> {
-        let contractABIData = WalletService.redPacketContractABIData
+        let contractABIData = RedPacketService.redPacketContractABIData
         let contract = try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: contractAddress)
         let claimInvocation = contract["claim"]!(uuid)
         
@@ -281,18 +261,20 @@ extension WalletService {
             })
         }
     }
+     */
 
 }
 
 extension WalletService {
     
+    /*
     static func validate(redPacketProperty: RedPacketProperty) throws {
         guard let walletModel = redPacketProperty.walletModel,
         let _ = try? walletModel.hdWallet.privateKey() else {
             throw Error.invalidWallet
         }
         
-        guard redPacketProperty.amount >= redPacketMinAmount else {
+        guard redPacketProperty.amount >= RedPacketService.redPacketMinAmount else {
             throw Error.invalidAmount
         }
         
@@ -308,6 +290,7 @@ extension WalletService {
             throw Error.invalidRecipients
         }
     }
+     */
 }
 
 extension WalletService {

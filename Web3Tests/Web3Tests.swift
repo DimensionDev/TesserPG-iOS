@@ -139,15 +139,12 @@ extension Web3Tests {
         // let passphrase = ""
         let wallet = try! HDWallet(mnemonic: mnemonic, passphrase: passphrase, network: .mainnet(.ether))
         let address = try! wallet.address()
-        let ethereumAddress = try! EthereumAddress(hex: address, eip55: false)
+        // let ethereumAddress = try! EthereumAddress(hex: address, eip55: false)
         
         let hexPrivateKey = try! wallet.privateKey().key.toHexString()
         let privateKey = try! EthereumPrivateKey(hexPrivateKey: "0x" + hexPrivateKey)
         let fromAddressPrivateKey = privateKey
         
-//        let fromPrivateKey =
-//        if fromPrivateKey.isEmpty { return }
-        // let fromAddressPrivateKey = try! EthereumPrivateKey(hexPrivateKey: fromPrivateKey)
         let toEthereumAddress = try! EthereumAddress(hex: "0xDB07c331Bd039f89CC22E0294eE6829Fdaca658e", eip55: false)
 
         firstly {
@@ -179,23 +176,6 @@ extension Web3Tests {
     func testDeoplyContact() {
         
         let contract = try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: nil)
-        
-//        let parameters: [ABIEncodable] = {
-//            let uuids = [UUID().uuidString, UUID().uuidString]
-//            let _hashes: [BigUInt] = uuids.map { uuid in
-//                let hash = SHA3(variant: .keccak256).calculate(for: uuid.bytes)
-//                print("\(uuid): \(hash.toHexString())")
-//                return BigUInt(hash)
-//            }
-//            let ifrandom: Bool = true
-//            let expirationTime: BigUInt = {
-//                let nextWeek = Calendar.current.date(byAdding: .day, value: 7, to: Date())!
-//                return BigUInt(nextWeek.timeIntervalSince1970)
-//            }()
-//            let seed: BigUInt = 0
-//
-//            return [_hashes, ifrandom, expirationTime, seed]
-//        }()
         
         // Check contract 
         guard let invocation = contract.deploy(byteCode: contractByteCode, parameters: []) else {
@@ -261,7 +241,7 @@ extension Web3Tests {
     }
     
     func testDelpoyTransactionResult() {
-        let transactionHashHex = "0xfcd8d4a0b769164c9f29a6f8771ec2745c3ab66f3034f53cd1476ba4be07858e"
+        let transactionHashHex = "0x69b73480d436b30ebc29f2288da71bcf13b4f6d544b6c3239c0bd0c8706e6d64"
         let transactionHash = EthereumData(Bytes(hex: transactionHashHex))
         
         var contractAddress: EthereumData?
@@ -288,7 +268,7 @@ extension Web3Tests {
     func testCreate() {
         let chainID: EthereumQuantity = 4   // rinkeby
 
-        let contractAddressHex = "0xaa0ddd9d4b6ffa21ef4a490290379fc7b359535c"
+        let contractAddressHex = "0x26776600b8cccd27f1b8dec242ef04e2539faa14"
         let contractAddress = try! EthereumAddress(hex: contractAddressHex, eip55: false)
         let contract = try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: contractAddress)
 
@@ -734,3 +714,6 @@ extension Web3Tests {
     
 }
 
+extension Web3Tests {
+    
+}

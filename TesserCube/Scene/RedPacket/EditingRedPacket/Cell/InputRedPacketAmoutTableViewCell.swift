@@ -46,7 +46,7 @@ final class InputRedPacketAmoutTableViewCell: UITableViewCell {
     var disposeBag = DisposeBag()
     
     // Input
-    let minimalAmount = BehaviorRelay(value: WalletService.redPacketMinAmount)
+    let minimalAmount = BehaviorRelay(value: RedPacketService.redPacketMinAmount)
     
     // Output
     let amount = BehaviorRelay<Decimal>(value: Decimal(0))
