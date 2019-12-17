@@ -98,6 +98,11 @@ final class SelectWalletTableViewCell: UITableViewCell {
     }()
     private(set) lazy var walletTextField: UITextField = {
         let textField = ReadOnlyTextField()
+        #if TARGET_IS_KEYBOARD
+        // User touching UITextField will trigger `textDidChange` callback, which makes our keyboard reset all the custom views
+        textField.isUserInteractionEnabled = false
+        #endif
+        
         textField.font = FontFamily.SFProText.regular.font(size: 17)
         textField.inputView = walletPickerView
         textField.text = "[None]"

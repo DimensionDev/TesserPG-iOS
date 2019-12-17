@@ -444,6 +444,8 @@
 		DB9FE9FC23A8DB0800499632 /* NumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9FE9FA23A8DB0800499632 /* NumberFormatter.swift */; };
 		DB9FE9FD23A8DB0800499632 /* NumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9FE9FA23A8DB0800499632 /* NumberFormatter.swift */; };
 		DB9FE9FE23A8DB0800499632 /* NumberFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9FE9FA23A8DB0800499632 /* NumberFormatter.swift */; };
+		DB9FEA0223A8F5A100499632 /* RedPacketWalletSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9FEA0123A8F5A100499632 /* RedPacketWalletSelectViewController.swift */; };
+		DB9FEA0323A8F5A100499632 /* RedPacketWalletSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9FEA0123A8F5A100499632 /* RedPacketWalletSelectViewController.swift */; };
 		DBA0ACF422F800010088F03B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA0ACF322F800010088F03B /* SceneDelegate.swift */; };
 		DBA78434234C802F0089E130 /* ContactsListViewController+Previews.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA78433234C802F0089E130 /* ContactsListViewController+Previews.swift */; };
 		DBA78436234C91D90089E130 /* MessagesViewController+Previews.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA78435234C91D90089E130 /* MessagesViewController+Previews.swift */; };
@@ -745,6 +747,7 @@
 		83B93E872223CCF700F556C0 /* RecipientInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientInputView.swift; sourceTree = "<group>"; };
 		83B93E89222411C300F556C0 /* UIView+blinking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+blinking.swift"; sourceTree = "<group>"; };
 		83B93ED8222528AD00F556C0 /* RecommendRecipientsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendRecipientsView.swift; sourceTree = "<group>"; };
+		83BC598F23A2372800AC1E37 /* RedPacketWalletSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedPacketWalletSelectViewController.swift; sourceTree = "<group>"; };
 		83C12EDF2332209D009DB359 /* DMSPGPUserIDTranslator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSPGPUserIDTranslator.swift; sourceTree = "<group>"; };
 		83C90B42231678B90048743A /* GenerateKeyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateKeyData.swift; sourceTree = "<group>"; };
 		83DFC72B2252EF3100993160 /* KeyRecordDBAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyRecordDBAction.swift; sourceTree = "<group>"; };
@@ -853,6 +856,7 @@
 		DB9FE9EB23A8B6A400499632 /* RedPacket+V1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RedPacket+V1.swift"; sourceTree = "<group>"; };
 		DB9FE9F523A8C8C600499632 /* Decimal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Decimal.swift; sourceTree = "<group>"; };
 		DB9FE9FA23A8DB0800499632 /* NumberFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberFormatter.swift; sourceTree = "<group>"; };
+		DB9FEA0123A8F5A100499632 /* RedPacketWalletSelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RedPacketWalletSelectViewController.swift; sourceTree = "<group>"; };
 		DBA0ACF322F800010088F03B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		DBA78433234C802F0089E130 /* ContactsListViewController+Previews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactsListViewController+Previews.swift"; sourceTree = "<group>"; };
 		DBA78435234C91D90089E130 /* MessagesViewController+Previews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessagesViewController+Previews.swift"; sourceTree = "<group>"; };
@@ -981,6 +985,7 @@
 				8304E992221BF10000122637 /* Products */,
 				8304E9C5221BF1DD00122637 /* Frameworks */,
 				D1FFF0FDB0B433C2937C6F21 /* Pods */,
+				DB9FEA0023A8F49300499632 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1839,6 +1844,14 @@
 			path = Web3;
 			sourceTree = "<group>";
 		};
+		DB9FEA0023A8F49300499632 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				83BC598F23A2372800AC1E37 /* RedPacketWalletSelectViewController.swift */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		DBBA87F82248B8F900B290AC /* ComposeMessageScene */ = {
 			isa = PBXGroup;
 			children = (
@@ -1895,6 +1908,7 @@
 				DB1C6FD0239F59EF002A37AD /* View */,
 				DBC9CF032387C88E009E13C5 /* Cell */,
 				83955B76237271EF00161498 /* EditingRedPacketViewController.swift */,
+				DB9FEA0123A8F5A100499632 /* RedPacketWalletSelectViewController.swift */,
 			);
 			path = EditingRedPacket;
 			sourceTree = "<group>";
@@ -2707,6 +2721,7 @@
 				DB9FE9E823A8916900499632 /* WalletCardViewController.swift in Sources */,
 				83FE346022B73AD70077C1A5 /* IntroCardView.swift in Sources */,
 				DBC9CEF72387B706009E13C5 /* SuggestionStackView.swift in Sources */,
+				DB9FEA0223A8F5A100499632 /* RedPacketWalletSelectViewController.swift in Sources */,
 				833FF391224F97D900EFE0A9 /* Message.swift in Sources */,
 				DB6AA3EA2273218C00A7ADDF /* KeyFactory+BCOpenPGP.swift in Sources */,
 				8378336B224B352500F2C0BF /* ContactListViewModel.swift in Sources */,
@@ -2759,6 +2774,7 @@
 				83B93D43221D7E4400F556C0 /* KeyboardKeyBackground.swift in Sources */,
 				8325E47C222D10A500EE9B83 /* SuggestionButton.swift in Sources */,
 				837833652249C34400F2C0BF /* TCDBManager.swift in Sources */,
+				DB9FEA0323A8F5A100499632 /* RedPacketWalletSelectViewController.swift in Sources */,
 				83FF06592250D9DA0003BC0D /* MessageDBAction.swift in Sources */,
 				DB42ED072387E56800EB1687 /* InputRedPacketSenderTableViewCell.swift in Sources */,
 				DB415E81238BB6AF0090C28F /* RedPacketService.swift in Sources */,
@@ -3453,7 +3469,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited) TARGET_IS_KEYBOARD";
 				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -3484,7 +3500,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited) TARGET_IS_KEYBOARD";
 				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -3835,7 +3851,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited) TARGET_IS_KEYBOARD";
 				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4066,7 +4082,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited) TARGET_IS_KEYBOARD";
 				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4298,7 +4314,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "TARGET_IS_EXTENSION $(inherited) TARGET_IS_KEYBOARD";
 				SWIFT_OBJC_BRIDGING_HEADER = "TesserCube/Application/Tessercube-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
