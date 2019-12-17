@@ -35,7 +35,7 @@ final class ClaimRedPacketViewModel: NSObject {
     let isClaiming: Driver<Bool>
     let error = BehaviorRelay<Swift.Error?>(value: nil)
 //
-    let realm = RedPacketService.shared.realm!
+    // let realm = RedPacketService.shared.realm!
     var redPacketNotificationToken: NotificationToken?
     
     init(redPacket: RedPacket) {

@@ -20,6 +20,7 @@ final public class WalletService {
         formatter.minimumIntegerDigits = 1
         formatter.maximumFractionDigits = 4
         formatter.minimumFractionDigits = 1
+        formatter.groupingSeparator = ""
         return formatter
     }()
 
