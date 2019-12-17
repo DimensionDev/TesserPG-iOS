@@ -6,8 +6,11 @@
 //  Copyright © 2019 Sujitech. All rights reserved.
 //
 
+import os
 import UIKit
 import RxSwift
+import RxCocoa
+import RxRealm
 
 class WalletsViewController: TCBaseViewController {
 
@@ -64,12 +67,33 @@ class WalletsViewController: TCBaseViewController {
             .drive(viewModel.walletModels)
             .disposed(by: disposeBag)
         tableView.dataSource = viewModel
-        viewModel.walletModels.asDriver()
+        Driver.combineLatest(viewModel.walletModels.asDriver(), viewModel.redPackets.asDriver())
             .drive(onNext: { [weak self] _ in
                 self?.reloadActionsView()
                 self?.tableView.reloadData()
             })
             .disposed(by: disposeBag)
+        // viewModel.walletModels.asDriver()
+        //     .drive(onNext: { [weak self] _ in
+        //         self?.reloadActionsView()
+        //         self?.tableView.reloadData()
+        //     })
+        //     .disposed(by: disposeBag)
+        
+        do {
+            let realm = try RedPacketService.realm()
+            let redPacketResults = realm.objects(RedPacket.self)
+            Observable.array(from: redPacketResults, synchronousStart: false)
+                .subscribe(onNext: { [weak self] redPackets in
+                    self?.viewModel.redPackets.accept(redPackets)
+                })
+                .disposed(by: disposeBag)
+    
+        } catch {
+            os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
+            assertionFailure()
+        }
+        
         tableView.delegate = self
     }
 
@@ -255,6 +279,7 @@ extension WalletsViewController: UITableViewDelegate {
         }
     }
 
+    /*
     @available(iOS 13.0, *)
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         guard indexPath.section == 1,
@@ -294,5 +319,6 @@ extension WalletsViewController: UITableViewDelegate {
         let parameters = UIPreviewParameters()
         return UITargetedPreview(view: cell.cardView, parameters: parameters)
     }
+     */
 
 }

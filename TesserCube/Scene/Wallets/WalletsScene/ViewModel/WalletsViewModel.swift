@@ -22,6 +22,7 @@ class WalletsViewModel: NSObject {
     // Output
     let currentWalletModel = BehaviorRelay<WalletModel?>(value: nil)
     let currentWalletPageIndex = BehaviorRelay(value: 0)
+    let filteredRedPackets = BehaviorRelay<[RedPacket]>(value: [])
 
     override init() {
         super.init()
@@ -31,6 +32,13 @@ class WalletsViewModel: NSObject {
                 self?.currentWalletModel.accept(walletModels.first)
                 self?.currentWalletPageIndex.accept(0)
             })
+            .disposed(by: disposeBag)
+        
+        Driver.combineLatest(currentWalletModel.asDriver(), redPackets.asDriver()) { currentWalletModel, redPackets -> [RedPacket] in
+                // TODO: filter
+                return redPackets
+            }
+            .drive(filteredRedPackets)
             .disposed(by: disposeBag)
     }
 
@@ -51,7 +59,7 @@ extension WalletsViewModel: UITableViewDataSource {
         case 0:
             return 1
         case 1:
-            return redPackets.value.count
+            return filteredRedPackets.value.count
         default:
             return 0
         }
@@ -105,6 +113,10 @@ extension WalletsViewModel: UITableViewDataSource {
             
         case 1:
             let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RedPacketCardTableViewCell.self), for: indexPath) as! RedPacketCardTableViewCell
+            
+            let redPacket = filteredRedPackets.value[indexPath.row]
+            CreatedRedPacketViewModel.configure(cell: _cell, with: redPacket)
+            
             cell = _cell
             // let model = walletModels.value[indexPath.row]
             // WalletsViewModel.configure(cell: cell, with: model)
