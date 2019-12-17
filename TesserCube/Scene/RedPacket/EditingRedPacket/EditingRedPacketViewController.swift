@@ -249,9 +249,6 @@ class EditingRedPacketViewController: UIViewController {
         }
         #endif
         
-        
-     
-       
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(EditingRedPacketViewController.nextBarButtonItemClicked(_:)))
     
         // Layout tableView
@@ -530,7 +527,7 @@ extension EditingRedPacketViewController: UITableViewDelegate {
         let walletSelectVC = RedPacketWalletSelectViewController()
         walletSelectVC.delegate = self
         walletSelectVC.wallets = viewModel.walletModels.value
-        walletSelectVC.selectedWallet = viewModel.walletModel.value
+        walletSelectVC.selectedWallet = viewModel.selectWalletModel.value
         navigationController?.pushViewController(walletSelectVC, animated: true)
         #endif
     }
@@ -541,7 +538,7 @@ extension EditingRedPacketViewController: UITableViewDelegate {
 extension EditingRedPacketViewController: RedPacketWalletSelectViewControllerDelegate {
     
     func redPacketWalletSelectViewController(_ viewController: RedPacketWalletSelectViewController, didSelect wallet: WalletModel) {
-        viewModel.walletModel.accept(wallet)
+        viewModel.selectWalletModel.accept(wallet)
         viewController.navigationController?.popViewController(animated: true)
     }
 }
