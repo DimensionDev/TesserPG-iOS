@@ -11,15 +11,6 @@ import RxSwift
 import RxCocoa
 
 final class InputRedPacketAmoutTableViewCell: UITableViewCell {
-    
-    private let decimalFormatter: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.minimumIntegerDigits = 1
-        formatter.maximumFractionDigits = 9 // percision to 1gwei
-        formatter.groupingSeparator = ""
-        return formatter
-    }()
         
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -32,7 +23,7 @@ final class InputRedPacketAmoutTableViewCell: UITableViewCell {
         let textField = UITextField()
         textField.font = FontFamily.SFProText.regular.font(size: 17)
         textField.keyboardType = .decimalPad
-        textField.placeholder = self.decimalFormatter.string(from: self.minimalAmount.value as NSNumber)
+        textField.placeholder = NumberFormatter.decimalFormatterForETH.string(from: self.minimalAmount.value as NSNumber)
         return textField
     }()
     
@@ -104,7 +95,7 @@ final class InputRedPacketAmoutTableViewCell: UITableViewCell {
         minimalAmount.asDriver()
             .drive(onNext: { [weak self] minimalAmount in
                 guard let `self` = self else { return }
-                let minimalAmountText = self.decimalFormatter.string(from: minimalAmount as NSNumber)
+                let minimalAmountText = NumberFormatter.decimalFormatterForETH.string(from: minimalAmount as NSNumber)
 
                 // Update placeholder
                 self.amountTextField.placeholder = minimalAmountText
@@ -175,10 +166,10 @@ extension InputRedPacketAmoutTableViewCell: UITextFieldDelegate {
         }
         
         if decimal < minimalAmount.value {
-            textField.text = decimalFormatter.string(from: minimalAmount.value as NSNumber)
+            textField.text = NumberFormatter.decimalFormatterForETH.string(from: minimalAmount.value as NSNumber)
             amount.accept(minimalAmount.value)
         } else {
-            textField.text = decimalFormatter.string(from: decimal as NSNumber)
+            textField.text = NumberFormatter.decimalFormatterForETH.string(from: decimal as NSNumber)
             amount.accept(decimal)
         }
     }

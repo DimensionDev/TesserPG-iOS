@@ -44,16 +44,15 @@ final class RedPacketService {
         }
     }
     
-    let realm: Realm? = {
+    static var realmConfiguration: Realm.Configuration {
         var config = Realm.Configuration()
+        
         let realmName = "RedPacket_v2"
         config.fileURL = TCDBManager.dbDirectoryUrl.appendingPathComponent("\(realmName).realm")
         config.objectTypes = [RedPacket.self]
         
-        try? FileManager.default.createDirectory(at: config.fileURL!.deletingLastPathComponent(), withIntermediateDirectories: true, attributes: nil)
-        
         // setup migration
-        let schemeVersion: UInt64 = 1
+        let schemeVersion: UInt64 = 4
         config.schemaVersion = schemeVersion
         config.migrationBlock = { migration, oldSchemeVersion in
             if oldSchemeVersion < 1 {
@@ -61,19 +60,25 @@ final class RedPacketService {
             }
         }
         
-        do {
-            return try Realm(configuration: config)
-        } catch {
-            os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
-
-            return nil
-        }
-    }()
+        return config
+    }
+    
+    static func realm() throws -> Realm {
+        let config = RedPacketService.realmConfiguration
+    
+        try? FileManager.default.createDirectory(at: config.fileURL!.deletingLastPathComponent(),
+                                                 withIntermediateDirectories: true,
+                                                 attributes: nil)
+        
+        return try Realm(configuration: config)
+    }
     
     // MARK: - Singleton
     public static let shared = RedPacketService()
     
-    private init() { }
+    private init() {
+        _ = try? RedPacketService.realm()
+    }
 
 }
 

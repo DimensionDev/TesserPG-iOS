@@ -174,7 +174,6 @@ extension Web3Tests {
 extension Web3Tests {
     
     func testDeoplyContact() {
-        
         let contract = try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: nil)
         
         // Check contract 
@@ -241,7 +240,7 @@ extension Web3Tests {
     }
     
     func testDelpoyTransactionResult() {
-        let transactionHashHex = "0x69b73480d436b30ebc29f2288da71bcf13b4f6d544b6c3239c0bd0c8706e6d64"
+        let transactionHashHex = "0x580bd1cf06e3181c9db957f6ae45c571078ba5310863d825d26994e333673877"
         let transactionHash = EthereumData(Bytes(hex: transactionHashHex))
         
         var contractAddress: EthereumData?
@@ -268,11 +267,11 @@ extension Web3Tests {
     func testCreate() {
         let chainID: EthereumQuantity = 4   // rinkeby
 
-        let contractAddressHex = "0x26776600b8cccd27f1b8dec242ef04e2539faa14"
+        let contractAddressHex = "0x65cb40bb219ea5962e0a9894449052568a62c823"
         let contractAddress = try! EthereumAddress(hex: contractAddressHex, eip55: false)
         let contract = try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: contractAddress)
 
-        let createCall = contract["create"]
+        let createCall = contract["create_red_packet"]
         XCTAssertNotNil(createCall)
         
         // Rinkeby test account
@@ -311,13 +310,15 @@ extension Web3Tests {
             return BigUInt(hash)
         }
         let ifrandom = true
-        let duration: BigUInt = 0
+        let duration: BigUInt = 86400
         let seed = BigUInt.randomInteger(withMaximumWidth: 32)
+        let message = "Message"
+        let name = "Name"
         
         let value = EthereumQuantity(quantity: 1 * BigUInt(10).power(16))       // 0.01 ETH
         
         // Build contract method call transaction
-        let createInvocation = createCall!(_hashes, ifrandom, duration, seed)
+        let createInvocation = createCall!(_hashes, ifrandom, duration, seed, message, name)
         let createTransaction = createInvocation.createTransaction(nonce: nonce, from: ethereumAddress, value: value, gas: 4300000, gasPrice: EthereumQuantity(quantity: 1.gwei))
         XCTAssertNotNil(createTransaction)
         
@@ -343,11 +344,11 @@ extension Web3Tests {
     }
     
     func testCreateResult() {
-        let contractAddressHex = "0xaa0ddd9d4b6ffa21ef4a490290379fc7b359535c"
+        let contractAddressHex = "0x65cb40bb219ea5962e0a9894449052568a62c823"
         let contractAddress = try! EthereumAddress(hex: contractAddressHex, eip55: false)
         let contract = try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: contractAddress)
         
-        let transactionHashHex = "0xdf125106e93e76c55d1922e0e07012cc6f3fe14f80e0eea2becb7611f444fa8f"
+        let transactionHashHex = "0xf935cfcded513a7166ee248148fa63b0a704a87528f9f8cc57cf067f608784da"
         let transactionHash = EthereumData(Bytes(hex: transactionHashHex))
         
         let check = Web3Tests.checkClaimEvent(web3: web3, contract: contract, transactionHash: transactionHash, in: self)
@@ -627,7 +628,7 @@ extension Web3Tests {
         //                  0x1886fc2d4882b5fea48a32b98518f65ed03883efdce78b9dcf2a581df0663a6a 5599901
         // 005 Already Claimed
         //                  0xed32c3350c25bd5728d4e5580909a4ecae60b3af345abf1244ad1bdedab60845 5599962
-        let blockNumber: BigUInt = 5599962
+        // let blockNumber: BigUInt = 5599962
         let transactionHashHex = "0xed32c3350c25bd5728d4e5580909a4ecae60b3af345abf1244ad1bdedab60845"
         let transactionHash = EthereumData(Bytes(hex: transactionHashHex))
         
@@ -652,7 +653,7 @@ extension Web3Tests {
                      gasPrice: transactionObject!.gasPrice,
                      value: 0,
                      data: transactionObject!.input)
-        let block = try! EthereumQuantityTag.block(blockNumber)
+        let block = try! EthereumQuantityTag.block(transactionObject!.blockNumber!.quantity)
         
         let reasonDataExpectation = expectation(description: "revert reason")
         var reasonData: EthereumData?       // revert reason

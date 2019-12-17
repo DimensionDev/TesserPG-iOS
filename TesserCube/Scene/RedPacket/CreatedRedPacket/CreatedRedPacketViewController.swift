@@ -26,19 +26,17 @@ final class CreatedRedPacketViewModel: NSObject {
     let activityIndicator = ActivityIndicator()
     
     // Input
-    let redPacketProperty: RedPacketProperty
+    let redPacket: RedPacket
     
     // Output
     let isDeploying: Driver<Bool>
     let error = BehaviorRelay<Swift.Error?>(value: nil)
     let message = BehaviorRelay<Message?>(value: nil)
     
-    let realm = RedPacketService.shared.realm!
-    var redPacket = RedPacket()
     var redPacketNotificationToken: NotificationToken?
     
-    init(redPacketProperty: RedPacketProperty) {
-        self.redPacketProperty = redPacketProperty
+    init(redPacket: RedPacket) {
+        self.redPacket = redPacket
         isDeploying = activityIndicator.asDriver()
         
         super.init()
@@ -153,6 +151,7 @@ extension CreatedRedPacketViewModel {
 
 extension CreatedRedPacketViewModel {
     
+    /*
     static func messageBody(for redPacketProperty: RedPacketProperty, contractAddress: String) -> String {
         let senderPublicKeyFingerprint = redPacketProperty.sender?.fingerprint ?? ""
         let senderUserID = redPacketProperty.sender?.userID ?? ""
@@ -165,6 +164,7 @@ extension CreatedRedPacketViewModel {
         -----END RED PACKET-----
         """
     }
+     */
     
 }
 
