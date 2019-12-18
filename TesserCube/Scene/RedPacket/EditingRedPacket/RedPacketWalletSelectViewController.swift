@@ -23,7 +23,7 @@ class RedPacketWalletSelectViewController: UIViewController {
         return tableView
     }()
     
-    var delegate: RedPacketWalletSelectViewControllerDelegate?
+    weak var delegate: RedPacketWalletSelectViewControllerDelegate?
     
     var wallets: [WalletModel] = []
     var selectedWallet: WalletModel?
