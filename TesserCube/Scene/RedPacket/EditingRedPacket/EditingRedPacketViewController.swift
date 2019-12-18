@@ -385,7 +385,9 @@ extension EditingRedPacketViewController {
             return
         }
         
-        let senderName = viewModel.name.value.trimmingCharacters(in: .whitespacesAndNewlines)
+        let senderName = viewModel.name.value
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .replacingOccurrences(of: "\n", with: " ")
         // should not empty
         guard !senderName.isEmpty else {
             alertController.message = "Please input valid name"
