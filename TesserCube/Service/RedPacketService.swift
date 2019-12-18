@@ -40,7 +40,7 @@ final class RedPacketService {
         do {
             return try web3.eth.Contract(json: contractABIData, abiKey: nil, address: address)
         } catch {
-            throw Error.internal
+            throw Error.internal("cannot initialize contract")
         }
     }
     
@@ -190,18 +190,4 @@ extension RedPacketService {
 //        return redPacket
     }
     
-}
-
-extension RedPacketService {
-    enum Error: Swift.Error {
-        case `internal`
-    }
-}
-
-extension RedPacketService.Error: LocalizedError {
-    var errorDescription: String? {
-        switch self {
-        case .internal:    return "Web3 Contract Internal Error"
-        }
-    }
 }

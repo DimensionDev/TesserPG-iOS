@@ -45,6 +45,11 @@ extension WalletService {
 
 extension WalletService {
     
+    
+    /// Get nonce for wallet
+    /// - Parameters:
+    ///   - address: ethereum wallet address
+    ///   - block: block tag. default is .latest
     public static func getTransactionCount(address: EthereumAddress, block: EthereumQuantityTag = .latest) -> Single<EthereumQuantity> {
         return Single.create { single in
             web3.eth.getTransactionCount(address: address, block: .latest) { response in

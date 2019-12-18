@@ -10,12 +10,15 @@ import os
 import UIKit
 import RxSwift
 import RxCocoa
+import RxSwiftUtilities
 import BigInt
 import DMS_HDWallet_Cocoa
+import Web3
 
 final class EditingRedPacketViewModel: NSObject {
     
     let disposeBag = DisposeBag()
+    let createActivityIndicator = ActivityIndicator()
     
     // Input
     let redPacketSplitType = BehaviorRelay(value: SplitType.average)
@@ -30,11 +33,12 @@ final class EditingRedPacketViewModel: NSObject {
     let message = BehaviorRelay(value: "")
     
     // Output
+    let isCreating: Driver<Bool>
     let amountInputCoinCurrencyUnitLabelText: Driver<String>
     let minimalAmount = BehaviorRelay(value: RedPacketService.redPacketMinAmount)
     let total = BehaviorRelay(value: Decimal(0))     // should not 0 after user input amount
     let sendRedPacketButtonText: Driver<String>
-    
+
     enum TableViewCellType {
         case wallet                 // select a wallet to send red packet
         case amount                 // input the amount for send
@@ -58,6 +62,7 @@ final class EditingRedPacketViewModel: NSObject {
     ]
     
     override init() {
+        isCreating = createActivityIndicator.asDriver()
         amountInputCoinCurrencyUnitLabelText = redPacketSplitType.asDriver()
             .map { type in type == .average ? "ETH per share" : "ETH" }
         sendRedPacketButtonText = total.asDriver()
@@ -364,7 +369,13 @@ extension EditingRedPacketViewController {
             present(alertController, animated: true, completion: nil)
             return
         }
+        
         let senderAddress = selectWalletModel.address
+        guard let walletAddress = try? EthereumAddress(hex: senderAddress, eip55: false) else {
+            alertController.message = "Please select valid wallet"
+            present(alertController, animated: true, completion: nil)
+            return
+        }
         
         guard let availableBalance = selectWalletModel.balance.value else {
             alertController.message = "Can not read select wallet balance\nPlease try later"
@@ -419,25 +430,61 @@ extension EditingRedPacketViewController {
         assert(uuids.count == viewModel.share.value)
         let isRandom = viewModel.redPacketSplitType.value == .random
         
-        do {
-            let redPacket = RedPacket.v1()
-            redPacket.uuids.append(objectsIn: uuids)
-            redPacket.is_random = isRandom
-            redPacket.sender_address = senderAddress
-            redPacket.sender_name = senderName
-            redPacket.send_total = sendTotal
-            redPacket.send_message = sendMessage
-            redPacket.status = .initial
-            
-            let realm = try RedPacketService.realm()
-            try realm.write {
-                realm.add(redPacket)
+        let redPacket = RedPacket.v1()
+        redPacket.uuids.append(objectsIn: uuids)
+        redPacket.is_random = isRandom
+        redPacket.sender_address = senderAddress
+        redPacket.sender_name = senderName
+        redPacket.send_total = sendTotal
+        redPacket.send_message = sendMessage
+        redPacket.status = .initial
+        
+        // get nonce -> call create transaction
+        // success: push to CreatedRedPacketViewController
+        // failure: stand in same place and just alert user error
+        WalletService.getTransactionCount(address: walletAddress).asObservable()
+            .withLatestFrom(viewModel.isCreating) { ($0, $1) }     // (nonce, isCreating)
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+            .filter { $0.1 == false }                               // not creating
+            .map { $0.0 }                                           // nonce
+            .retry(3)
+            .do(onNext: { nonce in
+                let nonce = Int(nonce.quantity)
+                redPacket.create_nonce.value = nonce
+            })
+            .flatMap { nonce -> Observable<TransactionHash> in
+                return RedPacketService.create(for: redPacket, use: selectWalletModel, nonce: nonce)
+                    .trackActivity(self.viewModel.createActivityIndicator)
             }
-        } catch {
-            alertController.message = error.localizedDescription
-            present(alertController, animated: true, completion: nil)
-            return
-        }
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] transactionHash in
+                do {
+                    // red packet create transaction success
+                    // set status to .pending
+                    let realm = try RedPacketService.realm()
+                    try realm.write {
+                        redPacket.create_transaction_hash = transactionHash.hex()
+                        redPacket.status = .pending
+                        realm.add(redPacket)
+                    }
+        
+                    let createdRedPacketViewController = CreatedRedPacketViewController()
+                    createdRedPacketViewController.viewModel = CreatedRedPacketViewModel(redPacket: redPacket)
+                    self?.navigationController?.pushViewController(createdRedPacketViewController, animated: true)
+        
+                } catch {
+                    alertController.message = error.localizedDescription
+                    self?.present(alertController, animated: true, completion: nil)
+                    return
+                }
+
+            }, onError: { [weak self] error in
+                // red packet create transaction fail
+                // discard record and alert user
+                alertController.message = error.localizedDescription
+                self?.present(alertController, animated: true, completion: nil)
+            })
+            .disposed(by: viewModel.disposeBag)
     }
     
 }
@@ -450,41 +497,6 @@ extension EditingRedPacketViewController {
     
     @objc private func nextBarButtonItemClicked(_ sender: UIBarButtonItem) {
         sendRedPacket()
-//        guard let balance = selectWalletModel.balance.value else {
-//            alertController.message = "Wallet balance inquiry failed"
-//            present(alertController, animated: true, completion: nil)
-//            return
-//        }
-//
-//        let minAmountInWei = BigUInt(viewModel.inputRedPacketShareTableViewCell.share.value) * WalletService.redPacketMinAmountInWei
-//        guard balance > minAmountInWei else {
-//            alertController.message = "Insufficient wallet balance"
-//            present(alertController, animated: true, completion: nil)
-//            return
-//        }
-//
-//        guard balance > viewModel.redPacketProperty.amountInWei else {
-//            alertController.message = "Insufficient wallet balance"
-//            present(alertController, animated: true, completion: nil)
-//            return
-//        }
-//
-//        // FIXME:
-//        let minAmountDecimal = (Decimal(string: String(minAmountInWei)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
-//        if viewModel.redPacketProperty.amount < minAmountDecimal {
-//            viewModel.redPacketProperty.amount = minAmountDecimal
-//        }
-//
-//        let selectRecipientsVC = RedPacketRecipientSelectViewController()
-//        selectRecipientsVC.redPacketProperty = viewModel.redPacketProperty
-//        //        recommendView?.updateColor(theme: currentTheme)
-//        #if TARGET_IS_EXTENSION
-//        selectRecipientsVC.delegate = KeyboardModeManager.shared
-//        selectRecipientsVC.optionFieldView = optionsView
-//        #else
-//        selectRecipientsVC.delegate = self
-//        #endif
-//        navigationController?.pushViewController(selectRecipientsVC, animated: true)
     }
     
     @objc private func sendRedPacketButtonPressed(_ sender: UIButton) {

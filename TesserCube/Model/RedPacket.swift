@@ -22,7 +22,7 @@ public class RedPacket: Object {
 
     let create_nonce = RealmOptional<Int>()
     @objc public dynamic var create_transaction_hash: String?
-    let block_creation_time = RealmOptional<Int>()
+    let block_creation_time = RealmOptional<Int>(Int(Date().timeIntervalSince1970))
     @objc public dynamic var duration = 86400       // 24hr
     @objc public dynamic var red_packet_id: String?
     @objc public dynamic var raw_payload: String?
