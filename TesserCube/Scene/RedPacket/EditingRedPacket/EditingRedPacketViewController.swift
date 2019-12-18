@@ -380,7 +380,7 @@ extension EditingRedPacketViewController {
         }
 
         guard sendTotal < availableBalance else {
-            alertController.message = "Insufficient account balance\nPlease input valid amout"
+            alertController.message = "Insufficient account balance\nPlease input valid amount"
             present(alertController, animated: true, completion: nil)
             return
         }
@@ -393,9 +393,22 @@ extension EditingRedPacketViewController {
             return
         }
         
+        guard senderName.count <= 30 else {
+            alertController.message = "Name can be up to 30 characters\nPlease reduce the name length"
+            present(alertController, animated: true, completion: nil)
+            return
+        }
+        
         // could be empty
-        let sendMessage = viewModel.message.value.trimmingCharacters(in: .whitespacesAndNewlines)
-            
+        let sendMessage = viewModel.message.value
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .replacingOccurrences(of: "\n", with: " ")
+        
+        guard sendMessage.count <= 140 else {
+            alertController.message = "Messages can be up to 140 characters\nPlease reduce the message length"
+            present(alertController, animated: true, completion: nil)
+            return
+        }
         // Verify finish
         
         let uuids = (0..<viewModel.share.value).map { _ in
@@ -420,6 +433,7 @@ extension EditingRedPacketViewController {
             }
         } catch {
             alertController.message = error.localizedDescription
+            present(alertController, animated: true, completion: nil)
             return
         }
     }
