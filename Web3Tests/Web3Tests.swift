@@ -40,6 +40,13 @@ class Web3Tests: XCTestCase {
     func testSmoke() {
 
     }
+    
+    func testCreateWallet() {
+        let mnemonic = Mnemonic.create()
+        print(mnemonic)
+        let wallet = try! HDWallet(mnemonic: mnemonic, passphrase: "dimension", network: .mainnet(.ether))
+        print(try! wallet.address())
+    }
 
     func testClientVersion() {
         // ropsten
@@ -240,7 +247,7 @@ extension Web3Tests {
     }
     
     func testDelpoyTransactionResult() {
-        let transactionHashHex = "0x580bd1cf06e3181c9db957f6ae45c571078ba5310863d825d26994e333673877"
+        let transactionHashHex = "0x9f1e2f409e93e81d8ba3bd576d99931ec4ef56232e71404e5b85235e2cd567a6"
         let transactionHash = EthereumData(Bytes(hex: transactionHashHex))
         
         var contractAddress: EthereumData?
@@ -267,7 +274,7 @@ extension Web3Tests {
     func testCreate() {
         let chainID: EthereumQuantity = 4   // rinkeby
 
-        let contractAddressHex = "0x65cb40bb219ea5962e0a9894449052568a62c823"
+        let contractAddressHex = "0xc80f86a7f1c8879c539fe10619c7eb3e8e9020c3"
         let contractAddress = try! EthereumAddress(hex: contractAddressHex, eip55: false)
         let contract = try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: contractAddress)
 
@@ -344,11 +351,11 @@ extension Web3Tests {
     }
     
     func testCreateResult() {
-        let contractAddressHex = "0x65cb40bb219ea5962e0a9894449052568a62c823"
+        let contractAddressHex = "0xc80f86a7f1c8879c539fe10619c7eb3e8e9020c3"
         let contractAddress = try! EthereumAddress(hex: contractAddressHex, eip55: false)
         let contract = try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: contractAddress)
         
-        let transactionHashHex = "0xf935cfcded513a7166ee248148fa63b0a704a87528f9f8cc57cf067f608784da"
+        let transactionHashHex = "0xd4968bde201c87e7c4e3568204829a90aee2bae260444fdc82f8d23ab534d53e"
         let transactionHash = EthereumData(Bytes(hex: transactionHashHex))
         
         let check = Web3Tests.checkClaimEvent(web3: web3, contract: contract, transactionHash: transactionHash, in: self)
@@ -362,7 +369,7 @@ extension Web3Tests {
         // id: 36861d077060b1865ea0845e0707dae7f9e5d021b62fe95668989f0c567325eb
         let chainID: EthereumQuantity = 4   // rinkeby
     
-        let contractAddressHex = "0xaa0ddd9d4b6ffa21ef4a490290379fc7b359535c"
+        let contractAddressHex = "0xc80f86a7f1c8879c539fe10619c7eb3e8e9020c3"
         let uuids = [
             "8090D64A-03A6-4E2A-B457-9A0376696F8E",
             "338D6AE4-F1BC-40CD-B036-0210686F5585",
@@ -370,7 +377,9 @@ extension Web3Tests {
         let uuid = uuids[1]
         
         // Rinkeby test account
-        let mnemonic = ["ensure", "fossil", "scan", "dash", "tomato", "country", "draft", "organ", "loud", "garbage", "keen", "cat"]
+        // let mnemonic = ["ensure", "fossil", "scan", "dash", "tomato", "country", "draft", "organ", "loud", "garbage", "keen", "cat"]
+        let mnemonic = ["blood", "grunt", "risk", "wing", "surface", "expire", "paper", "elite", "phrase", "very", "rival", "earth"]
+        
         let passphrase = "dimension"
         
         // Ganache test account
@@ -406,11 +415,17 @@ extension Web3Tests {
         wait(for: [nonceExpectation], timeout: 10.0)
         XCTAssertNotNil(nonce)
         
-        let id = BigUInt(hexString: "36861d077060b1865ea0845e0707dae7f9e5d021b62fe95668989f0c567325eb")
+        let id = BigUInt(hexString: "0771aca742d2900aaa8badec308706748315257ef976af9df41d17ba2935feb3")
         XCTAssertNotNil(id)
         
+        let recipient = ethereumAddress
+        let validationBytes = SHA3(variant: .keccak256).calculate(for: try! recipient.makeBytes())
+        let validation = BigUInt(validationBytes)
+        
+        let name = "My Name B"
+        
         // Build contract method call transaction
-        let claimInvocation = claimCall!(id!, uuid)
+        let claimInvocation = claimCall!(id!, uuid, recipient, validation, name)
         let claimTransaction = claimInvocation.createTransaction(nonce: nonce, from: ethereumAddress, value: 0, gas: 210000, gasPrice: EthereumQuantity(quantity: 1.gwei))
         XCTAssertNotNil(claimTransaction)
         let signedClaimTransaction = try! claimTransaction!.sign(with: privateKey, chainId: chainID)
@@ -435,13 +450,13 @@ extension Web3Tests {
     }
     
     func testClaimResult() {
-        let contractAddressHex = "0xaa0ddd9d4b6ffa21ef4a490290379fc7b359535c"
+        let contractAddressHex = "0xc80f86a7f1c8879c539fe10619c7eb3e8e9020c3"
         let contractAddress = try! EthereumAddress(hex: contractAddressHex, eip55: false)
         let contract = try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: contractAddress)
         
         // 1st claimed on uuid[0]: 0x9ea3f1d81a4730c38be8e70785b3fb121c5d710b549f9757b4c9ec71300947af ClaimSuccess
         // 2nd claimed on uuid[0]: 0xed32c3350c25bd5728d4e5580909a4ecae60b3af345abf1244ad1bdedab60845 Status: 0 Failure
-        let transactionHashHex = "0xed32c3350c25bd5728d4e5580909a4ecae60b3af345abf1244ad1bdedab60845"
+        let transactionHashHex = "0x80b5d816e132fe930f1e6a87943c43912faa1c8bb69458e7f1e5fb7ea45a99ae"
         let transactionHash = EthereumData(Bytes(hex: transactionHashHex))
         
         let check = Web3Tests.checkClaimEvent(web3: web3, contract: contract, transactionHash: transactionHash, in: self)
@@ -519,17 +534,18 @@ extension Web3Tests {
     }
     
     func testCheckClaimedList() {
-        let contractAddressHex = "0xaa0ddd9d4b6ffa21ef4a490290379fc7b359535c"
+        let contractAddressHex = "0xc80f86a7f1c8879c539fe10619c7eb3e8e9020c3"
         let contractAddress = try! EthereumAddress(hex: contractAddressHex, eip55: false)
         let contract = try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: contractAddress)
         
         let checkClaimedListExpectation = expectation(description: "check_claimed_list")
         
-        let id = BigUInt(hexString: "36861d077060b1865ea0845e0707dae7f9e5d021b62fe95668989f0c567325eb")
+        let id = BigUInt(hexString: "0771aca742d2900aaa8badec308706748315257ef976af9df41d17ba2935feb3")
         XCTAssertNotNil(id)
         let checkClaimedListInvocation = contract["check_claimed_list"]!(id!)
                 
         checkClaimedListInvocation.call { resultDict, error in
+            XCTAssertNil(error)
             guard let dict = resultDict else {
                 XCTFail()
                 return

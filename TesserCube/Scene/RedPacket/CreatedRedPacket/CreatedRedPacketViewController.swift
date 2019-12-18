@@ -190,47 +190,63 @@ extension CreatedRedPacketViewModel: UITableViewDataSource {
 extension CreatedRedPacketViewModel {
     
     static func configure(cell: RedPacketCardTableViewCell, with redPacket: RedPacket) {
-//        let translator = DMSPGPUserIDTranslator(userID: redPacket.senderUserID)
-//
-//        cell.nameLabel.text = translator.name
-//        cell.emailLabel.text = translator.email.flatMap { "<\($0)>"}
-//
-//        let formatter = WalletService.balanceDecimalFormatter
-//
-//        switch redPacket.status {
-//        case .initial, .pending:
-//            cell.redPacketStatusLabel.text = "Outgoing Red Packet"
-//            cell.indicatorLabel.text = "Publishing…"
-//        case .fail:
-//            cell.redPacketStatusLabel.text = "Failed to send"
-//            cell.indicatorLabel.text = ""
-//        case .incoming:
-//            cell.redPacketStatusLabel.text = "Incoming Red Packet"
-//            cell.redPacketDetailLabel.text = "Trying to claim…"
-//            cell.indicatorLabel.text = ""
-//        case .normal:
-//            let amountInDecimal = (Decimal(string: String(redPacket.amount)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
-//            let amountInDecimalString = formatter.string(from: amountInDecimal as NSNumber) ?? "-"
-//            cell.redPacketStatusLabel.text = "Sent \(amountInDecimalString) ETH"
-//            cell.indicatorLabel.text = "Ready for collection"
-//        case .claimed:
-//            let amountInDecimal = (Decimal(string: String(redPacket.claimAmount)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
-//            let amountInDecimalString = formatter.string(from: amountInDecimal as NSNumber) ?? "-"
-//            cell.redPacketStatusLabel.text = "Got \(amountInDecimalString) ETH"
-//            cell.indicatorLabel.text = ""
-//        case .empty:
-//            cell.redPacketStatusLabel.text = "Too late to get any"
-//            cell.indicatorLabel.text = ""
-//        case .expired:
-//            cell.redPacketStatusLabel.text = "Too late to get any"
-//            cell.indicatorLabel.text = ""
-//        }
-//
-//        let unit = redPacket.share > 1 ? "shares" : "share"
-//        cell.redPacketDetailLabel.text = "\(redPacket.share)" + " " + unit
-//
-//        let createdDate = redPacket.createdAt as Date
-//        cell.createdDateLabel.text = createdDate.timeAgoSinceNow + " created"
+        cell.nameLabel.text = redPacket.sender_name
+        cell.emailLabel.text = ""       // no more email
+
+        let formatter = NumberFormatter.decimalFormatterForETH
+        let totalAmountInDecimal = (Decimal(string: String(redPacket.send_total)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
+        let totalAmountInDecimalString = formatter.string(from: totalAmountInDecimal as NSNumber) ?? "-"
+        
+        switch redPacket.status {
+        case .initial, .pending:
+            cell.redPacketStatusLabel.text = "Outgoing Red Packet"
+            cell.indicatorLabel.text = "Publishing…"
+        case .fail:
+            cell.redPacketStatusLabel.text = "Failed to send"
+            cell.indicatorLabel.text = ""
+        case .incoming:
+            cell.redPacketStatusLabel.text = "Incoming Red Packet"
+            cell.redPacketDetailLabel.text = "Trying to claim…"
+            cell.indicatorLabel.text = ""
+        case .normal:
+            
+            cell.redPacketStatusLabel.text = "Sent \(totalAmountInDecimalString) ETH"
+            cell.indicatorLabel.text = "Ready for collection"
+        case .claim_pending:
+            cell.redPacketStatusLabel.text = "Claiming…"
+            cell.indicatorLabel.text = ""
+        case .claimed:
+            let amountInDecimal = (Decimal(string: String(redPacket.claim_amount)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
+            let amountInDecimalString = formatter.string(from: amountInDecimal as NSNumber) ?? "-"
+            cell.redPacketStatusLabel.text = "Got \(amountInDecimalString) ETH"
+            cell.indicatorLabel.text = ""
+        case .empty:
+            cell.redPacketStatusLabel.text = "Too late to get any"
+            cell.indicatorLabel.text = ""
+        case .expired:
+            cell.redPacketStatusLabel.text = "Too late to get any"
+            cell.indicatorLabel.text = ""
+        case .refund_pending:
+            cell.redPacketStatusLabel.text = "Refunding…"
+            cell.indicatorLabel.text = ""
+        case .refunded:
+            let amountInDecimal = (Decimal(string: String(redPacket.refund_amount)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
+            let amountInDecimalString = formatter.string(from: amountInDecimal as NSNumber) ?? "-"
+            cell.redPacketStatusLabel.text = "Refund \(amountInDecimalString) ETH"
+            cell.indicatorLabel.text = ""
+        }
+
+        let share = redPacket.uuids.count
+        let unit = share > 1 ? "shares" : "share"
+        cell.redPacketDetailLabel.text = "\(totalAmountInDecimalString) ETH in total / \(share) \(unit)"
+
+        if let blockCreationTime = redPacket.block_creation_time.value {
+            let createDate = Date(timeIntervalSince1970: TimeInterval(blockCreationTime))
+            cell.createdDateLabel.text = createDate.timeAgoSinceNow + " created"
+            
+        } else {
+            cell.createdDateLabel.text = " "
+        }
     }
     
 }
