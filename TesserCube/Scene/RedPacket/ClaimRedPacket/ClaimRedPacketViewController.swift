@@ -24,18 +24,18 @@ final class ClaimRedPacketViewModel: NSObject {
     
     let disposeBag = DisposeBag()
     let activityIndicator = ActivityIndicator()
-    
-    let selectWalletTableViewCell = SelectWalletTableViewCell()
-    var walletProvider: RedPacketWalletProvider?
-    
+        
     // Input
     let redPacket: RedPacket
     
+    let walletModels = BehaviorRelay<[WalletModel]>(value: [])
+    let selectWalletModel = BehaviorRelay<WalletModel?>(value: nil)
+    
     // Output
     let isClaiming: Driver<Bool>
+    let canDismiss = BehaviorRelay(value: true)
     let error = BehaviorRelay<Swift.Error?>(value: nil)
-//
-    // let realm = RedPacketService.shared.realm!
+
     var redPacketNotificationToken: NotificationToken?
     
     init(redPacket: RedPacket) {
@@ -44,7 +44,16 @@ final class ClaimRedPacketViewModel: NSObject {
         
         super.init()
         
-        walletProvider = RedPacketWalletProvider(tableView: UITableView(), walletModels: WalletService.default.walletModels.value)
+        // Update default select wallet model when wallet model pool change
+        walletModels.asDriver()
+            .map { $0.first }
+            .drive(selectWalletModel)
+            .disposed(by: disposeBag)
+        
+        isClaiming.asDriver()
+            .map { !$0 }
+            .drive(canDismiss)
+            .disposed(by: disposeBag)
     }
     
     deinit {
@@ -118,29 +127,98 @@ extension ClaimRedPacketViewModel {
 extension ClaimRedPacketViewModel: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        // 0: Red packet section
+        // 1: In-App wallet select cell section
+        // 2: Keyboard Open Red Packet button cell section
+        return 3
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        switch section {
+        case 0:
+            return 1
+        case 1:
+            #if TARGET_IS_KEYBOARD
+            return 0
+            #else
+            return 0    // TODO:
+            // return 1
+            #endif
+        case 2:
+            #if TARGET_IS_KEYBOARD
+            return 1
+            #else
+            return 0
+            #endif
+        default:
+            fatalError()
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: UITableViewCell
+        
         switch indexPath.section {
         case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RedPacketCardTableViewCell.self), for: indexPath) as! RedPacketCardTableViewCell
-            CreatedRedPacketViewModel.configure(cell: cell, with: redPacket)
-            return cell
+            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RedPacketCardTableViewCell.self), for: indexPath) as! RedPacketCardTableViewCell
+            CreatedRedPacketViewModel.configure(cell: _cell, with: redPacket)
+            
+            cell = _cell
             
         case 1:
-            let cell = selectWalletTableViewCell
-//            cell.titleLabel.text = "Wallet"
-//            cell.detailLeadingLayoutConstraint.constant = 100
-            return cell
+            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SelectWalletTableViewCell.self), for: indexPath) as! SelectWalletTableViewCell
+            
+            // Setup wallet view model
+            walletModels.asDriver()
+                .drive(_cell.viewModel.walletModels)
+                .disposed(by: _cell.disposeBag)
+            _cell.viewModel.selectWalletModel.asDriver()
+                .drive(selectWalletModel)
+                .disposed(by: _cell.disposeBag)
+            
+            // Setup separator line
+            if let oldTopSeparatorLine = _cell.subviews.first(where: { $0.tag == 3868 }) {
+                oldTopSeparatorLine.removeFromSuperview()
+            }
+            if let oldBottomSeparatorLine = _cell.subviews.first(where: { $0.tag == 3869 }) {
+                oldBottomSeparatorLine.removeFromSuperview()
+            }
+            
+            let topSeparatorLine: UIView = {
+                let separatorLine = UIView(frame: CGRect(x: 0, y: 0, width: _cell.bounds.width, height: 0.5))
+                separatorLine.tag = 3868
+                separatorLine.backgroundColor = ._separator
+                return separatorLine
+            }()
+            let bottomSeparatorLine: UIView = {
+                let separatorLine = UIView(frame: CGRect(x: 0, y: 0, width: _cell.bounds.width, height: 0.5))
+                separatorLine.tag = 3869
+                separatorLine.backgroundColor = ._separator
+                return separatorLine
+            }()
+            topSeparatorLine.translatesAutoresizingMaskIntoConstraints = false
+            _cell.contentView.addSubview(topSeparatorLine)
+            bottomSeparatorLine.translatesAutoresizingMaskIntoConstraints = false
+            _cell.contentView.addSubview(bottomSeparatorLine)
+            NSLayoutConstraint.activate([
+                // not use contentView anchor here due to accessory view set padding for it
+                topSeparatorLine.topAnchor.constraint(equalTo: _cell.topAnchor),
+                topSeparatorLine.leadingAnchor.constraint(equalTo: _cell.leadingAnchor),
+                topSeparatorLine.trailingAnchor.constraint(equalTo: _cell.trailingAnchor),
+                topSeparatorLine.heightAnchor.constraint(equalToConstant: 0.5),
+                bottomSeparatorLine.bottomAnchor.constraint(equalTo: _cell.bottomAnchor),
+                bottomSeparatorLine.leadingAnchor.constraint(equalTo: _cell.leadingAnchor),
+                bottomSeparatorLine.trailingAnchor.constraint(equalTo: _cell.trailingAnchor),
+                bottomSeparatorLine.heightAnchor.constraint(equalToConstant: 0.5),
+            ])
+            
+            cell = _cell
             
         default:
             fatalError()
         }
+        
+        return cell
     }
     
 }
@@ -171,11 +249,10 @@ final class ClaimRedPacketViewController: UIViewController {
     }()
     
     private let tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.register(RedPacketCardTableViewCell.self, forCellReuseIdentifier: String(describing: RedPacketCardTableViewCell.self))
+        tableView.register(SelectWalletTableViewCell.self, forCellReuseIdentifier: String(describing: SelectWalletTableViewCell.self))
         tableView.separatorStyle = .none
-        tableView.tableFooterView = UIView()
-        tableView.backgroundColor = ._systemGroupedBackground
         return tableView
     }()
     
@@ -226,15 +303,16 @@ extension ClaimRedPacketViewController {
             view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: bottomActionsView.bottomAnchor, constant: 15),
         ])
         
-        // Setup tableView
-        tableView.dataSource = viewModel
-        
-        // Setup bottomActionsView
-        #if !TARGET_IS_EXTENSION
+        // Load bottom action in-app
+        #if !TARGET_IS_KEYBOARD
         reloadActionsView()
         #endif
         
         // Setup viewModel
+        WalletService.default.walletModels.asDriver()
+            .drive(viewModel.walletModels)
+            .disposed(by: disposeBag)
+        
         viewModel.isClaiming.drive(onNext: { [weak self] isClaiming in
             guard let `self` = self else { return }
                 self.navigationItem.leftBarButtonItem = isClaiming ? nil : self.closeBarButtonItem
@@ -253,6 +331,7 @@ extension ClaimRedPacketViewController {
             })
             .disposed(by: disposeBag)
 
+        // update table view when red packet changes
         viewModel.redPacketNotificationToken = viewModel.redPacket.observe { [weak self] change in
             switch change {
             case .change(let changes):
@@ -273,13 +352,16 @@ extension ClaimRedPacketViewController {
                 self.present(alertController, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
+        
+        // Setup tableView
+        tableView.dataSource = viewModel
+        tableView.delegate = self
     }
     
 }
 
 extension ClaimRedPacketViewController {
     
-    #if !TARGET_IS_EXTENSION
     private func reloadActionsView() {
         bottomActionsView.arrangedSubviews.forEach { subview in
             bottomActionsView.removeArrangedSubview(subview)
@@ -288,7 +370,7 @@ extension ClaimRedPacketViewController {
         
         bottomActionsView.addArrangedSubview(openRedPacketButton)
     }
-    #endif
+
 }
 
 extension ClaimRedPacketViewController {
@@ -307,10 +389,41 @@ extension ClaimRedPacketViewController {
     
 }
 
+// MARK: - UIAdaptivePresentationControllerDelegate
 extension ClaimRedPacketViewController: UIAdaptivePresentationControllerDelegate {
     
     func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
-        return false
+        return viewModel.canDismiss.value
+    }
+    
+}
+
+// MARK: - UITableViewDelegate
+extension ClaimRedPacketViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return UIView()
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 10
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 10
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch indexPath.section {
+        case 1:
+            return 44
+        default:
+            return UITableView.automaticDimension
+        }
     }
     
 }

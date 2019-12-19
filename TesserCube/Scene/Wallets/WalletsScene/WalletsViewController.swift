@@ -80,7 +80,19 @@ class WalletsViewController: TCBaseViewController {
             let redPacketResults = realm.objects(RedPacket.self)
             Observable.array(from: redPacketResults, synchronousStart: false)
                 .subscribe(onNext: { [weak self] redPackets in
-                    self?.viewModel.redPackets.accept(redPackets.reversed())
+                    guard let `self` = self else { return }
+                    
+                    // update view model data source
+                    self.viewModel.redPackets.accept(redPackets.reversed())
+                    
+                    // fetch create result
+                    let pendingRedPackets = redPackets.filter { $0.status == .pending }
+                    for redPacket in pendingRedPackets {
+                        RedPacketService.shared.updateCreateResult(for: redPacket)
+                            .subscribe()
+                            .disposed(by: self.disposeBag)
+                    }
+                    
                 })
                 .disposed(by: disposeBag)
     
@@ -249,29 +261,39 @@ extension WalletsViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // guard cell for walletModels data
-        guard indexPath.section == 1,
-        let cell = tableView.cellForRow(at: indexPath) as? WalletCardTableViewCell else {
-            return
-        }
-
-        let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath, isContextMenu: false)
-        let alertController: UIAlertController = {
-            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            let alertActions = actions.map { $0.alertAction }
-            for alertAction in alertActions {
-                alertController.addAction(alertAction)
+        switch indexPath.section {
+        case 0:     // wallet section
+            break
+            // let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath, isContextMenu: false)
+            // let alertController: UIAlertController = {
+            //     let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            //     let alertActions = actions.map { $0.alertAction }
+            //     for alertAction in alertActions {
+            //         alertController.addAction(alertAction)
+            //     }
+            //     return alertController
+            // }()
+            //
+            // if let popoverPresentationController = alertController.popoverPresentationController {
+            //     popoverPresentationController.sourceView = cell
+            // }
+            //
+            // DispatchQueue.main.async {
+            //     self.present(alertController, animated: true, completion: nil)
+            // }
+        case 1:     // red packet section
+            guard let cell = tableView.cellForRow(at: indexPath) as? RedPacketCardTableViewCell,
+            indexPath.row < viewModel.filteredRedPackets.value.count else {
+                return
             }
-            return alertController
-        }()
-
-        if let popoverPresentationController = alertController.popoverPresentationController {
-            popoverPresentationController.sourceView = cell
-        }
-
-        DispatchQueue.main.async {
-            self.present(alertController, animated: true, completion: nil)
-        }
+            let redPacket = viewModel.filteredRedPackets.value[indexPath.row]
+            
+            let viewModel = ClaimRedPacketViewModel(redPacket: redPacket)
+            Coordinator.main.present(scene: .claimRedPacket(viewModel: viewModel), from: self, transition: .modal, completion: nil)
+            
+        default:
+            break
+        }  
     }
 
     /*

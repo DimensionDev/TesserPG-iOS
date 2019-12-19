@@ -56,6 +56,7 @@ final class CreatedRedPacketViewModel: NSObject {
 extension CreatedRedPacketViewModel {
     
     func fetchCreateResult() {
+        // FIXME: it is duplicate with in-app pendingRedPackets create result updateer
         RedPacketService.shared.updateCreateResult(for: redPacket)
             .trackActivity(activityIndicator)
             .subscribe(onNext: { _ in
@@ -327,28 +328,6 @@ extension CreatedRedPacketViewController {
         #endif
         
         // Setup viewModel
-        viewModel.isFetching.asDriver()
-            .map { !$0 }        // enable when not deplying
-            .drive(doneBarButtonItem.rx.isEnabled)
-            .disposed(by: disposeBag)
-        viewModel.isFetching.drive(onNext: { [weak self] isDeploying in
-                self?.navigationItem.rightBarButtonItem = isDeploying ? self?.activityIndicatorBarButtonItem : self?.doneBarButtonItem
-            })
-            .disposed(by: disposeBag)
-        viewModel.isFetching.asDriver()
-            .drive(onNext: { [weak self] isDeploying in
-                self?.tableView.isUserInteractionEnabled = !isDeploying
-                
-                #if !TARGET_IS_EXTENSION
-                if isDeploying {
-                    self?.showHUD("Sending…")
-                } else {
-                    self?.hideHUD()
-                }
-                #endif
-            })
-            .disposed(by: disposeBag)
-        
         viewModel.redPacketNotificationToken = viewModel.redPacket.observe { [weak self] change in
             switch change {
             case .change(let changes):

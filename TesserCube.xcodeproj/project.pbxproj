@@ -1706,13 +1706,6 @@
 			path = CreatedRedPacket;
 			sourceTree = "<group>";
 		};
-		DB0F102123893B9D00F49D2C /* Helper */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Helper;
-			sourceTree = "<group>";
-		};
 		DB0F102523893BEE00F49D2C /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -1916,7 +1909,6 @@
 		DBC9CF042387C898009E13C5 /* EditingRedPacket */ = {
 			isa = PBXGroup;
 			children = (
-				DB0F102123893B9D00F49D2C /* Helper */,
 				DB1C6FD0239F59EF002A37AD /* View */,
 				DBC9CF032387C88E009E13C5 /* Cell */,
 				83955B76237271EF00161498 /* EditingRedPacketViewController.swift */,
