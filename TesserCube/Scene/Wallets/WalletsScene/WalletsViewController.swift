@@ -67,25 +67,20 @@ class WalletsViewController: TCBaseViewController {
             .drive(viewModel.walletModels)
             .disposed(by: disposeBag)
         tableView.dataSource = viewModel
-        Driver.combineLatest(viewModel.walletModels.asDriver(), viewModel.redPackets.asDriver())
+        viewModel.filteredRedPackets.asDriver()
             .drive(onNext: { [weak self] _ in
                 self?.reloadActionsView()
+                // TODO: use diffable data source
                 self?.tableView.reloadData()
             })
             .disposed(by: disposeBag)
-        // viewModel.walletModels.asDriver()
-        //     .drive(onNext: { [weak self] _ in
-        //         self?.reloadActionsView()
-        //         self?.tableView.reloadData()
-        //     })
-        //     .disposed(by: disposeBag)
-        
+
         do {
             let realm = try RedPacketService.realm()
             let redPacketResults = realm.objects(RedPacket.self)
             Observable.array(from: redPacketResults, synchronousStart: false)
                 .subscribe(onNext: { [weak self] redPackets in
-                    self?.viewModel.redPackets.accept(redPackets)
+                    self?.viewModel.redPackets.accept(redPackets.reversed())
                 })
                 .disposed(by: disposeBag)
     

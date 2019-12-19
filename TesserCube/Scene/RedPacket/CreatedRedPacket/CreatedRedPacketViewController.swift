@@ -29,29 +29,19 @@ final class CreatedRedPacketViewModel: NSObject {
     let redPacket: RedPacket
     
     // Output
-    let isDeploying: Driver<Bool>
+    let isFetching: Driver<Bool>
     let error = BehaviorRelay<Swift.Error?>(value: nil)
-    let message = BehaviorRelay<Message?>(value: nil)
+    // let message = BehaviorRelay<Message?>(value: nil)
     
     var redPacketNotificationToken: NotificationToken?
     
     init(redPacket: RedPacket) {
         self.redPacket = redPacket
-        isDeploying = activityIndicator.asDriver()
+        isFetching = activityIndicator.asDriver()
         
         super.init()
-        
-//        redPacket.senderUserID = redPacketProperty.sender?.userID ?? ""
-//        redPacket.share = redPacketProperty.uuids.count
-//        redPacket.amount = redPacketProperty.amountInWei
-//        redPacket.uuids.append(objectsIn: redPacketProperty.uuids)
-//
-//        // Add red packet to realm
-//        try! realm.write {
-//            realm.add(redPacket)
-//        }
-        
-        isDeploying
+    
+        isFetching
             .debug()
             .drive()
             .disposed(by: disposeBag)
@@ -64,6 +54,18 @@ final class CreatedRedPacketViewModel: NSObject {
 }
 
 extension CreatedRedPacketViewModel {
+    
+    func fetchCreateResult() {
+        RedPacketService.shared.updateCreateResult(for: redPacket)
+            .trackActivity(activityIndicator)
+            .subscribe(onNext: { _ in
+                // do nothing
+                // use side effect to update red packet model
+            }, onError: { [weak self] error in
+                self?.error.accept(error)
+            })
+            .disposed(by: disposeBag)
+    }
     
 //    func deployRedPacketContract() {
 //        Observable.just(redPacketProperty)
@@ -209,7 +211,6 @@ extension CreatedRedPacketViewModel {
             cell.redPacketDetailLabel.text = "Trying to claim…"
             cell.indicatorLabel.text = ""
         case .normal:
-            
             cell.redPacketStatusLabel.text = "Sent \(totalAmountInDecimalString) ETH"
             cell.indicatorLabel.text = "Ready for collection"
         case .claim_pending:
@@ -326,15 +327,15 @@ extension CreatedRedPacketViewController {
         #endif
         
         // Setup viewModel
-        viewModel.isDeploying.asDriver()
+        viewModel.isFetching.asDriver()
             .map { !$0 }        // enable when not deplying
             .drive(doneBarButtonItem.rx.isEnabled)
             .disposed(by: disposeBag)
-        viewModel.isDeploying.drive(onNext: { [weak self] isDeploying in
+        viewModel.isFetching.drive(onNext: { [weak self] isDeploying in
                 self?.navigationItem.rightBarButtonItem = isDeploying ? self?.activityIndicatorBarButtonItem : self?.doneBarButtonItem
             })
             .disposed(by: disposeBag)
-        viewModel.isDeploying.asDriver()
+        viewModel.isFetching.asDriver()
             .drive(onNext: { [weak self] isDeploying in
                 self?.tableView.isUserInteractionEnabled = !isDeploying
                 
@@ -369,8 +370,8 @@ extension CreatedRedPacketViewController {
             })
             .disposed(by: disposeBag)
         
-        // Teigger delpoy action
-        // viewModel.deployRedPacketContract()
+        // Teigger fetch create result action
+         viewModel.fetchCreateResult()
     }
     
 }

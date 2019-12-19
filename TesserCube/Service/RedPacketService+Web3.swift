@@ -116,12 +116,132 @@ extension RedPacketService {
         return transactionHash
     }
     
+    static func createResult(for redPacket: RedPacket) -> Single<CreationSuccess> {
+        // Only for contract v1
+        assert(redPacket.contract_version == 1)
+        
+        guard let createTransactionHashHex = redPacket.create_transaction_hash else {
+            return Single.error(Error.internal("cannot read create transaction hash"))
+        }
+        
+        let createTransactionHash: TransactionHash
+        do {
+            let ethernumValue = EthereumValue(stringLiteral: createTransactionHashHex)
+            createTransactionHash = try EthereumData(ethereumValue: ethernumValue)
+            
+        } catch {
+            return Single.error(Error.internal("cannot read create transaction hash"))
+        }
+        
+        // Init web3
+        let web3 = WalletService.web3
+        
+        // Init contract
+        guard let contractAddressString = redPacket.contract_address else {
+            return Single.error(Error.internal("cannot get red packet contract address"))
+        }
+        
+        let contractAddress: EthereumAddress
+        let contract: DynamicContract
+        do {
+            let contractABIData = RedPacketService.redPacketContractABIData
+            contractAddress = try EthereumAddress(hex: contractAddressString, eip55: false)
+            contract = try web3.eth.Contract(json: contractABIData, abiKey: nil, address: contractAddress)
+        } catch {
+            return Single.error(Error.internal(error.localizedDescription))
+        }
+
+        // Prepare decoder
+        guard let creationSuccessEvent = (contract.events.filter { $0.name == "CreationSuccess" }.first) else {
+            return Single.error(Error.internal("cannot read creation event from contract"))
+        }
+        
+        return Single<CreationSuccess>.create { single -> Disposable in
+            web3.eth.getTransactionReceipt(transactionHash: createTransactionHash) { response in
+                switch response.status {
+                case let .success(receipt):
+                    // Receipt return status => success
+                    // Should read CreationSuccess log otherwise throw creationFail error
+                    guard let status = receipt?.status, status.quantity == 1 else {
+                        single(.error(Error.creationFail))
+                        return
+                    }
+                    
+                    guard let logs = receipt?.logs else {
+                        single(.error(Error.creationFail))
+                        return
+                    }
+                    
+                    var resultDict: [String: Any]?
+                    for log in logs {
+                        guard let result = try? ABI.decodeLog(event: creationSuccessEvent, from: log) else {
+                            continue
+                        }
+                        
+                        resultDict = result
+                        break
+                    }
+
+                    guard let dict = resultDict,
+                    let total = dict["total"] as? BigUInt,
+                    let idBytes = dict["id"] as? Data,
+                    let creator = dict["creator"] as? EthereumAddress,
+                    let creation_time = dict["creation_time"] as? BigUInt else {
+                        single(.error(Error.creationFail))
+                        return
+                    }
+                    
+                    let event = CreationSuccess(total: total,
+                                                id: idBytes.toHexString(),
+                                                creator: creator.hex(eip55: true),
+                                                creation_time: Int(creation_time))
+                    single(.success(event))
+                    
+                case let .failure(error):
+                    single(.error(error))
+                }
+            }   // end web3
+            
+            return Disposables.create { }
+        }
+        .retryWhen { error -> Observable<Int> in
+            return error.enumerated().flatMap { index, element -> Observable<Int> in
+                // Only retry when empty response (response should not empty when block mined
+                guard case Web3Response<EthereumTransactionReceiptObject?>.Error.emptyResponse = element else {
+                    return Observable.error(element)
+                }
+                
+                os_log("%{public}s[%{public}ld], %{public}s: fetch create result fail. Retry %s times", ((#file as NSString).lastPathComponent), #line, #function, String(index + 1))
+                
+                // max retry 6 times
+                guard index < 6 else {
+                    return Observable.error(element)
+                }
+                
+                // retry every 10 sec
+                return Observable.timer(.seconds(10), scheduler: MainScheduler.instance)
+            }
+        }
+    }
+    
+}
+
+extension RedPacketService {
+    
+    struct CreationSuccess {
+        let total: BigUInt
+        let id: String
+        let creator: String
+        let creation_time: Int
+    }
+    
 }
 
 extension RedPacketService {
     
     enum Error: Swift.Error {
         case `internal`(String)
+        case creationFail
     }
     
 }
@@ -130,6 +250,7 @@ extension RedPacketService.Error: LocalizedError {
     public var errorDescription: String? {
         switch self {
         case let .internal(message):     return "Internal error: \(message)\nPlease try again"
+        case .creationFail:              return "Fail to create red packet"
         }
     }
 }

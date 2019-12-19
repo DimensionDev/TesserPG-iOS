@@ -9,10 +9,13 @@
 import os
 import Foundation
 import RealmSwift
+import RxSwift
 import BigInt
 import Web3
 
 final class RedPacketService {
+    
+    let disposeBag = DisposeBag()
     
     // per packet. 0.002025 ETH
     public static var redPacketMinAmount: Decimal {
