@@ -355,7 +355,7 @@ extension Web3Tests {
         let contractAddress = try! EthereumAddress(hex: contractAddressHex, eip55: false)
         let contract = try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: contractAddress)
         
-        let transactionHashHex = "0xd4968bde201c87e7c4e3568204829a90aee2bae260444fdc82f8d23ab534d53e"
+        let transactionHashHex = "0x00b97ff1729f97d4a7170a7479eccd547552e1c3b4bfb8009009577457786406"
         let transactionHash = EthereumData(Bytes(hex: transactionHashHex))
         
         let check = Web3Tests.checkClaimEvent(web3: web3, contract: contract, transactionHash: transactionHash, in: self)

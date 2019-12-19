@@ -35,8 +35,14 @@ class WalletsViewModel: NSObject {
             .disposed(by: disposeBag)
         
         Driver.combineLatest(currentWalletModel.asDriver(), redPackets.asDriver()) { currentWalletModel, redPackets -> [RedPacket] in
-                // TODO: filter
-                return redPackets
+                guard let currentWalletModel = currentWalletModel else {
+                    return []
+                }
+                
+                return redPackets.filter { redPacket -> Bool in
+                    return redPacket.sender_address == currentWalletModel.address ||
+                           redPacket.claim_address == currentWalletModel.address
+                }
             }
             .drive(filteredRedPackets)
             .disposed(by: disposeBag)
