@@ -15,14 +15,16 @@ import RxCocoa
 extension RedPacketService {
     
     func updateCreateResult(for redPacket: RedPacket) -> Observable<CreationSuccess> {
-        let observable = Observable.just(ThreadSafeReference(to: redPacket))
-            .flatMap { redPacketReference -> Observable<RedPacketService.CreationSuccess> in
-                let realm: Realm
+        // should call on main thread to make sure realm operation in subscribe is thread safe
+        assert(Thread.isMainThread)
+        let id = redPacket.id
+        
+        let observable = Observable.just(id)
+            .flatMap { id -> Observable<RedPacketService.CreationSuccess> in
                 let redPacket: RedPacket
-                
                 do {
-                    realm = try RedPacketService.realm()
-                    guard let _redPacket = realm.resolve(redPacketReference) else {
+                    let realm = try RedPacketService.realm()
+                    guard let _redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
                         return Observable.error(RedPacketService.Error.internal("cannot resolve red packet"))
                     }
                     redPacket = _redPacket
@@ -37,12 +39,16 @@ extension RedPacketService {
             .share()
         
         observable
+            .observeOn(MainScheduler.instance)
             .subscribe(onNext: { creationSuccess in
-                let realm: Realm
-                let redPacketReference = ThreadSafeReference(to: redPacket)
                 do {
-                    realm = try RedPacketService.realm()
-                    guard let redPacket = realm.resolve(redPacketReference) else {
+                    let realm = try RedPacketService.realm()
+                    guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
+                        return
+                    }
+                    
+                    guard redPacket.status == .pending else {
+                        os_log("%{public}s[%{public}ld], %{public}s: discard change due to red packet status already %s.", ((#file as NSString).lastPathComponent), #line, #function, redPacket.status.rawValue)
                         return
                     }
                     
@@ -57,11 +63,9 @@ extension RedPacketService {
             }, onError: { error in
                 switch error {
                 case RedPacketService.Error.creationFail:
-                    let realm: Realm
-                    let redPacketReference = ThreadSafeReference(to: redPacket)
                     do {
-                        realm = try RedPacketService.realm()
-                        guard let redPacket = realm.resolve(redPacketReference) else {
+                        let realm = try RedPacketService.realm()
+                        guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
                             return
                         }
                         

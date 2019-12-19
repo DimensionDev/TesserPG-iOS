@@ -34,6 +34,7 @@ final class EditingRedPacketViewModel: NSObject {
     
     // Output
     let isCreating: Driver<Bool>
+    let canDismiss = BehaviorRelay(value: true)
     let amountInputCoinCurrencyUnitLabelText: Driver<String>
     let minimalAmount = BehaviorRelay(value: RedPacketService.redPacketMinAmount)
     let total = BehaviorRelay(value: Decimal(0))     // should not 0 after user input amount
@@ -101,6 +102,11 @@ final class EditingRedPacketViewModel: NSObject {
                 }
             }
             .drive(total)
+            .disposed(by: disposeBag)
+        
+        isCreating.asDriver()
+            .map { !$0 }
+            .drive(canDismiss)
             .disposed(by: disposeBag)
     }
     
@@ -208,6 +214,29 @@ class EditingRedPacketViewController: UIViewController {
     
     let disposeBag = DisposeBag()
     
+    private(set) lazy var closeBarButtonItem: UIBarButtonItem = {
+        // Use iOS 13 style .close button if possiable
+        if #available(iOS 13.0, *) {
+            return UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(EditingRedPacketViewController.closeBarButtonItemPressed(_:)))
+        } else {
+            return UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(EditingRedPacketViewController.closeBarButtonItemPressed(_:)))
+        }
+    }()
+    private(set) lazy var nextBarButtonItem: UIBarButtonItem = {
+        return UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(EditingRedPacketViewController.nextBarButtonItemClicked(_:)))
+    }()
+    private lazy var activityIndicatorBarButtonItem: UIBarButtonItem = {
+        let activityIndicatorView: UIActivityIndicatorView
+        if #available(iOS 13.0, *) {
+            activityIndicatorView = UIActivityIndicatorView(style: .medium)
+        } else {
+            activityIndicatorView = UIActivityIndicatorView(style: .gray)
+        }
+        activityIndicatorView.startAnimating()
+        let barButtonItem = UIBarButtonItem(customView: activityIndicatorView)
+        return barButtonItem
+    }()
+    
     let redPacketSplitTypeTableHeaderView = SelectRedPacketSplitModeTableHeaderView()
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
@@ -223,6 +252,19 @@ class EditingRedPacketViewController: UIViewController {
     }()
     let walletSectionFooterView = WalletSectionFooterView()
     
+    let sendRedPacketActivityIndicatorView: UIActivityIndicatorView = {
+        let activityIndicatorView: UIActivityIndicatorView
+        if #available(iOS 13.0, *) {
+            activityIndicatorView = UIActivityIndicatorView(style: .medium)
+        } else {
+            activityIndicatorView = UIActivityIndicatorView(style: .white)
+        }
+        activityIndicatorView.stopAnimating()
+        activityIndicatorView.hidesWhenStopped = true
+        // use white color over blue send button
+        activityIndicatorView.color = .white
+        return activityIndicatorView
+    }()
     lazy var sendRedPacketButton: TCActionButton = {
         let button = TCActionButton()
         button.color = .systemBlue
@@ -246,16 +288,12 @@ class EditingRedPacketViewController: UIViewController {
         super.viewDidLoad()
         
         title = "Send Red Packet"
-        #if !TARGET_IS_EXTENSION
-        if #available(iOS 13.0, *) {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(EditingRedPacketViewController.closeBarButtonItemPressed(_:)))
-        } else {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(EditingRedPacketViewController.closeBarButtonItemPressed(_:)))
-        }
+        
+        #if !TARGET_IS_KEYBOARD
+        // Set close button in app
+        navigationItem.leftBarButtonItem = closeBarButtonItem
         #endif
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(EditingRedPacketViewController.nextBarButtonItemClicked(_:)))
-    
         // Layout tableView
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
@@ -266,8 +304,11 @@ class EditingRedPacketViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
         
-        #if !TARGET_IS_KEYBOARD
-        // Layout send red packet button
+        #if TARGET_IS_KEYBOARD
+        // Set next button in keyboard
+        navigationItem.rightBarButtonItem = nextBarButtonItem
+        #else
+        // Layout send red packet button in app
         sendRedPacketButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sendRedPacketButton)
         let sendRedPacketButtonBottomLayoutConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: sendRedPacketButton.bottomAnchor)
@@ -277,6 +318,13 @@ class EditingRedPacketViewController: UIViewController {
             view.layoutMarginsGuide.trailingAnchor.constraint(equalTo: sendRedPacketButton.trailingAnchor),
             sendRedPacketButtonBottomLayoutConstraint,
             view.bottomAnchor.constraint(greaterThanOrEqualTo: sendRedPacketButton.bottomAnchor, constant: 16),
+        ])
+        // Layout activity indicator view
+        sendRedPacketActivityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        sendRedPacketButton.addSubview(sendRedPacketActivityIndicatorView)
+        NSLayoutConstraint.activate([
+            sendRedPacketActivityIndicatorView.centerXAnchor.constraint(equalTo: sendRedPacketButton.centerXAnchor),
+            sendRedPacketActivityIndicatorView.centerYAnchor.constraint(equalTo: sendRedPacketButton.centerYAnchor),
         ])
         #endif
         
@@ -334,6 +382,24 @@ class EditingRedPacketViewController: UIViewController {
         // Bind send red packet button text
         viewModel.sendRedPacketButtonText.asDriver()
             .drive(sendRedPacketButton.rx.title(for: .normal))
+            .disposed(by: disposeBag)
+        
+        viewModel.isCreating.asDriver()
+            .drive(onNext: { [weak self] isCreating in
+                self?.tableView.isUserInteractionEnabled = !isCreating
+                
+                #if TARGET_IS_KEYBOARD
+                self?.navigationItem.rightBarButtonItem = isCreating ? self?.activityIndicatorBarButtonItem : self?.nextBarButtonItem
+                #else
+                self?.navigationItem.leftBarButtonItem = isCreating ? nil : self?.closeBarButtonItem
+                self?.sendRedPacketButton.isUserInteractionEnabled = !isCreating
+
+                let buttonTitle = isCreating ? "" : "Send"
+                self?.sendRedPacketButton.setTitle(buttonTitle, for: .normal)
+                
+                isCreating ? self?.sendRedPacketActivityIndicatorView.startAnimating() : self?.sendRedPacketActivityIndicatorView.stopAnimating()
+                #endif
+            })
             .disposed(by: disposeBag)
     }
     
@@ -575,8 +641,8 @@ extension EditingRedPacketViewController: RedPacketWalletSelectViewControllerDel
 // MARK: - UIAdaptivePresentationControllerDelegate
 extension EditingRedPacketViewController: UIAdaptivePresentationControllerDelegate {
     
-    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-        return .fullScreen
+    func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
+        return viewModel.canDismiss.value
     }
     
 }
