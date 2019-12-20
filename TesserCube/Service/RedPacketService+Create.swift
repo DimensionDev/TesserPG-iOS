@@ -52,13 +52,9 @@ extension RedPacketService {
         let chainID = WalletService.chainID
         
         // Init contract
-        guard let contractAddressString = redPacket.contract_address else {
-            return Single.error(Error.internal("cannot get red packet contract address"))
-        }
-        
         let contract: DynamicContract
         do {
-            contract = try RedPacketService.prepareContract(for: contractAddressString, in: web3)
+            contract = try RedPacketService.prepareContract(for: redPacket.contract_address, in: web3)
         } catch {
             return Single.error(Error.internal(error.localizedDescription))
         }
@@ -133,13 +129,9 @@ extension RedPacketService {
         let web3 = WalletService.web3
         
         // Init contract
-        guard let contractAddressString = redPacket.contract_address else {
-            return Single.error(Error.internal("cannot get red packet contract address"))
-        }
-        
         let contract: DynamicContract
         do {
-            contract = try RedPacketService.prepareContract(for: contractAddressString, in: web3)
+            contract = try RedPacketService.prepareContract(for: redPacket.contract_address, in: web3)
         } catch {
             return Single.error(Error.internal(error.localizedDescription))
         }
@@ -259,9 +251,35 @@ extension RedPacketService {
                         return
                     }
                     
+                    let rawPayloadString: String? = {
+                        let sender = RedPacketRawPayLoad.Sender(
+                            address: redPacket.sender_address,
+                            name: redPacket.sender_name,
+                            message: redPacket.send_message
+                        )
+                        let rawPayload = RedPacketRawPayLoad(
+                            contract_version: UInt8(redPacket.contract_version),
+                            contract_address: redPacket.contract_address,
+                            rpid: creationSuccess.id,
+                            passwords: Array(redPacket.uuids),
+                            sender: sender,
+                            is_random: redPacket.is_random,
+                            total: String(redPacket.send_total),
+                            creation_time: UInt64(creationSuccess.creation_time),
+                            duration: UInt64(redPacket.duration)
+                        )
+                        let encoder = JSONEncoder()
+                        guard let jsonData = try? encoder.encode(rawPayload) else {
+                            return nil
+                        }
+                        let jsonString = String(data: jsonData, encoding: .utf8)
+                        return jsonString
+                    }()
+                    
                     try realm.write {
                         redPacket.red_packet_id = creationSuccess.id
                         redPacket.block_creation_time.value = creationSuccess.creation_time
+                        redPacket.raw_payload = rawPayloadString
                         redPacket.status = .normal
                     }
                 } catch {
