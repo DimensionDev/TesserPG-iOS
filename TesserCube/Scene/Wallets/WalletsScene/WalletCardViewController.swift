@@ -77,4 +77,10 @@ extension WalletCardViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension WalletCardViewController: UITableViewDelegate {
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let walletModel = self.walletModel {
+            walletModel.updateBalance()
+        }
+    }
+    
 }

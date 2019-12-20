@@ -125,7 +125,6 @@ extension RedPacketService {
         do {
             let ethernumValue = EthereumValue(stringLiteral: createTransactionHashHex)
             createTransactionHash = try EthereumData(ethereumValue: ethernumValue)
-            
         } catch {
             return Single.error(Error.internal("cannot read create transaction hash"))
         }

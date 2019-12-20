@@ -356,6 +356,13 @@ class EditingRedPacketViewController: UIViewController {
             })
             .disposed(by: disposeBag)
 
+        // Update wallet balance
+        viewModel.selectWalletModel.asDriver()
+            .drive(onNext: { walletModel in
+                walletModel?.updateBalance()
+            })
+            .disposed(by: disposeBag)
+        
         // Bind wallet model balance to wallet section footer view
         viewModel.selectWalletModel.asDriver()
             .flatMapLatest { walletModel -> Driver<String> in

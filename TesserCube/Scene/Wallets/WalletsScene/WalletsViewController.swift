@@ -93,6 +93,14 @@ class WalletsViewController: TCBaseViewController {
                             .disposed(by: self.disposeBag)
                     }
                     
+                    // fetch claim result
+                    let claimPendingRedPackets = redPackets.filter { $0.status == .claim_pending }
+                    for redPacket in claimPendingRedPackets {
+                        RedPacketService.shared.updateClaimResult(for: redPacket)
+                            .subscribe()
+                            .disposed(by: self.disposeBag)
+                    }
+                    
                 })
                 .disposed(by: disposeBag)
     
