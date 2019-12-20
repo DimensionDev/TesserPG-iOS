@@ -65,6 +65,61 @@ final class ClaimRedPacketViewModel: NSObject {
 extension ClaimRedPacketViewModel {
     
     func claimRedPacket() {
+        guard let selectWalletModel = self.selectWalletModel.value,
+        let walletAddress = try? EthereumAddress(hex: selectWalletModel.address, eip55: false) else {
+            error.accept(RedPacketService.Error.internal("No valid wallet to claim"))
+            return
+        }
+        
+        let id = redPacket.id
+        
+        WalletService.getTransactionCount(address: walletAddress).asObservable()
+            .withLatestFrom(isClaiming) { ($0, $1) }     // (nonce, isClaiming)
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+            .filter { $0.1 == false }                               // not claiming
+            .map { $0.0 }                                           // nonce
+            .retry(3)
+            .flatMap { nonce -> Observable<TransactionHash> in
+                let redPacket: RedPacket
+                do {
+                    let realm = try RedPacketService.realm()
+                    guard let _redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
+                        return Observable.error(RedPacketService.Error.internal("cannot resolve red packet"))
+                    }
+                    redPacket = _redPacket
+                } catch {
+                    return Observable.error(error)
+                }
+                
+                return RedPacketService.claim(for: redPacket, use: selectWalletModel, nonce: nonce)
+                    .trackActivity(self.activityIndicator)
+            }
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] transactionHash in
+                do {
+                    // red packet claim transaction success
+                    // set status to .claim_pending
+                    let realm = try RedPacketService.realm()
+                    guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
+                        return
+                    }
+                    try realm.write {
+                        redPacket.claim_transaction_hash = transactionHash.hex()
+                        redPacket.status = .claim_pending
+                        redPacket.claim_address = selectWalletModel.address
+                    }
+                    
+                    // let createdRedPacketViewController = CreatedRedPacketViewController()
+                    // createdRedPacketViewController.viewModel = CreatedRedPacketViewModel(redPacket: redPacket)
+                    // self?.navigationController?.pushViewController(createdRedPacketViewController, animated: true)
+                    
+                } catch {
+                    self?.error.accept(error)
+                }
+            }, onError: { [weak self] error in
+                self?.error.accept(error)
+            })
+            .disposed(by: disposeBag)
 //        guard let contractAddressHex = redPacket.contractAddress,
 //        let contractAddress = try? EthereumAddress(hex: contractAddressHex, eip55: false) else {
 //            // Error handle
@@ -128,8 +183,8 @@ extension ClaimRedPacketViewModel: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         // 0: Red packet section
-        // 1: In-App wallet select cell section
-        // 2: Keyboard Open Red Packet button cell section
+        // 1: [In-App]   wallet select cell section
+        // 2: [Keyboard] Open Red Packet button cell section
         return 3
     }
     
@@ -141,15 +196,17 @@ extension ClaimRedPacketViewModel: UITableViewDataSource {
             #if TARGET_IS_KEYBOARD
             return 0
             #else
-            return 0    // TODO:
-            // return 1
+            return 1
             #endif
         case 2:
-            #if TARGET_IS_KEYBOARD
-            return 1
-            #else
             return 0
-            #endif
+            // TODO:
+            
+            // #if TARGET_IS_KEYBOARD
+            // return 1
+            // #else
+            // return 0
+            // #endif
         default:
             fatalError()
         }
@@ -177,22 +234,24 @@ extension ClaimRedPacketViewModel: UITableViewDataSource {
                 .disposed(by: _cell.disposeBag)
             
             // Setup separator line
-            if let oldTopSeparatorLine = _cell.subviews.first(where: { $0.tag == 3868 }) {
+            let topTag = 3868
+            let bottomTag = 3869
+            if let oldTopSeparatorLine = _cell.subviews.first(where: { $0.tag == topTag }) {
                 oldTopSeparatorLine.removeFromSuperview()
             }
-            if let oldBottomSeparatorLine = _cell.subviews.first(where: { $0.tag == 3869 }) {
+            if let oldBottomSeparatorLine = _cell.subviews.first(where: { $0.tag == bottomTag }) {
                 oldBottomSeparatorLine.removeFromSuperview()
             }
             
             let topSeparatorLine: UIView = {
                 let separatorLine = UIView(frame: CGRect(x: 0, y: 0, width: _cell.bounds.width, height: 0.5))
-                separatorLine.tag = 3868
+                separatorLine.tag = topTag
                 separatorLine.backgroundColor = ._separator
                 return separatorLine
             }()
             let bottomSeparatorLine: UIView = {
                 let separatorLine = UIView(frame: CGRect(x: 0, y: 0, width: _cell.bounds.width, height: 0.5))
-                separatorLine.tag = 3869
+                separatorLine.tag = bottomTag
                 separatorLine.backgroundColor = ._separator
                 return separatorLine
             }()
@@ -419,7 +478,7 @@ extension ClaimRedPacketViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch indexPath.section {
-        case 1:
+        case 1:     // select wallet cell section
             return 44
         default:
             return UITableView.automaticDimension

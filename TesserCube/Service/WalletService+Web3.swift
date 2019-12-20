@@ -45,7 +45,6 @@ extension WalletService {
 
 extension WalletService {
     
-    
     /// Get nonce for wallet
     /// - Parameters:
     ///   - address: ethereum wallet address

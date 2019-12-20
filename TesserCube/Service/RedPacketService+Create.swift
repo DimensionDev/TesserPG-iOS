@@ -1,5 +1,5 @@
 //
-//  RedPacketService+Web3.swift
+//  RedPacketService+Create.swift
 //  TesserCube
 //
 //  Created by Cirno MainasuK on 2019-12-18.
@@ -40,9 +40,9 @@ extension RedPacketService {
         let walletAddress: EthereumAddress
         let walletPrivateKey: EthereumPrivateKey
         do {
-            walletAddress = try EthereumAddress(hex: walletModel.address, eip55: false)
-            let privateKeyHex = try walletModel.hdWallet.privateKey().key.toHexString()
-            walletPrivateKey = try EthereumPrivateKey(hexPrivateKey: "0x" + privateKeyHex)
+            let meta = try RedPacketService.prepareWalletMeta(from: walletModel)
+            walletAddress = meta.walletAddress
+            walletPrivateKey = meta.walletPrivateKey
         } catch {
             return Single.error(Error.internal(error.localizedDescription))
         }
@@ -56,12 +56,9 @@ extension RedPacketService {
             return Single.error(Error.internal("cannot get red packet contract address"))
         }
         
-        let contractAddress: EthereumAddress
         let contract: DynamicContract
         do {
-            let contractABIData = RedPacketService.redPacketContractABIData
-            contractAddress = try EthereumAddress(hex: contractAddressString, eip55: false)
-            contract = try web3.eth.Contract(json: contractABIData, abiKey: nil, address: contractAddress)
+            contract = try RedPacketService.prepareContract(for: contractAddressString, in: web3)
         } catch {
             return Single.error(Error.internal(error.localizedDescription))
         }
@@ -141,12 +138,9 @@ extension RedPacketService {
             return Single.error(Error.internal("cannot get red packet contract address"))
         }
         
-        let contractAddress: EthereumAddress
         let contract: DynamicContract
         do {
-            let contractABIData = RedPacketService.redPacketContractABIData
-            contractAddress = try EthereumAddress(hex: contractAddressString, eip55: false)
-            contract = try web3.eth.Contract(json: contractABIData, abiKey: nil, address: contractAddress)
+            contract = try RedPacketService.prepareContract(for: contractAddressString, in: web3)
         } catch {
             return Single.error(Error.internal(error.localizedDescription))
         }
@@ -228,6 +222,81 @@ extension RedPacketService {
 
 extension RedPacketService {
     
+    func updateCreateResult(for redPacket: RedPacket) -> Observable<CreationSuccess> {
+        // should call on main thread to make sure realm operation in subscribe is thread safe
+        assert(Thread.isMainThread)
+        let id = redPacket.id
+        
+        let observable = Observable.just(id)
+            .flatMap { id -> Observable<RedPacketService.CreationSuccess> in
+                let redPacket: RedPacket
+                do {
+                    let realm = try RedPacketService.realm()
+                    guard let _redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
+                        return Observable.error(RedPacketService.Error.internal("cannot resolve red packet"))
+                    }
+                    redPacket = _redPacket
+                } catch {
+                    return Observable.error(error)
+                }
+                
+                return RedPacketService.createResult(for: redPacket).asObservable()
+                    .retry(3)   // network retry
+        }
+        .observeOn(MainScheduler.instance)
+        .share()
+        
+        observable
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { creationSuccess in
+                do {
+                    let realm = try RedPacketService.realm()
+                    guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
+                        return
+                    }
+                    
+                    guard redPacket.status == .pending else {
+                        os_log("%{public}s[%{public}ld], %{public}s: discard change due to red packet status already %s.", ((#file as NSString).lastPathComponent), #line, #function, redPacket.status.rawValue)
+                        return
+                    }
+                    
+                    try realm.write {
+                        redPacket.red_packet_id = creationSuccess.id
+                        redPacket.block_creation_time.value = creationSuccess.creation_time
+                        redPacket.status = .normal
+                    }
+                } catch {
+                    os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
+                }
+            }, onError: { error in
+                switch error {
+                case RedPacketService.Error.creationFail:
+                    do {
+                        let realm = try RedPacketService.realm()
+                        guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
+                            return
+                        }
+                        
+                        try realm.write {
+                            redPacket.status = .fail
+                        }
+                    } catch {
+                        os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
+                    }
+                default:
+                    break
+                }
+                
+            })
+            .disposed(by: disposeBag)
+        
+        return observable
+    }
+    
+}
+
+extension RedPacketService {
+    
     struct CreationSuccess {
         let total: BigUInt
         let id: String
@@ -237,20 +306,3 @@ extension RedPacketService {
     
 }
 
-extension RedPacketService {
-    
-    enum Error: Swift.Error {
-        case `internal`(String)
-        case creationFail
-    }
-    
-}
-
-extension RedPacketService.Error: LocalizedError {
-    public var errorDescription: String? {
-        switch self {
-        case let .internal(message):     return "Internal error: \(message)\nPlease try again"
-        case .creationFail:              return "Fail to create red packet"
-        }
-    }
-}
