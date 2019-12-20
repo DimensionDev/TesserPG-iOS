@@ -112,7 +112,7 @@ class ReceipientTextField: UITextField, UITextInputDelegate {
 
 }
 
-class RecipientInputView: UIView, Thematic {
+class KeyboardInputView: UIView, Thematic {
     
     static let minimumWidth: CGFloat = 140
     static let minimumHeight: CGFloat = 32
@@ -131,7 +131,7 @@ class RecipientInputView: UIView, Thematic {
     
     private func configUI() {
         
-        inputTextField = ReceipientTextField(frame: CGRect(x: 0, y: 0, width: RecipientInputView.minimumWidth, height: RecipientInputView.minimumHeight))
+        inputTextField = ReceipientTextField(frame: CGRect(x: 0, y: 0, width: KeyboardInputView.minimumWidth, height: KeyboardInputView.minimumHeight))
         inputTextField.borderStyle = .none
         inputTextField.backgroundColor = .white
         inputTextField.returnKeyType = .next
@@ -147,8 +147,8 @@ class RecipientInputView: UIView, Thematic {
         
         inputTextField.snp.makeConstraints { make in
             make.leading.top.bottom.equalToSuperview()
-            make.width.equalTo(RecipientInputView.minimumWidth)
-            make.height.equalTo(RecipientInputView.minimumHeight)
+            make.width.equalTo(KeyboardInputView.minimumWidth)
+            make.height.equalTo(KeyboardInputView.minimumHeight)
         }
         
         snp.makeConstraints { make in

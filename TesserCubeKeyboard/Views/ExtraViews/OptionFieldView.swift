@@ -152,11 +152,11 @@ extension OptionFieldView: KeyboardModeListener {
             //            updateLayout(mode: mode)
             suggestionView?.isHidden = false
             selectedRecipientsView?.isHidden = true
-        case .editingRecipients:
+        case .command:
             actionsView.actions = mode.actions
             actionsView.modeChangeButton?.isSelected = true
-            suggestionView?.isHidden = true
-            selectedRecipientsView?.isHidden = false
+            suggestionView?.isHidden = false
+            selectedRecipientsView?.isHidden = true
         default:
             break
         }
