@@ -77,6 +77,10 @@ extension WalletPageTableViewCell {
 extension WalletPageTableViewCell: UIPageViewControllerDelegate {
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        guard pageViewController === self.pageViewController else {
+            return
+        }
+        
         guard finished else {
             return
         }

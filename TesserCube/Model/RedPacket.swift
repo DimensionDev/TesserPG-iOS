@@ -15,7 +15,7 @@ public class RedPacket: Object {
     
     @objc public dynamic var aes_version = 1
     @objc public dynamic var contract_version = 1
-    @objc public dynamic var contract_address: String?
+    @objc public dynamic var contract_address: String = ""
 
     let uuids = List<String>()
     @objc public dynamic var is_random = false

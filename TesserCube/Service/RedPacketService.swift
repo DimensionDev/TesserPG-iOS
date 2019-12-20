@@ -87,11 +87,14 @@ final class RedPacketService {
 
 extension RedPacketService {
     
+    /*
     static func validate(message: Message) -> Bool {
         let rawMessage = message.rawMessage.trimmingCharacters(in: .whitespacesAndNewlines)
         return rawMessage.hasPrefix("-----BEGIN RED PACKET-----") && rawMessage.hasSuffix("-----END RED PACKET-----")
     }
+     */
     
+    /*
     static func contractAddress(for message: Message) -> String? {
         guard validate(message: message) else {
             return nil
@@ -113,7 +116,9 @@ extension RedPacketService {
         
         return contractAddress as String?
     }
+     */
     
+    /*
     static func userID(for message: Message) -> String? {
         guard validate(message: message) else {
             return nil
@@ -128,7 +133,9 @@ extension RedPacketService {
         
         return userID as String?
     }
+     */
     
+    /*
     static func uuids(for message: Message) -> [String] {
         guard validate(message: message) else {
             return []
@@ -157,40 +164,10 @@ extension RedPacketService {
         
         return uuidsString as [String]
     }
+     */
     
 }
 
 extension RedPacketService {
-    
-    func redPacket(from message: Message) -> RedPacket? {
-        return nil
-//        guard let contractAddress = RedPacketService.contractAddress(for: message) else {
-//            return nil
-//        }
-//
-//        let uuids = RedPacketService.uuids(for: message)
-//
-//        guard !uuids.isEmpty, let userID = RedPacketService.userID(for: message) else {
-//            return nil
-//        }
-//
-//        let results = realm?.objects(RedPacket.self).filter { $0.contractAddress == contractAddress }
-//        guard let redPacket = results?.first else {
-//            let redPacket = RedPacket()
-//            redPacket.senderUserID = userID
-//            redPacket.share = uuids.count
-//            redPacket.status = .incoming
-//            redPacket.contractAddress = contractAddress
-//            redPacket.uuids.append(objectsIn: uuids)
-//
-//            try! realm?.write {
-//                realm?.add(redPacket)
-//            }
-//
-//            return redPacket
-//        }
-//
-//        return redPacket
-    }
     
 }

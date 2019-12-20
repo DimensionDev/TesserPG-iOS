@@ -6,8 +6,10 @@
 //  Copyright © 2019 Sujitech. All rights reserved.
 //
 
+import os
 import Foundation
 import Web3
+import CryptoSwift
 
 extension RedPacketService {
     
@@ -29,7 +31,25 @@ extension RedPacketService {
         
         return contract
     }
+        
+}
+
+extension RedPacketService {
     
+    static func AES(for version: Int) -> AES? {
+        assert(version == 1)
+        
+        let iv = GCM_IV
+        let key = AES_KEY
+        
+        let gcm = GCM(iv: iv, mode: .combined)
+        do {
+            return try CryptoSwift.AES(key: key, blockMode: gcm, padding: .noPadding)
+        } catch {
+            os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
+            return nil
+        }
+    }
 }
 
 extension RedPacketService {

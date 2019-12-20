@@ -98,7 +98,11 @@ extension WalletsViewModel: UITableViewDataSource {
             // setup page view controller initialViewController
             let initialViewController = WalletCardViewController()
             initialViewController.index = currentWalletPageIndex.value
-            child.setViewControllers([initialViewController], direction: .forward, animated: false, completion: nil)
+            // FIXME: no reuse WalletPageTableViewCell to fix:
+            // https://stackoverflow.com/questions/24000712/pageviewcontroller-setviewcontrollers-crashes-with-invalid-parameter-not-satisf
+            DispatchQueue.main.async {
+                child.setViewControllers([initialViewController], direction: .forward, animated: true, completion: nil)
+            }
             if let walletModel = currentWalletModel.value {
                 initialViewController.walletModel = walletModel
             }

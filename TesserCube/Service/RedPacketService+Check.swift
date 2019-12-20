@@ -24,13 +24,9 @@ extension RedPacketService {
         let web3 = WalletService.web3
         
         // Init contract
-        guard let contractAddressString = redPacket.contract_address else {
-            return Single.error(Error.internal("cannot get red packet contract address"))
-        }
-        
         let contract: DynamicContract
         do {
-            contract = try prepareContract(for: contractAddressString, in: web3)
+            contract = try prepareContract(for: redPacket.contract_address, in: web3)
         } catch {
             return Single.error(Error.internal(error.localizedDescription))
         }

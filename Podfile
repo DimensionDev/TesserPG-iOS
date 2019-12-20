@@ -35,6 +35,8 @@ def common_pods
   pod 'Web3/PromiseKit', '~> 0.4.1'
 
   pod 'DMS_HDWallet_Cocoa', '~> 0.2.1'
+
+  pod 'DataCompression', '~> 3.6.0'
 end
 
 def common_ui_pods
@@ -64,7 +66,7 @@ target 'TesserCube' do
   end
 
   target 'Web3Tests' do
-    inherit! :search_paths
+    inherit! :complete
     # Pods for testing
   end
 
