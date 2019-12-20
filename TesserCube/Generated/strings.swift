@@ -37,6 +37,8 @@ internal enum L10n {
       internal static let done = L10n.tr("Localizable", "Common.Button.Done")
       /// Edit
       internal static let edit = L10n.tr("Localizable", "Common.Button.Edit")
+      /// Next
+      internal static let next = L10n.tr("Localizable", "Common.Button.Next")
       /// OK
       internal static let ok = L10n.tr("Localizable", "Common.Button.OK")
     }
@@ -402,6 +404,10 @@ internal enum L10n {
       internal static let encrypt = L10n.tr("Localizable", "Keyboard.Button.Encrypt")
       /// Interpret
       internal static let interpret = L10n.tr("Localizable", "Keyboard.Button.Interpret")
+    }
+    internal enum Encrypt {
+      /// Send
+      internal static let sendEncryptedMessageButton = L10n.tr("Localizable", "Keyboard.Encrypt.SendEncryptedMessageButton")
     }
     internal enum Interpreted {
       internal enum Content {

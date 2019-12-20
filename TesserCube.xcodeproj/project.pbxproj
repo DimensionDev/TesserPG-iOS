@@ -85,6 +85,8 @@
 		8325E4A5222F8FDA00EE9B83 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E4A3222F8FDA00EE9B83 /* Fonts.swift */; };
 		8325E4A82230FEC500EE9B83 /* UIInputViewController+TextProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E4A72230FEC500EE9B83 /* UIInputViewController+TextProxy.swift */; };
 		8325E4AA22310B1900EE9B83 /* SuggestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E4A922310B1900EE9B83 /* SuggestHelper.swift */; };
+		832D1D9F23A8CB99006FDF6D /* EncryptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832D1D9E23A8CB99006FDF6D /* EncryptViewController.swift */; };
+		832D1DA123A8CE30006FDF6D /* ModeSwitchHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832D1DA023A8CE30006FDF6D /* ModeSwitchHelper.swift */; };
 		8335283322C6FF1E006E19BC /* ImportPrivateKeyConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8335283222C6FF1E006E19BC /* ImportPrivateKeyConfirmViewController.swift */; };
 		833FF389224E3CBC00EFE0A9 /* ToastAlerter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FF388224E3CBC00EFE0A9 /* ToastAlerter.swift */; };
 		833FF38D224F97BD00EFE0A9 /* ProfileService+Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 833FF38C224F97BD00EFE0A9 /* ProfileService+Message.swift */; };
@@ -125,6 +127,8 @@
 		83783388224CC23400F2C0BF /* ContactEditTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83783386224CC23400F2C0BF /* ContactEditTextCell.xib */; };
 		8378338C224DFED100F2C0BF /* SubKeyCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8378338A224DFED100F2C0BF /* SubKeyCardCell.swift */; };
 		8378338D224DFED100F2C0BF /* SubKeyCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8378338B224DFED100F2C0BF /* SubKeyCardCell.xib */; };
+		8393371723A9C70200C540EF /* TCKeyboardModeContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8393371623A9C70200C540EF /* TCKeyboardModeContainer.swift */; };
+		8393371923A9F85E00C540EF /* SelectRecipientViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8393371823A9F85E00C540EF /* SelectRecipientViewController.swift */; };
 		83955B79237271EF00161498 /* EditingRedPacketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83955B76237271EF00161498 /* EditingRedPacketViewController.swift */; };
 		83955B7E2372986200161498 /* RedPacketSplitMethodProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83955B7C2372986200161498 /* RedPacketSplitMethodProvider.swift */; };
 		83955B8123729B6B00161498 /* RedPacketWalletProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83955B7F23729B6B00161498 /* RedPacketWalletProvider.swift */; };
@@ -155,7 +159,7 @@
 		83B93D61221E710300F556C0 /* UIColor+SwifterSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D60221E710300F556C0 /* UIColor+SwifterSwift.swift */; };
 		83B93D63221E71CC00F556C0 /* SelectedRecipientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D62221E71CC00F556C0 /* SelectedRecipientView.swift */; };
 		83B93D65221E825300F556C0 /* DoneActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D64221E825300F556C0 /* DoneActionButton.swift */; };
-		83B93E882223CCF700F556C0 /* RecipientInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93E872223CCF700F556C0 /* RecipientInputView.swift */; };
+		83B93E882223CCF700F556C0 /* KeyboardInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93E872223CCF700F556C0 /* KeyboardInputView.swift */; };
 		83B93E8A222411C300F556C0 /* UIView+blinking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93E89222411C300F556C0 /* UIView+blinking.swift */; };
 		83B93ED9222528AD00F556C0 /* RecommendRecipientsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93ED8222528AD00F556C0 /* RecommendRecipientsView.swift */; };
 		83BC599023A2372800AC1E37 /* RedPacketWalletSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83BC598F23A2372800AC1E37 /* RedPacketWalletSelectViewController.swift */; };
@@ -169,6 +173,11 @@
 		83C90B44231678DE0048743A /* GenerateKeyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C90B42231678B90048743A /* GenerateKeyData.swift */; };
 		83C90B45231678DF0048743A /* GenerateKeyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C90B42231678B90048743A /* GenerateKeyData.swift */; };
 		83C90B46231678DF0048743A /* GenerateKeyData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83C90B42231678B90048743A /* GenerateKeyData.swift */; };
+		83D8450F23AB089900AA6B36 /* ModeSwitchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D8450E23AB089900AA6B36 /* ModeSwitchView.swift */; };
+		83D8451123AB484C00AA6B36 /* SignViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D8451023AB484C00AA6B36 /* SignViewController.swift */; };
+		83D8451323AB486200AA6B36 /* RedPacketKeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D8451223AB486200AA6B36 /* RedPacketKeyboardViewController.swift */; };
+		83D8451523AB606F00AA6B36 /* UIButton+Vertical.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D8451423AB606F00AA6B36 /* UIButton+Vertical.swift */; };
+		83D8451623AB607300AA6B36 /* UIButton+Vertical.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83D8451423AB606F00AA6B36 /* UIButton+Vertical.swift */; };
 		83DFC72C2252EF3100993160 /* KeyRecordDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFC72B2252EF3100993160 /* KeyRecordDBAction.swift */; };
 		83DFC72D2252EF3100993160 /* KeyRecordDBAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFC72B2252EF3100993160 /* KeyRecordDBAction.swift */; };
 		83DFC73722577B9800993160 /* WormHole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83DFC73622577B9800993160 /* WormHole.swift */; };
@@ -469,7 +478,7 @@
 		DBC9CEEF2387B32F009E13C5 /* RedPacketRecipientSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836F23C32373BF2900F938E6 /* RedPacketRecipientSelectViewController.swift */; };
 		DBC9CEF02387B3BB009E13C5 /* RecommendRecipientsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93ED8222528AD00F556C0 /* RecommendRecipientsView.swift */; };
 		DBC9CEF12387B434009E13C5 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D5A221E575500F556C0 /* Theme.swift */; };
-		DBC9CEF22387B486009E13C5 /* RecipientInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93E872223CCF700F556C0 /* RecipientInputView.swift */; };
+		DBC9CEF22387B486009E13C5 /* KeyboardInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93E872223CCF700F556C0 /* KeyboardInputView.swift */; };
 		DBC9CEF32387B49D009E13C5 /* RecipientCellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E489222F6D4500EE9B83 /* RecipientCellTableViewCell.swift */; };
 		DBC9CEF42387B521009E13C5 /* UIColor+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6B2AD232F6950008F83AE /* UIColor+Keyboard.swift */; };
 		DBC9CEF52387B688009E13C5 /* OptionFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8325E46F222CC11800EE9B83 /* OptionFieldView.swift */; };
@@ -684,6 +693,8 @@
 		8325E4A3222F8FDA00EE9B83 /* Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		8325E4A72230FEC500EE9B83 /* UIInputViewController+TextProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIInputViewController+TextProxy.swift"; sourceTree = "<group>"; };
 		8325E4A922310B1900EE9B83 /* SuggestHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestHelper.swift; sourceTree = "<group>"; };
+		832D1D9E23A8CB99006FDF6D /* EncryptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptViewController.swift; sourceTree = "<group>"; };
+		832D1DA023A8CE30006FDF6D /* ModeSwitchHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeSwitchHelper.swift; sourceTree = "<group>"; };
 		8335283222C6FF1E006E19BC /* ImportPrivateKeyConfirmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportPrivateKeyConfirmViewController.swift; sourceTree = "<group>"; };
 		833FF388224E3CBC00EFE0A9 /* ToastAlerter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastAlerter.swift; sourceTree = "<group>"; };
 		833FF38C224F97BD00EFE0A9 /* ProfileService+Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileService+Message.swift"; sourceTree = "<group>"; };
@@ -708,6 +719,8 @@
 		83783386224CC23400F2C0BF /* ContactEditTextCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactEditTextCell.xib; sourceTree = "<group>"; };
 		8378338A224DFED100F2C0BF /* SubKeyCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubKeyCardCell.swift; sourceTree = "<group>"; };
 		8378338B224DFED100F2C0BF /* SubKeyCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SubKeyCardCell.xib; sourceTree = "<group>"; };
+		8393371623A9C70200C540EF /* TCKeyboardModeContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCKeyboardModeContainer.swift; sourceTree = "<group>"; };
+		8393371823A9F85E00C540EF /* SelectRecipientViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectRecipientViewController.swift; sourceTree = "<group>"; };
 		83955B76237271EF00161498 /* EditingRedPacketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingRedPacketViewController.swift; sourceTree = "<group>"; };
 		83955B7C2372986200161498 /* RedPacketSplitMethodProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedPacketSplitMethodProvider.swift; sourceTree = "<group>"; };
 		83955B7F23729B6B00161498 /* RedPacketWalletProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedPacketWalletProvider.swift; sourceTree = "<group>"; };
@@ -739,12 +752,16 @@
 		83B93D60221E710300F556C0 /* UIColor+SwifterSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+SwifterSwift.swift"; sourceTree = "<group>"; };
 		83B93D62221E71CC00F556C0 /* SelectedRecipientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedRecipientView.swift; sourceTree = "<group>"; };
 		83B93D64221E825300F556C0 /* DoneActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneActionButton.swift; sourceTree = "<group>"; };
-		83B93E872223CCF700F556C0 /* RecipientInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientInputView.swift; sourceTree = "<group>"; };
+		83B93E872223CCF700F556C0 /* KeyboardInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardInputView.swift; sourceTree = "<group>"; };
 		83B93E89222411C300F556C0 /* UIView+blinking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+blinking.swift"; sourceTree = "<group>"; };
 		83B93ED8222528AD00F556C0 /* RecommendRecipientsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendRecipientsView.swift; sourceTree = "<group>"; };
 		83BC598F23A2372800AC1E37 /* RedPacketWalletSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedPacketWalletSelectViewController.swift; sourceTree = "<group>"; };
 		83C12EDF2332209D009DB359 /* DMSPGPUserIDTranslator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSPGPUserIDTranslator.swift; sourceTree = "<group>"; };
 		83C90B42231678B90048743A /* GenerateKeyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateKeyData.swift; sourceTree = "<group>"; };
+		83D8450E23AB089900AA6B36 /* ModeSwitchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeSwitchView.swift; sourceTree = "<group>"; };
+		83D8451023AB484C00AA6B36 /* SignViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignViewController.swift; sourceTree = "<group>"; };
+		83D8451223AB486200AA6B36 /* RedPacketKeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedPacketKeyboardViewController.swift; sourceTree = "<group>"; };
+		83D8451423AB606F00AA6B36 /* UIButton+Vertical.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Vertical.swift"; sourceTree = "<group>"; };
 		83DFC72B2252EF3100993160 /* KeyRecordDBAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyRecordDBAction.swift; sourceTree = "<group>"; };
 		83DFC73622577B9800993160 /* WormHole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WormHole.swift; sourceTree = "<group>"; };
 		83DFC73A22578ED800993160 /* InterpretFailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretFailView.swift; sourceTree = "<group>"; };
@@ -1320,7 +1337,7 @@
 			isa = PBXGroup;
 			children = (
 				83B93D57221E570200F556C0 /* RecipientButton.swift */,
-				83B93E872223CCF700F556C0 /* RecipientInputView.swift */,
+				83B93E872223CCF700F556C0 /* KeyboardInputView.swift */,
 				83B93D62221E71CC00F556C0 /* SelectedRecipientView.swift */,
 				83B93ED8222528AD00F556C0 /* RecommendRecipientsView.swift */,
 				8325E489222F6D4500EE9B83 /* RecipientCellTableViewCell.swift */,
@@ -1345,6 +1362,20 @@
 				DB63A10F22DF2CBA00C2DDA6 /* Menlo.ttc */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		832D1D9D23A8C85F006FDF6D /* ModeSwitchViewController */ = {
+			isa = PBXGroup;
+			children = (
+				832D1D9E23A8CB99006FDF6D /* EncryptViewController.swift */,
+				832D1DA023A8CE30006FDF6D /* ModeSwitchHelper.swift */,
+				8393371623A9C70200C540EF /* TCKeyboardModeContainer.swift */,
+				8393371823A9F85E00C540EF /* SelectRecipientViewController.swift */,
+				83D8450E23AB089900AA6B36 /* ModeSwitchView.swift */,
+				83D8451023AB484C00AA6B36 /* SignViewController.swift */,
+				83D8451223AB486200AA6B36 /* RedPacketKeyboardViewController.swift */,
+			);
+			path = ModeSwitchViewController;
 			sourceTree = "<group>";
 		};
 		833FF387224E3C5F00EFE0A9 /* Alert */ = {
@@ -1438,6 +1469,7 @@
 				83B93D21221CEB9800F556C0 /* UserDefaults+AppGroup.swift */,
 				DB1169CA22E185640099BA25 /* NotificationName.swift */,
 				DB415EB0238E1E780090C28F /* DispatchQueue.swift */,
+				83D8451423AB606F00AA6B36 /* UIButton+Vertical.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1507,6 +1539,7 @@
 		83B93D56221E547A00F556C0 /* ExtraViews */ = {
 			isa = PBXGroup;
 			children = (
+				832D1D9D23A8C85F006FDF6D /* ModeSwitchViewController */,
 				83245A87237172D70046632E /* RedPacket */,
 				83DFC73922578EAC00993160 /* InterpretResult */,
 				8325E475222CCEC900EE9B83 /* PickingRecipientsMode */,
@@ -2550,6 +2583,7 @@
 				832146CD2240B135008ECC22 /* TCBaseViewController.swift in Sources */,
 				DBC19D8C23750A8300170151 /* PassphraseTextField.swift in Sources */,
 				DB1449732313F9CF000FA38E /* BrokenMessageViewController.swift in Sources */,
+				83D8451523AB606F00AA6B36 /* UIButton+Vertical.swift in Sources */,
 				DBEE896C2372DE8B0080C194 /* MnemonicCollectionViewModel.swift in Sources */,
 				DBC9CEEB2387B18B009E13C5 /* RedPacketSplitMethodProvider.swift in Sources */,
 				DB3B58E22282929700879834 /* WormholdService.swift in Sources */,
@@ -2618,7 +2652,7 @@
 				832146A5223F604F008ECC22 /* BaseNavigationController.swift in Sources */,
 				DBC9CEFC2387B89B009E13C5 /* ActionButton.swift in Sources */,
 				8378337F224CB06B00F2C0BF /* ContactEditViewController.swift in Sources */,
-				DBC9CEF22387B486009E13C5 /* RecipientInputView.swift in Sources */,
+				DBC9CEF22387B486009E13C5 /* KeyboardInputView.swift in Sources */,
 				DB1449742314F1E1000FA38E /* InterpretActionViewModel.swift in Sources */,
 				DBEE89682372DC160080C194 /* MnemonicCollectionView.swift in Sources */,
 				DBC19D89237509E300170151 /* ImportWalletViewController.swift in Sources */,
@@ -2742,6 +2776,7 @@
 				8325E48B222F6D4500EE9B83 /* RecipientCellTableViewCell.swift in Sources */,
 				83B93D2D221D22FA00F556C0 /* KeyboardViewController.swift in Sources */,
 				83B93D51221E2DCA00F556C0 /* KeyboardInputTraits.swift in Sources */,
+				8393371923A9F85E00C540EF /* SelectRecipientViewController.swift in Sources */,
 				DB6AA3F42275B69C00A7ADDF /* String.swift in Sources */,
 				83B93D43221D7E4400F556C0 /* KeyboardKeyBackground.swift in Sources */,
 				83955B8423729E8C00161498 /* RedPacketProperty.swift in Sources */,
@@ -2761,6 +2796,7 @@
 				833FF389224E3CBC00EFE0A9 /* ToastAlerter.swift in Sources */,
 				83B93D61221E710300F556C0 /* UIColor+SwifterSwift.swift in Sources */,
 				83B93D3C221D4AC900F556C0 /* DefaultKeyboard.swift in Sources */,
+				83D8451123AB484C00AA6B36 /* SignViewController.swift in Sources */,
 				83B93D4D221D844900F556C0 /* LayoutMetrics.swift in Sources */,
 				DBBBC199224E29E50080790F /* ContactMappable.swift in Sources */,
 				DB6AA3ED2273247C00A7ADDF /* KeyFactory+BCOpenPGP.swift in Sources */,
@@ -2776,7 +2812,7 @@
 				83DFC73F2259F0E700993160 /* TCCardView.swift in Sources */,
 				83B93D4F221D89FD00F556C0 /* KeyboardLayout.swift in Sources */,
 				8325E4AA22310B1900EE9B83 /* SuggestHelper.swift in Sources */,
-				83B93E882223CCF700F556C0 /* RecipientInputView.swift in Sources */,
+				83B93E882223CCF700F556C0 /* KeyboardInputView.swift in Sources */,
 				DB03DD5E237BFD4F00D96201 /* WalletService+Web3.swift in Sources */,
 				DB449991228C1417000B7E8A /* MessageDigitalSignatureSettings.swift in Sources */,
 				83B93D3E221D4AED00F556C0 /* Direction.swift in Sources */,
@@ -2824,10 +2860,13 @@
 				DB3B58E52282930600879834 /* WormholdService.swift in Sources */,
 				DB03DD69237C105B00D96201 /* WalletModel.swift in Sources */,
 				DBF6B2AA232F5479008F83AE /* UIColor.swift in Sources */,
+				83D8451323AB486200AA6B36 /* RedPacketKeyboardViewController.swift in Sources */,
+				832D1DA123A8CE30006FDF6D /* ModeSwitchHelper.swift in Sources */,
 				DB1327162253651C00BD7B98 /* KeyBridge.swift in Sources */,
 				DB15695F23278EA200220926 /* FetchableRecord+all.swift in Sources */,
 				83783367224B232000F2C0BF /* Contact.swift in Sources */,
 				83B93D45221D7E5700F556C0 /* KeyboardConnector.swift in Sources */,
+				83D8450F23AB089900AA6B36 /* ModeSwitchView.swift in Sources */,
 				8325E470222CC11800EE9B83 /* OptionFieldView.swift in Sources */,
 				8325E474222CCEB600EE9B83 /* ActionsView.swift in Sources */,
 				831EC43222B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift in Sources */,
@@ -2844,10 +2883,13 @@
 				8325E479222CD48200EE9B83 /* ActionButton.swift in Sources */,
 				DBC9CF072387CB49009E13C5 /* LeftDetailStyle.swift in Sources */,
 				DBC9CEE92387B112009E13C5 /* NavigationControllerRepresentable.swift in Sources */,
+				83D8451623AB607300AA6B36 /* UIButton+Vertical.swift in Sources */,
 				DB415E84238BB7370090C28F /* RedPacket.swift in Sources */,
 				83DFC72D2252EF3100993160 /* KeyRecordDBAction.swift in Sources */,
 				83955B79237271EF00161498 /* EditingRedPacketViewController.swift in Sources */,
+				8393371723A9C70200C540EF /* TCKeyboardModeContainer.swift in Sources */,
 				8325E4A82230FEC500EE9B83 /* UIInputViewController+TextProxy.swift in Sources */,
+				832D1D9F23A8CB99006FDF6D /* EncryptViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
