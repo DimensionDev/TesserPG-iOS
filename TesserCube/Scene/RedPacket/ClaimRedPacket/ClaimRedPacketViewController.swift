@@ -23,24 +23,32 @@ import SVProgressHUD
 final class ClaimRedPacketViewModel: NSObject {
     
     let disposeBag = DisposeBag()
-    let activityIndicator = ActivityIndicator()
+    let claimActivityIndicator = ActivityIndicator()
+    let updateClaimResultActivityIndicator = ActivityIndicator()
         
     // Input
     let redPacket: RedPacket
-    
+
     let walletModels = BehaviorRelay<[WalletModel]>(value: [])
     let selectWalletModel = BehaviorRelay<WalletModel?>(value: nil)
     
+    let isClaimPending: BehaviorRelay<Bool>
+    
     // Output
     let isClaiming: Driver<Bool>
+    let isBusy: Driver<Bool>
     let canDismiss = BehaviorRelay(value: true)
     let error = BehaviorRelay<Swift.Error?>(value: nil)
-
     var redPacketNotificationToken: NotificationToken?
     
     init(redPacket: RedPacket) {
         self.redPacket = redPacket
-        isClaiming = activityIndicator.asDriver()
+        isClaimPending = BehaviorRelay(value: redPacket.status == .claim_pending)
+        isClaiming = claimActivityIndicator.asDriver()
+        
+        isBusy = Driver.combineLatest(isClaiming.asDriver(), isClaimPending.asDriver()) { isClaiming, isClaimPending -> Bool in
+            return isClaiming || isClaimPending
+        }
         
         super.init()
         
@@ -58,6 +66,7 @@ final class ClaimRedPacketViewModel: NSObject {
     
     deinit {
         redPacketNotificationToken?.invalidate()
+        os_log("%{public}s[%{public}ld], %{public}s: deinit", ((#file as NSString).lastPathComponent), #line, #function)
     }
     
 }
@@ -92,7 +101,7 @@ extension ClaimRedPacketViewModel {
                 }
                 
                 return RedPacketService.claim(for: redPacket, use: selectWalletModel, nonce: nonce)
-                    .trackActivity(self.activityIndicator)
+                    .trackActivity(self.claimActivityIndicator)
             }
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] transactionHash in
@@ -109,9 +118,7 @@ extension ClaimRedPacketViewModel {
                         redPacket.claim_address = selectWalletModel.address
                     }
                     
-                    // let createdRedPacketViewController = CreatedRedPacketViewController()
-                    // createdRedPacketViewController.viewModel = CreatedRedPacketViewModel(redPacket: redPacket)
-                    // self?.navigationController?.pushViewController(createdRedPacketViewController, animated: true)
+                    self?.fetchClaimResult()
                     
                 } catch {
                     self?.error.accept(error)
@@ -120,60 +127,19 @@ extension ClaimRedPacketViewModel {
                 self?.error.accept(error)
             })
             .disposed(by: disposeBag)
-//        guard let contractAddressHex = redPacket.contractAddress,
-//        let contractAddress = try? EthereumAddress(hex: contractAddressHex, eip55: false) else {
-//            // Error handle
-//            return
-//        }
-//        
-//        guard let walletModel = walletProvider?.selectWalletModel.value,
-//        let walletAddress = try? EthereumAddress(hex: walletModel.address, eip55: false),
-//        let hexPrivateKey = try? walletModel.hdWallet.privateKey().key.toHexString(),
-//        let privateKey = try? EthereumPrivateKey(hexPrivateKey: "0x" + hexPrivateKey) else {
-//            // Error handle
-//            return
-//        }
-//        
-//        let uuids = Array(redPacket.uuids)
-//        let checkAvailablity = WalletService.checkAvailablity(for: contractAddress).asObservable()
-//        let nonce = WalletService.getTransactionCount(address: walletAddress, block: .latest).asObservable()
-//    
-//        Observable.combineLatest(checkAvailablity, nonce)
-//            .flatMapLatest { checkAvailblity, nonce -> Observable<BigUInt> in
-//                let (balance, _index) = checkAvailblity
-//                let index = Int(_index)
-//                guard index < uuids.count else {
-//                    return Observable.error(WalletService.Error.checkAvailabilityEmpty)
-//                }
-//                let uuid = uuids[index]
-//                return WalletService.claim(for: contractAddress, with: uuid, from: walletAddress, use: privateKey, nonce: nonce)
-//                    .asObservable()
-//                    .trackActivity(self.activityIndicator)
-//            }
-//            .observeOn(MainScheduler.asyncInstance)
-//            .debug()
-//            .subscribe(onNext: { [weak self] claimed in
-//                guard let `self` = self else { return }
-//                os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, String(claimed))
-//                // claimed
-//                // update red packet contractAddress & status
-//                try! self.realm.write {
-//                    self.redPacket.claimAmount = claimed
-//                    self.redPacket.status = .claimed
-//                }
-//
-//            }, onError: { [weak self] error in
-//                os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
-//                guard let `self` = self else { return }
-//                self.error.accept(error)
-//                
-//                if self.redPacket.status != .claimed {
-//                    try! self.realm.write {
-//                        self.redPacket.status = .empty
-//                    }
-//                }
-//            })
-//            .disposed(by: disposeBag)
+    }
+    
+    func fetchClaimResult() {
+        // FIXME: it is duplicate with in-app pendingRedPackets claim result updateer
+        RedPacketService.shared.updateClaimResult(for: redPacket)
+            .trackActivity(updateClaimResultActivityIndicator)
+            .subscribe(onNext: { _ in
+                // do nothing
+                // use side effect to update red packet model
+            }, onError: { [weak self] error in
+                self?.error.accept(error)
+            })
+            .disposed(by: disposeBag)
     }
     
 }
@@ -333,6 +299,10 @@ final class ClaimRedPacketViewController: UIViewController {
         return button
     }()
     
+    deinit {
+        os_log("%{public}s[%{public}ld], %{public}s: deinit", ((#file as NSString).lastPathComponent), #line, #function)
+    }
+    
 }
 
 extension ClaimRedPacketViewController {
@@ -372,29 +342,38 @@ extension ClaimRedPacketViewController {
             .drive(viewModel.walletModels)
             .disposed(by: disposeBag)
         
-        viewModel.isClaiming.drive(onNext: { [weak self] isClaiming in
-            guard let `self` = self else { return }
-                self.navigationItem.leftBarButtonItem = isClaiming ? nil : self.closeBarButtonItem
-                self.navigationItem.rightBarButtonItem = isClaiming ? self.activityIndicatorBarButtonItem : nil
-                self.openRedPacketButton.isEnabled = !isClaiming
+        viewModel.isBusy.drive(onNext: { [weak self] isBusy in
+                guard let `self` = self else { return }
+                self.navigationItem.rightBarButtonItem = isBusy ? self.activityIndicatorBarButtonItem : nil
+                self.openRedPacketButton.isEnabled = !isBusy
             
                 let title: String = {
-                    if isClaiming {
+                    if isBusy {
                         return "Claiming..."
                     } else {
                         return self.viewModel.redPacket.status == .claimed ? "Done" : "Open Red Packet"
                     }
                 }()
-            
+                
                 self.openRedPacketButton.setTitle(title, for: .normal)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.isClaiming.drive(onNext: { [weak self] isClaiming in
+            guard let `self` = self else { return }
+                self.navigationItem.leftBarButtonItem = isClaiming ? nil : self.closeBarButtonItem
+                self.tableView.isUserInteractionEnabled = !isClaiming
+            
             })
             .disposed(by: disposeBag)
 
         // update table view when red packet changes
         viewModel.redPacketNotificationToken = viewModel.redPacket.observe { [weak self] change in
+            guard let `self` = self else { return }
             switch change {
             case .change(let changes):
-                self?.tableView.reloadData()
+                self.viewModel.isClaimPending.accept(self.viewModel.redPacket.status == .claim_pending)
+                self.tableView.reloadData()
                 os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, changes.description)
 
             default:
@@ -415,6 +394,12 @@ extension ClaimRedPacketViewController {
         // Setup tableView
         tableView.dataSource = viewModel
         tableView.delegate = self
+        
+        // Trigger claim result updater if pending
+        if viewModel.redPacket.status == .claim_pending {
+            viewModel.fetchClaimResult()
+        }
+        
     }
     
 }
