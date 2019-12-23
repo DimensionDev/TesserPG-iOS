@@ -231,7 +231,7 @@ extension MessageCardCell {
             maker.trailing.equalToSuperview()
             maker.centerY.equalTo(messageLabel.snp.centerY)
             maker.height.equalTo(CGFloat.leastNonzeroMagnitude)
-            maker.width.equalTo(CGFloat.leastNonzeroMagnitude)
+            maker.width.equalTo(CGFloat.leastNonzeroMagnitude).priorityHigh()
         }
         indentAnimationFixPaddingView.setContentHuggingPriority(.required, for: .horizontal)
         indentAnimationFixPaddingView.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -241,7 +241,7 @@ extension MessageCardCell {
         leftFooterLabel.snp.makeConstraints { maker in
             maker.top.equalTo(messageLabel.snp.bottom).offset(16)
             maker.leading.equalTo(contentBackgroundView.snp.leadingMargin)
-            maker.bottom.equalTo(contentBackgroundView.snp.bottomMargin)
+            maker.bottom.equalTo(contentBackgroundView.snp.bottomMargin).priorityHigh()
         }
         leftFooterLabel.setContentHuggingPriority(.defaultHigh, for: .vertical)
         leftFooterLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
@@ -387,7 +387,8 @@ final class MessageContactInfoView: UIView {
     private func _init() {
         addSubview(nameLabel)
         nameLabel.snp.makeConstraints { maker in
-            maker.leading.top.bottom.equalToSuperview()
+            maker.leading.top.equalToSuperview()
+            maker.bottom.equalToSuperview().priorityHigh()
         }
         nameLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         nameLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)

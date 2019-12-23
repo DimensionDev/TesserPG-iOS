@@ -26,34 +26,22 @@ final class CreatedRedPacketViewModel: NSObject {
     let activityIndicator = ActivityIndicator()
     
     // Input
-    let redPacketProperty: RedPacketProperty
+    let redPacket: RedPacket
     
     // Output
-    let isDeploying: Driver<Bool>
+    let isFetching: Driver<Bool>
     let error = BehaviorRelay<Swift.Error?>(value: nil)
-    let message = BehaviorRelay<Message?>(value: nil)
+    // let message = BehaviorRelay<Message?>(value: nil)
     
-    let realm = RedPacketService.shared.realm!
-    var redPacket = RedPacket()
     var redPacketNotificationToken: NotificationToken?
     
-    init(redPacketProperty: RedPacketProperty) {
-        self.redPacketProperty = redPacketProperty
-        isDeploying = activityIndicator.asDriver()
+    init(redPacket: RedPacket) {
+        self.redPacket = redPacket
+        isFetching = activityIndicator.asDriver()
         
         super.init()
-        
-        redPacket.senderUserID = redPacketProperty.sender?.userID ?? ""
-        redPacket.share = redPacketProperty.uuids.count
-        redPacket.amount = redPacketProperty.amountInWei
-        redPacket.uuids.append(objectsIn: redPacketProperty.uuids)
-        
-        // Add red packet to realm
-        try! realm.write {
-            realm.add(redPacket)
-        }
-        
-        isDeploying
+    
+        isFetching
             .debug()
             .drive()
             .disposed(by: disposeBag)
@@ -67,92 +55,106 @@ final class CreatedRedPacketViewModel: NSObject {
 
 extension CreatedRedPacketViewModel {
     
-    func deployRedPacketContract() {
-        Observable.just(redPacketProperty)
-            .withLatestFrom(isDeploying) { ($0, $1) }     // (redPacketProperty, isDeploying)
-            .filter { $0.1 == false }                     // not deploying
-            .map { $0.0 }                                 // redPacketProperty
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
-            .flatMapLatest { redPacketProperty -> Observable<RedPacketProperty> in
-                do {
-                    try WalletService.validate(redPacketProperty: redPacketProperty)
-                    return Observable.just(redPacketProperty)
-                } catch {
-                    return Observable.error(error)
-                }
-            }
-            .flatMapLatest { redPacketProperty -> Observable<EthereumData> in
-                os_log("%{public}s[%{public}ld], %{public}s: delopy RP contract for wallet %s", ((#file as NSString).lastPathComponent), #line, #function, redPacketProperty.walletModel!.address)
-                let walletAddress = try! EthereumAddress(hex: redPacketProperty.walletModel!.address, eip55: false)
-                return WalletService.getTransactionCount(address: walletAddress)
-                    .flatMap { nonce -> Single<EthereumData> in
-                        return WalletService.delopyRedPacket(for: redPacketProperty, nonce: nonce)
-                }
-                .do(onSuccess: { transactionHash in
-                    // Update red packet createContractTransactionHash
-                    DispatchQueue.main.async {
-                        try! self.realm.write {
-                            self.redPacket.createContractTransactionHash = transactionHash.hex()
-                        }
-                    }
-                })
-                .flatMap { transactionHash -> Single<EthereumData> in
-                    return WalletService.getContractAddress(transactionHash: transactionHash)
-                        .retryWhen({ error -> Observable<Int> in
-                            return error.enumerated().flatMap({ index, element -> Observable<Int> in
-                                os_log("%{public}s[%{public}ld], %{public}s: deploy contract fail retry %s times", ((#file as NSString).lastPathComponent), #line, #function, String(index + 1))
-                                // retry 6 times
-                                guard index < 6 else {
-                                    return Observable.error(element)
-                                }
-                                // retry every 10.0 sec
-                                return Observable.timer(10.0, scheduler: MainScheduler.instance)
-                            })
-                        })
-                }
-                .asObservable()
-                .trackActivity(self.activityIndicator)
-            }
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] contractAddress in
-                guard let `self` = self else { return }
-                
-                let contractAddressHex = contractAddress.hex()
-                let recipients = self.redPacketProperty.contactInfos.compactMap { $0.keys.first }
-                
-                do {
-                    // Encrypt message without sign
-                    let messageBody = CreatedRedPacketViewModel.messageBody(for: self.redPacketProperty, contractAddress: contractAddressHex)
-                    let armored = try KeyFactory.encryptMessage(messageBody, signatureKey: nil, recipients: recipients)
-                    
-                    var message = Message(id: nil, senderKeyId: "", senderKeyUserId: "", composedAt: self.redPacket.createdAt as Date, interpretedAt: nil, isDraft: false, rawMessage: messageBody, encryptedMessage: armored)
-                    let messageInDB = try ProfileService.default.addMessage(&message, recipientKeys: recipients)
-
-                    self.message.accept(messageInDB)
-                    
-                    // update red packet contractAddress & status
-                    try! self.realm.write {
-                        self.redPacket.contractAddress = contractAddressHex
-                        self.redPacket.status = .normal
-                    }
-                } catch {
-                    self.error.accept(error)
-                }
-                os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, contractAddress.hex())
-            }, onError: { error in
-                self.error.accept(error)
-                try! self.realm.write {
-                    self.redPacket.status = .fail
-                }
-                os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
+    func fetchCreateResult() {
+        // FIXME: it is duplicate with in-app pendingRedPackets create result updateer
+        RedPacketService.shared.updateCreateResult(for: redPacket)
+            .trackActivity(activityIndicator)
+            .subscribe(onNext: { _ in
+                // do nothing
+                // use side effect to update red packet model
+            }, onError: { [weak self] error in
+                self?.error.accept(error)
             })
             .disposed(by: disposeBag)
     }
+    
+//    func deployRedPacketContract() {
+//        Observable.just(redPacketProperty)
+//            .withLatestFrom(isDeploying) { ($0, $1) }     // (redPacketProperty, isDeploying)
+//            .filter { $0.1 == false }                     // not deploying
+//            .map { $0.0 }                                 // redPacketProperty
+//            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+//            .flatMapLatest { redPacketProperty -> Observable<RedPacketProperty> in
+//                do {
+//                    try WalletService.validate(redPacketProperty: redPacketProperty)
+//                    return Observable.just(redPacketProperty)
+//                } catch {
+//                    return Observable.error(error)
+//                }
+//            }
+//            .flatMapLatest { redPacketProperty -> Observable<EthereumData> in
+//                os_log("%{public}s[%{public}ld], %{public}s: delopy RP contract for wallet %s", ((#file as NSString).lastPathComponent), #line, #function, redPacketProperty.walletModel!.address)
+//                let walletAddress = try! EthereumAddress(hex: redPacketProperty.walletModel!.address, eip55: false)
+//                return WalletService.getTransactionCount(address: walletAddress)
+//                    .flatMap { nonce -> Single<EthereumData> in
+//                        return WalletService.delopyRedPacket(for: redPacketProperty, nonce: nonce)
+//                }
+//                .do(onSuccess: { transactionHash in
+//                    // Update red packet createContractTransactionHash
+//                    DispatchQueue.main.async {
+//                        try! self.realm.write {
+//                            self.redPacket.createContractTransactionHash = transactionHash.hex()
+//                        }
+//                    }
+//                })
+//                .flatMap { transactionHash -> Single<EthereumData> in
+//                    return WalletService.getContractAddress(transactionHash: transactionHash)
+//                        .retryWhen({ error -> Observable<Int> in
+//                            return error.enumerated().flatMap({ index, element -> Observable<Int> in
+//                                os_log("%{public}s[%{public}ld], %{public}s: deploy contract fail retry %s times", ((#file as NSString).lastPathComponent), #line, #function, String(index + 1))
+//                                // retry 6 times
+//                                guard index < 6 else {
+//                                    return Observable.error(element)
+//                                }
+//                                // retry every 10.0 sec
+//                                return Observable.timer(10.0, scheduler: MainScheduler.instance)
+//                            })
+//                        })
+//                }
+//                .asObservable()
+//                .trackActivity(self.activityIndicator)
+//            }
+//            .observeOn(MainScheduler.instance)
+//            .subscribe(onNext: { [weak self] contractAddress in
+//                guard let `self` = self else { return }
+//
+//                let contractAddressHex = contractAddress.hex()
+//                let recipients = self.redPacketProperty.contactInfos.compactMap { $0.keys.first }
+//
+//                do {
+//                    // Encrypt message without sign
+//                    let messageBody = CreatedRedPacketViewModel.messageBody(for: self.redPacketProperty, contractAddress: contractAddressHex)
+//                    let armored = try KeyFactory.encryptMessage(messageBody, signatureKey: nil, recipients: recipients)
+//
+//                    var message = Message(id: nil, senderKeyId: "", senderKeyUserId: "", composedAt: self.redPacket.createdAt as Date, interpretedAt: nil, isDraft: false, rawMessage: messageBody, encryptedMessage: armored)
+//                    let messageInDB = try ProfileService.default.addMessage(&message, recipientKeys: recipients)
+//
+//                    self.message.accept(messageInDB)
+//
+//                    // update red packet contractAddress & status
+//                    try! self.realm.write {
+//                        self.redPacket.contractAddress = contractAddressHex
+//                        self.redPacket.status = .normal
+//                    }
+//                } catch {
+//                    self.error.accept(error)
+//                }
+//                os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, contractAddress.hex())
+//            }, onError: { error in
+//                self.error.accept(error)
+//                try! self.realm.write {
+//                    self.redPacket.status = .fail
+//                }
+//                os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
+//            })
+//            .disposed(by: disposeBag)
+//    }
     
 }
 
 extension CreatedRedPacketViewModel {
     
+    /*
     static func messageBody(for redPacketProperty: RedPacketProperty, contractAddress: String) -> String {
         let senderPublicKeyFingerprint = redPacketProperty.sender?.fingerprint ?? ""
         let senderUserID = redPacketProperty.sender?.userID ?? ""
@@ -165,6 +167,7 @@ extension CreatedRedPacketViewModel {
         -----END RED PACKET-----
         """
     }
+     */
     
 }
 
@@ -190,12 +193,12 @@ extension CreatedRedPacketViewModel: UITableViewDataSource {
 extension CreatedRedPacketViewModel {
     
     static func configure(cell: RedPacketCardTableViewCell, with redPacket: RedPacket) {
-        let translator = DMSPGPUserIDTranslator(userID: redPacket.senderUserID)
-        
-        cell.nameLabel.text = translator.name
-        cell.emailLabel.text = translator.email.flatMap { "<\($0)>"}
-        
-        let formatter = WalletService.balanceDecimalFormatter
+        cell.nameLabel.text = redPacket.sender_name
+        cell.emailLabel.text = ""       // no more email
+
+        let formatter = NumberFormatter.decimalFormatterForETH
+        let totalAmountInDecimal = (Decimal(string: String(redPacket.send_total)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
+        let totalAmountInDecimalString = formatter.string(from: totalAmountInDecimal as NSNumber) ?? "-"
         
         switch redPacket.status {
         case .initial, .pending:
@@ -209,12 +212,13 @@ extension CreatedRedPacketViewModel {
             cell.redPacketDetailLabel.text = "Trying to claim…"
             cell.indicatorLabel.text = ""
         case .normal:
-            let amountInDecimal = (Decimal(string: String(redPacket.amount)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
-            let amountInDecimalString = formatter.string(from: amountInDecimal as NSNumber) ?? "-"
-            cell.redPacketStatusLabel.text = "Sent \(amountInDecimalString) ETH"
+            cell.redPacketStatusLabel.text = "Sent \(totalAmountInDecimalString) ETH"
             cell.indicatorLabel.text = "Ready for collection"
+        case .claim_pending:
+            cell.redPacketStatusLabel.text = "Claiming…"
+            cell.indicatorLabel.text = ""
         case .claimed:
-            let amountInDecimal = (Decimal(string: String(redPacket.claimAmount)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
+            let amountInDecimal = (Decimal(string: String(redPacket.claim_amount)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
             let amountInDecimalString = formatter.string(from: amountInDecimal as NSNumber) ?? "-"
             cell.redPacketStatusLabel.text = "Got \(amountInDecimalString) ETH"
             cell.indicatorLabel.text = ""
@@ -224,14 +228,29 @@ extension CreatedRedPacketViewModel {
         case .expired:
             cell.redPacketStatusLabel.text = "Too late to get any"
             cell.indicatorLabel.text = ""
+        case .refund_pending:
+            cell.redPacketStatusLabel.text = "Refunding…"
+            cell.indicatorLabel.text = ""
+        case .refunded:
+            let amountInDecimal = (Decimal(string: String(redPacket.refund_amount)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
+            let amountInDecimalString = formatter.string(from: amountInDecimal as NSNumber) ?? "-"
+            cell.redPacketStatusLabel.text = "Refund \(amountInDecimalString) ETH"
+            cell.indicatorLabel.text = ""
         }
-        
-        let unit = redPacket.share > 1 ? "shares" : "share"
-        cell.redPacketDetailLabel.text = "\(redPacket.share)" + " " + unit
-        
-        let createdDate = redPacket.createdAt as Date
-        cell.createdDateLabel.text = createdDate.timeAgoSinceNow + " created"
+
+        let share = redPacket.uuids.count
+        let unit = share > 1 ? "shares" : "share"
+        cell.redPacketDetailLabel.text = "\(totalAmountInDecimalString) ETH in total / \(share) \(unit)"
+
+        if let blockCreationTime = redPacket.block_creation_time.value {
+            let createDate = Date(timeIntervalSince1970: TimeInterval(blockCreationTime))
+            cell.createdDateLabel.text = createDate.timeAgoSinceNow + " created"
+            
+        } else {
+            cell.createdDateLabel.text = " "
+        }
     }
+    
 }
 
 final class CreatedRedPacketViewController: UIViewController {
@@ -309,28 +328,6 @@ extension CreatedRedPacketViewController {
         #endif
         
         // Setup viewModel
-        viewModel.isDeploying.asDriver()
-            .map { !$0 }        // enable when not deplying
-            .drive(doneBarButtonItem.rx.isEnabled)
-            .disposed(by: disposeBag)
-        viewModel.isDeploying.drive(onNext: { [weak self] isDeploying in
-                self?.navigationItem.rightBarButtonItem = isDeploying ? self?.activityIndicatorBarButtonItem : self?.doneBarButtonItem
-            })
-            .disposed(by: disposeBag)
-        viewModel.isDeploying.asDriver()
-            .drive(onNext: { [weak self] isDeploying in
-                self?.tableView.isUserInteractionEnabled = !isDeploying
-                
-                #if !TARGET_IS_EXTENSION
-                if isDeploying {
-                    self?.showHUD("Sending…")
-                } else {
-                    self?.hideHUD()
-                }
-                #endif
-            })
-            .disposed(by: disposeBag)
-        
         viewModel.redPacketNotificationToken = viewModel.redPacket.observe { [weak self] change in
             switch change {
             case .change(let changes):
@@ -352,8 +349,8 @@ extension CreatedRedPacketViewController {
             })
             .disposed(by: disposeBag)
         
-        // Teigger delpoy action
-        viewModel.deployRedPacketContract()
+        // Teigger fetch create result action
+         viewModel.fetchCreateResult()
     }
     
 }
