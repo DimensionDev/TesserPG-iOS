@@ -7,7 +7,6 @@
 //
 
 import UIKit
-
 import RxSwift
 import RxCocoa
 
@@ -58,8 +57,8 @@ final class MessageCardViewModel {
                 let message = self.messages.value.last
                 UIPasteboard.general.string = self.copyContentType == .rawMessage ? message?.rawMessage : message?.encryptedMessage
             })
-            .debounce(1, scheduler: MainScheduler.asyncInstance)
-            .delay(1, scheduler: MainScheduler.asyncInstance)
+            .debounce(.seconds(1), scheduler: MainScheduler.asyncInstance)
+            .delay(.seconds(1), scheduler: MainScheduler.asyncInstance)
             .subscribe(onNext: { sender in
                 sender.setTitle(L10n.InterpretActionViewController.Action.Button.copyContent, for: .normal)
             })
@@ -67,7 +66,7 @@ final class MessageCardViewModel {
 
         replyAction
             .observeOn(MainScheduler.asyncInstance)
-            .debounce(1, scheduler: MainScheduler.asyncInstance)
+            .debounce(.seconds(1), scheduler: MainScheduler.asyncInstance)
             .subscribe(onNext: { [weak self] sender in
                 guard let message = self?.messages.value.last else {
                     return

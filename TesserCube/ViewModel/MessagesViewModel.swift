@@ -82,9 +82,8 @@ class MessagesViewModel: NSObject {
     var messageMaxNumberOfLinesIDDict: [Int64: Int] = [:]
     
     // red packet realm listener
-    var redPacketNotificationToken: NotificationToken?
+    // var redPacketNotificationToken: NotificationToken?
 
-    
     override init() {
         hasMessages = messages.asDriver().map { !$0.isEmpty }
         isSearching = searchText.asDriver().map { !$0.isEmpty }
@@ -173,7 +172,7 @@ class MessagesViewModel: NSObject {
     }
     
     deinit {
-        redPacketNotificationToken?.invalidate()
+        // redPacketNotificationToken?.invalidate()
     }
     
 }
@@ -220,45 +219,31 @@ extension MessagesViewModel: UITableViewDataSource {
 extension MessagesViewModel {
     
     private func constructTableViewCell(for tableView: UITableView, atIndexPath indexPath: IndexPath, with message: Message) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: MessageCardCell.self), for: indexPath) as! MessageCardCell
+        MessagesViewModel.configure(messageCardCell: cell, with: message)
         
-        let isRedPacket = RedPacketService.validate(message: message)
-        
-        if isRedPacket {
-            let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RedPacketCardTableViewCell.self), for: indexPath) as! RedPacketCardTableViewCell
-            if let redPacket = RedPacketService.shared.redPacket(from: message) {
-                CreatedRedPacketViewModel.configure(cell: cell, with: redPacket)
-            } else {
-                assertionFailure()
-            }
-            return cell
-            
+        // cell expand logic
+        if let isExpand = messageExpandedDict[indexPath],
+            let maxNumberOfLines = messageMaxNumberOfLinesDict[indexPath] {
+            cell.messageLabel.numberOfLines = isExpand ? 0 : 4
+            cell.extraBackgroundViewHeightConstraint.constant = maxNumberOfLines > 4 ? 44 : 0
+            let title = isExpand ? L10n.MessageCardCell.Button.Expand.collapse : L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
+            cell.expandButton.setTitle(title, for: .normal)
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: MessageCardCell.self), for: indexPath) as! MessageCardCell
-            MessagesViewModel.configure(messageCardCell: cell, with: message)
-            
-            // cell expand logic
-            if let isExpand = messageExpandedDict[indexPath],
-                let maxNumberOfLines = messageMaxNumberOfLinesDict[indexPath] {
-                cell.messageLabel.numberOfLines = isExpand ? 0 : 4
-                cell.extraBackgroundViewHeightConstraint.constant = maxNumberOfLines > 4 ? 44 : 0
-                let title = isExpand ? L10n.MessageCardCell.Button.Expand.collapse : L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
-                cell.expandButton.setTitle(title, for: .normal)
-            } else {
-                cell.messageLabel.layoutIfNeeded()
-                let maxNumberOfLines = cell.messageLabel.maxNumberOfLines
-                messageExpandedDict[indexPath] = false
-                messageMaxNumberOfLinesDict[indexPath] = maxNumberOfLines
-                cell.messageLabel.numberOfLines = 4
-                cell.extraBackgroundViewHeightConstraint.constant = maxNumberOfLines > 4 ? 44 : 0
-                let title = L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
-                cell.expandButton.setTitle(title, for: .normal)
-            }
-            
-            cell.setNeedsLayout()
-            cell.layoutIfNeeded()
-            
-            return cell
+            cell.messageLabel.layoutIfNeeded()
+            let maxNumberOfLines = cell.messageLabel.maxNumberOfLines
+            messageExpandedDict[indexPath] = false
+            messageMaxNumberOfLinesDict[indexPath] = maxNumberOfLines
+            cell.messageLabel.numberOfLines = 4
+            cell.extraBackgroundViewHeightConstraint.constant = maxNumberOfLines > 4 ? 44 : 0
+            let title = L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
+            cell.expandButton.setTitle(title, for: .normal)
         }
+        
+        cell.setNeedsLayout()
+        cell.layoutIfNeeded()
+        
+        return cell
     }
 
     // configure cell UI

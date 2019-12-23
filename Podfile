@@ -1,5 +1,5 @@
 source 'https://github.com/SujiTech/Specs.git'
-source 'https://github.com/CocoaPods/Specs.git'
+source 'https://cdn.cocoapods.org/'
 
 platform :ios, '11.0'
 use_frameworks!
@@ -9,15 +9,16 @@ def common_pods
   pod 'SwiftLint', '~> 0.30.1'
   pod 'SwiftGen', '~> 6.1.0'
 
-  pod 'DeviceKit', '~> 1.11.0'
+  # pod 'DeviceKit', '~> 1.11.0'
   pod 'SnapKit', '~> 4.2.0'
   pod 'DateToolsSwift', '~> 4.0.0'
   pod 'ConsolePrint', '~> 0.1.0'
   pod 'MMWormhole', '~> 2.0.0'
 
-  pod 'RxSwift', '~> 4.4.2'
-  pod 'RxCocoa', '~> 4.4.2'
-  pod "RxSwiftUtilities", '~> 2.1.0'
+  pod 'RxSwift', '~> 5.0.0'
+  pod 'RxCocoa', '~> 5.0.0'
+  pod 'RxSwiftUtilities', :git => 'https://github.com/RxSwiftCommunity/RxSwiftUtilities', :commit => 'a3e91fb'
+  pod 'RxRealm', '~> 2.0.0'
 
   pod 'KeychainAccess', '~> 3.2.0'
 
@@ -34,6 +35,8 @@ def common_pods
   pod 'Web3/PromiseKit', '~> 0.4.1'
 
   pod 'DMS_HDWallet_Cocoa', '~> 0.2.1'
+
+  pod 'DataCompression', '~> 3.6.0'
 end
 
 def common_ui_pods
@@ -59,11 +62,11 @@ target 'TesserCube' do
   target 'TesserCubeTests' do
     inherit! :search_paths
     # Pods for testing
-    pod 'RxBlocking', '~> 4.0'
+    pod 'RxBlocking', '~> 5.0.0'
   end
 
   target 'Web3Tests' do
-    inherit! :search_paths
+    inherit! :complete
     # Pods for testing
   end
 
