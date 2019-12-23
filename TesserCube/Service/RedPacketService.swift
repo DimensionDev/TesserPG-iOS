@@ -13,6 +13,14 @@ import RxSwift
 import BigInt
 import Web3
 
+private enum SchemaVersions: UInt64 {
+    case version_1 = 1
+    case version_2_rc1 = 4
+    case version_2_rc2 = 5
+    
+    static let currentVersion: SchemaVersions = .version_2_rc2
+}
+
 final class RedPacketService {
     
     let disposeBag = DisposeBag()
@@ -55,10 +63,14 @@ final class RedPacketService {
         config.objectTypes = [RedPacket.self]
         
         // setup migration
-        let schemeVersion: UInt64 = 4
+        let schemeVersion: UInt64 = SchemaVersions.currentVersion.rawValue
         config.schemaVersion = schemeVersion
         config.migrationBlock = { migration, oldSchemeVersion in
-            if oldSchemeVersion < 1 {
+            if oldSchemeVersion < SchemaVersions.version_2_rc2.rawValue {
+                // auto migrate
+            }
+            
+            if oldSchemeVersion < SchemaVersions.version_2_rc1.rawValue {
                 // auto migrate
             }
         }

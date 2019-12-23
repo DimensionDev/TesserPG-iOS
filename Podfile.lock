@@ -24,11 +24,11 @@ PODS:
     - MMWormhole/Core (= 2.0.0)
   - MMWormhole/Core (2.0.0)
   - PromiseKit/CorePromise (6.12.0)
-  - Realm (4.2.0):
-    - Realm/Headers (= 4.2.0)
-  - Realm/Headers (4.2.0)
-  - RealmSwift (4.2.0):
-    - Realm (= 4.2.0)
+  - Realm (4.3.0):
+    - Realm/Headers (= 4.3.0)
+  - Realm/Headers (4.3.0)
+  - RealmSwift (4.3.0):
+    - Realm (= 4.3.0)
   - RxBlocking (5.0.1):
     - RxSwift (~> 5)
   - RxCocoa (5.0.1):
@@ -192,8 +192,8 @@ SPEC CHECKSUMS:
   KeychainAccess: d5470352939ced6d6f7fb51cb2e67aae51fc294f
   MMWormhole: 0cd3fd35a9118b2e2d762b499f54eeaace0be791
   PromiseKit: c06835ba442ce5454ce3cdde470232804a6e4ff8
-  Realm: 24f62307291e35ca9ba69f4d5e7214142543b12d
-  RealmSwift: eec89a12ff5ff09f365519c64591ab297acbbb40
+  Realm: 9357c3589555793e1860a7104a7412bca4a48d99
+  RealmSwift: 402f1e379a8ef82c635313037b043f0f06de880c
   RxBlocking: c5e090f42d046df8b0e7752742510f349963710f
   RxCocoa: e741b9749968e8a143e2b787f1dfbff2b63d0a5c
   RxRealm: 900f5c7e6f0a2d6527b56eaf7283f3035ec1e8ba
