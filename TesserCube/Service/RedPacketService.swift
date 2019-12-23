@@ -9,49 +9,104 @@
 import os
 import Foundation
 import RealmSwift
+import RxSwift
+import BigInt
+import Web3
+
+private enum SchemaVersions: UInt64 {
+    case version_1 = 1
+    case version_2_rc1 = 4
+    case version_2_rc2 = 5
+    
+    static let currentVersion: SchemaVersions = .version_2_rc2
+}
 
 final class RedPacketService {
     
-    let realm: Realm? = {
+    let disposeBag = DisposeBag()
+    
+    // per packet. 0.002025 ETH
+    public static var redPacketMinAmount: Decimal {
+        return Decimal(0.002025)
+    }
+    
+    // per packet. 0.002025 ETH
+    public static var redPacketMinAmountInWei: BigUInt {
+        return 2025000.gwei
+    }
+    
+    public static let redPacketContractABIData: Data = {
+        let path = Bundle(for: WalletService.self).path(forResource: "redpacket", ofType: "json")
+        return try! Data(contentsOf: URL(fileURLWithPath: path!))
+    }()
+    
+    public static var redPacketContractByteCode: EthereumData = {
+        let path = Bundle(for: WalletService.self).path(forResource: "redpacket", ofType: "bin")
+        let bytesString = try! String(contentsOfFile: path!)
+        return try! EthereumData(ethereumValue: bytesString.trimmingCharacters(in: .whitespacesAndNewlines))
+    }()
+
+    public static func redPacketContract(for address: EthereumAddress?, web3: Web3) throws -> DynamicContract {
+        let contractABIData = redPacketContractABIData
+        do {
+            return try web3.eth.Contract(json: contractABIData, abiKey: nil, address: address)
+        } catch {
+            throw Error.internal("cannot initialize contract")
+        }
+    }
+    
+    static var realmConfiguration: Realm.Configuration {
         var config = Realm.Configuration()
-        let realmName = "RedPacket"
+        
+        let realmName = "RedPacket_v2"
         config.fileURL = TCDBManager.dbDirectoryUrl.appendingPathComponent("\(realmName).realm")
         config.objectTypes = [RedPacket.self]
         
-        try? FileManager.default.createDirectory(at: config.fileURL!.deletingLastPathComponent(), withIntermediateDirectories: true, attributes: nil)
-        
         // setup migration
-        let schemeVersion: UInt64 = 3
+        let schemeVersion: UInt64 = SchemaVersions.currentVersion.rawValue
         config.schemaVersion = schemeVersion
         config.migrationBlock = { migration, oldSchemeVersion in
-            if oldSchemeVersion < 1 {
+            if oldSchemeVersion < SchemaVersions.version_2_rc2.rawValue {
+                // auto migrate
+            }
+            
+            if oldSchemeVersion < SchemaVersions.version_2_rc1.rawValue {
                 // auto migrate
             }
         }
         
-        do {
-            return try Realm(configuration: config)
-        } catch {
-            os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
-
-            return nil
-        }
-    }()
+        return config
+    }
+    
+    static func realm() throws -> Realm {
+        let config = RedPacketService.realmConfiguration
+    
+        try? FileManager.default.createDirectory(at: config.fileURL!.deletingLastPathComponent(),
+                                                 withIntermediateDirectories: true,
+                                                 attributes: nil)
+        
+        return try Realm(configuration: config)
+    }
     
     // MARK: - Singleton
     public static let shared = RedPacketService()
     
-    private init() { }
+    private init() {
+        _ = try? RedPacketService.realm()
+    }
 
 }
 
 extension RedPacketService {
     
+    /*
     static func validate(message: Message) -> Bool {
         let rawMessage = message.rawMessage.trimmingCharacters(in: .whitespacesAndNewlines)
         return rawMessage.hasPrefix("-----BEGIN RED PACKET-----") && rawMessage.hasSuffix("-----END RED PACKET-----")
     }
+     */
     
+    /*
     static func contractAddress(for message: Message) -> String? {
         guard validate(message: message) else {
             return nil
@@ -73,7 +128,9 @@ extension RedPacketService {
         
         return contractAddress as String?
     }
+     */
     
+    /*
     static func userID(for message: Message) -> String? {
         guard validate(message: message) else {
             return nil
@@ -88,7 +145,9 @@ extension RedPacketService {
         
         return userID as String?
     }
+     */
     
+    /*
     static func uuids(for message: Message) -> [String] {
         guard validate(message: message) else {
             return []
@@ -117,39 +176,10 @@ extension RedPacketService {
         
         return uuidsString as [String]
     }
+     */
     
 }
 
 extension RedPacketService {
-    
-    func redPacket(from message: Message) -> RedPacket? {
-        guard let contractAddress = RedPacketService.contractAddress(for: message) else {
-            return nil
-        }
-        
-        let uuids = RedPacketService.uuids(for: message)
-        
-        guard !uuids.isEmpty, let userID = RedPacketService.userID(for: message) else {
-            return nil
-        }
-        
-        let results = realm?.objects(RedPacket.self).filter { $0.contractAddress == contractAddress }
-        guard let redPacket = results?.first else {
-            let redPacket = RedPacket()
-            redPacket.senderUserID = userID
-            redPacket.share = uuids.count
-            redPacket.status = .incoming
-            redPacket.contractAddress = contractAddress
-            redPacket.uuids.append(objectsIn: uuids)
-            
-            try! realm?.write {
-                realm?.add(redPacket)
-            }
-            
-            return redPacket
-        }
-        
-        return redPacket
-    }
     
 }

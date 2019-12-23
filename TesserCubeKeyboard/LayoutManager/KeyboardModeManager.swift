@@ -101,7 +101,7 @@ class KeyboardModeManager: NSObject {
             make.bottom.equalTo(keyboardVC!.forwardingView.snp.top)
             make.height.equalTo(metrics[.recipientsBanner]!)
         }
-        optionsView.selectedRecipientsView?.delegate = self
+        // optionsView.selectedRecipientsView?.delegate = self
         optionsView.actionsView.delegate = self
         optionsView.suggestionView?.delegate = self
     }
@@ -209,6 +209,7 @@ class KeyboardModeManager: NSObject {
                     }
                     return
                 }
+                
                 if let signVC = topNaviVC.topViewController as? SignViewController {
                     let inputRecipientTextView = signVC.contentInputView
                     let tempText = inputRecipientTextView.inputTextField.text ?? ""
@@ -257,6 +258,7 @@ class KeyboardModeManager: NSObject {
                 if let encryptVC = topNaviVC.topViewController as? EncryptViewController {
                     return encryptVC.contentInputView.inputTextField.text
                 }
+                
                 if let signVC = topNaviVC.topViewController as? SignViewController {
                     return signVC.contentInputView.inputTextField.text
                 }
@@ -374,44 +376,44 @@ extension KeyboardModeManager: RecommendRecipientsViewDelegate {
     }
 }
 
-extension KeyboardModeManager: RedPacketRecipientSelectViewControllerDelegate {
-    func redPacketRecipientSelectViewController(_ viewController: RedPacketRecipientSelectViewController, didSelect contactInfo: FullContactInfo) {
-        let selectedData = optionsView.selectedContacts
-        if selectedData.contains(where: { (data) -> Bool in
-            return data.contact.id == contactInfo.contact.id
-        }) {
-            // This should not happen
-            print(" This should not happen, account: \(contactInfo.contact.name)")
-        } else {
-            optionsView.addSelectedRecipient(contactInfo)
-        }
-    }
-    
-    func redPacketRecipientSelectViewController(_ viewController: RedPacketRecipientSelectViewController, didDeselect contactInfo: FullContactInfo) {
-        let selectedData = optionsView.selectedContacts
-        if selectedData.contains(where: { (data) -> Bool in
-            return data.contact.id == contactInfo.contact.id
-        }) {
-            optionsView.removeSelectedRecipient(contactInfo)
-        }
-    }
-}
+// extension KeyboardModeManager: RedPacketRecipientSelectViewControllerDelegate {
+//     func redPacketRecipientSelectViewController(_ viewController: RedPacketRecipientSelectViewController, didSelect contactInfo: FullContactInfo) {
+//         let selectedData = optionsView.selectedContacts
+//         if selectedData.contains(where: { (data) -> Bool in
+//             return data.contact.id == contactInfo.contact.id
+//         }) {
+//             // This should not happen
+//             print(" This should not happen, account: \(contactInfo.contact.name)")
+//         } else {
+//             optionsView.addSelectedRecipient(contactInfo)
+//         }
+//     }
+//
+//     func redPacketRecipientSelectViewController(_ viewController: RedPacketRecipientSelectViewController, didDeselect contactInfo: FullContactInfo) {
+//         let selectedData = optionsView.selectedContacts
+//         if selectedData.contains(where: { (data) -> Bool in
+//             return data.contact.id == contactInfo.contact.id
+//         }) {
+//             optionsView.removeSelectedRecipient(contactInfo)
+//         }
+//     }
+// }
 
-extension KeyboardModeManager: SelectedRecipientViewDelegate {
-    func selectedRecipientView(_ view: SelectedRecipientView, didClick contactInfo: FullContactInfo) {
-//        optionsView.updateLayout(mode: mode)
-        if let encryptNaviVC = tcKeyboardModeContainer?.topmostViewController as? UINavigationController {
-            if let selectRecipientVC = encryptNaviVC.topViewController as? SelectRecipientViewController {
-                selectRecipientVC.selectRecipientView?.reloadRecipients()
-                selectRecipientVC.navigationItem.rightBarButtonItem?.isEnabled = !optionsView.selectedContacts.isEmpty
-            }
-        }
-//        recommendView?.reloadRecipients()
-        if let redPacketRecipietnVC = editingRedPacketViewControllerNaviVC?.children.last as? RedPacketRecipientSelectViewController {
-            redPacketRecipietnVC.reloadRecipients()
-        }
-    }
-}
+// extension KeyboardModeManager: SelectedRecipientViewDelegate {
+//     func selectedRecipientView(_ view: SelectedRecipientView, didClick contactInfo: FullContactInfo) {
+// //        optionsView.updateLayout(mode: mode)
+//         if let encryptNaviVC = tcKeyboardModeContainer?.topmostViewController as? UINavigationController {
+//             if let selectRecipientVC = encryptNaviVC.topViewController as? SelectRecipientViewController {
+//                 selectRecipientVC.selectRecipientView?.reloadRecipients()
+//                 selectRecipientVC.navigationItem.rightBarButtonItem?.isEnabled = !optionsView.selectedContacts.isEmpty
+//             }
+//         }
+// //        recommendView?.reloadRecipients()
+//         if let redPacketRecipietnVC = editingRedPacketViewControllerNaviVC?.children.last as? RedPacketRecipientSelectViewController {
+//             redPacketRecipietnVC.reloadRecipients()
+//         }
+//     }
+// }
 
 // MARK: Cannot decrypt view
 extension KeyboardModeManager: InterpretFailViewDelegate {

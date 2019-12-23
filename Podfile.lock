@@ -4,9 +4,9 @@ PODS:
   - BlueCryptor (1.0.32)
   - ConsolePrint (0.1.0)
   - CryptoSwift (1.1.3)
+  - DataCompression (3.6.0)
   - DateToolsSwift (4.0.0)
   - DeepDiff (2.0.1)
-  - DeviceKit (1.11.0)
   - DMS_HDWallet_Cocoa (0.2.1):
     - BigInt (~> 4.0)
     - BlueCryptor (~> 1.0.32)
@@ -18,27 +18,31 @@ PODS:
   - GRDB.swift (3.7.0)
   - GRDBCipher (3.7.0):
     - SQLCipher (~> 3.4.1)
-  - IQKeyboardManagerSwift (6.5.2)
+  - IQKeyboardManagerSwift (6.5.4)
   - KeychainAccess (3.2.1)
   - MMWormhole (2.0.0):
     - MMWormhole/Core (= 2.0.0)
   - MMWormhole/Core (2.0.0)
   - PromiseKit/CorePromise (6.12.0)
-  - Realm (3.21.0):
-    - Realm/Headers (= 3.21.0)
-  - Realm/Headers (3.21.0)
-  - RealmSwift (3.21.0):
-    - Realm (= 3.21.0)
-  - RxAtomic (4.4.2)
-  - RxBlocking (4.5.0):
-    - RxSwift (>= 4.4.2, ~> 4.4)
-  - RxCocoa (4.4.2):
-    - RxSwift (>= 4.4.2, ~> 4.4)
-  - RxSwift (4.4.2):
-    - RxAtomic (>= 4.4.2, ~> 4.4)
+  - Realm (4.3.0):
+    - Realm/Headers (= 4.3.0)
+  - Realm/Headers (4.3.0)
+  - RealmSwift (4.3.0):
+    - Realm (= 4.3.0)
+  - RxBlocking (5.0.1):
+    - RxSwift (~> 5)
+  - RxCocoa (5.0.1):
+    - RxRelay (~> 5)
+    - RxSwift (~> 5)
+  - RxRealm (2.0.0):
+    - RealmSwift (~> 4.0)
+    - RxSwift (~> 5.0)
+  - RxRelay (5.0.1):
+    - RxSwift (~> 5)
+  - RxSwift (5.0.1)
   - RxSwiftUtilities (2.1.0):
-    - RxCocoa (~> 4.0)
-    - RxSwift (~> 4.0)
+    - RxCocoa (~> 5.0)
+    - RxSwift (~> 5.0)
   - SearchTextField (1.2.4)
   - secp256k1.swift (0.1.6)
   - SnapKit (4.2.0)
@@ -85,9 +89,9 @@ PODS:
 DEPENDENCIES:
   - AlignedCollectionViewFlowLayout (~> 1.1.2)
   - ConsolePrint (~> 0.1.0)
+  - DataCompression (~> 3.6.0)
   - DateToolsSwift (~> 4.0.0)
   - DeepDiff (~> 2.0.1)
-  - DeviceKit (~> 1.11.0)
   - DMS_HDWallet_Cocoa (~> 0.2.1)
   - DMSGoPGP (~> 0.0.17)
   - Eureka (~> 4.3.1)
@@ -97,10 +101,11 @@ DEPENDENCIES:
   - IQKeyboardManagerSwift (~> 6.5.0)
   - KeychainAccess (~> 3.2.0)
   - MMWormhole (~> 2.0.0)
-  - RxBlocking (~> 4.0)
-  - RxCocoa (~> 4.4.2)
-  - RxSwift (~> 4.4.2)
-  - RxSwiftUtilities (~> 2.1.0)
+  - RxBlocking (~> 5.0.0)
+  - RxCocoa (~> 5.0.0)
+  - RxRealm (~> 2.0.0)
+  - RxSwift (~> 5.0.0)
+  - RxSwiftUtilities (from `https://github.com/RxSwiftCommunity/RxSwiftUtilities`, commit `a3e91fb`)
   - SearchTextField
   - SnapKit (~> 4.2.0)
   - SVProgressHUD (from `https://github.com/getaaron/SVProgressHUD.git`, branch `dark-mode`)
@@ -114,15 +119,18 @@ DEPENDENCIES:
   - WordSuggestion (~> 0.2.1)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/SujiTech/Specs.git:
+    - DMS_HDWallet_Cocoa
+    - secp256k1.swift
+  trunk:
     - AlignedCollectionViewFlowLayout
     - BigInt
     - BlueCryptor
     - ConsolePrint
     - CryptoSwift
+    - DataCompression
     - DateToolsSwift
     - DeepDiff
-    - DeviceKit
     - DMSGoPGP
     - Eureka
     - FLEX
@@ -134,11 +142,11 @@ SPEC REPOS:
     - PromiseKit
     - Realm
     - RealmSwift
-    - RxAtomic
     - RxBlocking
     - RxCocoa
+    - RxRealm
+    - RxRelay
     - RxSwift
-    - RxSwiftUtilities
     - SearchTextField
     - SnapKit
     - SQLCipher
@@ -148,16 +156,19 @@ SPEC REPOS:
     - "UITextView+Placeholder"
     - Web3
     - WordSuggestion
-  https://github.com/SujiTech/Specs.git:
-    - DMS_HDWallet_Cocoa
-    - secp256k1.swift
 
 EXTERNAL SOURCES:
+  RxSwiftUtilities:
+    :commit: a3e91fb
+    :git: https://github.com/RxSwiftCommunity/RxSwiftUtilities
   SVProgressHUD:
     :branch: dark-mode
     :git: https://github.com/getaaron/SVProgressHUD.git
 
 CHECKOUT OPTIONS:
+  RxSwiftUtilities:
+    :commit: a3e91fb
+    :git: https://github.com/RxSwiftCommunity/RxSwiftUtilities
   SVProgressHUD:
     :commit: d95da4a829f1c78847a2b10c3549010717fe36a7
     :git: https://github.com/getaaron/SVProgressHUD.git
@@ -168,26 +179,27 @@ SPEC CHECKSUMS:
   BlueCryptor: b0aee3d9b8f367b49b30de11cda90e1735571c24
   ConsolePrint: 695d494f0a2595d1792ec19483f2aa16e4501c19
   CryptoSwift: 6b6e488df0598b3e9fa49254ed1a65e8c1b1e10b
+  DataCompression: 06628f9c807b6f152e0da37635633f62fc51dc77
   DateToolsSwift: 875d97ff9e3a5d54abdd67a269b3f51c757b71ab
   DeepDiff: 1944bb2c841ab238a66b31de1faa7627f3ca84bd
-  DeviceKit: a3a86f8dddbe1317a9a243cdf9646858bf135dce
   DMS_HDWallet_Cocoa: 7e9e7b641ba032f37b710b7e15a382272cbb2958
   DMSGoPGP: fd0970ab6941eb4a5b6cb2f8846ca9ab9a9151a6
   Eureka: 28ea296f06710f6745266b71f17862048941a32d
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
   GRDB.swift: 51cc9e57ae8ff7083a9d674c97925aa1de06aac5
   GRDBCipher: a3066d2953508039ea8fb423a1ba14c7b6d888be
-  IQKeyboardManagerSwift: c75366f1f19590e8caeae45fcd5815c9289d6099
+  IQKeyboardManagerSwift: 2dde0fc70110e8eac7ccce2a46fdbec6a850b414
   KeychainAccess: d5470352939ced6d6f7fb51cb2e67aae51fc294f
   MMWormhole: 0cd3fd35a9118b2e2d762b499f54eeaace0be791
   PromiseKit: c06835ba442ce5454ce3cdde470232804a6e4ff8
-  Realm: 38e9dcb19104b58407167d99f70d4995f7c16023
-  RealmSwift: 3183cc1ad48378fbcd634311b22c0e6c44021152
-  RxAtomic: d00e97c10db88c6f08540e0bf2752fc5a2404167
-  RxBlocking: 79413e4d916f44bb3e113c5b2cc059e36fe58910
-  RxCocoa: 477990dc3b4c3ff55fb0ac77e1cc06244e0aaec8
-  RxSwift: 74c29b693c8e42b0f64400e8b06564575742d649
-  RxSwiftUtilities: b486df7454cc867c3ea626ce24110511159e7044
+  Realm: 9357c3589555793e1860a7104a7412bca4a48d99
+  RealmSwift: 402f1e379a8ef82c635313037b043f0f06de880c
+  RxBlocking: c5e090f42d046df8b0e7752742510f349963710f
+  RxCocoa: e741b9749968e8a143e2b787f1dfbff2b63d0a5c
+  RxRealm: 900f5c7e6f0a2d6527b56eaf7283f3035ec1e8ba
+  RxRelay: 89d54507f4fd4d969e6ec1d4bd7f3673640b4640
+  RxSwift: e2dc62b366a3adf6a0be44ba9f405efd4c94e0c4
+  RxSwiftUtilities: dc208a9567b5b8da972056055de8f0446f9aa2d6
   SearchTextField: 40dc3cc57def5a211f263cac263622c163bbc25a
   secp256k1.swift: 2695e9586a624642d8090603bf9b7dfad142a699
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
@@ -200,6 +212,6 @@ SPEC CHECKSUMS:
   Web3: a4eb0d0cdedbef3f0e4c97ea83a4232a1b1f952b
   WordSuggestion: 424d96dd2cfe4259c72959f9bdcffc864f0e65d4
 
-PODFILE CHECKSUM: c8cb51ad67430921747917e8214c520ef947ed91
+PODFILE CHECKSUM: 5f6ab958c631c29a330a1f09402b9ed617b083fb
 
 COCOAPODS: 1.8.4

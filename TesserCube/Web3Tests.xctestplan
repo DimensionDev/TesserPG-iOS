@@ -13,6 +13,20 @@
   },
   "testTargets" : [
     {
+      "skippedTests" : [
+        "Web3Tests\/testCheckAvaiability()",
+        "Web3Tests\/testCheckClaimedList()",
+        "Web3Tests\/testCheckRevertReason()",
+        "Web3Tests\/testClaim()",
+        "Web3Tests\/testClaimResult()",
+        "Web3Tests\/testCreate()",
+        "Web3Tests\/testCreateResult()",
+        "Web3Tests\/testDelpoyTransactionResult()",
+        "Web3Tests\/testDeoplyContact()",
+        "Web3Tests\/testRefund()",
+        "Web3Tests\/testRefundResult()",
+        "Web3Tests\/testTransfer()"
+      ],
       "target" : {
         "containerPath" : "container:TesserCube.xcodeproj",
         "identifier" : "DB03DD4C237BF8DF00D96201",
