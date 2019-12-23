@@ -10,31 +10,36 @@ import os
 import UIKit
 import RxSwift
 import RxCocoa
+import RxSwiftUtilities
 import BigInt
 import DMS_HDWallet_Cocoa
+import Web3
 
 final class EditingRedPacketViewModel: NSObject {
     
     let disposeBag = DisposeBag()
+    let createActivityIndicator = ActivityIndicator()
     
     // Input
-    var redPacketProperty = RedPacketProperty()
-    
-    let redPacketSplitType = BehaviorRelay(value: RedPacketProperty.SplitType.average)
+    let redPacketSplitType = BehaviorRelay(value: SplitType.average)
     
     let walletModels = BehaviorRelay<[WalletModel]>(value: [])
-    let walletModel = BehaviorRelay<WalletModel?>(value: nil)
+    let selectWalletModel = BehaviorRelay<WalletModel?>(value: nil)
     
-    let amount = BehaviorRelay(value: Decimal(0))
+    let amount = BehaviorRelay(value: Decimal(0))       // user input value. default 0
     let share = BehaviorRelay(value: 1)
     
     let name = BehaviorRelay(value: "")
     let message = BehaviorRelay(value: "")
     
     // Output
+    let isCreating: Driver<Bool>
+    let canDismiss = BehaviorRelay(value: true)
     let amountInputCoinCurrencyUnitLabelText: Driver<String>
-    let minimalAmount = BehaviorRelay(value: WalletService.redPacketMinAmount)
-    
+    let minimalAmount = BehaviorRelay(value: RedPacketService.redPacketMinAmount)
+    let total = BehaviorRelay(value: Decimal(0))     // should not 0 after user input amount
+    let sendRedPacketButtonText: Driver<String>
+
     enum TableViewCellType {
         case wallet                 // select a wallet to send red packet
         case amount                 // input the amount for send
@@ -58,26 +63,73 @@ final class EditingRedPacketViewModel: NSObject {
     ]
     
     override init() {
+        isCreating = createActivityIndicator.asDriver()
         amountInputCoinCurrencyUnitLabelText = redPacketSplitType.asDriver()
             .map { type in type == .average ? "ETH per share" : "ETH" }
-            
+        sendRedPacketButtonText = total.asDriver()
+            .map { total in
+                guard total > 0, let totalInETH = NumberFormatter.decimalFormatterForETH.string(from: total as NSNumber) else {
+                    return "Send"
+                }
+                
+                return "Send \(totalInETH) ETH"
+            }
         super.init()
         
         // Update default select wallet model when wallet model pool change
         walletModels.asDriver()
             .map { $0.first }
-            .drive(walletModel)
+            .drive(selectWalletModel)
             .disposed(by: disposeBag)
         
-        share.asDriver()
-            .map { Decimal($0) * WalletService.redPacketMinAmount }
+        Driver.combineLatest(share.asDriver(), redPacketSplitType.asDriver()) { share, splitType -> Decimal in
+                switch splitType {
+                case .average:
+                    return RedPacketService.redPacketMinAmount
+                case .random:
+                    return Decimal(share) * RedPacketService.redPacketMinAmount
+                }
+            }
             .drive(minimalAmount)
+            .disposed(by: disposeBag)
+        
+        Driver.combineLatest(redPacketSplitType.asDriver(), amount.asDriver(), share.asDriver()) { splitType, amount, share -> Decimal in
+                switch splitType {
+                case .random:
+                    return amount
+                case .average:
+                    return amount * Decimal(share)
+                }
+            }
+            .drive(total)
+            .disposed(by: disposeBag)
+        
+        isCreating.asDriver()
+            .map { !$0 }
+            .drive(canDismiss)
             .disposed(by: disposeBag)
     }
     
     deinit {
         os_log("%{public}s[%{public}ld], %{public}s", ((#file as NSString).lastPathComponent), #line, #function)
+    }
+    
+}
 
+extension EditingRedPacketViewModel {
+    
+    enum SplitType: Int, CaseIterable {
+        case average
+        case random
+        
+        var title: String {
+            switch self {
+            case .average:
+                return "Average"
+            case .random:
+                return "Random"
+            }
+        }
     }
     
 }
@@ -103,7 +155,7 @@ extension EditingRedPacketViewModel: UITableViewDataSource {
                 .drive(_cell.viewModel.walletModels)
                 .disposed(by: _cell.disposeBag)
             _cell.viewModel.selectWalletModel.asDriver()
-                .drive(walletModel)
+                .drive(selectWalletModel)
                 .disposed(by: _cell.disposeBag)
             cell = _cell
         
@@ -162,6 +214,29 @@ class EditingRedPacketViewController: UIViewController {
     
     let disposeBag = DisposeBag()
     
+    private(set) lazy var closeBarButtonItem: UIBarButtonItem = {
+        // Use iOS 13 style .close button if possiable
+        if #available(iOS 13.0, *) {
+            return UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(EditingRedPacketViewController.closeBarButtonItemPressed(_:)))
+        } else {
+            return UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(EditingRedPacketViewController.closeBarButtonItemPressed(_:)))
+        }
+    }()
+    private(set) lazy var nextBarButtonItem: UIBarButtonItem = {
+        return UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(EditingRedPacketViewController.nextBarButtonItemClicked(_:)))
+    }()
+    private lazy var activityIndicatorBarButtonItem: UIBarButtonItem = {
+        let activityIndicatorView: UIActivityIndicatorView
+        if #available(iOS 13.0, *) {
+            activityIndicatorView = UIActivityIndicatorView(style: .medium)
+        } else {
+            activityIndicatorView = UIActivityIndicatorView(style: .gray)
+        }
+        activityIndicatorView.startAnimating()
+        let barButtonItem = UIBarButtonItem(customView: activityIndicatorView)
+        return barButtonItem
+    }()
+    
     let redPacketSplitTypeTableHeaderView = SelectRedPacketSplitModeTableHeaderView()
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
@@ -177,6 +252,19 @@ class EditingRedPacketViewController: UIViewController {
     }()
     let walletSectionFooterView = WalletSectionFooterView()
     
+    let sendRedPacketActivityIndicatorView: UIActivityIndicatorView = {
+        let activityIndicatorView: UIActivityIndicatorView
+        if #available(iOS 13.0, *) {
+            activityIndicatorView = UIActivityIndicatorView(style: .medium)
+        } else {
+            activityIndicatorView = UIActivityIndicatorView(style: .white)
+        }
+        activityIndicatorView.stopAnimating()
+        activityIndicatorView.hidesWhenStopped = true
+        // use white color over blue send button
+        activityIndicatorView.color = .white
+        return activityIndicatorView
+    }()
     lazy var sendRedPacketButton: TCActionButton = {
         let button = TCActionButton()
         button.color = .systemBlue
@@ -200,19 +288,12 @@ class EditingRedPacketViewController: UIViewController {
         super.viewDidLoad()
         
         title = "Send Red Packet"
-        #if !TARGET_IS_EXTENSION
-        if #available(iOS 13.0, *) {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(EditingRedPacketViewController.closeBarButtonItemPressed(_:)))
-        } else {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(EditingRedPacketViewController.closeBarButtonItemPressed(_:)))
-        }
+        
+        #if !TARGET_IS_KEYBOARD
+        // Set close button in app
+        navigationItem.leftBarButtonItem = closeBarButtonItem
         #endif
         
-        
-     
-       
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(EditingRedPacketViewController.nextBarButtonItemClicked(_:)))
-    
         // Layout tableView
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
@@ -223,8 +304,11 @@ class EditingRedPacketViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
         
-        #if !TARGET_IS_KEYBOARD
-        // Layout send red packet button
+        #if TARGET_IS_KEYBOARD
+        // Set next button in keyboard
+        navigationItem.rightBarButtonItem = nextBarButtonItem
+        #else
+        // Layout send red packet button in app
         sendRedPacketButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sendRedPacketButton)
         let sendRedPacketButtonBottomLayoutConstraint = view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: sendRedPacketButton.bottomAnchor)
@@ -235,7 +319,17 @@ class EditingRedPacketViewController: UIViewController {
             sendRedPacketButtonBottomLayoutConstraint,
             view.bottomAnchor.constraint(greaterThanOrEqualTo: sendRedPacketButton.bottomAnchor, constant: 16),
         ])
+        // Layout activity indicator view
+        sendRedPacketActivityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        sendRedPacketButton.addSubview(sendRedPacketActivityIndicatorView)
+        NSLayoutConstraint.activate([
+            sendRedPacketActivityIndicatorView.centerXAnchor.constraint(equalTo: sendRedPacketButton.centerXAnchor),
+            sendRedPacketActivityIndicatorView.centerYAnchor.constraint(equalTo: sendRedPacketButton.centerYAnchor),
+        ])
         #endif
+        
+        // Bind send red packet button target & action
+        sendRedPacketButton.addTarget(self, action: #selector(EditingRedPacketViewController.sendRedPacketButtonPressed(_:)), for: .touchUpInside)
         
         // Setup tableView
         tableView.tableHeaderView = redPacketSplitTypeTableHeaderView
@@ -262,8 +356,15 @@ class EditingRedPacketViewController: UIViewController {
             })
             .disposed(by: disposeBag)
 
+        // Update wallet balance
+        viewModel.selectWalletModel.asDriver()
+            .drive(onNext: { walletModel in
+                walletModel?.updateBalance()
+            })
+            .disposed(by: disposeBag)
+        
         // Bind wallet model balance to wallet section footer view
-        viewModel.walletModel.asDriver()
+        viewModel.selectWalletModel.asDriver()
             .flatMapLatest { walletModel -> Driver<String> in
                 guard let walletModel = walletModel else {
                     return Driver.just("Current balance: - ")
@@ -283,6 +384,29 @@ class EditingRedPacketViewController: UIViewController {
                 }
             }
             .drive(walletSectionFooterView.walletBalanceLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        // Bind send red packet button text
+        viewModel.sendRedPacketButtonText.asDriver()
+            .drive(sendRedPacketButton.rx.title(for: .normal))
+            .disposed(by: disposeBag)
+        
+        viewModel.isCreating.asDriver()
+            .drive(onNext: { [weak self] isCreating in
+                self?.tableView.isUserInteractionEnabled = !isCreating
+                
+                #if TARGET_IS_KEYBOARD
+                self?.navigationItem.rightBarButtonItem = isCreating ? self?.activityIndicatorBarButtonItem : self?.nextBarButtonItem
+                #else
+                self?.navigationItem.leftBarButtonItem = isCreating ? nil : self?.closeBarButtonItem
+                self?.sendRedPacketButton.isUserInteractionEnabled = !isCreating
+
+                let buttonTitle = isCreating ? "" : "Send"
+                self?.sendRedPacketButton.setTitle(buttonTitle, for: .normal)
+                
+                isCreating ? self?.sendRedPacketActivityIndicatorView.startAnimating() : self?.sendRedPacketActivityIndicatorView.stopAnimating()
+                #endif
+            })
             .disposed(by: disposeBag)
     }
     
@@ -305,59 +429,151 @@ class EditingRedPacketViewController: UIViewController {
 }
 
 extension EditingRedPacketViewController {
+ 
+    private func sendRedPacket() {
+        view.endEditing(true)
+        
+        let alertController = UIAlertController(title: "Error", message: nil, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        
+        guard let selectWalletModel = viewModel.selectWalletModel.value else {
+            alertController.message = "Please select valid wallet"
+            present(alertController, animated: true, completion: nil)
+            return
+        }
+        
+        let senderAddress = selectWalletModel.address
+        guard let walletAddress = try? EthereumAddress(hex: senderAddress, eip55: false) else {
+            alertController.message = "Please select valid wallet"
+            present(alertController, animated: true, completion: nil)
+            return
+        }
+        
+        guard let availableBalance = selectWalletModel.balance.value else {
+            alertController.message = "Can not read select wallet balance\nPlease try later"
+            present(alertController, animated: true, completion: nil)
+            return
+        }
+        
+        guard viewModel.total.value > 0,
+            let sendTotal = viewModel.total.value.wei else {
+                alertController.message = "Please input valid amount"
+                present(alertController, animated: true, completion: nil)
+                return
+        }
+
+        guard sendTotal < availableBalance else {
+            alertController.message = "Insufficient account balance\nPlease input valid amount"
+            present(alertController, animated: true, completion: nil)
+            return
+        }
+        
+        let senderName = viewModel.name.value
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .replacingOccurrences(of: "\n", with: " ")
+        // should not empty
+        guard !senderName.isEmpty else {
+            alertController.message = "Please input valid name"
+            present(alertController, animated: true, completion: nil)
+            return
+        }
+        
+        guard senderName.count <= 30 else {
+            alertController.message = "Name can be up to 30 characters\nPlease reduce the name length"
+            present(alertController, animated: true, completion: nil)
+            return
+        }
+        
+        // could be empty
+        let sendMessage = viewModel.message.value
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .replacingOccurrences(of: "\n", with: " ")
+        
+        guard sendMessage.count <= 140 else {
+            alertController.message = "Messages can be up to 140 characters\nPlease reduce the message length"
+            present(alertController, animated: true, completion: nil)
+            return
+        }
+        // Verify finish
+        
+        let uuids = (0..<viewModel.share.value).map { _ in
+            return UUID().uuidString
+        }
+        assert(uuids.count == viewModel.share.value)
+        let isRandom = viewModel.redPacketSplitType.value == .random
+        
+        let redPacket = RedPacket.v1()
+        redPacket.uuids.append(objectsIn: uuids)
+        redPacket.is_random = isRandom
+        redPacket.sender_address = senderAddress
+        redPacket.sender_name = senderName
+        redPacket.send_total = sendTotal
+        redPacket.send_message = sendMessage
+        redPacket.status = .initial
+        
+        // get nonce -> call create transaction
+        // success: push to CreatedRedPacketViewController
+        // failure: stand in same place and just alert user error
+        WalletService.getTransactionCount(address: walletAddress).asObservable()
+            .withLatestFrom(viewModel.isCreating) { ($0, $1) }     // (nonce, isCreating)
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+            .filter { $0.1 == false }                               // not creating
+            .map { $0.0 }                                           // nonce
+            .retry(3)
+            .do(onNext: { nonce in
+                let nonce = Int(nonce.quantity)
+                redPacket.create_nonce.value = nonce
+            })
+            .flatMap { nonce -> Observable<TransactionHash> in
+                return RedPacketService.create(for: redPacket, use: selectWalletModel, nonce: nonce)
+                    .trackActivity(self.viewModel.createActivityIndicator)
+            }
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] transactionHash in
+                do {
+                    // red packet create transaction success
+                    // set status to .pending
+                    let realm = try RedPacketService.realm()
+                    try realm.write {
+                        redPacket.create_transaction_hash = transactionHash.hex()
+                        redPacket.status = .pending
+                        realm.add(redPacket)
+                    }
+        
+                    let createdRedPacketViewController = CreatedRedPacketViewController()
+                    createdRedPacketViewController.viewModel = CreatedRedPacketViewModel(redPacket: redPacket)
+                    self?.navigationController?.pushViewController(createdRedPacketViewController, animated: true)
+        
+                } catch {
+                    alertController.message = error.localizedDescription
+                    self?.present(alertController, animated: true, completion: nil)
+                    return
+                }
+
+            }, onError: { [weak self] error in
+                // red packet create transaction fail
+                // discard record and alert user
+                alertController.message = error.localizedDescription
+                self?.present(alertController, animated: true, completion: nil)
+            })
+            .disposed(by: viewModel.disposeBag)
+    }
+    
+}
+
+extension EditingRedPacketViewController {
     
     @objc private func closeBarButtonItemPressed(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
     
     @objc private func nextBarButtonItemClicked(_ sender: UIBarButtonItem) {
-        view.endEditing(true)
-        
-//        let alertController = UIAlertController(title: "Error", message: nil, preferredStyle: .alert)
-//        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-//        alertController.addAction(okAction)
-//
-//        guard let selectWalletModel = viewModel.walletProvider?.selectWalletModel.value else {
-//            alertController.message = "Please select valid wallet"
-//            present(alertController, animated: true, completion: nil)
-//            return
-//        }
-//
-//        guard let balance = selectWalletModel.balance.value else {
-//            alertController.message = "Wallet balance inquiry failed"
-//            present(alertController, animated: true, completion: nil)
-//            return
-//        }
-//
-//        let minAmountInWei = BigUInt(viewModel.inputRedPacketShareTableViewCell.share.value) * WalletService.redPacketMinAmountInWei
-//        guard balance > minAmountInWei else {
-//            alertController.message = "Insufficient wallet balance"
-//            present(alertController, animated: true, completion: nil)
-//            return
-//        }
-//
-//        guard balance > viewModel.redPacketProperty.amountInWei else {
-//            alertController.message = "Insufficient wallet balance"
-//            present(alertController, animated: true, completion: nil)
-//            return
-//        }
-//
-//        // FIXME:
-//        let minAmountDecimal = (Decimal(string: String(minAmountInWei)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
-//        if viewModel.redPacketProperty.amount < minAmountDecimal {
-//            viewModel.redPacketProperty.amount = minAmountDecimal
-//        }
-//
-//        let selectRecipientsVC = RedPacketRecipientSelectViewController()
-//        selectRecipientsVC.redPacketProperty = viewModel.redPacketProperty
-//        //        recommendView?.updateColor(theme: currentTheme)
-//        #if TARGET_IS_EXTENSION
-//        selectRecipientsVC.delegate = KeyboardModeManager.shared
-//        selectRecipientsVC.optionFieldView = optionsView
-//        #else
-//        selectRecipientsVC.delegate = self
-//        #endif
-//        navigationController?.pushViewController(selectRecipientsVC, animated: true)
+        sendRedPacket()
+    }
+    
+    @objc private func sendRedPacketButtonPressed(_ sender: UIButton) {
+        sendRedPacket()
     }
     
 }
@@ -412,7 +628,7 @@ extension EditingRedPacketViewController: UITableViewDelegate {
         let walletSelectVC = RedPacketWalletSelectViewController()
         walletSelectVC.delegate = self
         walletSelectVC.wallets = viewModel.walletModels.value
-        walletSelectVC.selectedWallet = viewModel.walletModel.value
+        walletSelectVC.selectedWallet = viewModel.selectWalletModel.value
         navigationController?.pushViewController(walletSelectVC, animated: true)
         #endif
     }
@@ -423,7 +639,7 @@ extension EditingRedPacketViewController: UITableViewDelegate {
 extension EditingRedPacketViewController: RedPacketWalletSelectViewControllerDelegate {
     
     func redPacketWalletSelectViewController(_ viewController: RedPacketWalletSelectViewController, didSelect wallet: WalletModel) {
-        viewModel.walletModel.accept(wallet)
+        viewModel.selectWalletModel.accept(wallet)
         viewController.navigationController?.popViewController(animated: true)
     }
 }
@@ -432,13 +648,14 @@ extension EditingRedPacketViewController: RedPacketWalletSelectViewControllerDel
 // MARK: - UIAdaptivePresentationControllerDelegate
 extension EditingRedPacketViewController: UIAdaptivePresentationControllerDelegate {
     
-    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
-        return .fullScreen
+    func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
+        return viewModel.canDismiss.value
     }
     
 }
 
 // MAKR: - RedPacketRecipientSelectViewControllerDelegate
+/*
 extension EditingRedPacketViewController: RedPacketRecipientSelectViewControllerDelegate {
     
     func redPacketRecipientSelectViewController(_ viewController: RedPacketRecipientSelectViewController, didSelect contactInfo: FullContactInfo) {
@@ -455,6 +672,7 @@ extension EditingRedPacketViewController: RedPacketRecipientSelectViewController
     }
     
 }
+ */
 
 // Mock Testing Data
 

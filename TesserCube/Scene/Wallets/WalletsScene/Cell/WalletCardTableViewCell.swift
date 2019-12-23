@@ -87,6 +87,7 @@ final class WalletCardTableViewCell: UITableViewCell {
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+        _init()
     }
 
     private func _init() {

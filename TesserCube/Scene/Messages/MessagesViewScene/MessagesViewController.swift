@@ -78,7 +78,7 @@ class MessagesViewController: TCBaseViewController {
         return item
     }()
     private lazy var tableViewEditToolbar: UIToolbar = {
-        let toolbar = UIToolbar()
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 40))
         let items = [selectBarButtonItem,
                      UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
                      deleteBarButtonItem]
@@ -94,7 +94,6 @@ class MessagesViewController: TCBaseViewController {
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 220
         tableView.register(MessageCardCell.self, forCellReuseIdentifier: String(describing: MessageCardCell.self))
-        tableView.register(RedPacketCardTableViewCell.self, forCellReuseIdentifier: String(describing: RedPacketCardTableViewCell.self))
         tableView.backgroundColor = .clear
         tableView.keyboardDismissMode = .interactive
         tableView.preservesSuperviewLayoutMargins = true
@@ -283,13 +282,12 @@ class MessagesViewController: TCBaseViewController {
         viewModel.selectedMessageType.asDriver().debug().drive().disposed(by: disposeBag)
         viewModel.searchText.asDriver().debug().drive().disposed(by: disposeBag)
         
-        
         // Update tableView when red packet update
-        viewModel.redPacketNotificationToken = RedPacketService.shared.realm?.objects(RedPacket.self).observe { [weak self] change in
-            guard let `self` = self else { return }
-            os_log("%{public}s[%{public}ld], %{public}s update tableView for red packet", ((#file as NSString).lastPathComponent), #line, #function)
-            self.tableView.reloadData()
-        }
+//        viewModel.redPacketNotificationToken = RedPacketService.shared.realm?.objects(RedPacket.self).observe { [weak self] change in
+//            guard let `self` = self else { return }
+//            os_log("%{public}s[%{public}ld], %{public}s update tableView for red packet", ((#file as NSString).lastPathComponent), #line, #function)
+//            self.tableView.reloadData()
+//        }
     }
 
     private func reloadActionsView() {
