@@ -134,7 +134,7 @@ class ModeSwitchView: UIView, Thematic {
         updateColor(theme: .light)
         encryptModeButton.action = .encrypt
         
-        signModeButton.action = .encrypt
+        signModeButton.action = .sign
         
         redpacketModeButton.action = .redpacket
         

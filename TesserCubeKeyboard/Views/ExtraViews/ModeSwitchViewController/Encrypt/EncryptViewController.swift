@@ -53,6 +53,12 @@ class EncryptViewController: UIViewController, TCkeyboardModeProvider {
             .disposed(by: disposBag)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        contentInputView.inputTextField.textFieldIsSelected = true
+        contentInputView.inputTextField.customDelegate = self
+    }
+    
     private func setupNaviItems() {
         
         let nextBarButtonItem = UIBarButtonItem(title: L10n.Common.Button.next, style: .plain, target: self, action: #selector(nextBarButtonDidClicked(_:)))
@@ -63,6 +69,7 @@ class EncryptViewController: UIViewController, TCkeyboardModeProvider {
     @objc
     private func nextBarButtonDidClicked(_ sender: UIBarButtonItem) {
         let selectReceipientVC = SelectRecipientViewController()
+        selectReceipientVC.rawMessage = contentString.value
         navigationController?.pushViewController(selectReceipientVC, animated: true)
     }
 }

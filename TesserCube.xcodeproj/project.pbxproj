@@ -1367,13 +1367,12 @@
 		832D1D9D23A8C85F006FDF6D /* ModeSwitchViewController */ = {
 			isa = PBXGroup;
 			children = (
-				832D1D9E23A8CB99006FDF6D /* EncryptViewController.swift */,
+				83B8795123B0584A007DAEEB /* Redpacket */,
+				83B8795023B05843007DAEEB /* Sign */,
+				83B8794F23B05833007DAEEB /* Encrypt */,
 				832D1DA023A8CE30006FDF6D /* ModeSwitchHelper.swift */,
 				8393371623A9C70200C540EF /* TCKeyboardModeContainer.swift */,
-				8393371823A9F85E00C540EF /* SelectRecipientViewController.swift */,
 				83D8450E23AB089900AA6B36 /* ModeSwitchView.swift */,
-				83D8451023AB484C00AA6B36 /* SignViewController.swift */,
-				83D8451223AB486200AA6B36 /* RedPacketKeyboardViewController.swift */,
 			);
 			path = ModeSwitchViewController;
 			sourceTree = "<group>";
@@ -1418,6 +1417,31 @@
 				DB415EAD238CD1E90090C28F /* ClaimRedPacket */,
 			);
 			path = RedPacket;
+			sourceTree = "<group>";
+		};
+		83B8794F23B05833007DAEEB /* Encrypt */ = {
+			isa = PBXGroup;
+			children = (
+				832D1D9E23A8CB99006FDF6D /* EncryptViewController.swift */,
+				8393371823A9F85E00C540EF /* SelectRecipientViewController.swift */,
+			);
+			path = Encrypt;
+			sourceTree = "<group>";
+		};
+		83B8795023B05843007DAEEB /* Sign */ = {
+			isa = PBXGroup;
+			children = (
+				83D8451023AB484C00AA6B36 /* SignViewController.swift */,
+			);
+			path = Sign;
+			sourceTree = "<group>";
+		};
+		83B8795123B0584A007DAEEB /* Redpacket */ = {
+			isa = PBXGroup;
+			children = (
+				83D8451223AB486200AA6B36 /* RedPacketKeyboardViewController.swift */,
+			);
+			path = Redpacket;
 			sourceTree = "<group>";
 		};
 		83B93D11221CDC3400F556C0 /* Support Files */ = {

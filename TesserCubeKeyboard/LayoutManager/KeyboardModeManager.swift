@@ -61,7 +61,7 @@ class KeyboardModeManager: NSObject {
 //    weak var selectRecipientView: SelectedRecipientView?
     var optionsView: OptionFieldView!
     
-    var recommendView: RecommendRecipientsView?
+//    var recommendView: RecommendRecipientsView?
     
     var cannotDecryptView: InterpretFailView?
     
@@ -107,7 +107,7 @@ class KeyboardModeManager: NSObject {
     }
     
     private func updateMode() {
-        removeRecommendView()
+//        removeRecommendView()
         removeContainerView()
         removeEditingRedPacketView()
         removeCannotDecryptView()
@@ -162,6 +162,13 @@ class KeyboardModeManager: NSObject {
                     inputRecipientTextView.inputTextField.repositionCursor()
                     return
                 }
+                if let signVC = topNaviVC.topViewController as? SignViewController {
+                    let inputRecipientTextView = signVC.contentInputView
+                    let tempText = inputRecipientTextView.inputTextField.text ?? ""
+                    inputRecipientTextView.inputTextField.text = (tempText + key)
+                    inputRecipientTextView.inputTextField.repositionCursor()
+                    return
+                }
             }
         }
         keyboardVC?.textDocumentProxy.insertText(key)
@@ -202,6 +209,14 @@ class KeyboardModeManager: NSObject {
                     }
                     return
                 }
+                if let signVC = topNaviVC.topViewController as? SignViewController {
+                    let inputRecipientTextView = signVC.contentInputView
+                    let tempText = inputRecipientTextView.inputTextField.text ?? ""
+                    if !tempText.isEmpty {
+                        inputRecipientTextView.inputTextField.text = String(tempText[tempText.startIndex ..< tempText.index(before: tempText.endIndex)])
+                        inputRecipientTextView.inputTextField.repositionCursor()
+                    }
+                }
             }
         }
         keyboardVC?.textDocumentProxy.deleteBackward()
@@ -241,6 +256,9 @@ class KeyboardModeManager: NSObject {
             if let topNaviVC = container.topmostViewController as? UINavigationController {
                 if let encryptVC = topNaviVC.topViewController as? EncryptViewController {
                     return encryptVC.contentInputView.inputTextField.text
+                }
+                if let signVC = topNaviVC.topViewController as? SignViewController {
+                    return signVC.contentInputView.inputTextField.text
                 }
             }
         }
@@ -313,28 +331,28 @@ extension KeyboardModeManager {
         }
     }
     
-    func addRecommendView() {
-        if recommendView == nil {
-            
-            recommendView = RecommendRecipientsView(frame: .zero)
-            recommendView?.updateColor(theme: currentTheme)
-            recommendView?.delegate = self
-            recommendView?.optionFieldView = optionsView
-            keyboardVC?.view.insertSubview(recommendView!, belowSubview: optionsView)
-            
-            recommendView?.snp.makeConstraints{ make in
-                make.leading.trailing.top.equalToSuperview()
-                make.height.equalTo(metrics[.contactsBanner]!)
-            }
-        }
-    }
-    
-    func removeRecommendView() {
-        if recommendView != nil {
-            recommendView?.removeFromSuperview()
-            recommendView = nil
-        }
-    }
+//    func addRecommendView() {
+//        if recommendView == nil {
+//
+//            recommendView = RecommendRecipientsView(frame: .zero)
+//            recommendView?.updateColor(theme: currentTheme)
+//            recommendView?.delegate = self
+//            recommendView?.optionFieldView = optionsView
+//            keyboardVC?.view.insertSubview(recommendView!, belowSubview: optionsView)
+//
+//            recommendView?.snp.makeConstraints{ make in
+//                make.leading.trailing.top.equalToSuperview()
+//                make.height.equalTo(metrics[.contactsBanner]!)
+//            }
+//        }
+//    }
+//
+//    func removeRecommendView() {
+//        if recommendView != nil {
+//            recommendView?.removeFromSuperview()
+//            recommendView = nil
+//        }
+//    }
 }
 
 extension KeyboardModeManager: RecommendRecipientsViewDelegate {
@@ -347,6 +365,11 @@ extension KeyboardModeManager: RecommendRecipientsViewDelegate {
             print(" This should not happen, account: \(contactInfo.contact.name)")
         } else {
             optionsView.addSelectedRecipient(contactInfo)
+        }
+        if let encryptNaviVC = tcKeyboardModeContainer?.topmostViewController as? UINavigationController {
+            if let selectRecipientVC = encryptNaviVC.topViewController as? SelectRecipientViewController {
+                selectRecipientVC.navigationItem.rightBarButtonItem?.isEnabled = !optionsView.selectedContacts.isEmpty
+            }
         }
     }
 }
@@ -376,8 +399,14 @@ extension KeyboardModeManager: RedPacketRecipientSelectViewControllerDelegate {
 
 extension KeyboardModeManager: SelectedRecipientViewDelegate {
     func selectedRecipientView(_ view: SelectedRecipientView, didClick contactInfo: FullContactInfo) {
-        optionsView.updateLayout(mode: mode)
-        recommendView?.reloadRecipients()
+//        optionsView.updateLayout(mode: mode)
+        if let encryptNaviVC = tcKeyboardModeContainer?.topmostViewController as? UINavigationController {
+            if let selectRecipientVC = encryptNaviVC.topViewController as? SelectRecipientViewController {
+                selectRecipientVC.selectRecipientView?.reloadRecipients()
+                selectRecipientVC.navigationItem.rightBarButtonItem?.isEnabled = !optionsView.selectedContacts.isEmpty
+            }
+        }
+//        recommendView?.reloadRecipients()
         if let redPacketRecipietnVC = editingRedPacketViewControllerNaviVC?.children.last as? RedPacketRecipientSelectViewController {
             redPacketRecipietnVC.reloadRecipients()
         }
@@ -526,6 +555,59 @@ extension KeyboardModeManager {
             default:
                 toastAlerter.alert(message: error?.localizedDescription ?? L10n.Common.Alert.unknownError, in: keyboardVC.view)
             }
+        }
+    }
+}
+
+extension KeyboardModeManager: SelectRecipientViewControllerDelegate {
+    func selectRecipientViewController(_ viewController: SelectRecipientViewController, rawMessage: String, didClick sendBarButton: UIBarButtonItem) {
+        guard !optionsView.selectedContacts.isEmpty else {
+            toastAlerter.alert(message: L10n.Keyboard.Alert.noSelectedRecipient, in: keyboardVC!.view)
+            return
+        }
+        
+        let recipientKeys = optionsView.selectedContacts.map { $0.keys }.flatMap { $0 }
+        do {
+            var signatureKey: TCKey?
+            if case .automatic = KeyboardPreference.kMessageDigitalSignatureSettings {
+                signatureKey = ProfileService.default.defaultSignatureKey
+            }
+
+            let message = try ProfileService.default.encryptMessage(rawMessage, signatureKey: signatureKey, recipients: recipientKeys)
+
+            keyboardVC?.textDocumentProxy.insertText(message.encryptedMessage)
+            optionsView.removeAllSelectedRecipients()
+            
+            mode = .typing
+        } catch {
+            consolePrint(error.localizedDescription)
+            toastAlerter.alert(message: error.localizedDescription, in: keyboardVC!.view)
+        }
+    }
+}
+
+extension KeyboardModeManager: SignViewControllerDelegate {
+    func signViewController(_ viewController: SignViewController, didClick sendBarButton: UIBarButtonItem) {
+        guard let originContent = documentContextBeforeInput, !originContent.isEmpty else { return }
+        
+        do {
+            var signatureKey: TCKey?
+            if case .automatic = KeyboardPreference.kMessageDigitalSignatureSettings {
+                signatureKey = ProfileService.default.defaultSignatureKey
+            }
+            
+            guard let signKey = signatureKey else { return }
+            
+            let signedMessage = try KeyFactory.clearsignMessage(originContent, signatureKey: signKey)
+            var message = Message(id: nil, senderKeyId: signatureKey?.longIdentifier ?? "", senderKeyUserId: signatureKey?.userID ?? "", composedAt: Date(), interpretedAt: nil, isDraft: false, rawMessage: originContent, encryptedMessage: signedMessage)
+            try ProfileService.default.addMessage(&message, recipientKeys: [])
+
+            keyboardVC?.textDocumentProxy.insertText(signedMessage)
+            
+            mode = .typing
+        } catch {
+            consolePrint(error.localizedDescription)
+            toastAlerter.alert(message: error.localizedDescription, in: keyboardVC!.view)
         }
     }
 }
