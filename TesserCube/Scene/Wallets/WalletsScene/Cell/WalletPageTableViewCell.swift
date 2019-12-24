@@ -81,7 +81,7 @@ extension WalletPageTableViewCell: UIPageViewControllerDelegate {
             return
         }
         
-        guard finished else {
+        guard finished, completed else {
             return
         }
         

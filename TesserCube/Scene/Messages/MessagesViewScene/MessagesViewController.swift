@@ -170,7 +170,7 @@ class MessagesViewController: TCBaseViewController {
             .disposed(by: disposeBag)
 
         searchController.searchBar.rx.text.orEmpty
-            .throttle(0.3, scheduler: MainScheduler.instance)
+            .throttle(DispatchTimeInterval.milliseconds(300), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
             .asDriver(onErrorJustReturn: "")
             .drive(viewModel.searchText)

@@ -506,6 +506,8 @@
 		DBC9BD3823B094F200252437 /* RedPacketPayloadEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD3623B094F200252437 /* RedPacketPayloadEncryptor.swift */; };
 		DBC9BD3923B094F200252437 /* RedPacketPayloadEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD3623B094F200252437 /* RedPacketPayloadEncryptor.swift */; };
 		DBC9BD3A23B094F200252437 /* RedPacketPayloadEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD3623B094F200252437 /* RedPacketPayloadEncryptor.swift */; };
+		DBC9BD3D23B1DC2500252437 /* RedPacketPayloadEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD3623B094F200252437 /* RedPacketPayloadEncryptor.swift */; };
+		DBC9BD3F23B1EF4F00252437 /* OpenRedPacketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD3E23B1EF4F00252437 /* OpenRedPacketViewController.swift */; };
 		DBC9CEE62387896C009E13C5 /* redpacket.bin in Resources */ = {isa = PBXBuildFile; fileRef = DBC9CEE42387896B009E13C5 /* redpacket.bin */; };
 		DBC9CEE72387896C009E13C5 /* redpacket.json in Resources */ = {isa = PBXBuildFile; fileRef = DBC9CEE52387896C009E13C5 /* redpacket.json */; };
 		DBC9CEE82387B0B0009E13C5 /* EditingRedPacketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83955B76237271EF00161498 /* EditingRedPacketViewController.swift */; };
@@ -939,6 +941,7 @@
 		DBC7DEBC2248C7F600DA4C3E /* RecipientContactPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipientContactPickerView.swift; sourceTree = "<group>"; };
 		DBC7DEC02248D49E00DA4C3E /* ComposeMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeMessageViewModel.swift; sourceTree = "<group>"; };
 		DBC9BD3623B094F200252437 /* RedPacketPayloadEncryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedPacketPayloadEncryptor.swift; sourceTree = "<group>"; };
+		DBC9BD3E23B1EF4F00252437 /* OpenRedPacketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenRedPacketViewController.swift; sourceTree = "<group>"; };
 		DBC9CEE42387896B009E13C5 /* redpacket.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = redpacket.bin; sourceTree = "<group>"; };
 		DBC9CEE52387896C009E13C5 /* redpacket.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = redpacket.json; sourceTree = "<group>"; };
 		DBC9CF002387C889009E13C5 /* SelectWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectWalletTableViewCell.swift; sourceTree = "<group>"; };
@@ -1484,6 +1487,7 @@
 				DBC9CF042387C898009E13C5 /* EditingRedPacket */,
 				DB0F102023893B8100F49D2C /* CreatedRedPacket */,
 				DB415EAD238CD1E90090C28F /* ClaimRedPacket */,
+				DBC9BD4023B200C600252437 /* OpenRedPacket */,
 			);
 			path = RedPacket;
 			sourceTree = "<group>";
@@ -2000,6 +2004,14 @@
 				DB66FE6E224A3CD600D82704 /* SenderContactPickerView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		DBC9BD4023B200C600252437 /* OpenRedPacket */ = {
+			isa = PBXGroup;
+			children = (
+				DBC9BD3E23B1EF4F00252437 /* OpenRedPacketViewController.swift */,
+			);
+			path = OpenRedPacket;
 			sourceTree = "<group>";
 		};
 		DBC9CF032387C88E009E13C5 /* Cell */ = {
@@ -2728,6 +2740,7 @@
 				832146BE223F957B008ECC22 /* MeViewModel.swift in Sources */,
 				DB4CBCAA224F962A00ED6BF0 /* InterpretMessageViewModel.swift in Sources */,
 				DB1449752314F1E4000FA38E /* InterpretActionViewController.swift in Sources */,
+				DBC9BD3F23B1EF4F00252437 /* OpenRedPacketViewController.swift in Sources */,
 				8378335E2248F1DE00F2C0BF /* HUD.swift in Sources */,
 				DB449990228C13CA000B7E8A /* MessageDigitalSignatureSettings.swift in Sources */,
 				DB44999E228D3353000B7E8A /* MessageDigitalSignatureSettingsViewModel.swift in Sources */,
@@ -3042,6 +3055,7 @@
 				DBD4A55D23ACBA4B0030FFA6 /* RedPacketRawPayLoad.swift in Sources */,
 				DB0EC52A23ACA44100BDA2B5 /* Web3Secret.swift in Sources */,
 				DB0EC52423AC9ECD00BDA2B5 /* RedPacketRawPayloadTests.swift in Sources */,
+				DBC9BD3D23B1DC2500252437 /* RedPacketPayloadEncryptor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
