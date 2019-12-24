@@ -274,7 +274,7 @@ class EditingRedPacketViewController: UIViewController {
     }()
 
     // TODO:
-    weak var amountInputView: RecipientInputView? {
+    weak var amountInputView: KeyboardInputView? {
         return nil
     }
 

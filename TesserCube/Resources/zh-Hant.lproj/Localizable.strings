@@ -11,6 +11,7 @@
 "Common.Button.Edit" = "編輯";
 "Common.Button.Discard" = "丟棄";
 "Common.Button.Done" = "完成";
+"Common.Button.Next" = "下一步";
 
 "Common.Label.NameUnknown" = "[未知]";
 "Common.Label.NameNone" = "[無]";
@@ -211,6 +212,8 @@
 "Keyboard.Interpreted.Content.NoNeccessaryPrivateKey" = "沒有找到可以用來解密該消息的密鑰";
 "Keyboard.Interpreted.Title.BadSignature" = "無效簽名: 可能來自偽造的簽名者";
 "Keyboard.Interpreted.Title.UnknownSender" = "未知簽名: 請保持警惕";
+
+"Keyboard.Encrypt.SendEncryptedMessageButton" = "發送";
 
 "Keyboard.KeyCap.Return.return" = "換行";
 "Keyboard.KeyCap.Return.search" = "搜尋";

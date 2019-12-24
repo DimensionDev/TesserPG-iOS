@@ -55,8 +55,8 @@ class RecommendRecipientsView: UIView, Thematic {
         return label
     }()
     
-    var recipientInputView: RecipientInputView = {
-        let inputView = RecipientInputView(frame: .zero)
+    var recipientInputView: KeyboardInputView = {
+        let inputView = KeyboardInputView(frame: .zero)
         return inputView
     }()
     

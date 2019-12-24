@@ -619,10 +619,10 @@ class KeyboardViewController: UIInputViewController {
                 KeyboardModeManager.shared.deleteBackward()
                 KeyboardModeManager.shared.insertKey(".")
                 KeyboardModeManager.shared.insertKey(" ")
-//                self.textDocumentProxy.deleteBackward()
-//                self.textDocumentProxy.deleteBackward()
-//                self.textDocumentProxy.insertText(".")
-//                self.textDocumentProxy.insertText(" ")
+                //                self.textDocumentProxy.deleteBackward()
+                //                self.textDocumentProxy.deleteBackward()
+                //                self.textDocumentProxy.insertText(".")
+                //                self.textDocumentProxy.insertText(" ")
             }
             
             self.autoPeriodState = .noSpace

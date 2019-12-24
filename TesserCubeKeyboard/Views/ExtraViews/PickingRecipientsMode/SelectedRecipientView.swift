@@ -105,7 +105,7 @@ extension SelectedRecipientView {
         recipientButton.sizeToFit()
         recipientButton.addTarget(self, action: #selector(recipientButtonDidClicked(_:)), for: .touchUpInside)
         
-        if let _ = stackView?.arrangedSubviews.last as? RecipientInputView {
+        if let _ = stackView?.arrangedSubviews.last as? KeyboardInputView {
             stackView?.insertArrangedSubview(recipientButton, at: stackView!.arrangedSubviews.count - 1)
         } else {
             stackView?.addArrangedSubview(recipientButton)
