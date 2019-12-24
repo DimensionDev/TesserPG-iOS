@@ -101,7 +101,7 @@ class KeyboardModeManager: NSObject {
             make.bottom.equalTo(keyboardVC!.forwardingView.snp.top)
             make.height.equalTo(metrics[.recipientsBanner]!)
         }
-        // optionsView.selectedRecipientsView?.delegate = self
+        optionsView.selectedRecipientsView?.delegate = self
         optionsView.actionsView.delegate = self
         optionsView.suggestionView?.delegate = self
     }
@@ -399,21 +399,16 @@ extension KeyboardModeManager: RecommendRecipientsViewDelegate {
 //     }
 // }
 
-// extension KeyboardModeManager: SelectedRecipientViewDelegate {
-//     func selectedRecipientView(_ view: SelectedRecipientView, didClick contactInfo: FullContactInfo) {
-// //        optionsView.updateLayout(mode: mode)
-//         if let encryptNaviVC = tcKeyboardModeContainer?.topmostViewController as? UINavigationController {
-//             if let selectRecipientVC = encryptNaviVC.topViewController as? SelectRecipientViewController {
-//                 selectRecipientVC.selectRecipientView?.reloadRecipients()
-//                 selectRecipientVC.navigationItem.rightBarButtonItem?.isEnabled = !optionsView.selectedContacts.isEmpty
-//             }
-//         }
-// //        recommendView?.reloadRecipients()
-//         if let redPacketRecipietnVC = editingRedPacketViewControllerNaviVC?.children.last as? RedPacketRecipientSelectViewController {
-//             redPacketRecipietnVC.reloadRecipients()
-//         }
-//     }
-// }
+ extension KeyboardModeManager: SelectedRecipientViewDelegate {
+     func selectedRecipientView(_ view: SelectedRecipientView, didClick contactInfo: FullContactInfo) {
+         if let encryptNaviVC = tcKeyboardModeContainer?.topmostViewController as? UINavigationController {
+             if let selectRecipientVC = encryptNaviVC.topViewController as? SelectRecipientViewController {
+                 selectRecipientVC.selectRecipientView?.reloadRecipients()
+                 selectRecipientVC.navigationItem.rightBarButtonItem?.isEnabled = !optionsView.selectedContacts.isEmpty
+             }
+         }
+     }
+ }
 
 // MARK: Cannot decrypt view
 extension KeyboardModeManager: InterpretFailViewDelegate {
