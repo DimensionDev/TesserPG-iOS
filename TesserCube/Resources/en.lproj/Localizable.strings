@@ -11,6 +11,7 @@
 "Common.Button.Edit" = "Edit";
 "Common.Button.Discard" = "Discard";
 "Common.Button.Done" = "Done";
+"Common.Button.Next" = "Next";
 
 "Common.Label.NameUnknown" = "[Unknown]";
 "Common.Label.NameNone" = "[None]";
@@ -219,6 +220,8 @@
 "Keyboard.Interpreted.Content.NoNeccessaryPrivateKey" = "You do not have the necessary private key to decrypt this message.";
 "Keyboard.Interpreted.Title.BadSignature" = "Bad Signature: Possibly Fake Sender";
 "Keyboard.Interpreted.Title.UnknownSender" = "Unknown Sender: Keep Caution";
+
+"Keyboard.Encrypt.SendEncryptedMessageButton" = "Send";
 
 "Keyboard.KeyCap.Return.return" = "return";
 "Keyboard.KeyCap.Return.search" = "search";

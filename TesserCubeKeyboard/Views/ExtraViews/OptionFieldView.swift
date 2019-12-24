@@ -130,16 +130,16 @@ class OptionFieldView: UIView {
 }
 
 #if TARGET_IS_EXTENSION
-extension OptionFieldView {
-    
-    func updateLayout(mode: KeyboardMode) {
-        // always show action title
-        let noRecipients = selectedRecipientsView?.contactInfos.isEmpty ?? true;
-        actionsView.setButtonsTitleVisible(noRecipients)
-        
-    }
-
-}
+//extension OptionFieldView {
+//
+//    func updateLayout(mode: KeyboardMode) {
+//        // always show action title
+//        let noRecipients = selectedRecipientsView?.contactInfos.isEmpty ?? true;
+//        actionsView.setButtonsTitleVisible(noRecipients)
+//
+//    }
+//
+//}
 
 // MARK: - KeyboardModeListener
 extension OptionFieldView: KeyboardModeListener {
@@ -152,15 +152,15 @@ extension OptionFieldView: KeyboardModeListener {
             //            updateLayout(mode: mode)
             suggestionView?.isHidden = false
             selectedRecipientsView?.isHidden = true
-        case .editingRecipients:
+        case .command:
             actionsView.actions = mode.actions
             actionsView.modeChangeButton?.isSelected = true
-            suggestionView?.isHidden = true
-            selectedRecipientsView?.isHidden = false
+            suggestionView?.isHidden = false
+            selectedRecipientsView?.isHidden = true
         default:
             break
         }
-        updateLayout(mode: mode)
+//        updateLayout(mode: mode)
     }
 
 }
@@ -169,22 +169,22 @@ extension OptionFieldView: KeyboardModeListener {
 extension OptionFieldView {
     func addSelectedRecipient(_ contactInfo: FullContactInfo) {
         selectedRecipientsView?.addContactInfo(contactInfo)
-        #if TARGET_IS_EXTENSION
-        updateLayout(mode: KeyboardModeManager.shared.mode)
-        #endif
+//        #if TARGET_IS_EXTENSION
+//        updateLayout(mode: KeyboardModeManager.shared.mode)
+//        #endif
     }
     
     func removeSelectedRecipient(_ contactInfo: FullContactInfo) {
         selectedRecipientsView?.removeContactInfo(contactInfo)
-        #if TARGET_IS_EXTENSION
-        updateLayout(mode: KeyboardModeManager.shared.mode)
-        #endif
+//        #if TARGET_IS_EXTENSION
+//        updateLayout(mode: KeyboardModeManager.shared.mode)
+//        #endif
     }
     
     func removeAllSelectedRecipients() {
         selectedRecipientsView?.removeAllContactInfos()
-        #if TARGET_IS_EXTENSION
-        updateLayout(mode: KeyboardModeManager.shared.mode)
-        #endif
+//        #if TARGET_IS_EXTENSION
+//        updateLayout(mode: KeyboardModeManager.shared.mode)
+//        #endif
     }
 }
