@@ -134,6 +134,8 @@ extension WalletsViewModel: UITableViewDataSource {
             guard indexPath.row < filteredRedPackets.value.count, !filteredRedPackets.value.isEmpty else {
                 return _cell
             }
+            let redPacket = filteredRedPackets.value[indexPath.row]
+            CreatedRedPacketViewModel.configure(cell: _cell, with: redPacket)
             
             cell = _cell
         }
