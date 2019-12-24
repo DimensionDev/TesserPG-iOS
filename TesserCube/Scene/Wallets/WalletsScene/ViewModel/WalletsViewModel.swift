@@ -13,7 +13,29 @@ import RxCocoa
 class WalletsViewModel: NSObject {
     
     let disposeBag = DisposeBag()
-    weak var walletViewController: UIViewController!
+    weak var walletViewController: WalletsViewController!
+    
+    lazy var walletPageTableViewCell: WalletPageTableViewCell = {
+        let cell = WalletPageTableViewCell()
+        
+        let child = cell.pageViewController
+        walletViewController.addChild(child)
+        child.view.translatesAutoresizingMaskIntoConstraints = false
+        cell.contentView.addSubview(child.view)
+        NSLayoutConstraint.activate([
+            child.view.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
+            child.view.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
+            cell.contentView.trailingAnchor.constraint(equalTo: child.view.trailingAnchor),
+            cell.pageControl.topAnchor.constraint(equalTo: child.view.bottomAnchor),
+            child.view.heightAnchor.constraint(equalToConstant: 136),   // can not set dynamic height
+        ])
+        child.didMove(toParent: walletViewController)
+        
+        // bind page view controller data souce
+        child.dataSource = self
+        
+        return cell
+    }()
 
     // Input
     let walletModels = BehaviorRelay<[WalletModel]>(value: [])
@@ -23,14 +45,30 @@ class WalletsViewModel: NSObject {
     let currentWalletModel = BehaviorRelay<WalletModel?>(value: nil)
     let currentWalletPageIndex = BehaviorRelay(value: 0)
     let filteredRedPackets = BehaviorRelay<[RedPacket]>(value: [])
+    
+    enum Section: Int, CaseIterable {
+        case wallet
+        case redPacket
+    }
 
-    override init() {
+    init(walletsViewController: WalletsViewController) {
+        self.walletViewController = walletsViewController
         super.init()
         
         walletModels.asDriver()
             .drive(onNext: { [weak self] walletModels in
-                self?.currentWalletModel.accept(walletModels.first)
-                self?.currentWalletPageIndex.accept(0)
+                guard let `self` = self else { return }
+                self.currentWalletModel.accept(walletModels.first)
+                self.currentWalletPageIndex.accept(0)
+                
+                // setup page view controller initialViewController
+                let initialViewController = WalletCardViewController()
+                initialViewController.index = self.currentWalletPageIndex.value
+                self.walletPageTableViewCell.pageViewController.setViewControllers([initialViewController], direction: .forward, animated: true, completion: nil)
+                if let walletModel = self.currentWalletModel.value {
+                    initialViewController.walletModel = walletModel
+                }
+            
             })
             .disposed(by: disposeBag)
         
@@ -57,56 +95,25 @@ extension WalletsViewModel: UITableViewDataSource {
         // Section:
         //  - 0: Wallet Section
         //  - 1: Red Packet Section
-        return 2
+        return Section.allCases.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
+        switch Section.allCases[section] {
+        case .wallet:
             return 1
-        case 1:
+        case .redPacket:
             return filteredRedPackets.value.count
-        default:
-            return 0
         }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: UITableViewCell
 
-        switch indexPath.section {
-        case 0:
-            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: WalletPageTableViewCell.self), for: indexPath) as! WalletPageTableViewCell
-            
-            // Note: remove from parent in tableView:didEndDisplayingCell:forRowAtIndexPath:
-            let child = _cell.pageViewController
-            walletViewController.addChild(child)
-            child.view.translatesAutoresizingMaskIntoConstraints = false
-            _cell.contentView.addSubview(child.view)
-            NSLayoutConstraint.activate([
-                child.view.topAnchor.constraint(equalTo: _cell.contentView.topAnchor),
-                child.view.leadingAnchor.constraint(equalTo: _cell.contentView.leadingAnchor),
-                _cell.contentView.trailingAnchor.constraint(equalTo: child.view.trailingAnchor),
-                _cell.pageControl.topAnchor.constraint(equalTo: child.view.bottomAnchor),
-                child.view.heightAnchor.constraint(equalToConstant: 136),   // can not set dynamic height
-            ])
-            child.didMove(toParent: walletViewController)
-            
-            // bind page view controller data souce
-            child.dataSource = self
-            
-            // setup page view controller initialViewController
-            let initialViewController = WalletCardViewController()
-            initialViewController.index = currentWalletPageIndex.value
-            // FIXME: no reuse WalletPageTableViewCell to fix:
-            // https://stackoverflow.com/questions/24000712/pageviewcontroller-setviewcontrollers-crashes-with-invalid-parameter-not-satisf
-            DispatchQueue.main.async {
-                child.setViewControllers([initialViewController], direction: .forward, animated: true, completion: nil)
-            }
-            if let walletModel = currentWalletModel.value {
-                initialViewController.walletModel = walletModel
-            }
-
+        switch Section.allCases[indexPath.section] {
+        case .wallet:
+            let _cell = walletPageTableViewCell
+        
             // setup page control
             walletModels.asDriver()
                 .map { max($0.count, 1) }
@@ -121,18 +128,14 @@ extension WalletsViewModel: UITableViewDataSource {
             
             cell = _cell
             
-        case 1:
+        case .redPacket:
             let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RedPacketCardTableViewCell.self), for: indexPath) as! RedPacketCardTableViewCell
             
-            let redPacket = filteredRedPackets.value[indexPath.row]
-            CreatedRedPacketViewModel.configure(cell: _cell, with: redPacket)
+            guard indexPath.row < filteredRedPackets.value.count, !filteredRedPackets.value.isEmpty else {
+                return _cell
+            }
             
             cell = _cell
-            // let model = walletModels.value[indexPath.row]
-            // WalletsViewModel.configure(cell: cell, with: model)
-            
-        default:
-            fatalError()
         }
 
         return cell

@@ -42,6 +42,7 @@ class Coordinator {
         case backupMnemonic(viewModel: BackupMnemonicCollectionViewModel)
         case confirmMnemonic(viewModel: ConfirmMnemonicCollectionViewModel)
         case importWallet
+        case openRedPacket
         case sendRedPacket
         case claimRedPacket(viewModel: ClaimRedPacketViewModel)
     }
@@ -188,6 +189,9 @@ extension Coordinator {
             return vc
         case .importWallet:
             let vc = ImportWalletViewController()
+            return vc
+        case .openRedPacket:
+            let vc = OpenRedPacketViewController()
             return vc
         case .sendRedPacket:
             assert(!WalletService.default.walletModels.value.isEmpty, "Should present alert if no wallet") 

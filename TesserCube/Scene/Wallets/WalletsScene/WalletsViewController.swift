@@ -14,7 +14,7 @@ import RxRealm
 
 class WalletsViewController: TCBaseViewController {
 
-    let viewModel = WalletsViewModel()
+    private(set) lazy var viewModel = WalletsViewModel(walletsViewController: self)
     private let disposeBag = DisposeBag()
 
     private let tableView: UITableView = {
@@ -115,6 +115,15 @@ class WalletsViewController: TCBaseViewController {
 }
 
 extension WalletsViewController {
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        tableView.contentInset.bottom = bottomActionsView.height + 15
+    }
+}
+
+extension WalletsViewController {
 
     private func reloadActionsView() {
         bottomActionsView.arrangedSubviews.forEach {
@@ -127,6 +136,9 @@ extension WalletsViewController {
         } else {
             layoutRedPacketActions()
         }
+        
+        // trigger tableView content inset update
+        view.layoutIfNeeded()
     }
     
     private func layoutWalletActions() {
@@ -176,6 +188,12 @@ extension WalletsViewController {
     private func layoutRedPacketActions() {
         var actionViews = [UIView]()
         
+        let buttonStackView = UIStackView()
+        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
+        buttonStackView.distribution = .fillEqually
+        buttonStackView.spacing = 15
+        buttonStackView.axis = .horizontal
+        
         let sendRedPacketButton: TCActionButton = {
             let button = TCActionButton(frame: .zero)
             button.color = .systemBlue
@@ -199,8 +217,23 @@ extension WalletsViewController {
             .disposed(by: disposeBag)
             return button
         }()
+        
+        let openRedPacketButton: TCActionButton = {
+            let button = TCActionButton(frame: .zero)
+            button.color = .systemBlue
+            button.setTitleColor(.white, for: .normal)
+            button.setTitle("Open Red Packet", for: .normal)
+            button.rx.tap.bind {
+                Coordinator.main.present(scene: .openRedPacket, from: self, transition: .modal, completion: nil)
+            }
+            .disposed(by: disposeBag)
+            return button
+        }()
+        
+        buttonStackView.addArrangedSubview(sendRedPacketButton)
+        buttonStackView.addArrangedSubview(openRedPacketButton)
 
-        actionViews.append(sendRedPacketButton)
+        actionViews.append(buttonStackView)
         
         bottomActionsView.addArrangedSubviews(actionViews)
         bottomActionsView.setNeedsLayout()
@@ -256,21 +289,10 @@ extension WalletsViewController: UITableViewDelegate {
         
         return 20 - WalletCardTableViewCell.cardVerticalMargin
     }
-    
-    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard let cell = cell as? WalletPageTableViewCell else {
-            return
-        }
-        
-        let child = cell.pageViewController
-        child.willMove(toParent: nil)
-        child.view.removeFromSuperview()
-        child.removeFromParent()
-    }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch indexPath.section {
-        case 0:     // wallet section
+        switch WalletsViewModel.Section.allCases[indexPath.section] {
+        case .wallet:
             break
             // let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath, isContextMenu: false)
             // let alertController: UIAlertController = {
@@ -289,30 +311,42 @@ extension WalletsViewController: UITableViewDelegate {
             // DispatchQueue.main.async {
             //     self.present(alertController, animated: true, completion: nil)
             // }
-        case 1:     // red packet section
+        case .redPacket:     // red packet section
             guard let cell = tableView.cellForRow(at: indexPath) as? RedPacketCardTableViewCell,
             indexPath.row < viewModel.filteredRedPackets.value.count else {
                 return
             }
             let redPacket = viewModel.filteredRedPackets.value[indexPath.row]
             
-            let viewModel = ClaimRedPacketViewModel(redPacket: redPacket)
-            Coordinator.main.present(scene: .claimRedPacket(viewModel: viewModel), from: self, transition: .modal, completion: nil)
-            
-        default:
-            break
+            if redPacket.status == .normal || redPacket.status == .incoming {
+                // ready to claim
+                let viewModel = ClaimRedPacketViewModel(redPacket: redPacket)
+                Coordinator.main.present(scene: .claimRedPacket(viewModel: viewModel), from: self, transition: .modal, completion: nil)
+            } else {
+                // check detail
+                // TODO:
+            }
         }  
     }
 
-    /*
     @available(iOS 13.0, *)
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        guard indexPath.section == 1,
-        let cell = tableView.cellForRow(at: indexPath) as? WalletCardTableViewCell else {
-            return nil
-        }
+        // switch WalletsViewModel.Section.allCases[indexPath.section] {
+        // case .wallet:
+        //     return nil
+        // case .redPacket:
+        //
+        // }
+        // guard indexPath.section == 1,
+        // let cell = tableView.cellForRow(at: indexPath) as? WalletCardTableViewCell else {
+        //     return nil
+        // }
 
         let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath, isContextMenu: true)
+        guard !actions.isEmpty else {
+            return nil
+        }
+        
         let children = actions.compactMap { $0.menuElement }
 
         return UIContextMenuConfiguration(
@@ -325,25 +359,42 @@ extension WalletsViewController: UITableViewDelegate {
 
     @available(iOS 13.0, *)
     func tableView(_ tableView: UITableView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
-        guard let indexPath = configuration.identifier as? IndexPath,
-        let cell = tableView.cellForRow(at: indexPath) as? WalletCardTableViewCell else {
+        guard let indexPath = configuration.identifier as? IndexPath else {
             return nil
         }
-
-        let parameters = UIPreviewParameters()
-        return UITargetedPreview(view: cell.cardView, parameters: parameters)
+        
+        switch WalletsViewModel.Section.allCases[indexPath.section] {
+        case .wallet:
+            // TODO:
+            return nil
+        case .redPacket:
+            guard let cell = tableView.cellForRow(at: indexPath) as? RedPacketCardTableViewCell else {
+                return nil
+            }
+        
+            let parameters = UIPreviewParameters()
+            return UITargetedPreview(view: cell.cardView, parameters: parameters)
+        }
     }
     
     @available(iOS 13.0, *)
     func tableView(_ tableView: UITableView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
-        guard let indexPath = configuration.identifier as? IndexPath,
-            let cell = tableView.cellForRow(at: indexPath) as? WalletCardTableViewCell else {
-                return nil
+        guard let indexPath = configuration.identifier as? IndexPath else {
+            return nil
         }
         
-        let parameters = UIPreviewParameters()
-        return UITargetedPreview(view: cell.cardView, parameters: parameters)
+        switch WalletsViewModel.Section.allCases[indexPath.section] {
+        case .wallet:
+            // TODO:
+            return nil
+        case .redPacket:
+            guard let cell = tableView.cellForRow(at: indexPath) as? RedPacketCardTableViewCell else {
+                return nil
+            }
+            
+            let parameters = UIPreviewParameters()
+            return UITargetedPreview(view: cell.cardView, parameters: parameters)
+        }
     }
-     */
 
 }

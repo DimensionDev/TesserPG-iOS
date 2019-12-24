@@ -312,6 +312,7 @@ extension ClaimRedPacketViewController {
         
         title = "Claim Red Packet"
         navigationItem.leftBarButtonItem = closeBarButtonItem
+        navigationItem.hidesBackButton = true
         
         // Layout tableView
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -361,9 +362,8 @@ extension ClaimRedPacketViewController {
         
         viewModel.isClaiming.drive(onNext: { [weak self] isClaiming in
             guard let `self` = self else { return }
-                self.navigationItem.leftBarButtonItem = isClaiming ? nil : self.closeBarButtonItem
+                self.closeBarButtonItem.isEnabled = !isClaiming
                 self.tableView.isUserInteractionEnabled = !isClaiming
-            
             })
             .disposed(by: disposeBag)
 

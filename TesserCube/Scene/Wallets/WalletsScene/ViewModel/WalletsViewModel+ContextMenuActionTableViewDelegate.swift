@@ -15,6 +15,8 @@ extension WalletsViewModel {
         case copyWalletAddress(address: String)
         case backupMnemonic(wallet: Wallet, presentingViewController: UIViewController)
         case deleteWallet(wallet: Wallet, presentingViewController: UIViewController, cell: WalletCardTableViewCell, isContextMenu: Bool)
+        case claimRedPacket(redPacket: RedPacket, presentingViewController: UIViewController)
+        case shareRedPacketArmoredMessage(redPacket: RedPacket, presentingViewController: UIViewController, cell: RedPacketCardTableViewCell)
         case cancel
 
         var title: String {
@@ -22,6 +24,9 @@ extension WalletsViewModel {
             case .copyWalletAddress:    return "Copy Wallet Address"
             case .backupMnemonic:       return "Backup Mnemonic"
             case .deleteWallet:         return "Delete"
+            case .claimRedPacket:       return "Claim Red Packet"
+            case .shareRedPacketArmoredMessage:
+                                        return "Share Red Packet Message"
             case .cancel:               return L10n.Common.Button.cancel
             }
         }
@@ -36,6 +41,9 @@ extension WalletsViewModel {
                 case .copyWalletAddress:    return UIImage(systemName: "doc.on.doc")
                 case .backupMnemonic:       return UIImage(systemName: "pencil.circle")
                 case .deleteWallet:         return UIImage(systemName: "trash")
+                case .claimRedPacket:       return UIImage(systemName: "envelope.open")
+                case .shareRedPacketArmoredMessage:
+                                            return UIImage(systemName: "doc.on.doc")
                 default:                    return nil
                 }
             } else {
@@ -84,7 +92,19 @@ extension WalletsViewModel {
                         let confirmDeleteAlertController = WalletsViewModel.deleteMessageAlertController(for: wallet, cell: cell)
                         presentingViewController.present(confirmDeleteAlertController, animated: true, completion: nil)
                     }
-
+                case let .claimRedPacket(redPacket, presentingViewController):
+                    let viewModel = ClaimRedPacketViewModel(redPacket: redPacket)
+                    Coordinator.main.present(scene: .claimRedPacket(viewModel: viewModel), from: presentingViewController, transition: .modal, completion: nil)
+                case let .shareRedPacketArmoredMessage(redPacket, presentingViewController, cell):
+                    guard let message = RedPacketService.armoredEncPayload(for: redPacket) else {
+                        let alertController = UIAlertController(title: "Error", message: "Cannot share red packet message", preferredStyle: .alert)
+                        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                        alertController.addAction(okAction)
+                        presentingViewController.present(alertController, animated: true, completion: nil)
+                        return
+                    }
+                    
+                    ShareUtil.share(message: message, from: presentingViewController, over: cell)
                 case .cancel:
                     break
                 }
@@ -140,21 +160,45 @@ extension WalletsViewModel {
 extension WalletsViewModel: ContextMenuActionTableViewDelegate {
 
     func tableView(_ tableView: UITableView, presentingViewController: UIViewController, actionsforRowAt indexPath: IndexPath, isContextMenu: Bool) -> [ContextMenuAction] {
-        guard let cell = tableView.cellForRow(at: indexPath) as? WalletCardTableViewCell else {
+        switch WalletsViewModel.Section.allCases[indexPath.section] {
+        case .wallet:
+            guard let cell = tableView.cellForRow(at: indexPath) as? WalletPageTableViewCell else {
+                return []
+            }
+            // let wallet = walletModels.value[indexPath.row].wallet
+            
+            // - Copy Wallet Address
+            // - Delete
+            // - Cancel
+            // return [
+            //     Action.copyWalletAddress(address: cell.captionLabel.text ?? ""),
+            //     Action.backupMnemonic(wallet: wallet, presentingViewController: presentingViewController),
+            //     Action.deleteWallet(wallet: wallet, presentingViewController: presentingViewController, cell: cell, isContextMenu: isContextMenu),
+            //     Action.cancel
+            // ]
+            
             return []
-        }
+        case .redPacket:
+            guard let cell = tableView.cellForRow(at: indexPath) as? RedPacketCardTableViewCell else {
+                return []
+            }
+            let redPacket = filteredRedPackets.value[indexPath.row]
+            
+            switch redPacket.status {
+            case .normal, .incoming:
+                return [
+                    Action.claimRedPacket(redPacket: redPacket, presentingViewController: presentingViewController),
+                    Action.shareRedPacketArmoredMessage(redPacket: redPacket, presentingViewController: presentingViewController, cell: cell),
+                    Action.cancel
+                ]
+            default:
+                return [
+                    Action.shareRedPacketArmoredMessage(redPacket: redPacket, presentingViewController: presentingViewController, cell: cell),
+                    Action.cancel
+                ]
+            }
+        }   // end switch section
 
-        let wallet = walletModels.value[indexPath.row].wallet
-
-        // - Copy Wallet Address
-        // - Delete
-        // - Cancel
-        return [
-            Action.copyWalletAddress(address: cell.captionLabel.text ?? ""),
-            Action.backupMnemonic(wallet: wallet, presentingViewController: presentingViewController),
-            Action.deleteWallet(wallet: wallet, presentingViewController: presentingViewController, cell: cell, isContextMenu: isContextMenu),
-            Action.cancel
-        ]
     }
 
 }
