@@ -130,7 +130,7 @@ extension MeViewModel {
 // MARK: - ContextMenuActionTableViewDelegate
 extension MeViewModel: ContextMenuActionTableViewDelegate {
 
-    func tableView(_ tableView: UITableView, presentingViewController: UIViewController, actionsforRowAt indexPath: IndexPath, isContextMenu: Bool) -> [ContextMenuAction] {
+    func tableView(_ tableView: UITableView, presentingViewController: UIViewController, isContextMenu: Bool, actionsforRowAt indexPath: IndexPath) -> [ContextMenuAction]? {
         guard let cell = tableView.cellForRow(at: indexPath) as? KeyCardCell,
         case let .TCKey(key) = cell.keyValue else {
             return []
@@ -142,6 +142,11 @@ extension MeViewModel: ContextMenuActionTableViewDelegate {
             Action.delete(key: key, presentingViewController: presentingViewController, cell: cell),
             Action.cancel
         ]
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, presentingViewController: UIViewController, isContextMenu: Bool, actionsForRowA indexPath: IndexPath) -> [ContextMenuAction]? {
+        assertionFailure()
+        return nil
     }
 
 }

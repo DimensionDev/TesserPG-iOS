@@ -14,7 +14,7 @@ extension WalletsViewModel {
 
         case copyWalletAddress(address: String)
         case backupMnemonic(wallet: Wallet, presentingViewController: UIViewController)
-        case deleteWallet(wallet: Wallet, presentingViewController: UIViewController, cell: WalletCardTableViewCell, isContextMenu: Bool)
+        case deleteWallet(wallet: Wallet, presentingViewController: UIViewController, cell: WalletCardCollectionViewCell, isContextMenu: Bool)
         case claimRedPacket(redPacket: RedPacket, presentingViewController: UIViewController)
         case shareRedPacketArmoredMessage(redPacket: RedPacket, presentingViewController: UIViewController, cell: RedPacketCardTableViewCell)
         case cancel
@@ -134,8 +134,8 @@ extension WalletsViewModel {
 
 extension WalletsViewModel {
 
-    private static func deleteMessageAlertController(for wallet: Wallet, cell: WalletCardTableViewCell) -> UIAlertController {
-        let walletName = cell.headerLabel.text
+    private static func deleteMessageAlertController(for wallet: Wallet, cell: WalletCardCollectionViewCell) -> UIAlertController {
+        let walletName = cell.walletCardView.headerLabel.text
         let title = ["Yes. Delete", walletName].compactMap { $0 }.joined(separator: " ")
 
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -159,28 +159,53 @@ extension WalletsViewModel {
 // MARK: - ContextMenuActionTableViewDelegate
 extension WalletsViewModel: ContextMenuActionTableViewDelegate {
 
-    func tableView(_ tableView: UITableView, presentingViewController: UIViewController, actionsforRowAt indexPath: IndexPath, isContextMenu: Bool) -> [ContextMenuAction] {
+    func tableView(_ tableView: UITableView, presentingViewController: UIViewController, isContextMenu: Bool, actionsforRowAt indexPath: IndexPath) -> [ContextMenuAction]? {
         switch WalletsViewModel.Section.allCases[indexPath.section] {
         case .wallet:
-            guard let cell = tableView.cellForRow(at: indexPath) as? WalletPageTableViewCell else {
-                return []
+            return nil
+
+        case .redPacket:
+            guard let cell = tableView.cellForRow(at: indexPath) as? RedPacketCardTableViewCell else {
+                return nil
             }
-            // let wallet = walletModels.value[indexPath.row].wallet
-            
+            return sourceView(cell, presentingViewController: presentingViewController, isContextMenu: isContextMenu, actionsForRowAt: indexPath)
+        }   // end switch section
+
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, presentingViewController: UIViewController, isContextMenu: Bool, actionsForRowA indexPath: IndexPath) -> [ContextMenuAction]? {
+        switch WalletsViewModel.Section.allCases[indexPath.section] {
+        case .wallet:
+            guard let cell = collectionView.cellForItem(at: indexPath) as? WalletCardCollectionViewCell else {
+                return nil
+            }
+            return sourceView(cell, presentingViewController: presentingViewController, isContextMenu: isContextMenu, actionsForRowAt: indexPath)
+        case .redPacket:
+            return nil
+        }
+    }
+    
+    private func sourceView(_ sourceView: UIView, presentingViewController: UIViewController, isContextMenu: Bool, actionsForRowAt indexPath: IndexPath) -> [ContextMenuAction]? {
+        switch WalletsViewModel.Section.allCases[indexPath.section] {
+        case .wallet:
+            guard let cell = sourceView as? WalletCardCollectionViewCell else {
+                return nil
+            }
+            let walletModel = walletModels.value[indexPath.row]
+            let wallet = walletModel.wallet
             // - Copy Wallet Address
             // - Delete
             // - Cancel
-            // return [
-            //     Action.copyWalletAddress(address: cell.captionLabel.text ?? ""),
-            //     Action.backupMnemonic(wallet: wallet, presentingViewController: presentingViewController),
-            //     Action.deleteWallet(wallet: wallet, presentingViewController: presentingViewController, cell: cell, isContextMenu: isContextMenu),
-            //     Action.cancel
-            // ]
+            return [
+                Action.copyWalletAddress(address: walletModel.address),
+                Action.backupMnemonic(wallet: wallet, presentingViewController: presentingViewController),
+                Action.deleteWallet(wallet: wallet, presentingViewController: presentingViewController, cell: cell, isContextMenu: isContextMenu),
+                Action.cancel
+            ]
             
-            return []
         case .redPacket:
-            guard let cell = tableView.cellForRow(at: indexPath) as? RedPacketCardTableViewCell else {
-                return []
+            guard let cell = sourceView as? RedPacketCardTableViewCell else {
+                return nil
             }
             let redPacket = filteredRedPackets.value[indexPath.row]
             
@@ -197,8 +222,7 @@ extension WalletsViewModel: ContextMenuActionTableViewDelegate {
                     Action.cancel
                 ]
             }
-        }   // end switch section
-
+        }
     }
 
 }

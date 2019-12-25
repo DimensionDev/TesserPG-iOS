@@ -445,7 +445,7 @@
 		DB8D7319231E394E005D15DD /* KeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D7312231E38FD005D15DD /* KeyRecord.swift */; };
 		DB8D731B231E394E005D15DD /* KeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D7312231E38FD005D15DD /* KeyRecord.swift */; };
 		DB97AD162317BCD9007594E9 /* MessagesViewModel+ContextMenuActionTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB97AD152317BCD9007594E9 /* MessagesViewModel+ContextMenuActionTableViewDelegate.swift */; };
-		DB9FE9E623A889D400499632 /* WalletPageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9FE9E523A889D400499632 /* WalletPageTableViewCell.swift */; };
+		DB9FE9E623A889D400499632 /* WalletCollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9FE9E523A889D400499632 /* WalletCollectionTableViewCell.swift */; };
 		DB9FE9E823A8916900499632 /* WalletCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9FE9E723A8916900499632 /* WalletCardViewController.swift */; };
 		DB9FE9EC23A8B6A400499632 /* RedPacket+V1.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9FE9EB23A8B6A400499632 /* RedPacket+V1.swift */; };
 		DB9FE9ED23A8B6A700499632 /* RedPacket+V1.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB9FE9EB23A8B6A400499632 /* RedPacket+V1.swift */; };
@@ -508,6 +508,9 @@
 		DBC9BD3A23B094F200252437 /* RedPacketPayloadEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD3623B094F200252437 /* RedPacketPayloadEncryptor.swift */; };
 		DBC9BD3D23B1DC2500252437 /* RedPacketPayloadEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD3623B094F200252437 /* RedPacketPayloadEncryptor.swift */; };
 		DBC9BD3F23B1EF4F00252437 /* OpenRedPacketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD3E23B1EF4F00252437 /* OpenRedPacketViewController.swift */; };
+		DBC9BD4223B3297200252437 /* WalletCardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD4123B3297200252437 /* WalletCardCollectionViewCell.swift */; };
+		DBC9BD4423B32DEE00252437 /* WalletCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD4323B32DED00252437 /* WalletCardView.swift */; };
+		DBC9BD4723B3325200252437 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBC9BD4623B3325200252437 /* NetworkExtension.framework */; };
 		DBC9CEE62387896C009E13C5 /* redpacket.bin in Resources */ = {isa = PBXBuildFile; fileRef = DBC9CEE42387896B009E13C5 /* redpacket.bin */; };
 		DBC9CEE72387896C009E13C5 /* redpacket.json in Resources */ = {isa = PBXBuildFile; fileRef = DBC9CEE52387896C009E13C5 /* redpacket.json */; };
 		DBC9CEE82387B0B0009E13C5 /* EditingRedPacketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83955B76237271EF00161498 /* EditingRedPacketViewController.swift */; };
@@ -911,7 +914,7 @@
 		DB8D7312231E38FD005D15DD /* KeyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyRecord.swift; sourceTree = "<group>"; };
 		DB8D7314231E3920005D15DD /* Email.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Email.swift; sourceTree = "<group>"; };
 		DB97AD152317BCD9007594E9 /* MessagesViewModel+ContextMenuActionTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessagesViewModel+ContextMenuActionTableViewDelegate.swift"; sourceTree = "<group>"; };
-		DB9FE9E523A889D400499632 /* WalletPageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletPageTableViewCell.swift; sourceTree = "<group>"; };
+		DB9FE9E523A889D400499632 /* WalletCollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCollectionTableViewCell.swift; sourceTree = "<group>"; };
 		DB9FE9E723A8916900499632 /* WalletCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCardViewController.swift; sourceTree = "<group>"; };
 		DB9FE9EB23A8B6A400499632 /* RedPacket+V1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RedPacket+V1.swift"; sourceTree = "<group>"; };
 		DB9FE9F523A8C8C600499632 /* Decimal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Decimal.swift; sourceTree = "<group>"; };
@@ -942,6 +945,9 @@
 		DBC7DEC02248D49E00DA4C3E /* ComposeMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeMessageViewModel.swift; sourceTree = "<group>"; };
 		DBC9BD3623B094F200252437 /* RedPacketPayloadEncryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedPacketPayloadEncryptor.swift; sourceTree = "<group>"; };
 		DBC9BD3E23B1EF4F00252437 /* OpenRedPacketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenRedPacketViewController.swift; sourceTree = "<group>"; };
+		DBC9BD4123B3297200252437 /* WalletCardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCardCollectionViewCell.swift; sourceTree = "<group>"; };
+		DBC9BD4323B32DED00252437 /* WalletCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCardView.swift; sourceTree = "<group>"; };
+		DBC9BD4623B3325200252437 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		DBC9CEE42387896B009E13C5 /* redpacket.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = redpacket.bin; sourceTree = "<group>"; };
 		DBC9CEE52387896C009E13C5 /* redpacket.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = redpacket.json; sourceTree = "<group>"; };
 		DBC9CF002387C889009E13C5 /* SelectWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectWalletTableViewCell.swift; sourceTree = "<group>"; };
@@ -1035,6 +1041,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A525A0BAED3E0A2C1C06591F /* Pods_TesserCubeComposeAction.framework in Frameworks */,
+				DBC9BD4723B3325200252437 /* NetworkExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1120,6 +1127,7 @@
 		8304E9C5221BF1DD00122637 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DBC9BD4623B3325200252437 /* NetworkExtension.framework */,
 				DB0D9F3723152006007C293F /* FileProvider.framework */,
 				DBD638E5227EDC6B00E10BF2 /* JRE.framework */,
 				8304E9C6221BF1DD00122637 /* AuthenticationServices.framework */,
@@ -1802,7 +1810,8 @@
 			isa = PBXGroup;
 			children = (
 				DB0ABA08237549E000AD3B7F /* WalletCardTableViewCell.swift */,
-				DB9FE9E523A889D400499632 /* WalletPageTableViewCell.swift */,
+				DBC9BD4123B3297200252437 /* WalletCardCollectionViewCell.swift */,
+				DB9FE9E523A889D400499632 /* WalletCollectionTableViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -2014,6 +2023,14 @@
 			path = OpenRedPacket;
 			sourceTree = "<group>";
 		};
+		DBC9BD4523B32DF300252437 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DBC9BD4323B32DED00252437 /* WalletCardView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		DBC9CF032387C88E009E13C5 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -2067,6 +2084,7 @@
 		DBEE89622372A5E90080C194 /* WalletsScene */ = {
 			isa = PBXGroup;
 			children = (
+				DBC9BD4523B32DF300252437 /* View */,
 				DBD6887C237AB13D00B5B663 /* ViewModel */,
 				DB0ABA212379239D00AD3B7F /* Cell */,
 				DBEE8957237282350080C194 /* WalletsViewController.swift */,
@@ -2819,7 +2837,9 @@
 				DB449995228C1CEF000B7E8A /* SettingsTableViewCell.swift in Sources */,
 				DB1169D722E19B100099BA25 /* MessageCardViewController.swift in Sources */,
 				83C12EE02332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */,
+				DBC9BD4223B3297200252437 /* WalletCardCollectionViewCell.swift in Sources */,
 				8325E4A4222F8FDA00EE9B83 /* Fonts.swift in Sources */,
+				DBC9BD4423B32DEE00252437 /* WalletCardView.swift in Sources */,
 				839E647B23320751005C21FA /* (null) in Sources */,
 				DBC9CEF52387B688009E13C5 /* OptionFieldView.swift in Sources */,
 				DBB81AE1225DFF7A003D63C6 /* UIScreen.swift in Sources */,
@@ -2847,7 +2867,7 @@
 				83FE345C22B72DEC0077C1A5 /* IntroSpotlight.swift in Sources */,
 				832146D82241D980008ECC22 /* ImportKeyViewController.swift in Sources */,
 				DB15695E23278EA200220926 /* FetchableRecord+all.swift in Sources */,
-				DB9FE9E623A889D400499632 /* WalletPageTableViewCell.swift in Sources */,
+				DB9FE9E623A889D400499632 /* WalletCollectionTableViewCell.swift in Sources */,
 				832146C5223FC9E4008ECC22 /* TCActionButton.swift in Sources */,
 				DB97AD162317BCD9007594E9 /* MessagesViewModel+ContextMenuActionTableViewDelegate.swift in Sources */,
 				DB42ED062387E56800EB1687 /* InputRedPacketSenderTableViewCell.swift in Sources */,
