@@ -19,7 +19,7 @@ class WalletsViewController: TCBaseViewController {
 
     private let tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(WalletPageTableViewCell.self, forCellReuseIdentifier: String(describing: WalletPageTableViewCell.self))
+        tableView.register(WalletCollectionTableViewCell.self, forCellReuseIdentifier: String(describing: WalletCollectionTableViewCell.self))
         tableView.register(RedPacketCardTableViewCell.self, forCellReuseIdentifier: String(describing: RedPacketCardTableViewCell.self))
         tableView.separatorStyle = .none
         tableView.tableFooterView = UIView()
@@ -289,6 +289,21 @@ extension WalletsViewController: UITableViewDelegate {
         
         return 20 - WalletCardTableViewCell.cardVerticalMargin
     }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        switch WalletsViewModel.Section.allCases[indexPath.section] {
+        case .wallet:
+            guard let cell = cell as? WalletCollectionTableViewCell else {
+                return
+            }
+            
+            // Set delegate to flow layout
+            cell.collectionView.delegate = self
+            
+        default:
+            return
+        }
+    }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch WalletsViewModel.Section.allCases[indexPath.section] {
@@ -342,8 +357,8 @@ extension WalletsViewController: UITableViewDelegate {
         //     return nil
         // }
 
-        let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath, isContextMenu: true)
-        guard !actions.isEmpty else {
+        guard let actions = viewModel.tableView(tableView, presentingViewController: self, isContextMenu: true, actionsforRowAt: indexPath),
+        !actions.isEmpty else {
             return nil
         }
         
@@ -354,7 +369,8 @@ extension WalletsViewController: UITableViewDelegate {
             previewProvider: nil,
             actionProvider: { _ in
                 return UIMenu(title: "", image: nil, identifier: nil, options: [], children: children)
-            })
+            }
+        )
     }
 
     @available(iOS 13.0, *)
@@ -362,19 +378,18 @@ extension WalletsViewController: UITableViewDelegate {
         guard let indexPath = configuration.identifier as? IndexPath else {
             return nil
         }
-        
-        switch WalletsViewModel.Section.allCases[indexPath.section] {
-        case .wallet:
-            // TODO:
+
+        guard case .redPacket = WalletsViewModel.Section.allCases[indexPath.section] else {
             return nil
-        case .redPacket:
-            guard let cell = tableView.cellForRow(at: indexPath) as? RedPacketCardTableViewCell else {
-                return nil
-            }
-        
-            let parameters = UIPreviewParameters()
-            return UITargetedPreview(view: cell.cardView, parameters: parameters)
         }
+
+        guard let cell = tableView.cellForRow(at: indexPath) as? RedPacketCardTableViewCell else {
+            return nil
+        }
+        
+        
+        let parameters = UIPreviewParameters()
+        return UITargetedPreview(view: cell.cardView, parameters: parameters)
     }
     
     @available(iOS 13.0, *)
@@ -382,19 +397,133 @@ extension WalletsViewController: UITableViewDelegate {
         guard let indexPath = configuration.identifier as? IndexPath else {
             return nil
         }
-        
-        switch WalletsViewModel.Section.allCases[indexPath.section] {
-        case .wallet:
-            // TODO:
+
+        guard case .redPacket = WalletsViewModel.Section.allCases[indexPath.section] else {
             return nil
-        case .redPacket:
-            guard let cell = tableView.cellForRow(at: indexPath) as? RedPacketCardTableViewCell else {
-                return nil
-            }
-            
-            let parameters = UIPreviewParameters()
-            return UITargetedPreview(view: cell.cardView, parameters: parameters)
         }
+
+        guard let cell = tableView.cellForRow(at: indexPath) as? RedPacketCardTableViewCell else {
+            return nil
+        }
+        
+        let parameters = UIPreviewParameters()
+        return UITargetedPreview(view: cell.cardView, parameters: parameters)
     }
 
+}
+
+// MARK: - UICollectionViewDelegate
+extension WalletsViewController: UICollectionViewDelegate {
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        guard let collectionView = scrollView as? UICollectionView, collectionView.tag == WalletCollectionTableViewCell.collectionViewTag else {
+            return
+        }
+        
+        let displayCenterOffsetX = scrollView.contentOffset.x + 0.5 * collectionView.bounds.width
+        let displayCenterOffset = CGPoint(x: displayCenterOffsetX, y: 0.5 * collectionView.height)
+        guard let currentDisplayCellIndexPath = collectionView.indexPathForItem(at: displayCenterOffset) else {
+            return
+        }
+        
+        // update page control and currentWalletModel after wallets collection view scroll
+        let index = currentDisplayCellIndexPath.row
+        viewModel.currentWalletPageIndex.accept(index)
+        
+        guard index < viewModel.walletModels.value.count else {
+            return
+        }
+        viewModel.currentWalletModel.accept(viewModel.walletModels.value[index])
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let _ = cell as? WalletCardCollectionViewCell else {
+            return
+        }
+        
+        guard indexPath.row < viewModel.walletModels.value.count else {
+            return
+        }
+
+        // trigger balance update when cell will display
+        viewModel.walletModels.value[indexPath.row].updateBalance()
+    }
+    
+    @available(iOS 13.0, *)
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        
+        guard let actions = viewModel.collectionView(collectionView, presentingViewController: self, isContextMenu: true, actionsForRowA: indexPath),
+        !actions.isEmpty else {
+            return nil
+        }
+        
+        let children = actions.compactMap { $0.menuElement }
+        
+        return UIContextMenuConfiguration(
+            identifier: indexPath as NSCopying,
+            previewProvider: nil,
+            actionProvider: { _ in
+                return UIMenu(title: "", image: nil, identifier: nil, options: [], children: children)
+            }
+        )
+    }
+    
+    @available(iOS 13.0, *)
+    func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+        guard let indexPath = configuration.identifier as? IndexPath else {
+            return nil
+        }
+        
+        guard case .wallet = WalletsViewModel.Section.allCases[indexPath.section] else {
+            return nil
+        }
+        
+        guard let cell = collectionView.cellForItem(at: indexPath) as? WalletCardCollectionViewCell else {
+            return nil
+        }
+        
+        let parameters = UIPreviewParameters()
+        return UITargetedPreview(view: cell.walletCardView, parameters: parameters)
+    }
+    
+    @available(iOS 13.0, *)
+    func collectionView(_ collectionView: UICollectionView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+        guard let indexPath = configuration.identifier as? IndexPath else {
+            return nil
+        }
+        
+        guard case .wallet = WalletsViewModel.Section.allCases[indexPath.section] else {
+            return nil
+        }
+        
+        guard let cell = collectionView.cellForItem(at: indexPath) as? WalletCardCollectionViewCell else {
+            return nil
+        }
+        
+        let parameters = UIPreviewParameters()
+        return UITargetedPreview(view: cell.walletCardView, parameters: parameters)
+    }
+    
+}
+
+// MAKR: - UICollectionViewDelegateFlowLayout
+extension WalletsViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.bounds.width - view.layoutMargins.left - view.layoutMargins.right,
+                      height: WalletCollectionTableViewCell.cellHeight + 2 * WalletCardCollectionViewCell.cardVerticalMargin)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: view.layoutMargins.left, bottom: 0, right: view.layoutMargins.right)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return view.layoutMargins.left + view.layoutMargins.right
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
 }

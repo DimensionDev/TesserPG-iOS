@@ -232,8 +232,11 @@ extension MeViewController: UITableViewDelegate {
         case .mockKey:
             showCreateKeyAlert(onCell: cell)
         case .TCKey:
-            let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath, isContextMenu: false)
-                let alertController: UIAlertController = {
+            guard let actions = viewModel.tableView(tableView, presentingViewController: self, isContextMenu: false, actionsforRowAt: indexPath),
+            !actions.isEmpty else {
+                return
+            }
+            let alertController: UIAlertController = {
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                 let alertActions = actions.map { $0.alertAction }
                 for alertAction in alertActions {
@@ -252,8 +255,8 @@ extension MeViewController: UITableViewDelegate {
     @available(iOS 13.0, *)
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         
-        let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath, isContextMenu: true)
-        guard !actions.isEmpty else {
+        guard let actions = viewModel.tableView(tableView, presentingViewController: self, isContextMenu: true, actionsforRowAt: indexPath),
+        !actions.isEmpty else {
             return nil
         }
 

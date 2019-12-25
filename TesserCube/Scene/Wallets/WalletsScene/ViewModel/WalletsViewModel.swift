@@ -14,28 +14,6 @@ class WalletsViewModel: NSObject {
     
     let disposeBag = DisposeBag()
     weak var walletViewController: WalletsViewController!
-    
-    lazy var walletPageTableViewCell: WalletPageTableViewCell = {
-        let cell = WalletPageTableViewCell()
-        
-        let child = cell.pageViewController
-        walletViewController.addChild(child)
-        child.view.translatesAutoresizingMaskIntoConstraints = false
-        cell.contentView.addSubview(child.view)
-        NSLayoutConstraint.activate([
-            child.view.topAnchor.constraint(equalTo: cell.contentView.topAnchor),
-            child.view.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor),
-            cell.contentView.trailingAnchor.constraint(equalTo: child.view.trailingAnchor),
-            cell.pageControl.topAnchor.constraint(equalTo: child.view.bottomAnchor),
-            child.view.heightAnchor.constraint(equalToConstant: 136),   // can not set dynamic height
-        ])
-        child.didMove(toParent: walletViewController)
-        
-        // bind page view controller data souce
-        child.dataSource = self
-        
-        return cell
-    }()
 
     // Input
     let walletModels = BehaviorRelay<[WalletModel]>(value: [])
@@ -62,13 +40,12 @@ class WalletsViewModel: NSObject {
                 self.currentWalletPageIndex.accept(0)
                 
                 // setup page view controller initialViewController
-                let initialViewController = WalletCardViewController()
-                initialViewController.index = self.currentWalletPageIndex.value
-                self.walletPageTableViewCell.pageViewController.setViewControllers([initialViewController], direction: .forward, animated: true, completion: nil)
-                if let walletModel = self.currentWalletModel.value {
-                    initialViewController.walletModel = walletModel
-                }
-            
+//                let initialViewController = WalletCardViewController()
+//                initialViewController.index = self.currentWalletPageIndex.value
+//            self.walletPageTableViewCell.pageViewController.setViewControllers([initialViewController], direction: .forward, animated: true, completion: nil)
+//                if let walletModel = self.currentWalletModel.value {
+//                    initialViewController.walletModel = walletModel
+//                }
             })
             .disposed(by: disposeBag)
         
@@ -112,7 +89,16 @@ extension WalletsViewModel: UITableViewDataSource {
 
         switch Section.allCases[indexPath.section] {
         case .wallet:
-            let _cell = walletPageTableViewCell
+            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: WalletCollectionTableViewCell.self), for: indexPath) as! WalletCollectionTableViewCell
+            
+            _cell.collectionView.dataSource = self
+
+            // Update collection view data source
+            walletModels.asDriver()
+                .drive(onNext: { _ in
+                    _cell.collectionView.reloadData()
+                })
+                .disposed(by: _cell.disposeBag)
         
             // setup page control
             walletModels.asDriver()
@@ -122,9 +108,6 @@ extension WalletsViewModel: UITableViewDataSource {
             currentWalletPageIndex.asDriver()
                 .drive(_cell.pageControl.rx.currentPage)
                 .disposed(by: _cell.disposeBag)
-            
-            // Bind cell delegate
-            _cell.delegate = self
             
             cell = _cell
             
@@ -147,10 +130,11 @@ extension WalletsViewModel: UITableViewDataSource {
 
 extension WalletsViewModel {
 
+    // For WalletCardTableViewCell
     static func configure(cell: WalletCardTableViewCell, with model: WalletModel) {
         let address = model.address
-        cell.headerLabel.text = String(address.prefix(6))
-        cell.captionLabel.text = address
+        cell.walletCardView.headerLabel.text = String(address.prefix(6))
+        cell.walletCardView.captionLabel.text = address
         // cell.captionLabel.text = {
         //     guard let address = address else { return nil }
         //     let raw = address.removingPrefix("0x")
@@ -165,8 +149,31 @@ extension WalletsViewModel {
             
                 return decimalString + " ETH"
             }
-            .drive(cell.balanceAmountLabel.rx.text)
+            .drive(cell.walletCardView.balanceAmountLabel.rx.text)
             .disposed(by: cell.disposeBag)
+    }
+    
+    // For WalletCardCollectionViewCell
+    static func configure(cell: WalletCardCollectionViewCell, with model: WalletModel) {
+        let address = model.address
+        cell.walletCardView.headerLabel.text = String(address.prefix(6))
+        cell.walletCardView.captionLabel.text = address
+        // cell.captionLabel.text = {
+        //     guard let address = address else { return nil }
+        //     let raw = address.removingPrefix("0x")
+        //     return "0x" + raw.prefix(20) + "\n" + raw.suffix(20)
+        // }()
+        model.balanceInDecimal.asDriver()
+            .map { decimal in
+                guard let decimal = decimal,
+                    let decimalString = WalletService.balanceDecimalFormatter.string(from: decimal as NSNumber) else {
+                        return "- ETH"
+                }
+                
+                return decimalString + " ETH"
+        }
+        .drive(cell.walletCardView.balanceAmountLabel.rx.text)
+        .disposed(by: cell.disposeBag)
     }
 
 }
@@ -218,18 +225,22 @@ extension WalletsViewModel: UIPageViewControllerDataSource {
     
 }
 
-// MARK: - WalletPageTableViewCellDelegate
-extension WalletsViewModel: WalletPageTableViewCellDelegate {
+// MARK: - UICollectionViewDataSource
+extension WalletsViewModel: UICollectionViewDataSource {
     
-    func walletPageTableViewCell(_ cell: WalletPageTableViewCell, didUpdateCurrentPage index: Int) {
-        currentWalletPageIndex.accept(index)
-        
-        guard !walletModels.value.isEmpty else {
-            currentWalletModel.accept(nil)
-            return
-        }
-        
-        currentWalletModel.accept(walletModels.value[index])
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return walletModels.value.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: WalletCardCollectionViewCell.self), for: indexPath) as! WalletCardCollectionViewCell
+        let walletModel = walletModels.value[indexPath.row]
+        WalletsViewModel.configure(cell: cell, with: walletModel)
+        return cell
     }
     
 }

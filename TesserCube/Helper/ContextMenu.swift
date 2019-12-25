@@ -9,7 +9,8 @@
 import UIKit
 
 protocol ContextMenuActionTableViewDelegate: class {
-    func tableView(_ tableView: UITableView, presentingViewController: UIViewController, actionsforRowAt indexPath: IndexPath, isContextMenu: Bool) -> [ContextMenuAction]
+    func tableView(_ tableView: UITableView, presentingViewController: UIViewController, isContextMenu: Bool, actionsforRowAt indexPath: IndexPath) -> [ContextMenuAction]?
+    func collectionView(_ collectionView: UICollectionView, presentingViewController: UIViewController, isContextMenu: Bool, actionsForRowA indexPath: IndexPath) -> [ContextMenuAction]?
 }
 
 protocol ContextMenuAction {
