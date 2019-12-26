@@ -6,6 +6,7 @@
 //  Copyright © 2019 Sujitech. All rights reserved.
 //
 
+import os
 import UIKit
 import RxSwift
 import RxCocoa
@@ -13,7 +14,6 @@ import RxCocoa
 class WalletsViewModel: NSObject {
     
     let disposeBag = DisposeBag()
-    weak var walletViewController: WalletsViewController!
 
     // Input
     let walletModels = BehaviorRelay<[WalletModel]>(value: [])
@@ -29,23 +29,18 @@ class WalletsViewModel: NSObject {
         case redPacket
     }
 
-    init(walletsViewController: WalletsViewController) {
-        self.walletViewController = walletsViewController
+    override init() {
         super.init()
         
-        walletModels.asDriver()
-            .drive(onNext: { [weak self] walletModels in
-                guard let `self` = self else { return }
-                self.currentWalletModel.accept(walletModels.first)
-                self.currentWalletPageIndex.accept(0)
-                
-                // setup page view controller initialViewController
-//                let initialViewController = WalletCardViewController()
-//                initialViewController.index = self.currentWalletPageIndex.value
-//            self.walletPageTableViewCell.pageViewController.setViewControllers([initialViewController], direction: .forward, animated: true, completion: nil)
-//                if let walletModel = self.currentWalletModel.value {
-//                    initialViewController.walletModel = walletModel
-//                }
+        currentWalletModel.asDriver()
+            .drive(onNext: { walletModel in
+                os_log("%{public}s[%{public}ld], %{public}s: currentWalletModel update to %s", ((#file as NSString).lastPathComponent), #line, #function, walletModel?.address ?? "nil")
+            })
+            .disposed(by: disposeBag)
+        
+        currentWalletPageIndex.asDriver()
+            .drive(onNext: { index in
+                os_log("%{public}s[%{public}ld], %{public}s: currentWalletPageIndex update to %s", ((#file as NSString).lastPathComponent), #line, #function, String(index))
             })
             .disposed(by: disposeBag)
         
@@ -85,6 +80,8 @@ extension WalletsViewModel: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        os_log("%{public}s[%{public}ld], %{public}s", ((#file as NSString).lastPathComponent), #line, #function)
+
         let cell: UITableViewCell
 
         switch Section.allCases[indexPath.section] {
@@ -95,8 +92,24 @@ extension WalletsViewModel: UITableViewDataSource {
 
             // Update collection view data source
             walletModels.asDriver()
-                .drive(onNext: { _ in
+                .drive(onNext: { [weak self] walletModels in
+                    guard let `self` = self else { return }
                     _cell.collectionView.reloadData()
+                    
+                    guard !walletModels.isEmpty else {
+                        self.currentWalletModel.accept(nil)
+                        return
+                    }
+                    
+                    let index = self.currentWalletPageIndex.value
+                    if index < walletModels.count {
+                        // index not move
+                        self.currentWalletModel.accept(walletModels[index])
+                    } else {
+                        // index move 1 step before
+                        self.currentWalletModel.accept(walletModels.last)
+                        self.currentWalletPageIndex.accept(walletModels.count - 1)
+                    }
                 })
                 .disposed(by: _cell.disposeBag)
         
@@ -238,8 +251,10 @@ extension WalletsViewModel: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: WalletCardCollectionViewCell.self), for: indexPath) as! WalletCardCollectionViewCell
+        
         let walletModel = walletModels.value[indexPath.row]
         WalletsViewModel.configure(cell: cell, with: walletModel)
+        
         return cell
     }
     

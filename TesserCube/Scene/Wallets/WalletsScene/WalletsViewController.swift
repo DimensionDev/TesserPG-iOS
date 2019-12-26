@@ -14,8 +14,10 @@ import RxRealm
 
 class WalletsViewController: TCBaseViewController {
 
-    private(set) lazy var viewModel = WalletsViewModel(walletsViewController: self)
+    private(set) lazy var viewModel = WalletsViewModel()
     private let disposeBag = DisposeBag()
+    
+    private let longPressGestureRecognizer = UILongPressGestureRecognizer()
 
     private let tableView: UITableView = {
         let tableView = UITableView()
@@ -37,8 +39,6 @@ class WalletsViewController: TCBaseViewController {
 
     override func configUI() {
         super.configUI()
-        
-        viewModel.walletViewController = self
 
         title = L10n.MainTabbarViewController.TabBarItem.Wallets.title
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(WalletsViewController.addBarButtonItemPressed(_:)))
@@ -66,15 +66,7 @@ class WalletsViewController: TCBaseViewController {
         WalletService.default.walletModels.asDriver()
             .drive(viewModel.walletModels)
             .disposed(by: disposeBag)
-        tableView.dataSource = viewModel
-        viewModel.filteredRedPackets.asDriver()
-            .drive(onNext: { [weak self] _ in
-                self?.reloadActionsView()
-                // TODO: use diffable data source
-                self?.tableView.reloadData()
-            })
-            .disposed(by: disposeBag)
-
+        
         do {
             let realm = try RedPacketService.realm()
             let redPacketResults = realm.objects(RedPacket.self)
@@ -110,17 +102,50 @@ class WalletsViewController: TCBaseViewController {
         }
         
         tableView.delegate = self
+        tableView.dataSource = viewModel
+        
+        // Setup long press gesture for tableView for early iOS 13.0 to trigger alert sheet menu
+        if #available(iOS 13.0, *) {
+            // do nothing
+        } else {
+            tableView.addGestureRecognizer(longPressGestureRecognizer)
+            longPressGestureRecognizer.addTarget(self, action: #selector(WalletsViewController.longPressGesture(_:)))
+        }
     }
 
 }
 
 extension WalletsViewController {
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        DispatchQueue.once {
+            self.viewModel.walletModels.accept(WalletService.default.walletModels.value)
+            self.tableView.reloadData()
+            
+            self.viewModel.filteredRedPackets.asDriver()
+                .distinctUntilChanged()
+                .drive(onNext: { [weak self] _ in
+                    guard let `self` = self else { return }
+                    self.reloadActionsView()
+                    
+                    // reload red packet section
+                    os_log("%{public}s[%{public}ld], %{public}s: filteredRedPackets changed. reload table view", ((#file as NSString).lastPathComponent), #line, #function)
+                    
+                    let sections: IndexSet = [1]
+                    self.tableView.reloadSections(sections, with: .automatic)
+                })
+                .disposed(by: disposeBag)
+        }
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         tableView.contentInset.bottom = bottomActionsView.height + 15
     }
+    
 }
 
 extension WalletsViewController {
@@ -261,6 +286,48 @@ extension WalletsViewController {
         present(alertController, animated: true, completion: nil)
     }
     
+    @objc private func longPressGesture(_ sender: UILongPressGestureRecognizer) {
+        guard case .began = sender.state else {
+            return
+        }
+        
+        // Present wallet alert sheet menu when long press
+        let position = sender.location(in: tableView)
+        guard let indexPathForTableViewCell = tableView.indexPathForRow(at: position),
+        let walletCollectionTableViewCell = tableView.cellForRow(at: indexPathForTableViewCell) as? WalletCollectionTableViewCell else {
+            return
+        }
+        
+        let collectionView = walletCollectionTableViewCell.collectionView
+        let positionInCollectionView = sender.location(in: collectionView)
+        guard let indexPathForCollectionViewCell = collectionView.indexPathForItem(at: positionInCollectionView),
+        let walletCardCollectionViewCell = collectionView.cellForItem(at: indexPathForCollectionViewCell) as? WalletCardCollectionViewCell else {
+            return
+        }
+        
+        guard let actions = viewModel.collectionView(collectionView, presentingViewController: self, isContextMenu: false, actionsForRowA: indexPathForCollectionViewCell),
+        !actions.isEmpty else {
+            return
+        }
+        
+        let alertController: UIAlertController = {
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let alertActions = actions.map { $0.alertAction }
+            for alertAction in alertActions {
+                alertController.addAction(alertAction)
+            }
+            return alertController
+        }()
+        
+        if let popoverPresentationController = alertController.popoverPresentationController {
+            popoverPresentationController.sourceView = walletCardCollectionViewCell
+        }
+        
+        DispatchQueue.main.async {
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
 }
 
 // MARK: - UITableViewDelegate
@@ -308,25 +375,9 @@ extension WalletsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch WalletsViewModel.Section.allCases[indexPath.section] {
         case .wallet:
-            break
-            // let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath, isContextMenu: false)
-            // let alertController: UIAlertController = {
-            //     let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            //     let alertActions = actions.map { $0.alertAction }
-            //     for alertAction in alertActions {
-            //         alertController.addAction(alertAction)
-            //     }
-            //     return alertController
-            // }()
-            //
-            // if let popoverPresentationController = alertController.popoverPresentationController {
-            //     popoverPresentationController.sourceView = cell
-            // }
-            //
-            // DispatchQueue.main.async {
-            //     self.present(alertController, animated: true, completion: nil)
-            // }
-        case .redPacket:     // red packet section
+            return
+
+        case .redPacket:
             guard let cell = tableView.cellForRow(at: indexPath) as? RedPacketCardTableViewCell,
             indexPath.row < viewModel.filteredRedPackets.value.count else {
                 return
@@ -434,6 +485,38 @@ extension WalletsViewController: UICollectionViewDelegate {
             return
         }
         viewModel.currentWalletModel.accept(viewModel.walletModels.value[index])
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard collectionView.tag == WalletCollectionTableViewCell.collectionViewTag else {
+            return
+        }
+    
+        guard let walletCardCollectionViewCell = collectionView.cellForItem(at: indexPath) as? WalletCardCollectionViewCell else {
+            return
+        }
+        
+        guard let actions = viewModel.collectionView(collectionView, presentingViewController: self, isContextMenu: false, actionsForRowA: indexPath),
+        !actions.isEmpty else {
+            return
+        }
+        
+        let alertController: UIAlertController = {
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let alertActions = actions.map { $0.alertAction }
+            for alertAction in alertActions {
+                alertController.addAction(alertAction)
+            }
+            return alertController
+        }()
+        
+        if let popoverPresentationController = alertController.popoverPresentationController {
+            popoverPresentationController.sourceView = walletCardCollectionViewCell
+        }
+        
+        DispatchQueue.main.async {
+            self.present(alertController, animated: true, completion: nil)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
