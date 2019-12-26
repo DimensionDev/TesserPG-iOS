@@ -47,7 +47,7 @@ final class WalletCardTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             walletCardView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: WalletCardTableViewCell.cardVerticalMargin),
             walletCardView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: walletCardView.trailingAnchor),
+            contentView.layoutMarginsGuide.trailingAnchor.constraint(equalTo: walletCardView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: walletCardView.bottomAnchor, constant: WalletCardTableViewCell.cardVerticalMargin),
         ])
     }

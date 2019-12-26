@@ -511,6 +511,11 @@
 		DBC9BD4223B3297200252437 /* WalletCardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD4123B3297200252437 /* WalletCardCollectionViewCell.swift */; };
 		DBC9BD4423B32DEE00252437 /* WalletCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD4323B32DED00252437 /* WalletCardView.swift */; };
 		DBC9BD4723B3325200252437 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DBC9BD4623B3325200252437 /* NetworkExtension.framework */; };
+		DBC9BD4D23B46CC300252437 /* EncPayloadDecryptResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD4C23B46CC300252437 /* EncPayloadDecryptResult.swift */; };
+		DBC9BD4E23B46CC300252437 /* EncPayloadDecryptResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD4C23B46CC300252437 /* EncPayloadDecryptResult.swift */; };
+		DBC9BD4F23B46CC300252437 /* EncPayloadDecryptResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD4C23B46CC300252437 /* EncPayloadDecryptResult.swift */; };
+		DBC9BD5023B46CC300252437 /* EncPayloadDecryptResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD4C23B46CC300252437 /* EncPayloadDecryptResult.swift */; };
+		DBC9BD5123B46D7B00252437 /* EncPayloadDecryptResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD4C23B46CC300252437 /* EncPayloadDecryptResult.swift */; };
 		DBC9CEE62387896C009E13C5 /* redpacket.bin in Resources */ = {isa = PBXBuildFile; fileRef = DBC9CEE42387896B009E13C5 /* redpacket.bin */; };
 		DBC9CEE72387896C009E13C5 /* redpacket.json in Resources */ = {isa = PBXBuildFile; fileRef = DBC9CEE52387896C009E13C5 /* redpacket.json */; };
 		DBC9CEE82387B0B0009E13C5 /* EditingRedPacketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83955B76237271EF00161498 /* EditingRedPacketViewController.swift */; };
@@ -948,6 +953,7 @@
 		DBC9BD4123B3297200252437 /* WalletCardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCardCollectionViewCell.swift; sourceTree = "<group>"; };
 		DBC9BD4323B32DED00252437 /* WalletCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCardView.swift; sourceTree = "<group>"; };
 		DBC9BD4623B3325200252437 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
+		DBC9BD4C23B46CC300252437 /* EncPayloadDecryptResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncPayloadDecryptResult.swift; sourceTree = "<group>"; };
 		DBC9CEE42387896B009E13C5 /* redpacket.bin */ = {isa = PBXFileReference; lastKnownFileType = archive.macbinary; path = redpacket.bin; sourceTree = "<group>"; };
 		DBC9CEE52387896C009E13C5 /* redpacket.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = redpacket.json; sourceTree = "<group>"; };
 		DBC9CF002387C889009E13C5 /* SelectWalletTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectWalletTableViewCell.swift; sourceTree = "<group>"; };
@@ -1360,6 +1366,7 @@
 				DB415E82238BB7370090C28F /* RedPacket.swift */,
 				DB9FE9EB23A8B6A400499632 /* RedPacket+V1.swift */,
 				DBD4A55823ACBA4B0030FFA6 /* RedPacketRawPayLoad.swift */,
+				DBC9BD4C23B46CC300252437 /* EncPayloadDecryptResult.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2830,6 +2837,7 @@
 				DBEE8958237282350080C194 /* WalletsViewController.swift in Sources */,
 				832146FA2244CCF4008ECC22 /* MessagesViewController.swift in Sources */,
 				DBEE895F237297FB0080C194 /* CreateWalletViewController.swift in Sources */,
+				DBC9BD4D23B46CC300252437 /* EncPayloadDecryptResult.swift in Sources */,
 				DBC19D8E23750B0B00170151 /* ImportMnemonicCollectionViewModel.swift in Sources */,
 				DB03DD68237C105B00D96201 /* WalletModel.swift in Sources */,
 				DBC9CEFD2387B8E2009E13C5 /* UIView+blinking.swift in Sources */,
@@ -3009,6 +3017,7 @@
 				833FF395224F9D8100EFE0A9 /* KeyboardInterpretor.swift in Sources */,
 				83DFC73722577B9800993160 /* WormHole.swift in Sources */,
 				833FF38E224F97BD00EFE0A9 /* ProfileService+Message.swift in Sources */,
+				DBC9BD4E23B46CC300252437 /* EncPayloadDecryptResult.swift in Sources */,
 				DB9FEA1023AB65D600499632 /* RedPacketService+Error.swift in Sources */,
 				DBF6B2AE232F6950008F83AE /* UIColor+Keyboard.swift in Sources */,
 				83B93D4B221D7EB000F556C0 /* Shapes.swift in Sources */,
@@ -3072,6 +3081,7 @@
 			files = (
 				DB5738C923A3846100B883D9 /* BackgroundTaskTests.swift in Sources */,
 				DB03DD50237BF8DF00D96201 /* Web3Tests.swift in Sources */,
+				DBC9BD5123B46D7B00252437 /* EncPayloadDecryptResult.swift in Sources */,
 				DBD4A55D23ACBA4B0030FFA6 /* RedPacketRawPayLoad.swift in Sources */,
 				DB0EC52A23ACA44100BDA2B5 /* Web3Secret.swift in Sources */,
 				DB0EC52423AC9ECD00BDA2B5 /* RedPacketRawPayloadTests.swift in Sources */,
@@ -3125,6 +3135,7 @@
 				DB15696023278EA200220926 /* FetchableRecord+all.swift in Sources */,
 				DB415E8B238BF0980090C28F /* UIViewPreview.swift in Sources */,
 				DB1169DE22E19CA00099BA25 /* MessageCardTableViewController.swift in Sources */,
+				DBC9BD4F23B46CC300252437 /* EncPayloadDecryptResult.swift in Sources */,
 				DB415EA1238CBEB20090C28F /* WalletService+Web3.swift in Sources */,
 				DB63A11F22E0688C00C2DDA6 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */,
 				DB63A11D22E0672400C2DDA6 /* SenderContactPickerView.swift in Sources */,
@@ -3221,6 +3232,7 @@
 				DB15695C23277FD900220926 /* ProfileService+Contact.swift in Sources */,
 				DB1169C022E184310099BA25 /* ComposeMessageViewModel.swift in Sources */,
 				DB1169B822E183990099BA25 /* ContactDBAction.swift in Sources */,
+				DBC9BD5023B46CC300252437 /* EncPayloadDecryptResult.swift in Sources */,
 				DB9FE9FE23A8DB0800499632 /* NumberFormatter.swift in Sources */,
 				DB1169D822E19BD80099BA25 /* MessagesViewModel.swift in Sources */,
 				DB415EB4238E1E780090C28F /* DispatchQueue.swift in Sources */,
