@@ -173,7 +173,7 @@ extension WalletsViewModel: ContextMenuActionTableViewDelegate {
 
     }
     
-    func collectionView(_ collectionView: UICollectionView, presentingViewController: UIViewController, isContextMenu: Bool, actionsForRowA indexPath: IndexPath) -> [ContextMenuAction]? {
+    func collectionView(_ collectionView: UICollectionView, presentingViewController: UIViewController, isContextMenu: Bool, actionsForRowAt indexPath: IndexPath) -> [ContextMenuAction]? {
         switch WalletsViewModel.Section.allCases[indexPath.section] {
         case .wallet:
             guard let cell = collectionView.cellForItem(at: indexPath) as? WalletCardCollectionViewCell else {

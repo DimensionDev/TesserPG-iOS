@@ -6,6 +6,7 @@
 //  Copyright © 2019 Sujitech. All rights reserved.
 //
 
+import os
 import UIKit
 import RxSwift
 import RxCocoa
@@ -29,6 +30,8 @@ class ImportMnemonicCollectionViewModel: MnemonicCollectionViewModel {
 
     private var wordsDict: [Int: String] = [:] {
         didSet {
+            os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, String(describing: mnemonic))
+
             isComplete.accept(mnemonic.count == 12)
         }
     }
@@ -42,7 +45,7 @@ class ImportMnemonicCollectionViewModel: MnemonicCollectionViewModel {
 
     typealias Input = (mnemonic: [String], passphrase: String)
     // Input
-    var input = BehaviorRelay<Input>(value: (mnemonic: [], passphrase: ""))
+    // var input = BehaviorRelay<Input>(value: (mnemonic: [], passphrase: ""))
 
     // Output
     let isComplete = BehaviorRelay(value: false)
@@ -139,6 +142,13 @@ extension ImportMnemonicCollectionViewModel {
             cell.wordTextField.text = results[index].title
             _ = cell.wordTextField.delegate?.textFieldShouldReturn?(cell.wordTextField)
         }
+        
+        cell.wordTextField.rx.text.asDriver()
+            .drive(onNext: { [weak self] word in
+                self?.wordsDict[indexPath.item] = word
+            })
+            .disposed(by: cell.disposeBag)
+        
         return cell
     }
 
