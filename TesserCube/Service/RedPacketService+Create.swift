@@ -78,7 +78,7 @@ extension RedPacketService {
             return Single.error(Error.internal("cannot construct call to send red packet"))
         }
         
-        let gasLimit = EthereumQuantity(integerLiteral: 1000000)
+        let gasLimit = EthereumQuantity(integerLiteral: 5000000)
         let gasPrice = EthereumQuantity(quantity: 10.gwei)
         
         let createInvocation = createCall(hashes, ifRandom, duration, seed, message, name)
@@ -99,7 +99,11 @@ extension RedPacketService {
                 case let .success(transactionHash):
                     single(.success(transactionHash))
                 case let .failure(error):
-                    single(.error(error))
+                    if let rpcError = error as? RPCResponse<EthereumData>.Error {
+                        single(.error(Error.internal(rpcError.message)))
+                    } else {
+                        single(.error(error))
+                    }
                 }
             }
             
@@ -231,6 +235,7 @@ extension RedPacketService {
                     return Observable.error(error)
                 }
                 
+                // Query create transaction receipt
                 return RedPacketService.createResult(for: redPacket).asObservable()
                     .retry(3)   // network retry
         }

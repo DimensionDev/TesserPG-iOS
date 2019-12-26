@@ -322,7 +322,7 @@ extension MessagesViewModel: ContextMenuActionTableViewDelegate {
         return nil
     }
     
-    func collectionView(_ collectionView: UICollectionView, presentingViewController: UIViewController, isContextMenu: Bool, actionsForRowA indexPath: IndexPath) -> [ContextMenuAction]? {
+    func collectionView(_ collectionView: UICollectionView, presentingViewController: UIViewController, isContextMenu: Bool, actionsForRowAt indexPath: IndexPath) -> [ContextMenuAction]? {
         assertionFailure()
         return nil
     }

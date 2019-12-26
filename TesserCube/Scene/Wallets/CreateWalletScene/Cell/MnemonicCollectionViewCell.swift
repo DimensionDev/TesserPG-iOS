@@ -8,16 +8,21 @@
 
 import UIKit
 import SearchTextField
+import RxSwift
 
 final public class MnemonicCollectionViewCell: UICollectionViewCell {
 
     public static let height: CGFloat = 40.0
+    
+    var disposeBag = DisposeBag()
 
     public let cardView = UIView()
     public let wordTextField = SearchTextField()
 
     public override func prepareForReuse() {
         super.prepareForReuse()
+        
+        disposeBag = DisposeBag()
         wordTextField.textColor = ._label
         cardView.backgroundColor = ._systemBackground
     }

@@ -125,7 +125,6 @@ extension WalletsViewController {
             self.tableView.reloadData()
             
             self.viewModel.filteredRedPackets.asDriver()
-                .distinctUntilChanged()
                 .drive(onNext: { [weak self] _ in
                     guard let `self` = self else { return }
                     self.reloadActionsView()
@@ -293,38 +292,71 @@ extension WalletsViewController {
         
         // Present wallet alert sheet menu when long press
         let position = sender.location(in: tableView)
-        guard let indexPathForTableViewCell = tableView.indexPathForRow(at: position),
-        let walletCollectionTableViewCell = tableView.cellForRow(at: indexPathForTableViewCell) as? WalletCollectionTableViewCell else {
+        guard let indexPathForTableViewCell = tableView.indexPathForRow(at: position) else {
             return
         }
         
-        let collectionView = walletCollectionTableViewCell.collectionView
-        let positionInCollectionView = sender.location(in: collectionView)
-        guard let indexPathForCollectionViewCell = collectionView.indexPathForItem(at: positionInCollectionView),
-        let walletCardCollectionViewCell = collectionView.cellForItem(at: indexPathForCollectionViewCell) as? WalletCardCollectionViewCell else {
-            return
-        }
-        
-        guard let actions = viewModel.collectionView(collectionView, presentingViewController: self, isContextMenu: false, actionsForRowA: indexPathForCollectionViewCell),
-        !actions.isEmpty else {
-            return
-        }
-        
-        let alertController: UIAlertController = {
-            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            let alertActions = actions.map { $0.alertAction }
-            for alertAction in alertActions {
-                alertController.addAction(alertAction)
+        switch WalletsViewModel.Section.allCases[indexPathForTableViewCell.section] {
+        case .wallet:
+            guard let walletCollectionTableViewCell = tableView.cellForRow(at: indexPathForTableViewCell) as? WalletCollectionTableViewCell else {
+                return
             }
-            return alertController
-        }()
-        
-        if let popoverPresentationController = alertController.popoverPresentationController {
-            popoverPresentationController.sourceView = walletCardCollectionViewCell
-        }
-        
-        DispatchQueue.main.async {
-            self.present(alertController, animated: true, completion: nil)
+            
+            let collectionView = walletCollectionTableViewCell.collectionView
+            let positionInCollectionView = sender.location(in: collectionView)
+            guard let indexPathForCollectionViewCell = collectionView.indexPathForItem(at: positionInCollectionView),
+            let walletCardCollectionViewCell = collectionView.cellForItem(at: indexPathForCollectionViewCell) as? WalletCardCollectionViewCell else {
+                return
+            }
+            
+            guard let actions = viewModel.collectionView(collectionView, presentingViewController: self, isContextMenu: false, actionsForRowAt: indexPathForCollectionViewCell),
+            !actions.isEmpty else {
+                return
+            }
+            
+            let alertController: UIAlertController = {
+                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                let alertActions = actions.map { $0.alertAction }
+                for alertAction in alertActions {
+                    alertController.addAction(alertAction)
+                }
+                return alertController
+            }()
+            
+            if let popoverPresentationController = alertController.popoverPresentationController {
+                popoverPresentationController.sourceView = walletCardCollectionViewCell
+            }
+            
+            DispatchQueue.main.async {
+                self.present(alertController, animated: true, completion: nil)
+            }
+            
+        case .redPacket:
+            guard let redPacketCardCell = tableView.cellForRow(at: indexPathForTableViewCell) as? RedPacketCardTableViewCell else {
+                return
+            }
+            
+            guard let actions = viewModel.tableView(tableView, presentingViewController: self, isContextMenu: false, actionsforRowAt: indexPathForTableViewCell),
+            !actions.isEmpty else {
+                return
+            }
+            
+            let alertController: UIAlertController = {
+                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                let alertActions = actions.map { $0.alertAction }
+                for alertAction in alertActions {
+                    alertController.addAction(alertAction)
+                }
+                return alertController
+            }()
+            
+            if let popoverPresentationController = alertController.popoverPresentationController {
+                popoverPresentationController.sourceView = redPacketCardCell
+            }
+            
+            DispatchQueue.main.async {
+                self.present(alertController, animated: true, completion: nil)
+            }
         }
     }
     
@@ -496,7 +528,7 @@ extension WalletsViewController: UICollectionViewDelegate {
             return
         }
         
-        guard let actions = viewModel.collectionView(collectionView, presentingViewController: self, isContextMenu: false, actionsForRowA: indexPath),
+        guard let actions = viewModel.collectionView(collectionView, presentingViewController: self, isContextMenu: false, actionsForRowAt: indexPath),
         !actions.isEmpty else {
             return
         }
@@ -535,7 +567,7 @@ extension WalletsViewController: UICollectionViewDelegate {
     @available(iOS 13.0, *)
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         
-        guard let actions = viewModel.collectionView(collectionView, presentingViewController: self, isContextMenu: true, actionsForRowA: indexPath),
+        guard let actions = viewModel.collectionView(collectionView, presentingViewController: self, isContextMenu: true, actionsForRowAt: indexPath),
         !actions.isEmpty else {
             return nil
         }
