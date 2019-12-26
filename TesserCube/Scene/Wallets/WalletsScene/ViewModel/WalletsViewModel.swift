@@ -14,6 +14,8 @@ import RxCocoa
 class WalletsViewModel: NSObject {
     
     let disposeBag = DisposeBag()
+    
+    var diffableDataSource: UITableViewDataSource!
 
     // Input
     let walletModels = BehaviorRelay<[WalletModel]>(value: [])
@@ -62,36 +64,31 @@ class WalletsViewModel: NSObject {
 
 }
 
-// MARK: - UITableViewDataSource
-extension WalletsViewModel: UITableViewDataSource {
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        // Section:
-        //  - 0: Wallet Section
-        //  - 1: Red Packet Section
-        return Section.allCases.count
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch Section.allCases[section] {
-        case .wallet:
-            return 1
-        case .redPacket:
-            return filteredRedPackets.value.count
+@available(iOS 13.0, *)
+extension WalletsViewModel {
+    
+    func configureDataSource(tableView: UITableView) {
+        diffableDataSource = UITableViewDiffableDataSource<Section, AnyHashable>(tableView: tableView) { [weak self] tableView, indexPath, model -> UITableViewCell? in
+            guard let `self` = self else { return nil }
+            os_log("%{public}s[%{public}ld], %{public}s: configure cell at %s", ((#file as NSString).lastPathComponent), #line, #function, String(describing: indexPath))
+            return self.constructTableViewCell(for: tableView, atIndexPath: indexPath, with: model)
         }
     }
+    
+}
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        os_log("%{public}s[%{public}ld], %{public}s", ((#file as NSString).lastPathComponent), #line, #function)
-
+extension WalletsViewModel {
+    
+    private func constructTableViewCell(for tableView: UITableView, atIndexPath indexPath: IndexPath, with model: AnyHashable) -> UITableViewCell {
         let cell: UITableViewCell
-
+        
         switch Section.allCases[indexPath.section] {
+        // wallet collection do not needs model
         case .wallet:
             let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: WalletCollectionTableViewCell.self), for: indexPath) as! WalletCollectionTableViewCell
             
             _cell.collectionView.dataSource = self
-
+            
             // Update collection view data source
             walletModels.asDriver()
                 .drive(onNext: { [weak self] walletModels in
@@ -114,7 +111,7 @@ extension WalletsViewModel: UITableViewDataSource {
                     }
                 })
                 .disposed(by: _cell.disposeBag)
-        
+            
             // setup page control
             walletModels.asDriver()
                 .map { max($0.count, 1) }
@@ -126,19 +123,53 @@ extension WalletsViewModel: UITableViewDataSource {
             
             cell = _cell
             
+        // red packet card cell needs filtered red packet model
         case .redPacket:
             let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RedPacketCardTableViewCell.self), for: indexPath) as! RedPacketCardTableViewCell
             
-            guard indexPath.row < filteredRedPackets.value.count, !filteredRedPackets.value.isEmpty else {
-                return _cell
+            if let redPacket = model as? RedPacket {
+                CreatedRedPacketViewModel.configure(cell: _cell, with: redPacket)
             }
-            let redPacket = filteredRedPackets.value[indexPath.row]
-            CreatedRedPacketViewModel.configure(cell: _cell, with: redPacket)
             
             cell = _cell
         }
-
+        
         return cell
+    }
+    
+}
+
+// MARK: - UITableViewDataSource
+extension WalletsViewModel: UITableViewDataSource {
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        // Section:
+        //  - 0: Wallet Section
+        //  - 1: Red Packet Section
+        return Section.allCases.count
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch Section.allCases[section] {
+        case .wallet:
+            return 1
+        case .redPacket:
+            return filteredRedPackets.value.count
+        }
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let model: AnyHashable = {
+            switch Section.allCases[indexPath.section] {
+            case .wallet:
+                return "WalletsCollectionModel"
+            case .redPacket:
+                return filteredRedPackets.value[indexPath.row]
+            }
+            
+        }()
+
+        return constructTableViewCell(for: tableView, atIndexPath: indexPath, with: model)
     }
 
 }

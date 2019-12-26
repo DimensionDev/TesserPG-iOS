@@ -102,7 +102,12 @@ class WalletsViewController: TCBaseViewController {
         }
         
         tableView.delegate = self
-        tableView.dataSource = viewModel
+        if #available(iOS 13.0, *) {
+            viewModel.configureDataSource(tableView: tableView)
+            tableView.dataSource = viewModel.diffableDataSource
+        } else {
+            tableView.dataSource = viewModel
+        }
         
         // Setup long press gesture for tableView for early iOS 13.0 to trigger alert sheet menu
         if #available(iOS 13.0, *) {
@@ -122,19 +127,45 @@ extension WalletsViewController {
         
         DispatchQueue.once {
             self.viewModel.walletModels.accept(WalletService.default.walletModels.value)
-            self.tableView.reloadData()
+            if #available(iOS 13.0, *) {
+                guard let dataSource = self.viewModel.diffableDataSource as? UITableViewDiffableDataSource<WalletsViewModel.Section, AnyHashable> else {
+                    assertionFailure()
+                    return
+                }
+                
+                var snapshot = NSDiffableDataSourceSnapshot<WalletsViewModel.Section, AnyHashable>()
+                snapshot.appendSections([.wallet])
+                snapshot.appendItems(["WalletsCollectionModel"])
+                dataSource.apply(snapshot, animatingDifferences: false, completion: nil)
+                
+            } else {
+                self.tableView.reloadData()
+            }
             
             self.viewModel.filteredRedPackets.asDriver()
-                .drive(onNext: { [weak self] _ in
+                .drive(onNext: { [weak self] redPackets in
                     guard let `self` = self else { return }
                     self.reloadActionsView()
                     
                     // reload red packet section
                     os_log("%{public}s[%{public}ld], %{public}s: filteredRedPackets changed. reload table view", ((#file as NSString).lastPathComponent), #line, #function)
                     
-                    self.tableView.reloadData()
-                    // let sections: IndexSet = [1]
-                    // self.tableView.reloadSections(sections, with: .automatic)
+                    if #available(iOS 13.0, *) {
+                        guard let dataSource = self.viewModel.diffableDataSource as? UITableViewDiffableDataSource<WalletsViewModel.Section, AnyHashable> else {
+                            assertionFailure()
+                            return
+                        }
+                        
+                        var snapshot = NSDiffableDataSourceSnapshot<WalletsViewModel.Section, AnyHashable>()
+                        snapshot.appendSections([.wallet])
+                        snapshot.appendItems(["WalletsCollectionModel"])
+                        snapshot.appendSections([.redPacket])
+                        snapshot.appendItems(redPackets)
+                        dataSource.apply(snapshot)
+                        
+                    } else {
+                        self.tableView.reloadData()
+                    }
                 })
                 .disposed(by: disposeBag)
         }
