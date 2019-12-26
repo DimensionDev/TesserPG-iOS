@@ -132,8 +132,9 @@ extension WalletsViewController {
                     // reload red packet section
                     os_log("%{public}s[%{public}ld], %{public}s: filteredRedPackets changed. reload table view", ((#file as NSString).lastPathComponent), #line, #function)
                     
-                    let sections: IndexSet = [1]
-                    self.tableView.reloadSections(sections, with: .automatic)
+                    self.tableView.reloadData()
+                    // let sections: IndexSet = [1]
+                    // self.tableView.reloadSections(sections, with: .automatic)
                 })
                 .disposed(by: disposeBag)
         }

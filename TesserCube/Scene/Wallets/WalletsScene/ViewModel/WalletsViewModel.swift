@@ -44,7 +44,9 @@ class WalletsViewModel: NSObject {
             })
             .disposed(by: disposeBag)
         
-        Driver.combineLatest(currentWalletModel.asDriver(), redPackets.asDriver()) { currentWalletModel, redPackets -> [RedPacket] in
+        let currentWalletModelChanged = currentWalletModel.asDriver()
+            .distinctUntilChanged { lhs, rhs -> Bool in return lhs?.address == rhs?.address }
+        Driver.combineLatest(currentWalletModelChanged, redPackets.asDriver()) { currentWalletModel, redPackets -> [RedPacket] in
                 guard let currentWalletModel = currentWalletModel else {
                     return []
                 }
