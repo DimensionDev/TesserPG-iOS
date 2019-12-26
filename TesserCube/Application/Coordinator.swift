@@ -45,6 +45,7 @@ class Coordinator {
         case openRedPacket
         case sendRedPacket
         case claimRedPacket(viewModel: ClaimRedPacketViewModel)
+        case redPacketDetail(viewModel: RedPacketDetailViewModel)
     }
     
     enum URLHost: String {
@@ -197,13 +198,17 @@ extension Coordinator {
             assert(!WalletService.default.walletModels.value.isEmpty, "Should present alert if no wallet") 
             let vc = EditingRedPacketViewController()
             return vc
-            
         case let .claimRedPacket(viewModel):
             let vc = ClaimRedPacketViewController()
             vc.viewModel = viewModel
             return vc
+        case let .redPacketDetail(viewModel):
+            let vc = RedPacketDetailViewController()
+            vc.viewModel = viewModel
+            return vc
         }
     }
+    
 }
 
 extension Coordinator {

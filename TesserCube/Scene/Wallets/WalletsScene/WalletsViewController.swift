@@ -421,8 +421,8 @@ extension WalletsViewController: UITableViewDelegate {
                 let viewModel = ClaimRedPacketViewModel(redPacket: redPacket)
                 Coordinator.main.present(scene: .claimRedPacket(viewModel: viewModel), from: self, transition: .modal, completion: nil)
             } else {
-                // check detail
-                // TODO:
+                let viewModel = RedPacketDetailViewModel(redPacket: redPacket)
+                Coordinator.main.present(scene: .redPacketDetail(viewModel: viewModel), from: self, transition: .detail, completion: nil)
             }
         }  
     }
