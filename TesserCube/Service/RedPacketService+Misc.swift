@@ -121,12 +121,6 @@ extension RedPacketService {
     
 }
 
-public struct EncPayloadDecryptResult {
-    let rawPayloadJSON: String
-    let rawPayload: RedPacketRawPayLoad
-    let encPayload: String  // no armor
-}
-
 extension RedPacketService {
     
     struct WalletMeta {
