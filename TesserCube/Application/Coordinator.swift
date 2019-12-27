@@ -205,6 +205,7 @@ extension Coordinator {
         case let .redPacketDetail(viewModel):
             let vc = RedPacketDetailViewController()
             vc.viewModel = viewModel
+            vc.hidesBottomBarWhenPushed = true
             return vc
         }
     }

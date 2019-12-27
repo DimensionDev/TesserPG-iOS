@@ -135,6 +135,8 @@ extension WalletsViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        tableView.flashScrollIndicators()
+        
         DispatchQueue.once {
             self.viewModel.walletModels.accept(WalletService.default.walletModels.value)
             if #available(iOS 13.0, *) {
