@@ -23,6 +23,8 @@ class WalletsViewController: TCBaseViewController {
         let tableView = UITableView()
         tableView.register(WalletCollectionTableViewCell.self, forCellReuseIdentifier: String(describing: WalletCollectionTableViewCell.self))
         tableView.register(RedPacketCardTableViewCell.self, forCellReuseIdentifier: String(describing: RedPacketCardTableViewCell.self))
+        tableView.alwaysBounceVertical = true
+        tableView.estimatedRowHeight = 150
         tableView.separatorStyle = .none
         tableView.tableFooterView = UIView()
         return tableView
@@ -65,6 +67,13 @@ class WalletsViewController: TCBaseViewController {
         // Setup tableView
         WalletService.default.walletModels.asDriver()
             .drive(viewModel.walletModels)
+            .disposed(by: disposeBag)
+        
+        viewModel.walletModels.asDriver()
+            .drive(onNext: { [weak self] _ in
+                // update actions when wallets changed
+                self?.reloadActionsView()
+            })
             .disposed(by: disposeBag)
         
         do {
@@ -116,6 +125,7 @@ class WalletsViewController: TCBaseViewController {
             tableView.addGestureRecognizer(longPressGestureRecognizer)
             longPressGestureRecognizer.addTarget(self, action: #selector(WalletsViewController.longPressGesture(_:)))
         }
+        
     }
 
 }
@@ -128,14 +138,14 @@ extension WalletsViewController {
         DispatchQueue.once {
             self.viewModel.walletModels.accept(WalletService.default.walletModels.value)
             if #available(iOS 13.0, *) {
-                guard let dataSource = self.viewModel.diffableDataSource as? UITableViewDiffableDataSource<WalletsViewModel.Section, AnyHashable> else {
+                guard let dataSource = self.viewModel.diffableDataSource as? UITableViewDiffableDataSource<WalletsViewModel.Section, WalletsViewModel.Model> else {
                     assertionFailure()
                     return
                 }
-                
-                var snapshot = NSDiffableDataSourceSnapshot<WalletsViewModel.Section, AnyHashable>()
-                snapshot.appendSections([.wallet])
-                snapshot.appendItems(["WalletsCollectionModel"])
+
+                var snapshot = NSDiffableDataSourceSnapshot<WalletsViewModel.Section, WalletsViewModel.Model>()
+                snapshot.appendSections([.wallet, .redPacket])
+                snapshot.appendItems([.wallet], toSection: .wallet)
                 dataSource.apply(snapshot, animatingDifferences: false, completion: nil)
                 
             } else {
@@ -145,24 +155,30 @@ extension WalletsViewController {
             self.viewModel.filteredRedPackets.asDriver()
                 .drive(onNext: { [weak self] redPackets in
                     guard let `self` = self else { return }
-                    self.reloadActionsView()
                     
                     // reload red packet section
                     os_log("%{public}s[%{public}ld], %{public}s: filteredRedPackets changed. reload table view", ((#file as NSString).lastPathComponent), #line, #function)
                     
                     if #available(iOS 13.0, *) {
-                        guard let dataSource = self.viewModel.diffableDataSource as? UITableViewDiffableDataSource<WalletsViewModel.Section, AnyHashable> else {
+                        guard let dataSource = self.viewModel.diffableDataSource as? UITableViewDiffableDataSource<WalletsViewModel.Section, WalletsViewModel.Model> else {
                             assertionFailure()
                             return
                         }
-                        
-                        var snapshot = NSDiffableDataSourceSnapshot<WalletsViewModel.Section, AnyHashable>()
+
+                        var snapshot = NSDiffableDataSourceSnapshot<WalletsViewModel.Section, WalletsViewModel.Model>()
+
                         snapshot.appendSections([.wallet])
-                        snapshot.appendItems(["WalletsCollectionModel"])
-                        snapshot.appendSections([.redPacket])
-                        snapshot.appendItems(redPackets)
-                        dataSource.apply(snapshot)
+                        snapshot.appendItems([.wallet], toSection: .wallet)
                         
+                        let redPacketModels = redPackets.map { WalletsViewModel.Model.redPacket($0) }
+                        snapshot.appendSections([.redPacket])
+                        snapshot.appendItems(redPacketModels, toSection: .redPacket)
+                        
+                        // Update animation style
+                        dataSource.defaultRowAnimation = redPacketModels.isEmpty ? .top : .bottom
+
+                        dataSource.apply(snapshot)
+
                     } else {
                         self.tableView.reloadData()
                     }
@@ -402,10 +418,9 @@ extension WalletsViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard section == 1 else {
+        guard section != 0 else {
             return .leastNonzeroMagnitude
         }
-
         return 20 - WalletCardTableViewCell.cardVerticalMargin
     }
 
@@ -414,10 +429,9 @@ extension WalletsViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        guard section == 1 else {
+        guard section != 0 else {
             return .leastNonzeroMagnitude
         }
-        
         return 20 - WalletCardTableViewCell.cardVerticalMargin
     }
     

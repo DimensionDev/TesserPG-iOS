@@ -30,6 +30,11 @@ class WalletsViewModel: NSObject {
         case wallet
         case redPacket
     }
+    
+    enum Model: Hashable {
+        case wallet
+        case redPacket(RedPacket)
+    }
 
     override init() {
         super.init()
@@ -68,22 +73,23 @@ class WalletsViewModel: NSObject {
 extension WalletsViewModel {
     
     func configureDataSource(tableView: UITableView) {
-        diffableDataSource = UITableViewDiffableDataSource<Section, AnyHashable>(tableView: tableView) { [weak self] tableView, indexPath, model -> UITableViewCell? in
+        let dataSource = UITableViewDiffableDataSource<Section, Model>(tableView: tableView) { [weak self] tableView, indexPath, model -> UITableViewCell? in
             guard let `self` = self else { return nil }
             os_log("%{public}s[%{public}ld], %{public}s: configure cell at %s", ((#file as NSString).lastPathComponent), #line, #function, String(describing: indexPath))
             return self.constructTableViewCell(for: tableView, atIndexPath: indexPath, with: model)
         }
+        dataSource.defaultRowAnimation = .bottom
+        diffableDataSource = dataSource
     }
     
 }
 
 extension WalletsViewModel {
     
-    private func constructTableViewCell(for tableView: UITableView, atIndexPath indexPath: IndexPath, with model: AnyHashable) -> UITableViewCell {
+    private func constructTableViewCell(for tableView: UITableView, atIndexPath indexPath: IndexPath, with model: Model) -> UITableViewCell {
         let cell: UITableViewCell
         
-        switch Section.allCases[indexPath.section] {
-        // wallet collection do not needs model
+        switch model {
         case .wallet:
             let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: WalletCollectionTableViewCell.self), for: indexPath) as! WalletCollectionTableViewCell
             
@@ -124,12 +130,10 @@ extension WalletsViewModel {
             cell = _cell
             
         // red packet card cell needs filtered red packet model
-        case .redPacket:
+        case let .redPacket(redPacket):
             let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RedPacketCardTableViewCell.self), for: indexPath) as! RedPacketCardTableViewCell
             
-            if let redPacket = model as? RedPacket {
-                CreatedRedPacketViewModel.configure(cell: _cell, with: redPacket)
-            }
+            CreatedRedPacketViewModel.configure(cell: _cell, with: redPacket)
             
             cell = _cell
         }
@@ -159,14 +163,13 @@ extension WalletsViewModel: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let model: AnyHashable = {
+        let model: Model = {
             switch Section.allCases[indexPath.section] {
             case .wallet:
-                return "WalletsCollectionModel"
+                return .wallet
             case .redPacket:
-                return filteredRedPackets.value[indexPath.row]
+                return .redPacket(filteredRedPackets.value[indexPath.row])
             }
-            
         }()
 
         return constructTableViewCell(for: tableView, atIndexPath: indexPath, with: model)

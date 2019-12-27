@@ -350,6 +350,7 @@ extension MessagesViewController {
                         var snapsot = NSDiffableDataSourceSnapshot<MessagesViewModel.Section, Message>()
                         snapsot.appendSections([.main])
                         snapsot.appendItems(messages)
+
                         dataSource.apply(snapsot)
                         
                     } else {
