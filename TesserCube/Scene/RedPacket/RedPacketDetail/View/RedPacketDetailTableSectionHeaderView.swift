@@ -8,13 +8,13 @@
 
 import UIKit
 
-final class RedPacketMessageSectionHeaderView: UIView {
+final class RedPacketDetailTableSectionHeaderView: UIView {
     
     let headerLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SFProText.regular.font(size: 13)
         label.textColor = ._secondaryLabel
-        label.text = "Message"
+        label.text = ""
         return label
     }()
     

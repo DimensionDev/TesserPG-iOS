@@ -16,6 +16,7 @@ extension WalletsViewModel {
         case backupMnemonic(wallet: Wallet, presentingViewController: UIViewController)
         case deleteWallet(wallet: Wallet, presentingViewController: UIViewController, cell: WalletCardCollectionViewCell, isContextMenu: Bool)
         case claimRedPacket(redPacket: RedPacket, presentingViewController: UIViewController)
+        case checkRedPacketDetail(redPacket: RedPacket, presentingViewController: UIViewController)
         case shareRedPacketArmoredMessage(redPacket: RedPacket, presentingViewController: UIViewController, cell: RedPacketCardTableViewCell)
         case cancel
 
@@ -25,6 +26,7 @@ extension WalletsViewModel {
             case .backupMnemonic:       return "Backup Mnemonic"
             case .deleteWallet:         return "Delete"
             case .claimRedPacket:       return "Claim Red Packet"
+            case .checkRedPacketDetail: return "Check Red Packet Detail"
             case .shareRedPacketArmoredMessage:
                                         return "Share Red Packet Message"
             case .cancel:               return L10n.Common.Button.cancel
@@ -42,6 +44,7 @@ extension WalletsViewModel {
                 case .backupMnemonic:       return UIImage(systemName: "pencil.circle")
                 case .deleteWallet:         return UIImage(systemName: "trash")
                 case .claimRedPacket:       return UIImage(systemName: "envelope.open")
+                case .checkRedPacketDetail: return UIImage(systemName: "envelope.open.fill")
                 case .shareRedPacketArmoredMessage:
                                             return UIImage(systemName: "doc.on.doc")
                 default:                    return nil
@@ -95,6 +98,9 @@ extension WalletsViewModel {
                 case let .claimRedPacket(redPacket, presentingViewController):
                     let viewModel = ClaimRedPacketViewModel(redPacket: redPacket)
                     Coordinator.main.present(scene: .claimRedPacket(viewModel: viewModel), from: presentingViewController, transition: .modal, completion: nil)
+                case let .checkRedPacketDetail(redPacket, presentingViewController):
+                    let viewModel = RedPacketDetailViewModel(redPacket: redPacket)
+                    Coordinator.main.present(scene: .redPacketDetail(viewModel: viewModel), from: presentingViewController, transition: .detail, completion: nil)
                 case let .shareRedPacketArmoredMessage(redPacket, presentingViewController, cell):
                     guard let message = RedPacketService.armoredEncPayload(for: redPacket) else {
                         let alertController = UIAlertController(title: "Error", message: "Cannot share red packet message", preferredStyle: .alert)
@@ -213,12 +219,14 @@ extension WalletsViewModel: ContextMenuActionTableViewDelegate {
             case .normal, .incoming:
                 return [
                     Action.claimRedPacket(redPacket: redPacket, presentingViewController: presentingViewController),
+                    Action.checkRedPacketDetail(redPacket: redPacket, presentingViewController: presentingViewController),
                     Action.shareRedPacketArmoredMessage(redPacket: redPacket, presentingViewController: presentingViewController, cell: cell),
                     Action.cancel
                 ]
             default:
                 return [
                     Action.shareRedPacketArmoredMessage(redPacket: redPacket, presentingViewController: presentingViewController, cell: cell),
+                    Action.checkRedPacketDetail(redPacket: redPacket, presentingViewController: presentingViewController),
                     Action.cancel
                 ]
             }

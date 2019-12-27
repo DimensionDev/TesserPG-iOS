@@ -13,6 +13,7 @@ final class RedPacketMessageTableViewCell: UITableViewCell {
     let messageLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SFProText.regular.font(size: 17)
+        label.numberOfLines = 0
         label.textColor = ._label
         return label
     }()
@@ -41,6 +42,7 @@ extension RedPacketMessageTableViewCell {
             messageLabel.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
             contentView.layoutMarginsGuide.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor),
             contentView.bottomAnchor.constraint(equalToSystemSpacingBelow: messageLabel.bottomAnchor, multiplier: 1.0),
+            contentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 44),
         ])
     }
     
