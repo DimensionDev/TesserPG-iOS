@@ -46,6 +46,7 @@ class Coordinator {
         case sendRedPacket
         case claimRedPacket(viewModel: ClaimRedPacketViewModel)
         case redPacketDetail(viewModel: RedPacketDetailViewModel)
+        case refundRedPacket(viewModel: RefundRedPacketViewModel)
     }
     
     enum URLHost: String {
@@ -206,6 +207,10 @@ extension Coordinator {
             let vc = RedPacketDetailViewController()
             vc.viewModel = viewModel
             vc.hidesBottomBarWhenPushed = true
+            return vc
+        case let .refundRedPacket(viewModel):
+            let vc = RefundRedPacketViewController()
+            vc.viewModel = viewModel
             return vc
         }
     }
