@@ -66,7 +66,7 @@ extension RedPacketService {
             return BigUInt(hash)
         }
         let ifRandom = redPacket.is_random
-        let duration = redPacket.duration
+        let duration = 60 //redPacket.duration
         let seed = BigUInt.randomInteger(withMaximumWidth: 32)
         let message = redPacket.send_message
         let name = redPacket.sender_name

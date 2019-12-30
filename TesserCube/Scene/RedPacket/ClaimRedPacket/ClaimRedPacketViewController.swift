@@ -74,6 +74,9 @@ final class ClaimRedPacketViewModel: NSObject {
 extension ClaimRedPacketViewModel {
     
     func claimRedPacket() {
+        // 1. claim                  // busy & claiming
+        // 2. get claim result       // busy & claimPending
+        
         guard let selectWalletModel = self.selectWalletModel.value,
         let walletAddress = try? EthereumAddress(hex: selectWalletModel.address, eip55: false) else {
             error.accept(RedPacketService.Error.internal("No valid wallet to claim"))

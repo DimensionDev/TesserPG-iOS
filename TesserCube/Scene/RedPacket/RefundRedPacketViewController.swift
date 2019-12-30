@@ -12,24 +12,109 @@ import RealmSwift
 import RxSwift
 import RxCocoa
 import RxRealm
+import RxSwiftUtilities
+import Web3
 
 final class RefundRedPacketViewModel: NSObject {
     
+    let disposeBag = DisposeBag()
+    let busyActivityIndicator = ActivityIndicator()
+    let refundActivityIndicator = ActivityIndicator()
+    
     // Input
     let redPacket: RedPacket
+    let isRefundPending: BehaviorRelay<Bool>
     
     // Output
+    let isRefunding: Driver<Bool>
+    let isBusy = BehaviorRelay(value: false)
     var redPacketNotificationToken: NotificationToken?
+    let error = BehaviorRelay<Swift.Error?>(value: nil)
     
     init(redPacket: RedPacket) {
         self.redPacket = redPacket
+        isRefundPending = BehaviorRelay(value: redPacket.status == .refund_pending)
+        isRefunding = refundActivityIndicator.asDriver()
         super.init()
+        
+        busyActivityIndicator.asDriver()
+            .drive(isBusy)
+            .disposed(by: disposeBag)
+         
+        isBusy.asDriver()
+            .debug()
+            .drive()
+            .disposed(by: disposeBag)
+        
+        isRefunding.asDriver()
+            .debug()
+            .drive()
+            .disposed(by: disposeBag)
         
     }
     
     deinit {
         redPacketNotificationToken?.invalidate()
         os_log("%{public}s[%{public}ld], %{public}s: deinit", ((#file as NSString).lastPathComponent), #line, #function)
+    }
+    
+}
+
+extension RefundRedPacketViewModel {
+    
+    func refundRedpacket() {
+        // 1. Get nonce                         // busy
+        // 2. Send refund transaction           // busy & refunding
+        // 3. Fetch refund result               // busy & refundPending
+        
+        // Find sender wallet for refund
+        let walletModelForRefund = WalletService.default.walletModels.value.first(where: { walletModel -> Bool in
+            return walletModel.address == redPacket.sender_address
+        })
+        
+        guard let walletModel = walletModelForRefund else {
+            error.accept(RedPacketService.Error.internal("cannot find wallet to refund this red packet"))
+            return
+        }
+        guard let walletAddress = try? EthereumAddress(hex: walletModel.address, eip55: false) else {
+            error.accept(RedPacketService.Error.internal("No valid wallet to refund"))
+            return
+        }
+        
+        // Break if busy
+        guard !isBusy.value else {
+            return
+        }
+
+        let id = redPacket.id
+
+        WalletService.getTransactionCount(address: walletAddress).asObservable()
+            .trackActivity(busyActivityIndicator)
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+            .retry(3)
+            .flatMapLatest { nonce -> Observable<TransactionHash> in
+                let redPacket: RedPacket
+                do {
+                    let realm = try RedPacketService.realm()
+                    guard let _redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
+                        return Observable.error(RedPacketService.Error.internal("cannot resolve red packet"))
+                    }
+                    redPacket = _redPacket
+                } catch {
+                    return Observable.error(error)
+                }
+                
+                return RedPacketService.refund(for: redPacket, use: walletModel, nonce: nonce)
+                    .trackActivity(self.refundActivityIndicator)
+            }
+            .subscribe(onNext: { transactionHash in
+                os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, String(describing: transactionHash))
+
+            }, onError: { [weak self] error in
+                self?.error.accept(error)
+            })
+            .disposed(by: disposeBag)
+        
     }
     
 }
@@ -117,7 +202,19 @@ final class RefundRedPacketViewController: TCBaseViewController {
             view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: bottomActionsView.bottomAnchor, constant: 15),
         ])
         
+        // Load bottom action view
         reloadActionsView()
+        
+        // Setup error handler
+        viewModel.error.asDriver()
+            .drive(onNext: { [weak self] error in
+                guard let `self` = self, let error = error else { return }
+                let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+                let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+                alertController.addAction(okAction)
+                self.present(alertController, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
         
         // Setup table view
         tableView.delegate = self
@@ -160,7 +257,7 @@ extension RefundRedPacketViewController {
     }
     
     @objc private func refundRedPacketButtonPressed(_ sender: UIButton) {
-        
+        viewModel.refundRedpacket()
     }
     
 }
