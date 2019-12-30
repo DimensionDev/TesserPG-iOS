@@ -30,10 +30,7 @@ class SelectRecipientViewController: UIViewController {
         selectRecipientView?.updateColor(theme: KeyboardModeManager.shared.currentTheme)
         selectRecipientView?.delegate = KeyboardModeManager.shared
         selectRecipientView?.optionFieldView = KeyboardModeManager.shared.optionsView
-        
-        KeyboardModeManager.shared.optionsView?.suggestionView?.isHidden = true
-        KeyboardModeManager.shared.optionsView?.selectedRecipientsView?.isHidden = false
-        
+
         selectRecipientView?.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(selectRecipientView!)
         NSLayoutConstraint.activate([
@@ -49,6 +46,8 @@ class SelectRecipientViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        KeyboardModeManager.shared.optionsView?.suggestionView?.isHidden = true
+        KeyboardModeManager.shared.optionsView?.selectedRecipientsView?.isHidden = false
         selectRecipientView?.recipientInputView.inputTextField.textFieldIsSelected = true
         selectRecipientView?.reloadRecipients()
     }
