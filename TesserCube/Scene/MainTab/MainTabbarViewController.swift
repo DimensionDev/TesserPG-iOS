@@ -69,6 +69,9 @@ class MainTabbarViewController: UITabBarController {
     }
     
     private func configUI() {
+        // fix dark color under navigation bar during transition 
+        view.backgroundColor = ._systemBackground
+        
         tabBar.isTranslucent = true
         let items: [MainTabItem] = {
             #if RP
@@ -83,11 +86,10 @@ class MainTabbarViewController: UITabBarController {
             vc.title = $0.title
             naviVC.tabBarItem.title = vc.title
             naviVC.tabBarItem.image = $0.image
-//            naviVC.tabBarItem.selectedImage = $0.selectedImage
+
             return naviVC
         }
         
-//        tabBar.tintColor = .purple
         setViewControllers(tabViewControllers, animated: false)
         selectedIndex = 1
     }
