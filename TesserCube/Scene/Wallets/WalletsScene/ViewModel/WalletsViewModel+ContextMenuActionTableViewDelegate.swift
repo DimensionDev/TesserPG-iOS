@@ -17,6 +17,7 @@ extension WalletsViewModel {
         case deleteWallet(wallet: Wallet, presentingViewController: UIViewController, cell: WalletCardCollectionViewCell, isContextMenu: Bool)
         case claimRedPacket(redPacket: RedPacket, presentingViewController: UIViewController)
         case checkRedPacketDetail(redPacket: RedPacket, presentingViewController: UIViewController)
+        case refundRedPacket(redPacket: RedPacket, presentingViewController: UIViewController)
         case shareRedPacketArmoredMessage(redPacket: RedPacket, presentingViewController: UIViewController, cell: RedPacketCardTableViewCell)
         case cancel
 
@@ -27,6 +28,7 @@ extension WalletsViewModel {
             case .deleteWallet:         return "Delete"
             case .claimRedPacket:       return "Claim Red Packet"
             case .checkRedPacketDetail: return "Check Red Packet Detail"
+            case .refundRedPacket:      return "Refund Red Packet"
             case .shareRedPacketArmoredMessage:
                                         return "Share Red Packet Message"
             case .cancel:               return L10n.Common.Button.cancel
@@ -45,6 +47,7 @@ extension WalletsViewModel {
                 case .deleteWallet:         return UIImage(systemName: "trash")
                 case .claimRedPacket:       return UIImage(systemName: "envelope.open")
                 case .checkRedPacketDetail: return UIImage(systemName: "envelope.open.fill")
+                case .refundRedPacket:      return UIImage(systemName: "tray.and.arrow.up")
                 case .shareRedPacketArmoredMessage:
                                             return UIImage(systemName: "doc.on.doc")
                 default:                    return nil
@@ -101,6 +104,9 @@ extension WalletsViewModel {
                 case let .checkRedPacketDetail(redPacket, presentingViewController):
                     let viewModel = RedPacketDetailViewModel(redPacket: redPacket)
                     Coordinator.main.present(scene: .redPacketDetail(viewModel: viewModel), from: presentingViewController, transition: .detail, completion: nil)
+                case let .refundRedPacket(redPacket, presentingViewController):
+                    let viewModel = RefundRedPacketViewModel(redPacket: redPacket)
+                    Coordinator.main.present(scene: .refundRedPacket(viewModel: viewModel), from: presentingViewController, transition: .modal, completion: nil)
                 case let .shareRedPacketArmoredMessage(redPacket, presentingViewController, cell):
                     guard let message = RedPacketService.armoredEncPayload(for: redPacket) else {
                         let alertController = UIAlertController(title: "Error", message: "Cannot share red packet message", preferredStyle: .alert)
@@ -215,21 +221,36 @@ extension WalletsViewModel: ContextMenuActionTableViewDelegate {
             }
             let redPacket = filteredRedPackets.value[indexPath.row].redPacket
             
+            let currentWalletModel = self.currentWalletModel.value
+            let candRefund = currentWalletModel.flatMap {
+                // TODO: check redPacket expire status
+                return redPacket.sender_address == $0.address
+            } ?? false
+            
+            var actions: [ContextMenuAction] = []
+            let commonActions = [
+                Action.shareRedPacketArmoredMessage(redPacket: redPacket, presentingViewController: presentingViewController, cell: cell),
+                Action.cancel,
+            ]
             switch redPacket.status {
             case .normal, .incoming:
-                return [
+                actions.append(contentsOf: [
                     Action.claimRedPacket(redPacket: redPacket, presentingViewController: presentingViewController),
                     Action.checkRedPacketDetail(redPacket: redPacket, presentingViewController: presentingViewController),
-                    Action.shareRedPacketArmoredMessage(redPacket: redPacket, presentingViewController: presentingViewController, cell: cell),
-                    Action.cancel
-                ]
+                ])
             default:
-                return [
+                actions.append(contentsOf: [
                     Action.checkRedPacketDetail(redPacket: redPacket, presentingViewController: presentingViewController),
-                    Action.shareRedPacketArmoredMessage(redPacket: redPacket, presentingViewController: presentingViewController, cell: cell),
-                    Action.cancel
-                ]
+                ])
             }
+            
+            if candRefund {
+                actions.append(contentsOf: [
+                    Action.refundRedPacket(redPacket: redPacket, presentingViewController: presentingViewController)
+                ])
+            }
+            actions.append(contentsOf: commonActions)
+            return actions
         }
     }
 
