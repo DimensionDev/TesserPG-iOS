@@ -48,12 +48,12 @@ class RecommendRecipientsView: UIView, Thematic {
         return view
     }()
     
-    private var titleLabel: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.text = L10n.Keyboard.Label.selectRecipients
-        label.font = FontFamily.SFProDisplay.medium.font(size: 16)
-        return label
-    }()
+//    private var titleLabel: UILabel = {
+//        let label = UILabel(frame: .zero)
+//        label.text = L10n.Keyboard.Label.selectRecipients
+//        label.font = FontFamily.SFProDisplay.medium.font(size: 16)
+//        return label
+//    }()
     
     var recipientInputView: KeyboardInputView = {
         let inputView = KeyboardInputView(frame: .zero)
@@ -97,7 +97,7 @@ class RecommendRecipientsView: UIView, Thematic {
     
     private func configUI() {
         backgroundColor = UIColor(hex: 0xF0F0F0)
-        titleLabelView.addSubview(titleLabel)
+//        titleLabelView.addSubview(titleLabel)
         
         titleLabelView.addSubview(recipientInputView)
         recipientInputView.inputTextField.textFieldIsSelected = true
@@ -105,22 +105,22 @@ class RecommendRecipientsView: UIView, Thematic {
         recipientsTableView.delegate = self
         recipientsTableView.dataSource = self
         
-        addSubview(titleLabelView)
+//        addSubview(titleLabelView)
         addSubview(recipientsTableView)
         addSubview(resultLabel)
         
         bringSubviewToFront(titleLabelView)
         
-        titleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
-            make.centerY.equalToSuperview()
-            make.width.equalToSuperview().dividedBy(2.0)
-        }
+//        titleLabel.snp.makeConstraints { make in
+//            make.leading.equalToSuperview().offset(16)
+//            make.centerY.equalToSuperview()
+//            make.width.equalToSuperview().dividedBy(2.0)
+//        }
         
         recipientInputView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-10)
             make.centerY.equalToSuperview()
-            make.leading.equalTo(titleLabel.snp.trailing)
+            make.leading.equalToSuperview().offset(10)
         }
         
         titleLabelView.snp.makeConstraints { make in
@@ -149,12 +149,12 @@ class RecommendRecipientsView: UIView, Thematic {
             backgroundColor = UIColor(hex: 0xF0F0F0)
             titleLabelView.backgroundColor = UIColor(hex: 0xD1D3D9)
             titleLabelView.addShadow(ofColor: UIColor(hex: 0xDDDDDD)!, radius: 0, offset: CGSize(width: 0, height: 1), opacity: 1)
-            titleLabel.textColor = .black
+//            titleLabel.textColor = .black
         case .dark:
             backgroundColor = .keyboardCharKeyBackgroundDark
             titleLabelView.backgroundColor = .keyboardFuncKeyBackgroundDark
             titleLabelView.addShadow(ofColor: .keyboardBackgroundDark, radius: 0, offset: CGSize(width: 0, height: 1), opacity: 1)
-            titleLabel.textColor = .white
+//            titleLabel.textColor = .white
         }
     }
     

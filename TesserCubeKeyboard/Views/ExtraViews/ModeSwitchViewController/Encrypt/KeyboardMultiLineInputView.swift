@@ -30,12 +30,12 @@ class KeyboardTextView: UITextView, UITextInputDelegate {
     }
     
     private var cursorView: UIView = {
-        let cursor = UIView(frame: CGRect(x: KeyboardTextView.widthInset, y: 4, width: 2, height: 24))
+        let cursor = UIView(frame: CGRect(x: KeyboardTextView.widthInset, y: 7, width: 2, height: 21))
         cursor.addOpacityAnimation()
         return cursor
     }()
     
-    private static let widthInset: CGFloat = 0
+    private static let widthInset: CGFloat = 4
     
     override var canBecomeFirstResponder: Bool {
         // This property is called only when user try to tap this UITextField, right?
