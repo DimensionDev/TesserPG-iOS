@@ -225,8 +225,8 @@ extension WalletsViewModel: ContextMenuActionTableViewDelegate {
                 ]
             default:
                 return [
-                    Action.shareRedPacketArmoredMessage(redPacket: redPacket, presentingViewController: presentingViewController, cell: cell),
                     Action.checkRedPacketDetail(redPacket: redPacket, presentingViewController: presentingViewController),
+                    Action.shareRedPacketArmoredMessage(redPacket: redPacket, presentingViewController: presentingViewController, cell: cell),
                     Action.cancel
                 ]
             }
