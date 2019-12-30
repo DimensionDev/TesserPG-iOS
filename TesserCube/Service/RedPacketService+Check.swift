@@ -58,14 +58,16 @@ extension RedPacketService {
                 
                 guard let balance = dict["balance"] as? BigUInt,
                 let total = dict["total"] as? BigUInt,
-                let claimed = dict["claimed"] as? BigUInt else {
+                let claimed = dict["claimed"] as? BigUInt,
+                let expired = dict["expired"] as? Bool else {
                     single(.error(Error.checkAvailabilityFail))
                     return
                 }
                 
                 let availability = RedPacketAvailability(balance: balance,
                                                          total: Int(total),
-                                                         claimed: Int(claimed))
+                                                         claimed: Int(claimed),
+                                                         expired: expired)
                 single(.success(availability))
             }
             
@@ -144,6 +146,7 @@ extension RedPacketService {
         let balance: BigUInt
         let total: Int
         let claimed: Int
+        let expired: Bool
     }
     
     struct RedPacketClaimedRecord {
