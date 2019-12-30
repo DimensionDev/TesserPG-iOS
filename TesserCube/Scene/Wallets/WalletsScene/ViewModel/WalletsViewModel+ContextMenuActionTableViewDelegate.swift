@@ -213,7 +213,7 @@ extension WalletsViewModel: ContextMenuActionTableViewDelegate {
             guard let cell = sourceView as? RedPacketCardTableViewCell else {
                 return nil
             }
-            let redPacket = filteredRedPackets.value[indexPath.row]
+            let redPacket = filteredRedPackets.value[indexPath.row].redPacket
             
             switch redPacket.status {
             case .normal, .incoming:

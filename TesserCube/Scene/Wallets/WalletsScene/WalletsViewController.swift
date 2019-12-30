@@ -166,19 +166,31 @@ extension WalletsViewController {
                             assertionFailure()
                             return
                         }
-
+                    
                         var snapshot = NSDiffableDataSourceSnapshot<WalletsViewModel.Section, WalletsViewModel.Model>()
 
                         snapshot.appendSections([.wallet])
                         snapshot.appendItems([.wallet], toSection: .wallet)
                         
                         let redPacketModels = redPackets.map { WalletsViewModel.Model.redPacket($0) }
+                        // Update animation style
+                        dataSource.defaultRowAnimation = {
+                            if redPacketModels.isEmpty {
+                                // use .top to collapse cell from bottom to top
+                                return .top
+                            } else {
+                                if dataSource.snapshot().numberOfItems(inSection: .redPacket) == 0 {
+                                    // use .bottom when old section is empty to make cell expend from top to bottom
+                                    return .bottom
+                                } else {
+                                    // diff two section and automatic animation
+                                    return .automatic
+                                }
+                            }
+                        }()
                         snapshot.appendSections([.redPacket])
                         snapshot.appendItems(redPacketModels, toSection: .redPacket)
                         
-                        // Update animation style
-                        dataSource.defaultRowAnimation = redPacketModels.isEmpty ? .top : .bottom
-
                         dataSource.apply(snapshot)
 
                     } else {
@@ -462,7 +474,7 @@ extension WalletsViewController: UITableViewDelegate {
             indexPath.row < viewModel.filteredRedPackets.value.count else {
                 return
             }
-            let redPacket = viewModel.filteredRedPackets.value[indexPath.row]
+            let redPacket = viewModel.filteredRedPackets.value[indexPath.row].redPacket
             
             if redPacket.status == .normal || redPacket.status == .incoming {
                 // ready to claim
