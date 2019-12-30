@@ -6,6 +6,7 @@
 //  Copyright © 2019 Sujitech. All rights reserved.
 //
 
+import os
 import Foundation
 import RealmSwift
 import BigInt

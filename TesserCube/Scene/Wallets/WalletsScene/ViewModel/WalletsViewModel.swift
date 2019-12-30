@@ -24,7 +24,7 @@ class WalletsViewModel: NSObject {
     // Output
     let currentWalletModel = BehaviorRelay<WalletModel?>(value: nil)
     let currentWalletPageIndex = BehaviorRelay(value: 0)
-    let filteredRedPackets = BehaviorRelay<[RedPacket]>(value: [])
+    let filteredRedPackets = BehaviorRelay<[RedPacketValue]>(value: [])
     
     enum Section: Int, CaseIterable {
         case wallet
@@ -33,7 +33,7 @@ class WalletsViewModel: NSObject {
     
     enum Model: Hashable {
         case wallet
-        case redPacket(RedPacket)
+        case redPacket(RedPacketValue)
     }
 
     override init() {
@@ -53,7 +53,7 @@ class WalletsViewModel: NSObject {
         
         let currentWalletModelChanged = currentWalletModel.asDriver()
             .distinctUntilChanged { lhs, rhs -> Bool in return lhs?.address == rhs?.address }
-        Driver.combineLatest(currentWalletModelChanged, redPackets.asDriver()) { currentWalletModel, redPackets -> [RedPacket] in
+        Driver.combineLatest(currentWalletModelChanged, redPackets.asDriver()) { currentWalletModel, redPackets -> [RedPacketValue] in
                 guard let currentWalletModel = currentWalletModel else {
                     return []
                 }
@@ -61,7 +61,7 @@ class WalletsViewModel: NSObject {
                 return redPackets.filter { redPacket -> Bool in
                     return redPacket.sender_address == currentWalletModel.address ||
                            redPacket.claim_address == currentWalletModel.address
-                }
+                }.map { RedPacketValue(redPacket: $0) }
             }
             .drive(filteredRedPackets)
             .disposed(by: disposeBag)
@@ -133,7 +133,7 @@ extension WalletsViewModel {
         case let .redPacket(redPacket):
             let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RedPacketCardTableViewCell.self), for: indexPath) as! RedPacketCardTableViewCell
             
-            CreatedRedPacketViewModel.configure(cell: _cell, with: redPacket)
+            CreatedRedPacketViewModel.configure(cell: _cell, with: redPacket.redPacket)
             
             cell = _cell
         }
