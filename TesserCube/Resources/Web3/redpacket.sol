@@ -151,9 +151,9 @@ contract HappyRedPacket{
     }
 
     // Returns 1. remaining value 2. total number of red packets 3. claimed number of red packets
-    function check_availability(bytes32 id) public view returns (uint balance, uint total, uint claimed){
+    function check_availability(bytes32 id) public view returns (uint balance, uint total, uint claimed, bool expired){
         RedPacket storage rp = redpackets[id];
-        return (rp.remaining_value, rp.total_number, rp.claimed_number);
+        return (rp.remaining_value, rp.total_number, rp.claimed_number, rp.expiration_time <= now);
     }
 
     // Returns 1. a list of claimed values 2. a list of claimed addresses accordingly
