@@ -644,7 +644,6 @@ extension EditingRedPacketViewController: RedPacketWalletSelectViewControllerDel
     }
 }
 
-
 // MARK: - UIAdaptivePresentationControllerDelegate
 extension EditingRedPacketViewController: UIAdaptivePresentationControllerDelegate {
     
@@ -653,26 +652,6 @@ extension EditingRedPacketViewController: UIAdaptivePresentationControllerDelega
     }
     
 }
-
-// MAKR: - RedPacketRecipientSelectViewControllerDelegate
-/*
-extension EditingRedPacketViewController: RedPacketRecipientSelectViewControllerDelegate {
-    
-    func redPacketRecipientSelectViewController(_ viewController: RedPacketRecipientSelectViewController, didSelect contactInfo: FullContactInfo) {
-        let isContains = viewModel.redPacketProperty.contactInfos.contains { $0.contact.id == contactInfo.contact.id }
-        guard !isContains else {
-            return
-        }
-        
-        viewModel.redPacketProperty.contactInfos.append(contactInfo)
-    }
-    
-    func redPacketRecipientSelectViewController(_ viewController: RedPacketRecipientSelectViewController, didDeselect contactInfo: FullContactInfo) {
-        viewModel.redPacketProperty.contactInfos.removeAll { $0.contact.id == contactInfo.contact.id }
-    }
-    
-}
- */
 
 // Mock Testing Data
 

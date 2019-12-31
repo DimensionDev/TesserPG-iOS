@@ -180,14 +180,14 @@ class MessagesViewModel: NSObject {
 @available(iOS 13.0, *)
 extension MessagesViewModel {
 
-    // swiftlint:disable force_cast
     func configureDataSource(tableView: UITableView) {
-        diffableDataSource = MultipleSelectableDiffableTableViewDataSource<Section, Message>(tableView: tableView) { [weak self] tableView, indexPath, message -> UITableViewCell? in
+        let dataSource = MultipleSelectableDiffableTableViewDataSource<Section, Message>(tableView: tableView) { [weak self] tableView, indexPath, message -> UITableViewCell? in
             guard let `self` = self else { return nil }
             return self.constructTableViewCell(for: tableView, atIndexPath: indexPath, with: message)
         }   // end let dataSource = …
+                
+        diffableDataSource = dataSource
     }   // end func configureDataSource(:) { … }
-    // swiftlint:enable force_cast
 
 }
 

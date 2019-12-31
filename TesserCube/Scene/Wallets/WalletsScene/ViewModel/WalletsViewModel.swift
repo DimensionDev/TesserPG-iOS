@@ -6,6 +6,7 @@
 //  Copyright © 2019 Sujitech. All rights reserved.
 //
 
+import os
 import UIKit
 import RxSwift
 import RxCocoa
@@ -13,7 +14,8 @@ import RxCocoa
 class WalletsViewModel: NSObject {
     
     let disposeBag = DisposeBag()
-    weak var walletViewController: UIViewController!
+    
+    var diffableDataSource: UITableViewDataSource!
 
     // Input
     let walletModels = BehaviorRelay<[WalletModel]>(value: [])
@@ -22,19 +24,36 @@ class WalletsViewModel: NSObject {
     // Output
     let currentWalletModel = BehaviorRelay<WalletModel?>(value: nil)
     let currentWalletPageIndex = BehaviorRelay(value: 0)
-    let filteredRedPackets = BehaviorRelay<[RedPacket]>(value: [])
+    let filteredRedPackets = BehaviorRelay<[RedPacketValue]>(value: [])
+    
+    enum Section: Int, CaseIterable {
+        case wallet
+        case redPacket
+    }
+    
+    enum Model: Hashable {
+        case wallet
+        case redPacket(RedPacketValue)
+    }
 
     override init() {
         super.init()
         
-        walletModels.asDriver()
-            .drive(onNext: { [weak self] walletModels in
-                self?.currentWalletModel.accept(walletModels.first)
-                self?.currentWalletPageIndex.accept(0)
+        currentWalletModel.asDriver()
+            .drive(onNext: { walletModel in
+                os_log("%{public}s[%{public}ld], %{public}s: currentWalletModel update to %s", ((#file as NSString).lastPathComponent), #line, #function, walletModel?.address ?? "nil")
             })
             .disposed(by: disposeBag)
         
-        Driver.combineLatest(currentWalletModel.asDriver(), redPackets.asDriver()) { currentWalletModel, redPackets -> [RedPacket] in
+        currentWalletPageIndex.asDriver()
+            .drive(onNext: { index in
+                os_log("%{public}s[%{public}ld], %{public}s: currentWalletPageIndex update to %s", ((#file as NSString).lastPathComponent), #line, #function, String(index))
+            })
+            .disposed(by: disposeBag)
+        
+        let currentWalletModelChanged = currentWalletModel.asDriver()
+            .distinctUntilChanged { lhs, rhs -> Bool in return lhs?.address == rhs?.address }
+        Driver.combineLatest(currentWalletModelChanged, redPackets.asDriver()) { currentWalletModel, redPackets -> [RedPacketValue] in
                 guard let currentWalletModel = currentWalletModel else {
                     return []
                 }
@@ -42,7 +61,7 @@ class WalletsViewModel: NSObject {
                 return redPackets.filter { redPacket -> Bool in
                     return redPacket.sender_address == currentWalletModel.address ||
                            redPacket.claim_address == currentWalletModel.address
-                }
+                }.map { RedPacketValue(redPacket: $0) }
             }
             .drive(filteredRedPackets)
             .disposed(by: disposeBag)
@@ -50,63 +69,55 @@ class WalletsViewModel: NSObject {
 
 }
 
-// MARK: - UITableViewDataSource
-extension WalletsViewModel: UITableViewDataSource {
-
-    func numberOfSections(in tableView: UITableView) -> Int {
-        // Section:
-        //  - 0: Wallet Section
-        //  - 1: Red Packet Section
-        return 2
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return 1
-        case 1:
-            return filteredRedPackets.value.count
-        default:
-            return 0
+@available(iOS 13.0, *)
+extension WalletsViewModel {
+    
+    func configureDataSource(tableView: UITableView) {
+        let dataSource = UITableViewDiffableDataSource<Section, Model>(tableView: tableView) { [weak self] tableView, indexPath, model -> UITableViewCell? in
+            guard let `self` = self else { return nil }
+            os_log("%{public}s[%{public}ld], %{public}s: configure cell at %s", ((#file as NSString).lastPathComponent), #line, #function, String(describing: indexPath))
+            return self.constructTableViewCell(for: tableView, atIndexPath: indexPath, with: model)
         }
+        dataSource.defaultRowAnimation = .bottom
+        diffableDataSource = dataSource
     }
+    
+}
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+extension WalletsViewModel {
+    
+    private func constructTableViewCell(for tableView: UITableView, atIndexPath indexPath: IndexPath, with model: Model) -> UITableViewCell {
         let cell: UITableViewCell
-
-        switch indexPath.section {
-        case 0:
-            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: WalletPageTableViewCell.self), for: indexPath) as! WalletPageTableViewCell
+        
+        switch model {
+        case .wallet:
+            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: WalletCollectionTableViewCell.self), for: indexPath) as! WalletCollectionTableViewCell
             
-            // Note: remove from parent in tableView:didEndDisplayingCell:forRowAtIndexPath:
-            let child = _cell.pageViewController
-            walletViewController.addChild(child)
-            child.view.translatesAutoresizingMaskIntoConstraints = false
-            _cell.contentView.addSubview(child.view)
-            NSLayoutConstraint.activate([
-                child.view.topAnchor.constraint(equalTo: _cell.contentView.topAnchor),
-                child.view.leadingAnchor.constraint(equalTo: _cell.contentView.leadingAnchor),
-                _cell.contentView.trailingAnchor.constraint(equalTo: child.view.trailingAnchor),
-                _cell.pageControl.topAnchor.constraint(equalTo: child.view.bottomAnchor),
-                child.view.heightAnchor.constraint(equalToConstant: 136),   // can not set dynamic height
-            ])
-            child.didMove(toParent: walletViewController)
+            _cell.collectionView.dataSource = self
             
-            // bind page view controller data souce
-            child.dataSource = self
+            // Update collection view data source
+            walletModels.asDriver()
+                .drive(onNext: { [weak self] walletModels in
+                    guard let `self` = self else { return }
+                    _cell.collectionView.reloadData()
+                    
+                    guard !walletModels.isEmpty else {
+                        self.currentWalletModel.accept(nil)
+                        return
+                    }
+                    
+                    let index = self.currentWalletPageIndex.value
+                    if index < walletModels.count {
+                        // index not move
+                        self.currentWalletModel.accept(walletModels[index])
+                    } else {
+                        // index move 1 step before
+                        self.currentWalletModel.accept(walletModels.last)
+                        self.currentWalletPageIndex.accept(walletModels.count - 1)
+                    }
+                })
+                .disposed(by: _cell.disposeBag)
             
-            // setup page view controller initialViewController
-            let initialViewController = WalletCardViewController()
-            initialViewController.index = currentWalletPageIndex.value
-            // FIXME: no reuse WalletPageTableViewCell to fix:
-            // https://stackoverflow.com/questions/24000712/pageviewcontroller-setviewcontrollers-crashes-with-invalid-parameter-not-satisf
-            DispatchQueue.main.async {
-                child.setViewControllers([initialViewController], direction: .forward, animated: true, completion: nil)
-            }
-            if let walletModel = currentWalletModel.value {
-                initialViewController.walletModel = walletModel
-            }
-
             // setup page control
             walletModels.asDriver()
                 .map { max($0.count, 1) }
@@ -116,36 +127,63 @@ extension WalletsViewModel: UITableViewDataSource {
                 .drive(_cell.pageControl.rx.currentPage)
                 .disposed(by: _cell.disposeBag)
             
-            // Bind cell delegate
-            _cell.delegate = self
-            
             cell = _cell
             
-        case 1:
+        // red packet card cell needs filtered red packet model
+        case let .redPacket(redPacket):
             let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RedPacketCardTableViewCell.self), for: indexPath) as! RedPacketCardTableViewCell
             
-            let redPacket = filteredRedPackets.value[indexPath.row]
-            CreatedRedPacketViewModel.configure(cell: _cell, with: redPacket)
+            CreatedRedPacketViewModel.configure(cell: _cell, with: redPacket.redPacket)
             
             cell = _cell
-            // let model = walletModels.value[indexPath.row]
-            // WalletsViewModel.configure(cell: cell, with: model)
-            
-        default:
-            fatalError()
         }
-
+        
         return cell
+    }
+    
+}
+
+// MARK: - UITableViewDataSource
+extension WalletsViewModel: UITableViewDataSource {
+
+    func numberOfSections(in tableView: UITableView) -> Int {
+        // Section:
+        //  - 0: Wallet Section
+        //  - 1: Red Packet Section
+        return Section.allCases.count
+    }
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch Section.allCases[section] {
+        case .wallet:
+            return 1
+        case .redPacket:
+            return filteredRedPackets.value.count
+        }
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let model: Model = {
+            switch Section.allCases[indexPath.section] {
+            case .wallet:
+                return .wallet
+            case .redPacket:
+                return .redPacket(filteredRedPackets.value[indexPath.row])
+            }
+        }()
+
+        return constructTableViewCell(for: tableView, atIndexPath: indexPath, with: model)
     }
 
 }
 
 extension WalletsViewModel {
 
+    // For WalletCardTableViewCell
     static func configure(cell: WalletCardTableViewCell, with model: WalletModel) {
         let address = model.address
-        cell.headerLabel.text = String(address.prefix(6))
-        cell.captionLabel.text = address
+        cell.walletCardView.headerLabel.text = String(address.prefix(6))
+        cell.walletCardView.captionLabel.text = address
         // cell.captionLabel.text = {
         //     guard let address = address else { return nil }
         //     let raw = address.removingPrefix("0x")
@@ -160,8 +198,31 @@ extension WalletsViewModel {
             
                 return decimalString + " ETH"
             }
-            .drive(cell.balanceAmountLabel.rx.text)
+            .drive(cell.walletCardView.balanceAmountLabel.rx.text)
             .disposed(by: cell.disposeBag)
+    }
+    
+    // For WalletCardCollectionViewCell
+    static func configure(cell: WalletCardCollectionViewCell, with model: WalletModel) {
+        let address = model.address
+        cell.walletCardView.headerLabel.text = String(address.prefix(6))
+        cell.walletCardView.captionLabel.text = address
+        // cell.captionLabel.text = {
+        //     guard let address = address else { return nil }
+        //     let raw = address.removingPrefix("0x")
+        //     return "0x" + raw.prefix(20) + "\n" + raw.suffix(20)
+        // }()
+        model.balanceInDecimal.asDriver()
+            .map { decimal in
+                guard let decimal = decimal,
+                    let decimalString = WalletService.balanceDecimalFormatter.string(from: decimal as NSNumber) else {
+                        return "- ETH"
+                }
+                
+                return decimalString + " ETH"
+        }
+        .drive(cell.walletCardView.balanceAmountLabel.rx.text)
+        .disposed(by: cell.disposeBag)
     }
 
 }
@@ -213,18 +274,24 @@ extension WalletsViewModel: UIPageViewControllerDataSource {
     
 }
 
-// MARK: - WalletPageTableViewCellDelegate
-extension WalletsViewModel: WalletPageTableViewCellDelegate {
+// MARK: - UICollectionViewDataSource
+extension WalletsViewModel: UICollectionViewDataSource {
     
-    func walletPageTableViewCell(_ cell: WalletPageTableViewCell, didUpdateCurrentPage index: Int) {
-        currentWalletPageIndex.accept(index)
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return walletModels.value.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: String(describing: WalletCardCollectionViewCell.self), for: indexPath) as! WalletCardCollectionViewCell
         
-        guard !walletModels.value.isEmpty else {
-            currentWalletModel.accept(nil)
-            return
-        }
+        let walletModel = walletModels.value[indexPath.row]
+        WalletsViewModel.configure(cell: cell, with: walletModel)
         
-        currentWalletModel.accept(walletModels.value[index])
+        return cell
     }
     
 }

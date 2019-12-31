@@ -106,6 +106,7 @@ extension InterpretMessageViewController {
             messageTextView.text = UIPasteboard.general.string
         }
     }
+    
 }
 
 extension InterpretMessageViewController {

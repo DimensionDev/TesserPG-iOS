@@ -62,3 +62,21 @@ extension WalletModel {
     }
 
 }
+
+extension WalletModel: Equatable {
+    
+    public static func == (lhs: WalletModel, rhs: WalletModel) -> Bool {
+        return lhs.wallet.mnemonic == rhs.wallet.mnemonic &&
+               lhs.wallet.passphrase == rhs.wallet.passphrase
+    }
+    
+}
+
+extension WalletModel: Hashable {
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(wallet.mnemonic)
+        hasher.combine(wallet.passphrase)
+    }
+    
+}
