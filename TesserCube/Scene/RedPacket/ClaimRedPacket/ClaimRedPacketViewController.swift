@@ -200,42 +200,8 @@ extension ClaimRedPacketViewModel: UITableViewDataSource {
                 .disposed(by: _cell.disposeBag)
             
             // Setup separator line
-            let topTag = 3868
-            let bottomTag = 3869
-            if let oldTopSeparatorLine = _cell.subviews.first(where: { $0.tag == topTag }) {
-                oldTopSeparatorLine.removeFromSuperview()
-            }
-            if let oldBottomSeparatorLine = _cell.subviews.first(where: { $0.tag == bottomTag }) {
-                oldBottomSeparatorLine.removeFromSuperview()
-            }
-            
-            let topSeparatorLine: UIView = {
-                let separatorLine = UIView(frame: CGRect(x: 0, y: 0, width: _cell.bounds.width, height: 0.5))
-                separatorLine.tag = topTag
-                separatorLine.backgroundColor = ._separator
-                return separatorLine
-            }()
-            let bottomSeparatorLine: UIView = {
-                let separatorLine = UIView(frame: CGRect(x: 0, y: 0, width: _cell.bounds.width, height: 0.5))
-                separatorLine.tag = bottomTag
-                separatorLine.backgroundColor = ._separator
-                return separatorLine
-            }()
-            topSeparatorLine.translatesAutoresizingMaskIntoConstraints = false
-            _cell.contentView.addSubview(topSeparatorLine)
-            bottomSeparatorLine.translatesAutoresizingMaskIntoConstraints = false
-            _cell.contentView.addSubview(bottomSeparatorLine)
-            NSLayoutConstraint.activate([
-                // not use contentView anchor here due to accessory view set padding for it
-                topSeparatorLine.topAnchor.constraint(equalTo: _cell.topAnchor),
-                topSeparatorLine.leadingAnchor.constraint(equalTo: _cell.leadingAnchor),
-                topSeparatorLine.trailingAnchor.constraint(equalTo: _cell.trailingAnchor),
-                topSeparatorLine.heightAnchor.constraint(equalToConstant: 0.5),
-                bottomSeparatorLine.bottomAnchor.constraint(equalTo: _cell.bottomAnchor),
-                bottomSeparatorLine.leadingAnchor.constraint(equalTo: _cell.leadingAnchor),
-                bottomSeparatorLine.trailingAnchor.constraint(equalTo: _cell.trailingAnchor),
-                bottomSeparatorLine.heightAnchor.constraint(equalToConstant: 0.5),
-            ])
+            UITableView.setupTopSectionSeparatorLine(for: _cell)
+            UITableView.setupBottomSectionSeparatorLine(for: _cell)
             
             cell = _cell
             
@@ -312,6 +278,7 @@ extension ClaimRedPacketViewController {
         
         title = "Claim Red Packet"
         navigationItem.leftBarButtonItem = closeBarButtonItem
+        navigationItem.hidesBackButton = true
         
         // Layout tableView
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -361,9 +328,8 @@ extension ClaimRedPacketViewController {
         
         viewModel.isClaiming.drive(onNext: { [weak self] isClaiming in
             guard let `self` = self else { return }
-                self.navigationItem.leftBarButtonItem = isClaiming ? nil : self.closeBarButtonItem
+                self.closeBarButtonItem.isEnabled = !isClaiming
                 self.tableView.isUserInteractionEnabled = !isClaiming
-            
             })
             .disposed(by: disposeBag)
 

@@ -15,11 +15,9 @@ class BackupMnemonicViewController: TCBaseViewController {
         tableView.isScrollEnabled = false
         tableView.separatorStyle = .none
         tableView.register(WalletCardTableViewCell.self, forCellReuseIdentifier: String(describing: WalletCardTableViewCell.self))
-        tableView.tableFooterView = UIView()
         tableView.clipsToBounds = false
         return tableView
     }()
-    private let walletCardTableViewCell = WalletCardTableViewCell()
 
     var viewModel: BackupMnemonicCollectionViewModel!
     lazy var mnemonicCollectionView: MnemonicCollectionView = {
@@ -69,7 +67,7 @@ class BackupMnemonicViewController: TCBaseViewController {
                 walletCardTableView.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 24),
                 walletCardTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 walletCardTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                walletCardTableView.heightAnchor.constraint(equalToConstant: 120 + WalletCardTableViewCell.cardVerticalMargin * 2)
+                walletCardTableView.heightAnchor.constraint(equalToConstant: 122 + WalletCardTableViewCell.cardVerticalMargin * 2)
             ])
         }
 
@@ -124,6 +122,7 @@ class BackupMnemonicViewController: TCBaseViewController {
 
         // Setup wallet card tableView
         walletCardTableView.dataSource = self
+        walletCardTableView.delegate = self
         walletCardTableView.reloadData()
         
         // Bind button action
@@ -179,7 +178,7 @@ extension BackupMnemonicViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = walletCardTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: WalletCardTableViewCell.self), for: indexPath) as! WalletCardTableViewCell
 
         guard let model = try? WalletModel(wallet: viewModel.wallet) else {
             return cell
@@ -189,6 +188,13 @@ extension BackupMnemonicViewController: UITableViewDataSource {
         return cell
     }
 
+}
+
+extension BackupMnemonicViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return tableView.bounds.height
+    }
 }
 
 #if canImport(SwiftUI) && DEBUG

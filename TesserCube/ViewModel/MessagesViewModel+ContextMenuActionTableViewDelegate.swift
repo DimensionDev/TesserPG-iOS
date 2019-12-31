@@ -224,7 +224,7 @@ extension MessagesViewModel {
 // MARK: - ContextMenuActionTableViewDelegate
 extension MessagesViewModel: ContextMenuActionTableViewDelegate {
 
-    func tableView(_ tableView: UITableView, presentingViewController: UIViewController, actionsforRowAt indexPath: IndexPath, isContextMenu: Bool) -> [ContextMenuAction] {
+    func tableView(_ tableView: UITableView, presentingViewController: UIViewController, isContextMenu: Bool, actionsforRowAt indexPath: IndexPath) -> [ContextMenuAction]? {
         let message = messages.value[indexPath.row]
 
         if let cell = tableView.cellForRow(at: indexPath) as? MessageCardCell {
@@ -319,9 +319,12 @@ extension MessagesViewModel: ContextMenuActionTableViewDelegate {
         }
          */
         
-        return [
-            Action.cancel,
-        ]
+        return nil
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, presentingViewController: UIViewController, isContextMenu: Bool, actionsForRowAt indexPath: IndexPath) -> [ContextMenuAction]? {
+        assertionFailure()
+        return nil
     }
 
 }

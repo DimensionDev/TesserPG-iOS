@@ -170,7 +170,7 @@ class MessagesViewController: TCBaseViewController {
             .disposed(by: disposeBag)
 
         searchController.searchBar.rx.text.orEmpty
-            .throttle(0.3, scheduler: MainScheduler.instance)
+            .throttle(DispatchTimeInterval.milliseconds(300), scheduler: MainScheduler.instance)
             .distinctUntilChanged()
             .asDriver(onErrorJustReturn: "")
             .drive(viewModel.searchText)
@@ -350,6 +350,7 @@ extension MessagesViewController {
                         var snapsot = NSDiffableDataSourceSnapshot<MessagesViewModel.Section, Message>()
                         snapsot.appendSections([.main])
                         snapsot.appendItems(messages)
+
                         dataSource.apply(snapsot)
                         
                     } else {
@@ -431,7 +432,11 @@ extension MessagesViewController: UITableViewDelegate {
         }
 
         if !tableView.isEditing {
-            let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath, isContextMenu: false)
+            guard let actions = viewModel.tableView(tableView, presentingViewController: self, isContextMenu: false, actionsforRowAt: indexPath),
+            !actions.isEmpty else {
+                return
+            }
+            
             let alertController: UIAlertController = {
                 let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                 let alertActions = actions.map { $0.alertAction }
@@ -480,7 +485,11 @@ extension MessagesViewController: UITableViewDelegate {
             self.messageCardCell(cell, expandButtonPressed: cell.expandButton)
         }
 
-        let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath, isContextMenu: true)
+        
+        guard let actions = viewModel.tableView(tableView, presentingViewController: self, isContextMenu: true, actionsforRowAt: indexPath),
+        !actions.isEmpty else {
+            return nil
+        }
         let children = actions.compactMap { $0.menuElement }
 
         return UIContextMenuConfiguration(
@@ -488,7 +497,8 @@ extension MessagesViewController: UITableViewDelegate {
             previewProvider: nil,
             actionProvider: { _ in
                 return UIMenu(title: "", image: nil, identifier: nil, options: [], children: children)
-            })
+            }
+        )
     }
 
     @available(iOS 13.0, *)

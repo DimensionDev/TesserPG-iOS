@@ -6,6 +6,7 @@
 //  Copyright © 2019 Sujitech. All rights reserved.
 //
 
+import os
 import Foundation
 import RealmSwift
 import BigInt
@@ -45,15 +46,15 @@ public class RedPacket: Object {
     @objc private dynamic var _status = RedPacketStatus.initial.rawValue
         
     public dynamic var send_total: BigUInt {
-        get { return BigUInt(_send_total)! }
+        get { return BigUInt(_send_total, radix: 10)! }
         set { _send_total = String(newValue) }
     }
     public dynamic var claim_amount: BigUInt {
-        get { return BigUInt(_claim_amount)! }
+        get { return BigUInt(_claim_amount, radix: 10)! }
         set { _claim_amount = String(newValue) }
     }
     public dynamic var refund_amount: BigUInt {
-        get { return BigUInt(_refund_amount)! }
+        get { return BigUInt(_refund_amount, radix: 10)! }
         set { _refund_amount = String(newValue) }
     }
     public dynamic var status: RedPacketStatus {

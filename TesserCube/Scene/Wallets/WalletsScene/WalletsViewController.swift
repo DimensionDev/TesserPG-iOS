@@ -14,13 +14,17 @@ import RxRealm
 
 class WalletsViewController: TCBaseViewController {
 
-    let viewModel = WalletsViewModel()
+    private(set) lazy var viewModel = WalletsViewModel()
     private let disposeBag = DisposeBag()
+    
+    private let longPressGestureRecognizer = UILongPressGestureRecognizer()
 
     private let tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(WalletPageTableViewCell.self, forCellReuseIdentifier: String(describing: WalletPageTableViewCell.self))
+        tableView.register(WalletCollectionTableViewCell.self, forCellReuseIdentifier: String(describing: WalletCollectionTableViewCell.self))
         tableView.register(RedPacketCardTableViewCell.self, forCellReuseIdentifier: String(describing: RedPacketCardTableViewCell.self))
+        tableView.alwaysBounceVertical = true
+        tableView.estimatedRowHeight = 150
         tableView.separatorStyle = .none
         tableView.tableFooterView = UIView()
         return tableView
@@ -37,8 +41,6 @@ class WalletsViewController: TCBaseViewController {
 
     override func configUI() {
         super.configUI()
-        
-        viewModel.walletViewController = self
 
         title = L10n.MainTabbarViewController.TabBarItem.Wallets.title
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(WalletsViewController.addBarButtonItemPressed(_:)))
@@ -66,15 +68,14 @@ class WalletsViewController: TCBaseViewController {
         WalletService.default.walletModels.asDriver()
             .drive(viewModel.walletModels)
             .disposed(by: disposeBag)
-        tableView.dataSource = viewModel
-        viewModel.filteredRedPackets.asDriver()
+        
+        viewModel.walletModels.asDriver()
             .drive(onNext: { [weak self] _ in
+                // update actions when wallets changed
                 self?.reloadActionsView()
-                // TODO: use diffable data source
-                self?.tableView.reloadData()
             })
             .disposed(by: disposeBag)
-
+        
         do {
             let realm = try RedPacketService.realm()
             let redPacketResults = realm.objects(RedPacket.self)
@@ -110,8 +111,102 @@ class WalletsViewController: TCBaseViewController {
         }
         
         tableView.delegate = self
+        if #available(iOS 13.0, *) {
+            viewModel.configureDataSource(tableView: tableView)
+            tableView.dataSource = viewModel.diffableDataSource
+        } else {
+            tableView.dataSource = viewModel
+        }
+        
+        // Setup long press gesture for tableView for early iOS 13.0 to trigger alert sheet menu
+        if #available(iOS 13.0, *) {
+            // do nothing
+        } else {
+            tableView.addGestureRecognizer(longPressGestureRecognizer)
+            longPressGestureRecognizer.addTarget(self, action: #selector(WalletsViewController.longPressGesture(_:)))
+        }
+        
     }
 
+}
+
+extension WalletsViewController {
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        tableView.flashScrollIndicators()
+        
+        DispatchQueue.once {
+            self.viewModel.walletModels.accept(WalletService.default.walletModels.value)
+            if #available(iOS 13.0, *) {
+                guard let dataSource = self.viewModel.diffableDataSource as? UITableViewDiffableDataSource<WalletsViewModel.Section, WalletsViewModel.Model> else {
+                    assertionFailure()
+                    return
+                }
+
+                var snapshot = NSDiffableDataSourceSnapshot<WalletsViewModel.Section, WalletsViewModel.Model>()
+                snapshot.appendSections([.wallet, .redPacket])
+                snapshot.appendItems([.wallet], toSection: .wallet)
+                dataSource.apply(snapshot, animatingDifferences: false, completion: nil)
+                
+            } else {
+                self.tableView.reloadData()
+            }
+            
+            self.viewModel.filteredRedPackets.asDriver()
+                .drive(onNext: { [weak self] redPackets in
+                    guard let `self` = self else { return }
+                    
+                    // reload red packet section
+                    os_log("%{public}s[%{public}ld], %{public}s: filteredRedPackets changed. reload table view", ((#file as NSString).lastPathComponent), #line, #function)
+                    
+                    if #available(iOS 13.0, *) {
+                        guard let dataSource = self.viewModel.diffableDataSource as? UITableViewDiffableDataSource<WalletsViewModel.Section, WalletsViewModel.Model> else {
+                            assertionFailure()
+                            return
+                        }
+                    
+                        var snapshot = NSDiffableDataSourceSnapshot<WalletsViewModel.Section, WalletsViewModel.Model>()
+
+                        snapshot.appendSections([.wallet])
+                        snapshot.appendItems([.wallet], toSection: .wallet)
+                        
+                        let redPacketModels = redPackets.map { WalletsViewModel.Model.redPacket($0) }
+                        // Update animation style
+                        dataSource.defaultRowAnimation = {
+                            if redPacketModels.isEmpty {
+                                // use .top to collapse cell from bottom to top
+                                return .top
+                            } else {
+                                if dataSource.snapshot().numberOfItems(inSection: .redPacket) == 0 {
+                                    // use .bottom when old section is empty to make cell expend from top to bottom
+                                    return .bottom
+                                } else {
+                                    // diff two section and automatic animation
+                                    return .automatic
+                                }
+                            }
+                        }()
+                        snapshot.appendSections([.redPacket])
+                        snapshot.appendItems(redPacketModels, toSection: .redPacket)
+                        
+                        dataSource.apply(snapshot)
+
+                    } else {
+                        self.tableView.reloadData()
+                    }
+                })
+                .disposed(by: disposeBag)
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        tableView.contentInset.bottom = bottomActionsView.height + 15
+    }
+    
 }
 
 extension WalletsViewController {
@@ -127,6 +222,9 @@ extension WalletsViewController {
         } else {
             layoutRedPacketActions()
         }
+        
+        // trigger tableView content inset update
+        view.layoutIfNeeded()
     }
     
     private func layoutWalletActions() {
@@ -176,6 +274,12 @@ extension WalletsViewController {
     private func layoutRedPacketActions() {
         var actionViews = [UIView]()
         
+        let buttonStackView = UIStackView()
+        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
+        buttonStackView.distribution = .fillEqually
+        buttonStackView.spacing = 15
+        buttonStackView.axis = .horizontal
+        
         let sendRedPacketButton: TCActionButton = {
             let button = TCActionButton(frame: .zero)
             button.color = .systemBlue
@@ -199,8 +303,23 @@ extension WalletsViewController {
             .disposed(by: disposeBag)
             return button
         }()
+        
+        let openRedPacketButton: TCActionButton = {
+            let button = TCActionButton(frame: .zero)
+            button.color = .systemBlue
+            button.setTitleColor(.white, for: .normal)
+            button.setTitle("Open Red Packet", for: .normal)
+            button.rx.tap.bind {
+                Coordinator.main.present(scene: .openRedPacket, from: self, transition: .modal, completion: nil)
+            }
+            .disposed(by: disposeBag)
+            return button
+        }()
+        
+        buttonStackView.addArrangedSubview(sendRedPacketButton)
+        buttonStackView.addArrangedSubview(openRedPacketButton)
 
-        actionViews.append(sendRedPacketButton)
+        actionViews.append(buttonStackView)
         
         bottomActionsView.addArrangedSubviews(actionViews)
         bottomActionsView.setNeedsLayout()
@@ -228,6 +347,81 @@ extension WalletsViewController {
         present(alertController, animated: true, completion: nil)
     }
     
+    @objc private func longPressGesture(_ sender: UILongPressGestureRecognizer) {
+        guard case .began = sender.state else {
+            return
+        }
+        
+        // Present wallet alert sheet menu when long press
+        let position = sender.location(in: tableView)
+        guard let indexPathForTableViewCell = tableView.indexPathForRow(at: position) else {
+            return
+        }
+        
+        switch WalletsViewModel.Section.allCases[indexPathForTableViewCell.section] {
+        case .wallet:
+            guard let walletCollectionTableViewCell = tableView.cellForRow(at: indexPathForTableViewCell) as? WalletCollectionTableViewCell else {
+                return
+            }
+            
+            let collectionView = walletCollectionTableViewCell.collectionView
+            let positionInCollectionView = sender.location(in: collectionView)
+            guard let indexPathForCollectionViewCell = collectionView.indexPathForItem(at: positionInCollectionView),
+            let walletCardCollectionViewCell = collectionView.cellForItem(at: indexPathForCollectionViewCell) as? WalletCardCollectionViewCell else {
+                return
+            }
+            
+            guard let actions = viewModel.collectionView(collectionView, presentingViewController: self, isContextMenu: false, actionsForRowAt: indexPathForCollectionViewCell),
+            !actions.isEmpty else {
+                return
+            }
+            
+            let alertController: UIAlertController = {
+                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                let alertActions = actions.map { $0.alertAction }
+                for alertAction in alertActions {
+                    alertController.addAction(alertAction)
+                }
+                return alertController
+            }()
+            
+            if let popoverPresentationController = alertController.popoverPresentationController {
+                popoverPresentationController.sourceView = walletCardCollectionViewCell
+            }
+            
+            DispatchQueue.main.async {
+                self.present(alertController, animated: true, completion: nil)
+            }
+            
+        case .redPacket:
+            guard let redPacketCardCell = tableView.cellForRow(at: indexPathForTableViewCell) as? RedPacketCardTableViewCell else {
+                return
+            }
+            
+            guard let actions = viewModel.tableView(tableView, presentingViewController: self, isContextMenu: false, actionsforRowAt: indexPathForTableViewCell),
+            !actions.isEmpty else {
+                return
+            }
+            
+            let alertController: UIAlertController = {
+                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                let alertActions = actions.map { $0.alertAction }
+                for alertAction in alertActions {
+                    alertController.addAction(alertAction)
+                }
+                return alertController
+            }()
+            
+            if let popoverPresentationController = alertController.popoverPresentationController {
+                popoverPresentationController.sourceView = redPacketCardCell
+            }
+            
+            DispatchQueue.main.async {
+                self.present(alertController, animated: true, completion: nil)
+            }
+        }
+    }
+    
 }
 
 // MARK: - UITableViewDelegate
@@ -238,10 +432,9 @@ extension WalletsViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard section == 1 else {
+        guard section != 0 else {
             return .leastNonzeroMagnitude
         }
-
         return 20 - WalletCardTableViewCell.cardVerticalMargin
     }
 
@@ -250,69 +443,68 @@ extension WalletsViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        guard section == 1 else {
+        guard section != 0 else {
             return .leastNonzeroMagnitude
         }
-        
         return 20 - WalletCardTableViewCell.cardVerticalMargin
     }
     
-    func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        guard let cell = cell as? WalletPageTableViewCell else {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        switch WalletsViewModel.Section.allCases[indexPath.section] {
+        case .wallet:
+            guard let cell = cell as? WalletCollectionTableViewCell else {
+                return
+            }
+            
+            // Set delegate to flow layout
+            cell.collectionView.delegate = self
+            
+        default:
             return
         }
-        
-        let child = cell.pageViewController
-        child.willMove(toParent: nil)
-        child.view.removeFromSuperview()
-        child.removeFromParent()
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch indexPath.section {
-        case 0:     // wallet section
-            break
-            // let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath, isContextMenu: false)
-            // let alertController: UIAlertController = {
-            //     let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            //     let alertActions = actions.map { $0.alertAction }
-            //     for alertAction in alertActions {
-            //         alertController.addAction(alertAction)
-            //     }
-            //     return alertController
-            // }()
-            //
-            // if let popoverPresentationController = alertController.popoverPresentationController {
-            //     popoverPresentationController.sourceView = cell
-            // }
-            //
-            // DispatchQueue.main.async {
-            //     self.present(alertController, animated: true, completion: nil)
-            // }
-        case 1:     // red packet section
+        switch WalletsViewModel.Section.allCases[indexPath.section] {
+        case .wallet:
+            return
+
+        case .redPacket:
             guard let cell = tableView.cellForRow(at: indexPath) as? RedPacketCardTableViewCell,
             indexPath.row < viewModel.filteredRedPackets.value.count else {
                 return
             }
-            let redPacket = viewModel.filteredRedPackets.value[indexPath.row]
+            let redPacket = viewModel.filteredRedPackets.value[indexPath.row].redPacket
             
-            let viewModel = ClaimRedPacketViewModel(redPacket: redPacket)
-            Coordinator.main.present(scene: .claimRedPacket(viewModel: viewModel), from: self, transition: .modal, completion: nil)
-            
-        default:
-            break
+            if redPacket.status == .normal || redPacket.status == .incoming {
+                // ready to claim
+                let viewModel = ClaimRedPacketViewModel(redPacket: redPacket)
+                Coordinator.main.present(scene: .claimRedPacket(viewModel: viewModel), from: self, transition: .modal, completion: nil)
+            } else {
+                let viewModel = RedPacketDetailViewModel(redPacket: redPacket)
+                Coordinator.main.present(scene: .redPacketDetail(viewModel: viewModel), from: self, transition: .detail, completion: nil)
+            }
         }  
     }
 
-    /*
     @available(iOS 13.0, *)
     func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        guard indexPath.section == 1,
-        let cell = tableView.cellForRow(at: indexPath) as? WalletCardTableViewCell else {
+        // switch WalletsViewModel.Section.allCases[indexPath.section] {
+        // case .wallet:
+        //     return nil
+        // case .redPacket:
+        //
+        // }
+        // guard indexPath.section == 1,
+        // let cell = tableView.cellForRow(at: indexPath) as? WalletCardTableViewCell else {
+        //     return nil
+        // }
+
+        guard let actions = viewModel.tableView(tableView, presentingViewController: self, isContextMenu: true, actionsforRowAt: indexPath),
+        !actions.isEmpty else {
             return nil
         }
-
-        let actions = viewModel.tableView(tableView, presentingViewController: self, actionsforRowAt: indexPath, isContextMenu: true)
+        
         let children = actions.compactMap { $0.menuElement }
 
         return UIContextMenuConfiguration(
@@ -320,30 +512,193 @@ extension WalletsViewController: UITableViewDelegate {
             previewProvider: nil,
             actionProvider: { _ in
                 return UIMenu(title: "", image: nil, identifier: nil, options: [], children: children)
-            })
+            }
+        )
     }
 
     @available(iOS 13.0, *)
     func tableView(_ tableView: UITableView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
-        guard let indexPath = configuration.identifier as? IndexPath,
-        let cell = tableView.cellForRow(at: indexPath) as? WalletCardTableViewCell else {
+        guard let indexPath = configuration.identifier as? IndexPath else {
             return nil
         }
 
+        guard case .redPacket = WalletsViewModel.Section.allCases[indexPath.section] else {
+            return nil
+        }
+
+        guard let cell = tableView.cellForRow(at: indexPath) as? RedPacketCardTableViewCell else {
+            return nil
+        }
+        
+        
         let parameters = UIPreviewParameters()
         return UITargetedPreview(view: cell.cardView, parameters: parameters)
     }
     
     @available(iOS 13.0, *)
     func tableView(_ tableView: UITableView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
-        guard let indexPath = configuration.identifier as? IndexPath,
-            let cell = tableView.cellForRow(at: indexPath) as? WalletCardTableViewCell else {
-                return nil
+        guard let indexPath = configuration.identifier as? IndexPath else {
+            return nil
+        }
+
+        guard case .redPacket = WalletsViewModel.Section.allCases[indexPath.section] else {
+            return nil
+        }
+
+        guard let cell = tableView.cellForRow(at: indexPath) as? RedPacketCardTableViewCell else {
+            return nil
         }
         
         let parameters = UIPreviewParameters()
         return UITargetedPreview(view: cell.cardView, parameters: parameters)
     }
-     */
 
+}
+
+// MARK: - UICollectionViewDelegate
+extension WalletsViewController: UICollectionViewDelegate {
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        guard let collectionView = scrollView as? UICollectionView, collectionView.tag == WalletCollectionTableViewCell.collectionViewTag else {
+            return
+        }
+        
+        let displayCenterOffsetX = scrollView.contentOffset.x + 0.5 * collectionView.bounds.width
+        let displayCenterOffset = CGPoint(x: displayCenterOffsetX, y: 0.5 * collectionView.height)
+        guard let currentDisplayCellIndexPath = collectionView.indexPathForItem(at: displayCenterOffset) else {
+            return
+        }
+        
+        // update page control and currentWalletModel after wallets collection view scroll
+        let index = currentDisplayCellIndexPath.row
+        viewModel.currentWalletPageIndex.accept(index)
+        
+        guard index < viewModel.walletModels.value.count else {
+            return
+        }
+        viewModel.currentWalletModel.accept(viewModel.walletModels.value[index])
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard collectionView.tag == WalletCollectionTableViewCell.collectionViewTag else {
+            return
+        }
+    
+        guard let walletCardCollectionViewCell = collectionView.cellForItem(at: indexPath) as? WalletCardCollectionViewCell else {
+            return
+        }
+        
+        guard let actions = viewModel.collectionView(collectionView, presentingViewController: self, isContextMenu: false, actionsForRowAt: indexPath),
+        !actions.isEmpty else {
+            return
+        }
+        
+        let alertController: UIAlertController = {
+            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            let alertActions = actions.map { $0.alertAction }
+            for alertAction in alertActions {
+                alertController.addAction(alertAction)
+            }
+            return alertController
+        }()
+        
+        if let popoverPresentationController = alertController.popoverPresentationController {
+            popoverPresentationController.sourceView = walletCardCollectionViewCell
+        }
+        
+        DispatchQueue.main.async {
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let _ = cell as? WalletCardCollectionViewCell else {
+            return
+        }
+        
+        guard indexPath.row < viewModel.walletModels.value.count else {
+            return
+        }
+
+        // trigger balance update when cell will display
+        viewModel.walletModels.value[indexPath.row].updateBalance()
+    }
+    
+    @available(iOS 13.0, *)
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        
+        guard let actions = viewModel.collectionView(collectionView, presentingViewController: self, isContextMenu: true, actionsForRowAt: indexPath),
+        !actions.isEmpty else {
+            return nil
+        }
+        
+        let children = actions.compactMap { $0.menuElement }
+        
+        return UIContextMenuConfiguration(
+            identifier: indexPath as NSCopying,
+            previewProvider: nil,
+            actionProvider: { _ in
+                return UIMenu(title: "", image: nil, identifier: nil, options: [], children: children)
+            }
+        )
+    }
+    
+    @available(iOS 13.0, *)
+    func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+        guard let indexPath = configuration.identifier as? IndexPath else {
+            return nil
+        }
+        
+        guard case .wallet = WalletsViewModel.Section.allCases[indexPath.section] else {
+            return nil
+        }
+        
+        guard let cell = collectionView.cellForItem(at: indexPath) as? WalletCardCollectionViewCell else {
+            return nil
+        }
+        
+        let parameters = UIPreviewParameters()
+        return UITargetedPreview(view: cell.walletCardView, parameters: parameters)
+    }
+    
+    @available(iOS 13.0, *)
+    func collectionView(_ collectionView: UICollectionView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+        guard let indexPath = configuration.identifier as? IndexPath else {
+            return nil
+        }
+        
+        guard case .wallet = WalletsViewModel.Section.allCases[indexPath.section] else {
+            return nil
+        }
+        
+        guard let cell = collectionView.cellForItem(at: indexPath) as? WalletCardCollectionViewCell else {
+            return nil
+        }
+        
+        let parameters = UIPreviewParameters()
+        return UITargetedPreview(view: cell.walletCardView, parameters: parameters)
+    }
+    
+}
+
+// MAKR: - UICollectionViewDelegateFlowLayout
+extension WalletsViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.bounds.width - view.layoutMargins.left - view.layoutMargins.right,
+                      height: WalletCollectionTableViewCell.cellHeight + 2 * WalletCardCollectionViewCell.cardVerticalMargin)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: view.layoutMargins.left, bottom: 0, right: view.layoutMargins.right)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return view.layoutMargins.left + view.layoutMargins.right
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+    
 }

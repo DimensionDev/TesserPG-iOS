@@ -16,6 +16,7 @@ final class WalletSectionFooterView: UIView {
         label.textColor = ._secondaryLabel
         return label
     }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         _init()
