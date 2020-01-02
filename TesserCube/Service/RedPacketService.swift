@@ -17,8 +17,9 @@ private enum SchemaVersions: UInt64 {
     case version_1 = 1
     case version_2_rc1 = 4
     case version_2_rc2 = 5
+    case version_2_rc3 = 8
     
-    static let currentVersion: SchemaVersions = .version_2_rc2
+    static let currentVersion: SchemaVersions = .version_2_rc3
 }
 
 final class RedPacketService {
@@ -66,6 +67,14 @@ final class RedPacketService {
         let schemeVersion: UInt64 = SchemaVersions.currentVersion.rawValue
         config.schemaVersion = schemeVersion
         config.migrationBlock = { migration, oldSchemeVersion in
+            if oldSchemeVersion < SchemaVersions.version_2_rc3.rawValue {
+                // add network property
+                migration.enumerateObjects(ofType: RedPacket.className()) { old, new in
+                    
+                    new?["_network"] = RedPacketNetwork.rinkeby.rawValue
+                }
+            }
+            
             if oldSchemeVersion < SchemaVersions.version_2_rc2.rawValue {
                 // auto migrate
             }

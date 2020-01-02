@@ -95,7 +95,11 @@ extension CreatedRedPacketViewModel {
     
     static func configure(cell: RedPacketCardTableViewCell, with redPacket: RedPacket) {
         cell.nameLabel.text = redPacket.sender_name
+        #if DEBUG
+        cell.emailLabel.text = redPacket.network.rawValue
+        #else
         cell.emailLabel.text = ""       // no more email
+        #endif
 
         let formatter = NumberFormatter.decimalFormatterForETH
         let totalAmountInDecimal = (Decimal(string: String(redPacket.send_total)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent

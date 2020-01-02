@@ -17,6 +17,7 @@ public class RedPacket: Object {
     @objc public dynamic var aes_version = 1
     @objc public dynamic var contract_version = 1
     @objc public dynamic var contract_address: String = ""
+    @objc public dynamic var _network = RedPacketNetwork.rinkeby.rawValue
 
     let uuids = List<String>()
     @objc public dynamic var is_random = false
@@ -44,6 +45,11 @@ public class RedPacket: Object {
     @objc public dynamic var _refund_amount = "0"
     
     @objc private dynamic var _status = RedPacketStatus.initial.rawValue
+    
+    public dynamic var network: RedPacketNetwork {
+        get { return RedPacketNetwork(rawValue: _network) ?? .rinkeby }
+        set { _network = newValue.rawValue }
+    }
         
     public dynamic var send_total: BigUInt {
         get { return BigUInt(_send_total, radix: 10)! }
@@ -67,7 +73,7 @@ public class RedPacket: Object {
     }
     
     override public class func ignoredProperties() -> [String] {
-        return ["send_total", "claim_amount", "refund_amount"]
+        return ["network", "send_total", "claim_amount", "refund_amount"]
     }
 }
 
@@ -83,4 +89,9 @@ public enum RedPacketStatus: String {
     case empty      // all claimed
     case refund_pending
     case refunded
+}
+
+public enum RedPacketNetwork: String {
+    case mainnet = "Mainnet"
+    case rinkeby = "Rinkeby"
 }
