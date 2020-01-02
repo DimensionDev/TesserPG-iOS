@@ -16,6 +16,11 @@ extension RedPacket {
         redPacket.aes_version = 1
         redPacket.contract_version = 1
         redPacket.contract_address = Web3Secret.contractAddressV1
+        #if MAINNET
+        redPacket.network = .mainnet
+        #else
+        redPacket.network = .rinkeby
+        #endif
         
         assert(!redPacket.contract_address.isEmpty)
         
