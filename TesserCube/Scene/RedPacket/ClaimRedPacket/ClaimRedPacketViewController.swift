@@ -103,7 +103,7 @@ extension ClaimRedPacketViewModel {
                     return Observable.error(error)
                 }
                 
-                return RedPacketService.claim(for: redPacket, use: selectWalletModel, nonce: nonce)
+                return RedPacketService.shared.claim(for: redPacket, use: selectWalletModel, nonce: nonce)
                     .trackActivity(self.claimActivityIndicator)
             }
             .observeOn(MainScheduler.instance)
@@ -133,7 +133,6 @@ extension ClaimRedPacketViewModel {
     }
     
     func fetchClaimResult() {
-        // FIXME: it is duplicate with in-app pendingRedPackets claim result updateer
         RedPacketService.shared.updateClaimResult(for: redPacket)
             .trackActivity(updateClaimResultActivityIndicator)
             .subscribe(onNext: { _ in

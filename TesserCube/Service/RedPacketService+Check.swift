@@ -81,6 +81,28 @@ extension RedPacketService {
         }
     }
     
+    // Shared Observable sequeue from Single<RedPacketAvailability>
+    func checkAvailability(for redPacket: RedPacket) -> Observable<RedPacketAvailability> {
+        let id = redPacket.id
+        
+        guard let observable = checkAvailabilityQueue[id] else {
+            let single = RedPacketService.checkAvailability(for: redPacket)
+            
+            let shared = single.asObservable()
+                .share()
+                .do(afterCompleted: {
+                    os_log("%{public}s[%{public}ld], %{public}s: afterCompleted checkAvailability", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.checkAvailabilityQueue[id] = nil
+                })
+            
+            checkAvailabilityQueue[id] = shared
+            return shared
+        }
+        
+        os_log("%{public}s[%{public}ld], %{public}s: use checkAvailability in queue", ((#file as NSString).lastPathComponent), #line, #function)
+        return observable
+    }
+    
 }
 
 extension RedPacketService {

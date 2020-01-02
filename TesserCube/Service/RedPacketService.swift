@@ -26,6 +26,16 @@ final class RedPacketService {
     
     let disposeBag = DisposeBag()
     
+    // Global observable queue:
+    // Reuse sequence if shared observable object if already in queue
+    // ANd also subscribe in service when observable created to prevent task canceled
+    var createResultQueue: [RedPacket.ID: Observable<CreationSuccess>] = [:]
+    var updateCreateResultQueue: [RedPacket.ID: Observable<CreationSuccess>] = [:]
+    var checkAvailabilityQueue: [RedPacket.ID: Observable<RedPacketAvailability>] = [:]
+    var claimQueue: [RedPacket.ID: Observable<TransactionHash>] = [:]
+    var claimResultQueue: [RedPacket.ID: Observable<ClaimSuccess>] = [:]
+    var updateClaimResultQueue: [RedPacket.ID: Observable<ClaimSuccess>] = [:]
+    
     // per packet. 0.002025 ETH
     public static var redPacketMinAmount: Decimal {
         return Decimal(0.002025)
