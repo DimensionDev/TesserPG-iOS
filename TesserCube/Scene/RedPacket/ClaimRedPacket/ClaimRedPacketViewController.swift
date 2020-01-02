@@ -108,24 +108,7 @@ extension ClaimRedPacketViewModel {
             }
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] transactionHash in
-                do {
-                    // red packet claim transaction success
-                    // set status to .claim_pending
-                    let realm = try RedPacketService.realm()
-                    guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
-                        return
-                    }
-                    try realm.write {
-                        redPacket.claim_transaction_hash = transactionHash.hex()
-                        redPacket.status = .claim_pending
-                        redPacket.claim_address = selectWalletModel.address
-                    }
-                    
-                    self?.fetchClaimResult()
-                    
-                } catch {
-                    self?.error.accept(error)
-                }
+                self?.fetchClaimResult()
             }, onError: { [weak self] error in
                 self?.error.accept(error)
             })
