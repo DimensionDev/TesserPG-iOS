@@ -35,6 +35,9 @@ final class RedPacketService {
     var claimQueue: [RedPacket.ID: Observable<TransactionHash>] = [:]
     var claimResultQueue: [RedPacket.ID: Observable<ClaimSuccess>] = [:]
     var updateClaimResultQueue: [RedPacket.ID: Observable<ClaimSuccess>] = [:]
+    var refundQueue: [RedPacket.ID: Observable<TransactionHash>] = [:]
+    var refundResultQueue: [RedPacket.ID: Observable<RefundSuccess>] = [:]
+    var updateRefundResultQueue: [RedPacket.ID: Observable<RefundSuccess>] = [:]
     
     // per packet. 0.002025 ETH
     public static var redPacketMinAmount: Decimal {

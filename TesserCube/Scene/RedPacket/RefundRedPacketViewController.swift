@@ -104,17 +104,30 @@ extension RefundRedPacketViewModel {
                     return Observable.error(error)
                 }
                 
-                return RedPacketService.refund(for: redPacket, use: walletModel, nonce: nonce)
+                return RedPacketService.shared.refund(for: redPacket, use: walletModel, nonce: nonce)
                     .trackActivity(self.refundActivityIndicator)
             }
-            .subscribe(onNext: { transactionHash in
-                os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, String(describing: transactionHash))
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] transactionHash in
+                os_log("%{public}s[%{public}ld], %{public}s: refund transactionHash %s", ((#file as NSString).lastPathComponent), #line, #function, transactionHash.hex())
+                self?.fetchRefundResult()
 
             }, onError: { [weak self] error in
                 self?.error.accept(error)
             })
             .disposed(by: disposeBag)
         
+    }
+    
+    func fetchRefundResult() {
+        RedPacketService.shared.updateRefundResult(for: redPacket)
+        .trackActivity(busyActivityIndicator)
+            .subscribe(onNext: { _ in
+                // do nothing
+            }, onError: { [weak self] error in
+                self?.error.accept(error)
+            })
+            .disposed(by: disposeBag)
     }
     
 }

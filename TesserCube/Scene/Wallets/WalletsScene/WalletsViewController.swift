@@ -102,6 +102,14 @@ class WalletsViewController: TCBaseViewController {
                             .disposed(by: self.disposeBag)
                     }
                     
+                    // fetch refund result
+                    let refundPendingRedPackets = redPackets.filter { $0.status == .refund_pending }
+                    for redPacket in refundPendingRedPackets {
+                        RedPacketService.shared.updateRefundResult(for: redPacket)
+                            .subscribe()
+                            .disposed(by: self.disposeBag)
+                    }
+                    
                 })
                 .disposed(by: disposeBag)
     
