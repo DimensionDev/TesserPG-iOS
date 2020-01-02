@@ -24,6 +24,12 @@ extension RedPacketService {
     static func create(for redPacket: RedPacket, use walletModel: WalletModel, nonce: EthereumQuantity) -> Single<TransactionHash> {
         // Only for contract v1
         assert(redPacket.contract_version == 1)
+        
+        do {
+            try checkNetwork(for: redPacket)
+        } catch {
+            return Single.error(error)
+        }
 
         // Only initial red packet can process `create` on the contract
         guard redPacket.status == .initial else {

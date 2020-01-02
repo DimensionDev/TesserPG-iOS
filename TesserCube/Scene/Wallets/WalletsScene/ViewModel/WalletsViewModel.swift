@@ -39,6 +39,7 @@ class WalletsViewModel: NSObject {
     override init() {
         super.init()
         
+        // Debug
         currentWalletModel.asDriver()
             .drive(onNext: { walletModel in
                 os_log("%{public}s[%{public}ld], %{public}s: currentWalletModel update to %s", ((#file as NSString).lastPathComponent), #line, #function, walletModel?.address ?? "nil")
@@ -51,6 +52,14 @@ class WalletsViewModel: NSObject {
             })
             .disposed(by: disposeBag)
         
+        // Update current wallet balance when red packet updated
+        redPackets.asDriver()
+            .drive(onNext: { [weak self] _ in
+                self?.currentWalletModel.value?.updateBalance()
+            })
+            .disposed(by: disposeBag)
+        
+        // Bind filter for filteredRedPackets on currentWalletModel
         let currentWalletModelChanged = currentWalletModel.asDriver()
             .distinctUntilChanged { lhs, rhs -> Bool in return lhs?.address == rhs?.address }
         Driver.combineLatest(currentWalletModelChanged, redPackets.asDriver()) { currentWalletModel, redPackets -> [RedPacketValue] in

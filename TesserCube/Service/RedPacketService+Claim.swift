@@ -22,6 +22,12 @@ extension RedPacketService {
         // Only for contract v1
         assert(redPacket.contract_version == 1)
         
+        do {
+            try checkNetwork(for: redPacket)
+        } catch {
+            return Single.error(error)
+        }
+        
         // Only normal || incoming statuc red packet can process `claim` on the contract
         guard redPacket.status == .normal || redPacket.status == .incoming else {
             return Single.error(Error.internal("cannot claim unacceptable status red packet"))

@@ -21,6 +21,12 @@ extension RedPacketService {
         // Only for contract v1
         assert(redPacket.contract_version == 1)
         
+        do {
+            try checkNetwork(for: redPacket)
+        } catch {
+            return Single.error(error)
+        }
+        
         // Init web3
         let web3 = WalletService.web3
         
