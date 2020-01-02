@@ -41,8 +41,9 @@ extension RedPacketService {
         
         let id = redPacket.id
 
-        return RedPacketService.checkAvailability(for: redPacket)
+        return RedPacketService.shared.checkAvailability(for: redPacket)
             .retry(3)
+            .asSingle()
             .flatMap { availability -> Single<TransactionHash> in
                 os_log("%{public}s[%{public}ld], %{public}s: check availability %s/%s", ((#file as NSString).lastPathComponent), #line, #function, String(availability.claimed), String(availability.total))
                 

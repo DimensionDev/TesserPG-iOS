@@ -12,7 +12,10 @@ import RealmSwift
 import BigInt
 
 public class RedPacket: Object {
-    @objc public dynamic var id = UUID().uuidString
+    
+    public typealias ID = String
+    
+    @objc public dynamic var id: ID = UUID().uuidString
     
     @objc public dynamic var aes_version = 1
     @objc public dynamic var contract_version = 1

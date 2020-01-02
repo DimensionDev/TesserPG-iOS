@@ -53,7 +53,6 @@ final class CreatedRedPacketViewModel: NSObject {
 extension CreatedRedPacketViewModel {
     
     func fetchCreateResult() {
-        // FIXME: it is duplicate with in-app pendingRedPackets create result updateer
         RedPacketService.shared.updateCreateResult(for: redPacket)
             .trackActivity(activityIndicator)
             .subscribe(onNext: { _ in

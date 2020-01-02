@@ -16,7 +16,7 @@ import CryptoSwift
 
 extension RedPacketService {
     
-    static func claim(for redPacket: RedPacket, use walletModel: WalletModel, nonce: EthereumQuantity) -> Single<TransactionHash> {
+    private static func claim(for redPacket: RedPacket, use walletModel: WalletModel, nonce: EthereumQuantity) -> Single<TransactionHash> {
         os_log("%{public}s[%{public}ld], %{public}s: prepare to claim red packet - %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.red_packet_id ?? "nil")
 
         // Only for contract v1
@@ -76,8 +76,9 @@ extension RedPacketService {
         
         let id = redPacket.id
         
-        return RedPacketService.checkAvailability(for: redPacket)
+        return RedPacketService.shared.checkAvailability(for: redPacket)
             .retry(3)
+            .asSingle()
             .flatMap { availability -> Single<TransactionHash> in
                 os_log("%{public}s[%{public}ld], %{public}s: check availability %s/%s", ((#file as NSString).lastPathComponent), #line, #function, String(availability.claimed), String(availability.total))
                 
@@ -126,7 +127,7 @@ extension RedPacketService {
             }
     }
     
-    static func claimResult(for redPacket: RedPacket) -> Single<ClaimSuccess> {
+    private static func claimResult(for redPacket: RedPacket) -> Single<ClaimSuccess> {
         // Only for contract v1
         assert(redPacket.contract_version == 1)
         
@@ -228,54 +229,94 @@ extension RedPacketService {
 
 extension RedPacketService {
     
+    // Shared Observable sequeue from Single<TransactionHash>
+    func claim(for redPacket: RedPacket, use walletModel: WalletModel, nonce: EthereumQuantity) -> Observable<TransactionHash> {
+        let id = redPacket.id
+        
+        guard let observable = claimQueue[id] else {
+            let single = RedPacketService.claim(for: redPacket, use: walletModel, nonce: nonce)
+            
+            let shared = single.asObservable()
+                .share()
+            
+            // Subscribe in service to prevent task canceled
+            shared
+                .do(afterCompleted: {
+                    os_log("%{public}s[%{public}ld], %{public}s: afterCompleted claim", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.claimQueue[id] = nil
+                })
+                .subscribe()
+                .disposed(by: disposeBag)
+            
+            claimQueue[id] = shared
+            return shared
+        }
+        
+        os_log("%{public}s[%{public}ld], %{public}s: use claim in queue", ((#file as NSString).lastPathComponent), #line, #function)
+        return observable
+    }
+    
+    private func claimResult(for redPacket: RedPacket) -> Observable<ClaimSuccess> {
+        let id = redPacket.id
+        
+        guard let observable = claimResultQueue[id] else {
+            let single = RedPacketService.claimResult(for: redPacket)
+            
+            let shared = single.asObservable()
+                .share()
+            
+            // Subscribe in service to prevent task canceled
+            shared
+                .do(afterCompleted: {
+                    os_log("%{public}s[%{public}ld], %{public}s: afterCompleted claimResult", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.claimResultQueue[id] = nil
+                })
+                .subscribe()
+                .disposed(by: disposeBag)
+            
+            claimResultQueue[id] = shared
+            return shared
+        }
+        
+        os_log("%{public}s[%{public}ld], %{public}s: use claimResult in queue", ((#file as NSString).lastPathComponent), #line, #function)
+        return observable
+    }
+
     func updateClaimResult(for redPacket: RedPacket) -> Observable<ClaimSuccess> {
         os_log("%{public}s[%{public}ld], %{public}s: update claim result for red packet - %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.red_packet_id ?? "nil")
 
         let id = redPacket.id
         
-        let observable = Observable.just(id)
-            .flatMap { id -> Observable<RedPacketService.ClaimSuccess> in
-                let redPacket: RedPacket
-                do {
-                    let realm = try RedPacketService.realm()
-                    guard let _redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
-                        return Observable.error(RedPacketService.Error.internal("cannot resolve red packet"))
-                    }
-                    redPacket = _redPacket
-                } catch {
-                    return Observable.error(error)
-                }
-                
-                return RedPacketService.claimResult(for: redPacket).asObservable()
-                    .retry(3)   // network retry
-        }
-        .observeOn(MainScheduler.instance)
-        .share()
-        
-        observable
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { claimSuccess in
-                do {
-                    let realm = try RedPacketService.realm()
-                    guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
-                        return
-                    }
-                    
-                    guard redPacket.status == .claim_pending else {
-                        os_log("%{public}s[%{public}ld], %{public}s: discard change due to red packet status already %s.", ((#file as NSString).lastPathComponent), #line, #function, redPacket.status.rawValue)
-                        return
+        guard let observable = updateClaimResultQueue[id] else {
+            let single = self.claimResult(for: redPacket)
+            
+            let shared = single.asObservable()
+                .share()
+            
+            // Subscribe in service to prevent task canceled
+            shared
+                .do(onNext: { claimSuccess in     // before subscribe onNext
+                    do {
+                        let realm = try RedPacketService.realm()
+                        guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
+                            return
+                        }
+                        
+                        guard redPacket.status == .claim_pending else {
+                            os_log("%{public}s[%{public}ld], %{public}s: discard change due to red packet status already %s.", ((#file as NSString).lastPathComponent), #line, #function, redPacket.status.rawValue)
+                            return
+                        }
+                        
+                        os_log("%{public}s[%{public}ld], %{public}s: change red packet status to .claimed", ((#file as NSString).lastPathComponent), #line, #function)
+                        try realm.write {
+                            redPacket.claim_amount = claimSuccess.claimed_value
+                            redPacket.status = .claimed
+                        }
+                    } catch {
+                        os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
                     }
                     
-                    try realm.write {
-                        redPacket.claim_amount = claimSuccess.claimed_value
-                        redPacket.status = .claimed
-                    }
-                } catch {
-                    os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
-                }
-            }, onError: { error in
-                switch error {
-                case RedPacketService.Error.claimFail:
+                }, onError: { error in     // before subscribe onError
                     do {
                         let realm = try RedPacketService.realm()
                         guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
@@ -287,8 +328,9 @@ extension RedPacketService {
                             return
                         }
                         
+                        let rollbackStatus: RedPacketStatus = redPacket.create_nonce.value != nil ? .normal : .incoming
+                        os_log("%{public}s[%{public}ld], %{public}s: rollback red packet status to %s", ((#file as NSString).lastPathComponent), #line, #function, rollbackStatus.rawValue)
                         try realm.write {
-                            let rollbackStatus: RedPacketStatus = redPacket.create_nonce.value != nil ? .normal : .incoming
                             redPacket.claim_address = nil
                             redPacket.claim_transaction_hash = nil
                             redPacket.status = rollbackStatus
@@ -296,14 +338,19 @@ extension RedPacketService {
                     } catch {
                         os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
                     }
-                default:
-                    // not chain error
-                    break
-                }
-                
-            })
-            .disposed(by: disposeBag)
+                    
+                }, afterCompleted: {
+                    os_log("%{public}s[%{public}ld], %{public}s: afterCompleted claimResult", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.updateClaimResultQueue[id] = nil
+                })
+                .subscribe()
+                .disposed(by: disposeBag)
+            
+            updateClaimResultQueue[id] = shared
+            return shared
+        }
         
+        os_log("%{public}s[%{public}ld], %{public}s: use updateClaimResult in queue", ((#file as NSString).lastPathComponent), #line, #function)
         return observable
     }
     

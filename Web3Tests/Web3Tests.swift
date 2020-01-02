@@ -254,7 +254,7 @@ extension Web3Tests {
     }
     
     func testDelpoyTransactionResult() {
-        let transactionHashHex = "0x16ac01212db149fddec2c0c72a8c2321878ae9302e62f65e110c354ab5c45f0d"
+        let transactionHashHex = "0x183c625a6d847b80b731816f124ed8b6978d5f898f218f7f04939ea8e2b18fb3"
         let transactionHash = EthereumData(Bytes(hex: transactionHashHex))
         
         var contractAddress: EthereumData?
