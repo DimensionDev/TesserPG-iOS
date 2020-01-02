@@ -96,6 +96,10 @@ extension RedPacketService {
                     return Single.error(Error.noAvailableShareForClaim)
                 }
                 
+                guard !availability.expired else {
+                    return Single.error(Error.claimAfterExpired)
+                }
+                
                 let password = redPacket.uuids[availability.claimed]
                 let claimInvocation = claimCall(redPacketID, password, recipient, validation)
                 let gasLimit = EthereumQuantity(integerLiteral: 1000000)
