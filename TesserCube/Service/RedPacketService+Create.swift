@@ -193,7 +193,11 @@ extension RedPacketService {
                     single(.success(event))
                     
                 case let .failure(error):
-                    single(.error(error))
+                    if let rpcError = error as? RPCResponse<EthereumTransactionReceiptObject?>.Error {
+                        single(.error(Error.internal(rpcError.message)))
+                    } else {
+                        single(.error(error))
+                    }
                 }
             }   // end web3
             
