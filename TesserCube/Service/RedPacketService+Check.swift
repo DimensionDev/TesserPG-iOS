@@ -8,6 +8,7 @@
 
 import os
 import Foundation
+import RealmSwift
 import RxSwift
 import Web3
 import BigInt
@@ -89,11 +90,52 @@ extension RedPacketService {
             let single = RedPacketService.checkAvailability(for: redPacket)
             
             let shared = single.asObservable()
+                .flatMapLatest { availability -> Observable<RedPacketAvailability> in
+                    let realm: Realm
+                    do {
+                        realm = try RedPacketService.realm()
+                    } catch {
+                        return Single.error(Error.internal(error.localizedDescription)).asObservable()
+                    }
+                    guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
+                        return Single.error(Error.internal("cannot reslove red packet to check availablity")).asObservable()
+                    }
+                    
+                    do {
+                        switch redPacket.status {
+                        case .normal, .incoming:
+                            try realm.write {
+                                // .empty > .expired
+                                if availability.claimed == availability.total {
+                                    redPacket.status = .empty
+                                } else if availability.expired {
+                                    redPacket.status = .expired
+                                }
+                            }
+                        case .claimed:
+                            try realm.write {
+                                if availability.expired {
+                                    redPacket.status = .expired
+                                }
+                            }
+                        default:
+                            break
+                        }
+                    } catch {
+                        return Single.error(Error.internal(error.localizedDescription)).asObservable()
+                    }
+                    
+                    return Single.just(availability).asObservable()
+                }
                 .share()
+            
+            shared
                 .do(afterCompleted: {
                     os_log("%{public}s[%{public}ld], %{public}s: afterCompleted checkAvailability", ((#file as NSString).lastPathComponent), #line, #function)
                     self.checkAvailabilityQueue[id] = nil
                 })
+                .subscribe()
+                .disposed(by: disposeBag)
             
             checkAvailabilityQueue[id] = shared
             return shared

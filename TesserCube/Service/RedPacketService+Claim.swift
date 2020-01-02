@@ -132,6 +132,8 @@ extension RedPacketService {
     }
     
     private static func claimResult(for redPacket: RedPacket) -> Single<ClaimSuccess> {
+        os_log("%{public}s[%{public}ld], %{public}s: check claim result for red packet - %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.red_packet_id ?? "nil")
+
         // Only for contract v1
         assert(redPacket.contract_version == 1)
         
@@ -346,6 +348,10 @@ extension RedPacketService {
                     }
                     
                 }, onError: { error in     // before subscribe onError
+                    guard case RedPacketService.Error.refundFail = error else {
+                        return
+                    }
+                    
                     do {
                         let realm = try RedPacketService.realm()
                         guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
