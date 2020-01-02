@@ -299,6 +299,17 @@ extension RedPacketService {
         let id = redPacket.id
         
         guard let observable = claimResultQueue[id] else {
+            // read red packet object from disk to prevent claim_transaction_hash write to disk but not updated issue
+            let realm: Realm
+            do {
+                realm = try RedPacketService.realm()
+            } catch {
+                return Single.error(Error.internal(error.localizedDescription)).asObservable()
+            }
+            guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
+                return Single.error(Error.internal("cannot reslove red packet to check availablity")).asObservable()
+            }
+            
             let single = RedPacketService.claimResult(for: redPacket)
             
             let shared = single.asObservable()
