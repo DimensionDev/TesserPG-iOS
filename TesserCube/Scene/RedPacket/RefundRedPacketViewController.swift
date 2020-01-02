@@ -106,6 +106,7 @@ extension RefundRedPacketViewModel {
                 
                 return RedPacketService.shared.refund(for: redPacket, use: walletModel, nonce: nonce)
                     .trackActivity(self.refundActivityIndicator)
+                    .trackActivity(self.busyActivityIndicator)
             }
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] transactionHash in
@@ -121,7 +122,7 @@ extension RefundRedPacketViewModel {
     
     func fetchRefundResult() {
         RedPacketService.shared.updateRefundResult(for: redPacket)
-        .trackActivity(busyActivityIndicator)
+            .trackActivity(busyActivityIndicator)
             .subscribe(onNext: { _ in
                 // do nothing
             }, onError: { [weak self] error in
@@ -163,6 +164,18 @@ final class RefundRedPacketViewController: TCBaseViewController {
         } else {
             return UIBarButtonItem(barButtonSystemItem: .stop, target: self, action: #selector(RefundRedPacketViewController.closeBarButtonItemPressed(_:)))
         }
+    }()
+    
+    private lazy var activityIndicatorBarButtonItem: UIBarButtonItem = {
+        let activityIndicatorView: UIActivityIndicatorView
+        if #available(iOS 13.0, *) {
+            activityIndicatorView = UIActivityIndicatorView(style: .medium)
+        } else {
+            activityIndicatorView = UIActivityIndicatorView(style: .gray)
+        }
+        activityIndicatorView.startAnimating()
+        let barButtonItem = UIBarButtonItem(customView: activityIndicatorView)
+        return barButtonItem
     }()
     
     private let tableView: UITableView = {
@@ -246,6 +259,23 @@ final class RefundRedPacketViewController: TCBaseViewController {
                 break
             }
         }
+        
+        viewModel.isBusy.asDriver()
+            .drive(onNext: { [weak self] isBusy in
+                guard let `self` = self else { return }
+                self.navigationItem.rightBarButtonItem = isBusy ? self.activityIndicatorBarButtonItem : nil
+                self.refundRedPacketButton.isEnabled = !isBusy
+                
+                let title: String = {
+                    if isBusy {
+                        return "Refunding"
+                    } else {
+                        return self.viewModel.redPacket.status == .refunded ? "Done" : "Refund Red Packet"
+                    }
+                }()
+                self.refundRedPacketButton.setTitle(title, for: .normal)
+            })
+            .disposed(by: disposeBag)
     }
     
 }
@@ -270,7 +300,11 @@ extension RefundRedPacketViewController {
     }
     
     @objc private func refundRedPacketButtonPressed(_ sender: UIButton) {
-        viewModel.refundRedpacket()
+        if viewModel.redPacket.status == .refunded {
+            dismiss(animated: true, completion: nil)
+        } else {
+            viewModel.refundRedpacket()
+        }
     }
     
 }
