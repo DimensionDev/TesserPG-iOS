@@ -131,6 +131,12 @@ extension RedPacketService {
         // Only for contract v1
         assert(redPacket.contract_version == 1)
         
+        do {
+            try checkNetwork(for: redPacket)
+        } catch {
+            return Single.error(error)
+        }
+        
         guard let claimTransactionHashHex = redPacket.claim_transaction_hash else {
             return Single.error(Error.internal("cannot read claim transaction hash"))
         }
@@ -237,6 +243,25 @@ extension RedPacketService {
             let single = RedPacketService.claim(for: redPacket, use: walletModel, nonce: nonce)
             
             let shared = single.asObservable()
+                .flatMapLatest { transactionHash -> Observable<TransactionHash> in
+                    do {
+                        // red packet claim transaction success
+                        // set status to .claim_pending
+                        let realm = try RedPacketService.realm()
+                        guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
+                            return Single.error(Error.internal("cannot reslove red packet to check availablity")).asObservable()
+                        }
+                        try realm.write {
+                            redPacket.claim_transaction_hash = transactionHash.hex()
+                            redPacket.status = .claim_pending
+                            redPacket.claim_address = walletModel.address
+                        }
+                        
+                        return Single.just(transactionHash).asObservable()
+                    } catch {
+                        return Single.error(error).asObservable()
+                    }
+                }
                 .share()
             
             // Subscribe in service to prevent task canceled
