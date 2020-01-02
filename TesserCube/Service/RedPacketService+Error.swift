@@ -19,6 +19,7 @@ extension RedPacketService {
         case checkClaimedListFail
         
         case noAvailableShareForClaim
+        case claimAfterExpired
         case claimFail
         
         case openRedPacketFail(String)
@@ -36,6 +37,7 @@ extension RedPacketService.Error: LocalizedError {
         case .checkAvailabilityFail:            return "Fail to check red packet availability"
         case .checkClaimedListFail:             return "Fail to check red packet claimed list"
         case .noAvailableShareForClaim:         return "No available share for claim"
+        case .claimAfterExpired:                return "Cannot claim the expired red packet"
         case .claimFail:                        return "Fail to claim red packet"
         case let .openRedPacketFail(message):   return "Fail to open red packet\n\(message)"
         case .refundBeforeExipired:             return "Unable to refund before it expires"
