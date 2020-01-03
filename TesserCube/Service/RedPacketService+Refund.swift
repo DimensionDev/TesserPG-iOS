@@ -67,7 +67,7 @@ extension RedPacketService {
             .retry(3)
             .asSingle()
             .flatMap { availability -> Single<TransactionHash> in
-                os_log("%{public}s[%{public}ld], %{public}s: check availability %s/%s", ((#file as NSString).lastPathComponent), #line, #function, String(availability.claimed), String(availability.total))
+                os_log("%{public}s[%{public}ld], %{public}s: check availability %s/%s, isExpired %s", ((#file as NSString).lastPathComponent), #line, #function, String(availability.claimed), String(availability.total), String(availability.expired))
 
                 let realm: Realm
                 do {
@@ -81,6 +81,7 @@ extension RedPacketService {
                 
                 // only expired red packet could refund
                 guard redPacket.status == .expired else {
+                    os_log("%{public}s[%{public}ld], %{public}s: refundBeforeExpired. Current status: %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.status.rawValue)
                     return Single.error(Error.refundBeforeExpired)
                 }
                 
@@ -191,10 +192,10 @@ extension RedPacketService {
                     }
                     
                     guard let dict = resultDict,
-                        let idBytes = dict["id"] as? Data,
-                        let remainingBalance = dict["remaining_balance"] as? BigUInt else {
-                            single(.error(Error.refundFail))
-                            return
+                    let idBytes = dict["id"] as? Data,
+                    let remainingBalance = dict["remaining_balance"] as? BigUInt else {
+                        single(.error(Error.refundFail))
+                        return
                     }
                     
                     let event = RefundSuccess(id: idBytes.toHexString(),
@@ -262,16 +263,21 @@ extension RedPacketService {
                 }
                 .share()
             
+            refundQueue[id] = shared
+            
             // Subscribe in service to prevent task canceled
             shared
-                .do(afterCompleted: {
-                    os_log("%{public}s[%{public}ld], %{public}s: afterCompleted refund", ((#file as NSString).lastPathComponent), #line, #function)
+                .asSingle()
+                .do(afterSuccess: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterSuccess refund", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.refundQueue[id] = nil
+                }, afterError: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterError refund", ((#file as NSString).lastPathComponent), #line, #function)
                     self.refundQueue[id] = nil
                 })
                 .subscribe()
                 .disposed(by: disposeBag)
             
-            refundQueue[id] = shared
             return shared
         }
         
@@ -288,16 +294,21 @@ extension RedPacketService {
             let shared = single.asObservable()
                 .share()
             
+            refundResultQueue[id] = shared
+            
             // Subscribe in service to prevent task canceled
             shared
-                .do(afterCompleted: {
-                    os_log("%{public}s[%{public}ld], %{public}s: afterCompleted refundResult", ((#file as NSString).lastPathComponent), #line, #function)
+                .asSingle()
+                .do(afterSuccess: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterSuccess refundResult", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.refundResultQueue[id] = nil
+                }, afterError: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterError refundResult", ((#file as NSString).lastPathComponent), #line, #function)
                     self.refundResultQueue[id] = nil
                 })
                 .subscribe()
                 .disposed(by: disposeBag)
             
-            refundResultQueue[id] = shared
             return shared
         }
         
@@ -325,9 +336,12 @@ extension RedPacketService {
             let shared = single.asObservable()
                 .share()
             
+            updateRefundResultQueue[id] = shared
+
             // Subscribe in service to prevent task canceled
             shared
-                .do(onNext: { refundSuccess in
+                .asSingle()
+                .do(onSuccess: { refundSuccess in
                     do {
                         let realm = try RedPacketService.realm()
                         guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
@@ -347,7 +361,10 @@ extension RedPacketService {
                     } catch {
                         os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
                     }
-                    
+
+                }, afterSuccess: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterSuccess updateRefundResult", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.updateRefundResultQueue[id] = nil
                 }, onError: { error in
                     guard case RedPacketService.Error.refundFail = error else {
                         return
@@ -372,15 +389,14 @@ extension RedPacketService {
                     } catch {
                         os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
                     }
-                    
-                }, afterCompleted: {
-                    os_log("%{public}s[%{public}ld], %{public}s: afterCompleted updateRefundResult", ((#file as NSString).lastPathComponent), #line, #function)
+
+                }, afterError: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterError updateRefundResult", ((#file as NSString).lastPathComponent), #line, #function)
                     self.updateRefundResultQueue[id] = nil
                 })
                 .subscribe()
                 .disposed(by: disposeBag)
             
-            updateRefundResultQueue[id] = shared
             return shared
         }
         
