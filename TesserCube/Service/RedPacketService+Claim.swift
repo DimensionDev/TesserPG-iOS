@@ -278,16 +278,21 @@ extension RedPacketService {
                 }
                 .share()
             
+            claimQueue[id] = shared
+            
             // Subscribe in service to prevent task canceled
             shared
-                .do(afterCompleted: {
-                    os_log("%{public}s[%{public}ld], %{public}s: afterCompleted claim", ((#file as NSString).lastPathComponent), #line, #function)
+            .asSingle()
+                .do(afterSuccess: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterSuccess claim", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.claimQueue[id] = nil
+                }, afterError: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterError claim", ((#file as NSString).lastPathComponent), #line, #function)
                     self.claimQueue[id] = nil
                 })
                 .subscribe()
                 .disposed(by: disposeBag)
             
-            claimQueue[id] = shared
             return shared
         }
         
@@ -315,16 +320,21 @@ extension RedPacketService {
             let shared = single.asObservable()
                 .share()
             
+            claimResultQueue[id] = shared
+            
             // Subscribe in service to prevent task canceled
             shared
-                .do(afterCompleted: {
-                    os_log("%{public}s[%{public}ld], %{public}s: afterCompleted claimResult", ((#file as NSString).lastPathComponent), #line, #function)
+                .asSingle()
+                .do(afterSuccess: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterSuccess claimResult", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.claimResultQueue[id] = nil
+                }, afterError: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterError claimResult", ((#file as NSString).lastPathComponent), #line, #function)
                     self.claimResultQueue[id] = nil
                 })
                 .subscribe()
                 .disposed(by: disposeBag)
             
-            claimResultQueue[id] = shared
             return shared
         }
         
@@ -343,9 +353,12 @@ extension RedPacketService {
             let shared = single.asObservable()
                 .share()
             
+            updateClaimResultQueue[id] = shared
+            
             // Subscribe in service to prevent task canceled
             shared
-                .do(onNext: { claimSuccess in     // before subscribe onNext
+                .asSingle()
+                .do(onSuccess: { claimSuccess in
                     do {
                         let realm = try RedPacketService.realm()
                         guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
@@ -366,7 +379,10 @@ extension RedPacketService {
                         os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
                     }
                     
-                }, onError: { error in     // before subscribe onError
+                }, afterSuccess: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterSuccess claimResult", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.updateClaimResultQueue[id] = nil
+                }, onError: { error in
                     guard case RedPacketService.Error.refundFail = error else {
                         return
                     }
@@ -393,14 +409,13 @@ extension RedPacketService {
                         os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
                     }
                     
-                }, afterCompleted: {
-                    os_log("%{public}s[%{public}ld], %{public}s: afterCompleted claimResult", ((#file as NSString).lastPathComponent), #line, #function)
+                }, afterError: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterError claimResult", ((#file as NSString).lastPathComponent), #line, #function)
                     self.updateClaimResultQueue[id] = nil
                 })
                 .subscribe()
                 .disposed(by: disposeBag)
             
-            updateClaimResultQueue[id] = shared
             return shared
         }
         

@@ -129,15 +129,20 @@ extension RedPacketService {
                 }
                 .share()
             
+            checkAvailabilityQueue[id] = shared
+
             shared
-                .do(afterCompleted: {
-                    os_log("%{public}s[%{public}ld], %{public}s: afterCompleted checkAvailability", ((#file as NSString).lastPathComponent), #line, #function)
+                .asSingle()
+                .do(afterSuccess: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterSuccess checkAvailability", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.checkAvailabilityQueue[id] = nil
+                }, afterError: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterError checkAvailability", ((#file as NSString).lastPathComponent), #line, #function)
                     self.checkAvailabilityQueue[id] = nil
                 })
                 .subscribe()
                 .disposed(by: disposeBag)
             
-            checkAvailabilityQueue[id] = shared
             return shared
         }
         

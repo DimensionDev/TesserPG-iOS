@@ -237,16 +237,21 @@ extension RedPacketService {
             let shared = single.asObservable()
                 .share()
             
+            createResultQueue[id] = shared
+            
             // Subscribe in service to prevent task canceled
             shared
-                .do(afterCompleted: {
-                    os_log("%{public}s[%{public}ld], %{public}s: afterCompleted createResult", ((#file as NSString).lastPathComponent), #line, #function)
+                .asSingle()
+                .do(afterSuccess: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterSuccess createResult", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.claimQueue[id] = nil
+                }, afterError: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterError createResult", ((#file as NSString).lastPathComponent), #line, #function)
                     self.claimQueue[id] = nil
                 })
                 .subscribe()
                 .disposed(by: disposeBag)
             
-            createResultQueue[id] = shared
             return shared
         }
         
@@ -263,9 +268,12 @@ extension RedPacketService {
             let shared = single.asObservable()
                 .share()
             
+            updateCreateResultQueue[id] = shared
+
             // Subscribe in service to prevent task canceled
             shared
-                .do(onNext: { creationSuccess in
+                .asSingle()
+                .do(onSuccess: { creationSuccess in
                     do {
                         let realm = try RedPacketService.realm()
                         guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
@@ -311,6 +319,10 @@ extension RedPacketService {
                     } catch {
                         os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
                     }
+
+                }, afterSuccess: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterSuccess updateCreateResult", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.updateCreateResultQueue[id] = nil
                     
                 }, onError: { error in
                     switch error {
@@ -331,14 +343,13 @@ extension RedPacketService {
                         break
                     }
                     
-                }, afterCompleted: {
-                    os_log("%{public}s[%{public}ld], %{public}s: afterCompleted updateCreateResult", ((#file as NSString).lastPathComponent), #line, #function)
+                }, afterError: { error in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterError updateCreateResult", ((#file as NSString).lastPathComponent), #line, #function)
                     self.updateCreateResultQueue[id] = nil
                 })
                 .subscribe()
                 .disposed(by: disposeBag)
             
-            updateCreateResultQueue[id] = shared
             return shared
         }
         
