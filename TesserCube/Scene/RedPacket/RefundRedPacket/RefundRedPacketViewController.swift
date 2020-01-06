@@ -42,15 +42,16 @@ final class RefundRedPacketViewModel: NSObject {
             .disposed(by: disposeBag)
          
         isBusy.asDriver()
-            .debug()
-            .drive()
+            .drive(onNext: { isBusy in
+                os_log("%{public}s[%{public}ld], %{public}s: isBusy %s", ((#file as NSString).lastPathComponent), #line, #function, String(isBusy))
+            })
             .disposed(by: disposeBag)
         
         isRefunding.asDriver()
-            .debug()
-            .drive()
+            .drive(onNext: { isRefunding in
+                os_log("%{public}s[%{public}ld], %{public}s: isRefunding %s", ((#file as NSString).lastPathComponent), #line, #function, String(isRefunding))
+            })
             .disposed(by: disposeBag)
-        
     }
     
     deinit {
@@ -110,9 +111,8 @@ extension RefundRedPacketViewModel {
             }
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] transactionHash in
-                os_log("%{public}s[%{public}ld], %{public}s: refund transactionHash %s", ((#file as NSString).lastPathComponent), #line, #function, transactionHash.hex())
-                self?.fetchRefundResult()
-
+                // do nothing
+                // force realm operation listener notified then to fetch claim result to fix claimTransactionHash not found race issue
             }, onError: { [weak self] error in
                 self?.error.accept(error)
             })
@@ -121,6 +121,8 @@ extension RefundRedPacketViewModel {
     }
     
     func fetchRefundResult() {
+        os_log("%{public}s[%{public}ld], %{public}s", ((#file as NSString).lastPathComponent), #line, #function)
+
         RedPacketService.shared.updateRefundResult(for: redPacket)
             .trackActivity(busyActivityIndicator)
             .subscribe(onNext: { _ in
@@ -246,14 +248,17 @@ final class RefundRedPacketViewController: TCBaseViewController {
         tableView.delegate = self
         tableView.dataSource = viewModel
         
-        // update table view when red packet changes
         viewModel.redPacketNotificationToken = viewModel.redPacket.observe { [weak self] change in
             guard let `self` = self else { return }
             switch change {
             case .change(let changes):
-                // self.viewModel.isClaimPending.accept(self.viewModel.redPacket.status == .claim_pending)
-                self.tableView.reloadData()
                 os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, changes.description)
+
+                // update table view when red packet changes
+                self.tableView.reloadData()
+                    
+                // fetch refund result
+                self.viewModel.fetchRefundResult()
                 
             default:
                 break

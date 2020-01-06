@@ -282,7 +282,7 @@ extension RedPacketService {
             
             // Subscribe in service to prevent task canceled
             shared
-            .asSingle()
+                .asSingle()
                 .do(afterSuccess: { _ in
                     os_log("%{public}s[%{public}ld], %{public}s: afterSuccess claim", ((#file as NSString).lastPathComponent), #line, #function)
                     self.claimQueue[id] = nil
@@ -344,7 +344,7 @@ extension RedPacketService {
 
     func updateClaimResult(for redPacket: RedPacket) -> Observable<ClaimSuccess> {
         os_log("%{public}s[%{public}ld], %{public}s: update claim result for red packet - %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.red_packet_id ?? "nil")
-
+        
         let id = redPacket.id
         
         guard let observable = updateClaimResultQueue[id] else {
