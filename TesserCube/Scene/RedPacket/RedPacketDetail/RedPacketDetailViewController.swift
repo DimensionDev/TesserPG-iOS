@@ -47,10 +47,10 @@ final class RedPacketDetailViewModel: NSObject {
         }
         
         RedPacketService.checkClaimedList(for: redPacket)
+            .trackActivity(checkClaimedListActivityIndicator)
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
             .retry(3)
             .observeOn(MainScheduler.instance)
-            .trackActivity(checkClaimedListActivityIndicator)
             .subscribe(onNext: { [weak self] records in
                 guard let `self` = self else { return }
                 self.claimedRecord.accept(records)

@@ -1545,7 +1545,7 @@
 				DB415EAD238CD1E90090C28F /* ClaimRedPacket */,
 				DBC9BD4023B200C600252437 /* OpenRedPacket */,
 				DB32514E23B4B9AD00A4DDD8 /* RedPacketDetail */,
-				DB32517F23B9C66000A4DDD8 /* RefundRedPacketViewController.swift */,
+				DBF5F72A23C2E55D0019DBB5 /* RefundRedPacket */,
 			);
 			path = RedPacket;
 			sourceTree = "<group>";
@@ -2204,6 +2204,14 @@
 				DBEE89672372DC160080C194 /* MnemonicCollectionView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		DBF5F72A23C2E55D0019DBB5 /* RefundRedPacket */ = {
+			isa = PBXGroup;
+			children = (
+				DB32517F23B9C66000A4DDD8 /* RefundRedPacketViewController.swift */,
+			);
+			path = RefundRedPacket;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

@@ -202,6 +202,8 @@ extension RedPacketService {
                     return
                 }
                 
+                os_log("%{public}s[%{public}ld], %{public}s: %s claimer(s)", ((#file as NSString).lastPathComponent), #line, #function, String(claimer_addrs.count))
+
                 let records = zip(claimed_list, claimer_addrs).map { claimed, claimer in
                     return RedPacketClaimedRecord(claimed: claimed, claimer: claimer)
                 }

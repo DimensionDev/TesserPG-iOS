@@ -256,7 +256,7 @@ extension CreatedRedPacketViewController {
             .disposed(by: disposeBag)
         
         // Teigger fetch create result action
-         viewModel.fetchCreateResult()
+        viewModel.fetchCreateResult()
     }
     
 }
