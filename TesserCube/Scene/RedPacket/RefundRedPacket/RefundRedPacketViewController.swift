@@ -258,7 +258,9 @@ final class RefundRedPacketViewController: TCBaseViewController {
                 self.tableView.reloadData()
                     
                 // fetch refund result
-                self.viewModel.fetchRefundResult()
+                if self.viewModel.redPacket.status == .refund_pending {
+                    self.viewModel.fetchRefundResult()
+                }
                 
             default:
                 break

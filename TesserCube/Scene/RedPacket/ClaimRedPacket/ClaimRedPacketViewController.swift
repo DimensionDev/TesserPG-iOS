@@ -341,7 +341,9 @@ extension ClaimRedPacketViewController {
                 self.tableView.reloadData()
                     
                 // fetch claim result
-                self.viewModel.fetchClaimResult()
+                if self.viewModel.redPacket.status == .claim_pending {
+                    self.viewModel.fetchClaimResult()
+                }
 
             default:
                 break

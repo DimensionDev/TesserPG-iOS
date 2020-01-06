@@ -17,7 +17,7 @@ import Web3
 extension RedPacketService {
     
     private static func refund(for redPacket: RedPacket, use walletModel: WalletModel, nonce: EthereumQuantity) -> Single<TransactionHash> {
-        os_log("%{public}s[%{public}ld], %{public}s: prepare to claim red packet - %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.red_packet_id ?? "nil")
+        os_log("%{public}s[%{public}ld], %{public}s: prepare to refund red packet - %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.red_packet_id ?? "nil")
 
         // Only for contract v1
         assert(redPacket.contract_version == 1)
