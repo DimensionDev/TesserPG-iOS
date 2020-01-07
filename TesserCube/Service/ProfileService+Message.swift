@@ -105,9 +105,11 @@ extension ProfileService {
             guard !message.isEmpty else {
                 throw TCError.interpretError(reason: .emptyMessage)
             }
-                        
+            
+            let trimmedMessage = message.trimmingCharacters(in: .whitespacesAndNewlines)
+            
             // Check if message already interpreted
-            if var existMessage = interptedMessage(message) {
+            if var existMessage = interptedMessage(trimmedMessage) {
                 // If yes, just return the message
                 try existMessage.updateInterpretedDate(Date())
                 return existMessage
