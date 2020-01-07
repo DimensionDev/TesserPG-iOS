@@ -23,6 +23,7 @@ import SVProgressHUD
 final class ClaimRedPacketViewModel: NSObject {
     
     let disposeBag = DisposeBag()
+    let busyActivityIndicator = ActivityIndicator()
     let claimActivityIndicator = ActivityIndicator()
     let updateClaimResultActivityIndicator = ActivityIndicator()
         
@@ -36,7 +37,7 @@ final class ClaimRedPacketViewModel: NSObject {
     
     // Output
     let isClaiming: Driver<Bool>
-    let isBusy: Driver<Bool>
+    let isBusy = BehaviorRelay(value: false)
     let canDismiss = BehaviorRelay(value: true)
     let error = BehaviorRelay<Swift.Error?>(value: nil)
     var redPacketNotificationToken: NotificationToken?
@@ -45,12 +46,12 @@ final class ClaimRedPacketViewModel: NSObject {
         self.redPacket = redPacket
         isClaimPending = BehaviorRelay(value: redPacket.status == .claim_pending)
         isClaiming = claimActivityIndicator.asDriver()
-        
-        isBusy = Driver.combineLatest(isClaiming.asDriver(), isClaimPending.asDriver()) { isClaiming, isClaimPending -> Bool in
-            return isClaiming || isClaimPending
-        }
-        
+                
         super.init()
+        
+        busyActivityIndicator.asDriver()
+            .drive(isBusy)
+            .disposed(by: disposeBag)
         
         // Update default select wallet model when wallet model pool change
         walletModels.asDriver()
@@ -74,19 +75,25 @@ final class ClaimRedPacketViewModel: NSObject {
 extension ClaimRedPacketViewModel {
     
     func claimRedPacket() {
+        // 1. claim                  // busy & claiming
+        // 2. get claim result       // busy & claimPending
+        
         guard let selectWalletModel = self.selectWalletModel.value,
         let walletAddress = try? EthereumAddress(hex: selectWalletModel.address, eip55: false) else {
             error.accept(RedPacketService.Error.internal("No valid wallet to claim"))
             return
         }
         
+        // Break if busy
+        guard !isBusy.value else {
+            return
+        }
+        
         let id = redPacket.id
         
         WalletService.getTransactionCount(address: walletAddress).asObservable()
-            .withLatestFrom(isClaiming) { ($0, $1) }     // (nonce, isClaiming)
+            .trackActivity(busyActivityIndicator)
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
-            .filter { $0.1 == false }                               // not claiming
-            .map { $0.0 }                                           // nonce
             .retry(3)
             .flatMap { nonce -> Observable<TransactionHash> in
                 let redPacket: RedPacket
@@ -100,29 +107,14 @@ extension ClaimRedPacketViewModel {
                     return Observable.error(error)
                 }
                 
-                return RedPacketService.claim(for: redPacket, use: selectWalletModel, nonce: nonce)
+                return RedPacketService.shared.claim(for: redPacket, use: selectWalletModel, nonce: nonce)
+                    .trackActivity(self.busyActivityIndicator)
                     .trackActivity(self.claimActivityIndicator)
             }
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] transactionHash in
-                do {
-                    // red packet claim transaction success
-                    // set status to .claim_pending
-                    let realm = try RedPacketService.realm()
-                    guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
-                        return
-                    }
-                    try realm.write {
-                        redPacket.claim_transaction_hash = transactionHash.hex()
-                        redPacket.status = .claim_pending
-                        redPacket.claim_address = selectWalletModel.address
-                    }
-                    
-                    self?.fetchClaimResult()
-                    
-                } catch {
-                    self?.error.accept(error)
-                }
+                // do nothing
+                // force realm operation listener notified then to fetch claim result to fix claimTransactionHash not found race issue
             }, onError: { [weak self] error in
                 self?.error.accept(error)
             })
@@ -130,8 +122,10 @@ extension ClaimRedPacketViewModel {
     }
     
     func fetchClaimResult() {
-        // FIXME: it is duplicate with in-app pendingRedPackets claim result updateer
+        os_log("%{public}s[%{public}ld], %{public}s", ((#file as NSString).lastPathComponent), #line, #function)
+
         RedPacketService.shared.updateClaimResult(for: redPacket)
+            .trackActivity(busyActivityIndicator)
             .trackActivity(updateClaimResultActivityIndicator)
             .subscribe(onNext: { _ in
                 // do nothing
@@ -309,7 +303,8 @@ extension ClaimRedPacketViewController {
             .drive(viewModel.walletModels)
             .disposed(by: disposeBag)
         
-        viewModel.isBusy.drive(onNext: { [weak self] isBusy in
+        viewModel.isBusy.asDriver()
+            .drive(onNext: { [weak self] isBusy in
                 guard let `self` = self else { return }
                 self.navigationItem.rightBarButtonItem = isBusy ? self.activityIndicatorBarButtonItem : nil
                 self.openRedPacketButton.isEnabled = !isBusy
@@ -333,14 +328,22 @@ extension ClaimRedPacketViewController {
             })
             .disposed(by: disposeBag)
 
-        // update table view when red packet changes
         viewModel.redPacketNotificationToken = viewModel.redPacket.observe { [weak self] change in
             guard let `self` = self else { return }
             switch change {
             case .change(let changes):
-                self.viewModel.isClaimPending.accept(self.viewModel.redPacket.status == .claim_pending)
-                self.tableView.reloadData()
                 os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, changes.description)
+
+                // set status
+                self.viewModel.isClaimPending.accept(self.viewModel.redPacket.status == .claim_pending)
+
+                // update table view when red packet changes
+                self.tableView.reloadData()
+                    
+                // fetch claim result
+                if self.viewModel.redPacket.status == .claim_pending {
+                    self.viewModel.fetchClaimResult()
+                }
 
             default:
                 break

@@ -15,9 +15,20 @@ extension RedPacket {
         
         redPacket.aes_version = 1
         redPacket.contract_version = 1
+        redPacket.contract_address = Web3Secret.contractAddressV1
+        #if MAINNET
+        redPacket.network = .mainnet
+        #else
+        redPacket.network = .rinkeby
+        #endif
         
-        // RP:1d9ba33e6ff28f91ff94ef36c04b5837282c8ef0 on Rinkeby
-        redPacket.contract_address = "0x65cb40bb219ea5962e0a9894449052568a62c823"
+        #if DEBUG
+        redPacket.duration = 86400         // 24h
+        // redPacket.duration = 7200       // 2h
+        // redPacket.duration = 60         // 1min
+        #else
+        redPacket.duration = 86400      // 24h
+        #endif
         
         assert(!redPacket.contract_address.isEmpty)
         

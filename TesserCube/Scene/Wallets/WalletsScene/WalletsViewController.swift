@@ -102,6 +102,14 @@ class WalletsViewController: TCBaseViewController {
                             .disposed(by: self.disposeBag)
                     }
                     
+                    // fetch refund result
+                    let refundPendingRedPackets = redPackets.filter { $0.status == .refund_pending }
+                    for redPacket in refundPendingRedPackets {
+                        RedPacketService.shared.updateRefundResult(for: redPacket)
+                            .subscribe()
+                            .disposed(by: self.disposeBag)
+                    }
+                    
                 })
                 .disposed(by: disposeBag)
     
@@ -179,12 +187,16 @@ extension WalletsViewController {
                                 // use .top to collapse cell from bottom to top
                                 return .top
                             } else {
-                                if dataSource.snapshot().numberOfItems(inSection: .redPacket) == 0 {
+                                let numberOfRedPackets = dataSource.snapshot().numberOfItems(inSection: .redPacket)
+                                if numberOfRedPackets == 0 {
                                     // use .bottom when old section is empty to make cell expend from top to bottom
                                     return .bottom
-                                } else {
-                                    // diff two section and automatic animation
+                                } else if numberOfRedPackets == redPacketModels.count {
+                                    // use automatic when same count red packets (update cell in-place)
                                     return .automatic
+                                } else {
+                                    // use fade when data changed
+                                    return .fade
                                 }
                             }
                         }()

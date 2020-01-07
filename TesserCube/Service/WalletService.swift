@@ -24,8 +24,8 @@ final public class WalletService {
         return formatter
     }()
 
-    static let web3 = Web3(rpcURL: "https://rinkeby.infura.io/v3/823d2b1356e24d7fbd3b1ae954c6db19")
-    static let chainID: EthereumQuantity = 4   // rinkeby
+    static let web3 = Web3Secret.web3
+    static let chainID = Web3Secret.chainID
 
     private let keychain: Keychain
     private let disposeBag = DisposeBag()

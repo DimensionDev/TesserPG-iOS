@@ -24,6 +24,12 @@ extension RedPacketService {
     static func create(for redPacket: RedPacket, use walletModel: WalletModel, nonce: EthereumQuantity) -> Single<TransactionHash> {
         // Only for contract v1
         assert(redPacket.contract_version == 1)
+        
+        do {
+            try checkNetwork(for: redPacket)
+        } catch {
+            return Single.error(error)
+        }
 
         // Only initial red packet can process `create` on the contract
         guard redPacket.status == .initial else {
@@ -113,7 +119,7 @@ extension RedPacketService {
         return transactionHash
     }
     
-    static func createResult(for redPacket: RedPacket) -> Single<CreationSuccess> {
+    private static func createResult(for redPacket: RedPacket) -> Single<CreationSuccess> {
         // Only for contract v1
         assert(redPacket.contract_version == 1)
         
@@ -187,7 +193,11 @@ extension RedPacketService {
                     single(.success(event))
                     
                 case let .failure(error):
-                    single(.error(error))
+                    if let rpcError = error as? RPCResponse<EthereumTransactionReceiptObject?>.Error {
+                        single(.error(Error.internal(rpcError.message)))
+                    } else {
+                        single(.error(error))
+                    }
                 }
             }   // end web3
             
@@ -217,101 +227,133 @@ extension RedPacketService {
 
 extension RedPacketService {
     
-    func updateCreateResult(for redPacket: RedPacket) -> Observable<CreationSuccess> {
-        // should call on main thread to make sure realm operation in subscribe is thread safe
-        assert(Thread.isMainThread)
+    // Shared Observable sequeue from Single<CreationSuccess>
+    func createResult(for redPacket: RedPacket) -> Observable<CreationSuccess> {
         let id = redPacket.id
         
-        let observable = Observable.just(id)
-            .flatMap { id -> Observable<RedPacketService.CreationSuccess> in
-                let redPacket: RedPacket
-                do {
-                    let realm = try RedPacketService.realm()
-                    guard let _redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
-                        return Observable.error(RedPacketService.Error.internal("cannot resolve red packet"))
-                    }
-                    redPacket = _redPacket
-                } catch {
-                    return Observable.error(error)
-                }
-                
-                // Query create transaction receipt
-                return RedPacketService.createResult(for: redPacket).asObservable()
-                    .retry(3)   // network retry
+        guard let observable = createResultQueue[id] else {
+            let single = RedPacketService.createResult(for: redPacket)
+            
+            let shared = single.asObservable()
+                .share()
+            
+            createResultQueue[id] = shared
+            
+            // Subscribe in service to prevent task canceled
+            shared
+                .asSingle()
+                .do(afterSuccess: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterSuccess createResult", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.claimQueue[id] = nil
+                }, afterError: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterError createResult", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.claimQueue[id] = nil
+                })
+                .subscribe()
+                .disposed(by: disposeBag)
+            
+            return shared
         }
-        .observeOn(MainScheduler.instance)
-        .share()
         
-        observable
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { creationSuccess in
-                do {
-                    let realm = try RedPacketService.realm()
-                    guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
-                        return
-                    }
-                    
-                    guard redPacket.status == .pending else {
-                        os_log("%{public}s[%{public}ld], %{public}s: discard change due to red packet status already %s.", ((#file as NSString).lastPathComponent), #line, #function, redPacket.status.rawValue)
-                        return
-                    }
-                    
-                    let rawPayload = RedPacketRawPayLoad(
-                        contract_version: UInt8(redPacket.contract_version),
-                        contract_address: redPacket.contract_address,
-                        rpid: creationSuccess.id,
-                        passwords: Array(redPacket.uuids),
-                        sender: RedPacketRawPayLoad.Sender(
-                            address: redPacket.sender_address,
-                            name: redPacket.sender_name,
-                            message: redPacket.send_message
-                        ),
-                        is_random: redPacket.is_random,
-                        total: String(redPacket.send_total),
-                        creation_time: UInt64(creationSuccess.creation_time),
-                        duration: UInt64(redPacket.duration)
-                    )
-                    let rawPayloadString: String? = {
-                        let encoder = JSONEncoder()
-                        guard let jsonData = try? encoder.encode(rawPayload) else {
-                            return nil
-                        }
-                        let jsonString = String(data: jsonData, encoding: .utf8)
-                        return jsonString
-                    }()
-                    
-                    try realm.write {
-                        redPacket.red_packet_id = creationSuccess.id
-                        redPacket.block_creation_time.value = creationSuccess.creation_time
-                        redPacket.raw_payload = rawPayloadString
-                        redPacket.enc_payload = try? Web3Secret.default.secPayload(from: rawPayload)
-                        redPacket.status = .normal
-                    }
-                } catch {
-                    os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
-                }
-            }, onError: { error in
-                switch error {
-                case RedPacketService.Error.creationFail:
+        os_log("%{public}s[%{public}ld], %{public}s: use createResult in queue", ((#file as NSString).lastPathComponent), #line, #function)
+        return observable
+    }
+    
+    func updateCreateResult(for redPacket: RedPacket) -> Observable<CreationSuccess> {
+        let id = redPacket.id
+        
+        guard let observable = updateCreateResultQueue[id] else {
+            let single = self.createResult(for: redPacket)
+            
+            let shared = single.asObservable()
+                .share()
+            
+            updateCreateResultQueue[id] = shared
+
+            // Subscribe in service to prevent task canceled
+            shared
+                .asSingle()
+                .do(onSuccess: { creationSuccess in
                     do {
                         let realm = try RedPacketService.realm()
                         guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
                             return
                         }
                         
+                        guard redPacket.status == .pending else {
+                            os_log("%{public}s[%{public}ld], %{public}s: discard change due to red packet status already %s.", ((#file as NSString).lastPathComponent), #line, #function, redPacket.status.rawValue)
+                            return
+                        }
+                        
+                        let rawPayload = RedPacketRawPayLoad(
+                            contract_version: UInt8(redPacket.contract_version),
+                            contract_address: redPacket.contract_address,
+                            rpid: creationSuccess.id,
+                            passwords: Array(redPacket.uuids),
+                            sender: RedPacketRawPayLoad.Sender(
+                                address: redPacket.sender_address,
+                                name: redPacket.sender_name,
+                                message: redPacket.send_message
+                            ),
+                            is_random: redPacket.is_random,
+                            total: String(redPacket.send_total),
+                            creation_time: UInt64(creationSuccess.creation_time),
+                            duration: UInt64(redPacket.duration)
+                        )
+                        let rawPayloadString: String? = {
+                            let encoder = JSONEncoder()
+                            guard let jsonData = try? encoder.encode(rawPayload) else {
+                                return nil
+                            }
+                            let jsonString = String(data: jsonData, encoding: .utf8)
+                            return jsonString
+                        }()
+                        
                         try realm.write {
-                            redPacket.status = .fail
+                            redPacket.red_packet_id = creationSuccess.id
+                            redPacket.block_creation_time.value = creationSuccess.creation_time
+                            redPacket.raw_payload = rawPayloadString
+                            redPacket.enc_payload = try? Web3Secret.default.secPayload(from: rawPayload)
+                            redPacket.status = .normal
                         }
                     } catch {
                         os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
                     }
-                default:
-                    break
-                }
-                
-            })
-            .disposed(by: disposeBag)
+
+                }, afterSuccess: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterSuccess updateCreateResult", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.updateCreateResultQueue[id] = nil
+                    
+                }, onError: { error in
+                    switch error {
+                    case RedPacketService.Error.creationFail:
+                        do {
+                            let realm = try RedPacketService.realm()
+                            guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
+                                return
+                            }
+                            
+                            try realm.write {
+                                redPacket.status = .fail
+                            }
+                        } catch {
+                            os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
+                        }
+                    default:
+                        break
+                    }
+                    
+                }, afterError: { error in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterError updateCreateResult", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.updateCreateResultQueue[id] = nil
+                })
+                .subscribe()
+                .disposed(by: disposeBag)
+            
+            return shared
+        }
         
+        os_log("%{public}s[%{public}ld], %{public}s: use updateCreateResult in queue", ((#file as NSString).lastPathComponent), #line, #function)
         return observable
     }
     

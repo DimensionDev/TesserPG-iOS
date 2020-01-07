@@ -31,6 +31,18 @@ extension RedPacketService {
         
         return contract
     }
+    
+    static func checkNetwork(for redPacket: RedPacket) throws {
+        #if MAINNET
+        let currentNetwork: RedPacketNetwork = .mainnet
+        #else
+        let currentNetwork: RedPacketNetwork = .rinkeby
+        #endif
+        
+        guard currentNetwork == redPacket.network else {
+            throw Error.internal("current network is \(currentNetwork.rawValue). cannot send request on \(redPacket.network.rawValue)")
+        }
+    }
         
 }
 

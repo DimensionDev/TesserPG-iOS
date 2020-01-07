@@ -53,7 +53,6 @@ final class CreatedRedPacketViewModel: NSObject {
 extension CreatedRedPacketViewModel {
     
     func fetchCreateResult() {
-        // FIXME: it is duplicate with in-app pendingRedPackets create result updateer
         RedPacketService.shared.updateCreateResult(for: redPacket)
             .trackActivity(activityIndicator)
             .subscribe(onNext: { _ in
@@ -95,7 +94,11 @@ extension CreatedRedPacketViewModel {
     
     static func configure(cell: RedPacketCardTableViewCell, with redPacket: RedPacket) {
         cell.nameLabel.text = redPacket.sender_name
+        #if DEBUG
+        cell.emailLabel.text = redPacket.network.rawValue
+        #else
         cell.emailLabel.text = ""       // no more email
+        #endif
 
         let formatter = NumberFormatter.decimalFormatterForETH
         let totalAmountInDecimal = (Decimal(string: String(redPacket.send_total)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
@@ -253,7 +256,7 @@ extension CreatedRedPacketViewController {
             .disposed(by: disposeBag)
         
         // Teigger fetch create result action
-         viewModel.fetchCreateResult()
+        viewModel.fetchCreateResult()
     }
     
 }

@@ -1,8 +1,8 @@
 //
-//  RedPacketService+RedPacket.swift
+//  RedPacketService+Refund.swift
 //  TesserCube
 //
-//  Created by Cirno MainasuK on 2019-12-18.
+//  Created by Cirno MainasuK on 2019-12-30.
 //  Copyright © 2019 Sujitech. All rights reserved.
 //
 
@@ -11,13 +11,13 @@ import Foundation
 import RealmSwift
 import RxSwift
 import RxCocoa
+import BigInt
 import Web3
-import CryptoSwift
 
 extension RedPacketService {
     
-    private static func claim(for redPacket: RedPacket, use walletModel: WalletModel, nonce: EthereumQuantity) -> Single<TransactionHash> {
-        os_log("%{public}s[%{public}ld], %{public}s: prepare to claim red packet - %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.red_packet_id ?? "nil")
+    private static func refund(for redPacket: RedPacket, use walletModel: WalletModel, nonce: EthereumQuantity) -> Single<TransactionHash> {
+        os_log("%{public}s[%{public}ld], %{public}s: prepare to refund red packet - %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.red_packet_id ?? "nil")
 
         // Only for contract v1
         assert(redPacket.contract_version == 1)
@@ -26,11 +26,6 @@ extension RedPacketService {
             try checkNetwork(for: redPacket)
         } catch {
             return Single.error(error)
-        }
-        
-        // Only normal || incoming statuc red packet can process `claim` on the contract
-        guard redPacket.status == .normal || redPacket.status == .incoming else {
-            return Single.error(Error.internal("cannot claim unacceptable status red packet"))
         }
         
         // Init wallet
@@ -58,19 +53,11 @@ extension RedPacketService {
         
         // Prepare parameters
         guard let redPacketIDHex = redPacket.red_packet_id,
-        let redPacketID = BigUInt(hexString: redPacketIDHex) else {
-            return Single.error(Error.internal("cannot get red packet id to claim"))
-        }
-        let recipient = walletAddress
-        let validation: BigUInt
-        do {
-            let validationBytes = SHA3(variant: .keccak256).calculate(for: try recipient.makeBytes())
-            validation = BigUInt(validationBytes)
-        } catch {
-            return Single.error(Error.internal("cannot calculate validation for recipient address"))
+            let redPacketID = BigUInt(hexString: redPacketIDHex) else {
+                return Single.error(Error.internal("cannot get red packet id to claim"))
         }
         
-        guard let claimCall = contract["claim"] else {
+        guard let refundCall = contract["refund"] else {
             return Single.error(Error.internal("cannot construct call to claim red packet"))
         }
         
@@ -80,8 +67,8 @@ extension RedPacketService {
             .retry(3)
             .asSingle()
             .flatMap { availability -> Single<TransactionHash> in
-                os_log("%{public}s[%{public}ld], %{public}s: check availability %s/%s", ((#file as NSString).lastPathComponent), #line, #function, String(availability.claimed), String(availability.total))
-                
+                os_log("%{public}s[%{public}ld], %{public}s: check availability %s/%s, isExpired %s", ((#file as NSString).lastPathComponent), #line, #function, String(availability.claimed), String(availability.total), String(availability.expired))
+
                 let realm: Realm
                 do {
                     realm = try RedPacketService.realm()
@@ -91,33 +78,35 @@ extension RedPacketService {
                 guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
                     return Single.error(Error.internal("cannot reslove red packet to check availablity"))
                 }
-            
-                guard availability.claimed < availability.total, availability.claimed < redPacket.uuids.count else {
-                    return Single.error(Error.noAvailableShareForClaim)
+                
+                // only expired red packet could refund
+                guard redPacket.status == .expired else {
+                    os_log("%{public}s[%{public}ld], %{public}s: refundBeforeExpired. Current status: %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.status.rawValue)
+                    return Single.error(Error.refundBeforeExpired)
                 }
                 
-                guard !availability.expired else {
-                    return Single.error(Error.claimAfterExpired)
+                // TODO: remove it if not require it
+                guard availability.claimed < availability.total else {
+                    return Single.error(Error.noAvailableShareForRefund)
                 }
                 
-                let password = redPacket.uuids[availability.claimed]
-                let claimInvocation = claimCall(redPacketID, password, recipient, validation)
+                let refundInvocation = refundCall(redPacketID)
                 let gasLimit = EthereumQuantity(integerLiteral: 1000000)
                 let gasPrice = EthereumQuantity(quantity: 10.gwei)
-                guard let claimTransaction = claimInvocation.createTransaction(nonce: nonce, from: walletAddress, value: 0, gas: gasLimit, gasPrice: gasPrice) else {
-                    return Single.error(Error.internal("cannot construct transaction to claim red packet"))
+                guard let refundTransaction = refundInvocation.createTransaction(nonce: nonce, from: walletAddress, value: 0, gas: gasLimit, gasPrice: gasPrice) else {
+                    return Single.error(Error.internal("cannot construct transaction to refund red packet"))
                 }
-                let signedClaimTransaction: EthereumSignedTransaction
+                let signedRefundTransaction: EthereumSignedTransaction
                 do {
-                    signedClaimTransaction = try claimTransaction.sign(with: walletPrivateKey, chainId: chainID)
+                    signedRefundTransaction = try refundTransaction.sign(with: walletPrivateKey, chainId: chainID)
                 } catch {
                     return Single.error(Error.internal(error.localizedDescription))
                 }
                 
                 return Single.create { single -> Disposable in
-                    os_log("%{public}s[%{public}ld], %{public}s: claim red packet - %s", ((#file as NSString).lastPathComponent), #line, #function, redPacketIDHex)
-
-                    web3.eth.sendRawTransaction(transaction: signedClaimTransaction) { response in
+                    os_log("%{public}s[%{public}ld], %{public}s: refund red packet - %s", ((#file as NSString).lastPathComponent), #line, #function, redPacketIDHex)
+                    
+                    web3.eth.sendRawTransaction(transaction: signedRefundTransaction) { response in
                         switch response.status {
                         case let .success(transactionHash):
                             single(.success(transactionHash))
@@ -132,12 +121,13 @@ extension RedPacketService {
                     
                     return Disposables.create { }
                 }
-            }
+            }   // end flatMap { availability -> Single<TransactionHash> in … }
+        
     }
-    
-    private static func claimResult(for redPacket: RedPacket) -> Single<ClaimSuccess> {
-        os_log("%{public}s[%{public}ld], %{public}s: check claim result for red packet - %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.red_packet_id ?? "nil")
 
+    private static func refundResult(for redPacket: RedPacket) -> Single<RefundSuccess> {
+        os_log("%{public}s[%{public}ld], %{public}s: refund claim result for red packet - %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.red_packet_id ?? "nil")
+        
         // Only for contract v1
         assert(redPacket.contract_version == 1)
         
@@ -147,16 +137,16 @@ extension RedPacketService {
             return Single.error(error)
         }
         
-        guard let claimTransactionHashHex = redPacket.claim_transaction_hash else {
-            return Single.error(Error.internal("cannot read claim transaction hash"))
+        guard let refundTransactionHashHex = redPacket.refund_transaction_hash else {
+            return Single.error(Error.internal("cannot read refund transaction hash"))
         }
         
-        let claimTransactionHash: TransactionHash
+        let refundTransactionHash: TransactionHash
         do {
-            let ethernumValue = EthereumValue(stringLiteral: claimTransactionHashHex)
-            claimTransactionHash = try EthereumData(ethereumValue: ethernumValue)
+            let ethernumValue = EthereumValue(stringLiteral: refundTransactionHashHex)
+            refundTransactionHash = try EthereumData(ethereumValue: ethernumValue)
         } catch {
-            return Single.error(Error.internal("cannot read claim transaction hash"))
+            return Single.error(Error.internal("cannot read refund transaction hash"))
         }
         
         // Init web3
@@ -169,31 +159,31 @@ extension RedPacketService {
         } catch {
             return Single.error(Error.internal(error.localizedDescription))
         }
-
+        
         // Prepare decoder
-        guard let claimSuccessEvent = (contract.events.filter { $0.name == "ClaimSuccess" }.first) else {
-            return Single.error(Error.internal("cannot read claim event from contract"))
+        guard let refundSuccessEvent = (contract.events.filter { $0.name == "RefundSuccess" }.first) else {
+            return Single.error(Error.internal("cannot read refund event from contract"))
         }
         
-        return Single<ClaimSuccess>.create { single -> Disposable in
-            web3.eth.getTransactionReceipt(transactionHash: claimTransactionHash) { response in
+        return Single<RefundSuccess>.create { single -> Disposable in
+            web3.eth.getTransactionReceipt(transactionHash: refundTransactionHash) { response in
                 switch response.status {
                 case let .success(receipt):
                     // Receipt return status => success
-                    // Should read ClaimSuccess log otherwise throw claimFail error
+                    // Should read RefundSuccess log otherwise throw refundFail error
                     guard let status = receipt?.status, status.quantity == 1 else {
-                        single(.error(Error.claimFail))
+                        single(.error(Error.refundFail))
                         return
                     }
                     
                     guard let logs = receipt?.logs else {
-                        single(.error(Error.claimFail))
+                        single(.error(Error.refundFail))
                         return
                     }
                     
                     var resultDict: [String: Any]?
                     for log in logs {
-                        guard let result = try? ABI.decodeLog(event: claimSuccessEvent, from: log) else {
+                        guard let result = try? ABI.decodeLog(event: refundSuccessEvent, from: log) else {
                             continue
                         }
                         
@@ -203,17 +193,14 @@ extension RedPacketService {
                     
                     guard let dict = resultDict,
                     let idBytes = dict["id"] as? Data,
-                    let claimer = dict["claimer"] as? EthereumAddress,
-                    let claimedValue = dict["claimed_value"] as? BigUInt else {
-                        single(.error(Error.claimFail))
+                    let remainingBalance = dict["remaining_balance"] as? BigUInt else {
+                        single(.error(Error.refundFail))
                         return
                     }
                     
-                    let event = ClaimSuccess(id: idBytes.toHexString(),
-                                             claimer: claimer.hex(eip55: true),
-                                             claimed_value: claimedValue)
+                    let event = RefundSuccess(id: idBytes.toHexString(),
+                                              remaining_balance: remainingBalance)
                     single(.success(event))
-                    
                 case let .failure(error):
                     if let rpcError = error as? RPCResponse<EthereumTransactionReceiptObject?>.Error {
                         single(.error(Error.internal(rpcError.message)))
@@ -221,7 +208,7 @@ extension RedPacketService {
                         single(.error(error))
                     }
                 }
-            }   // end web3
+            }
             
             return Disposables.create { }
         }
@@ -232,7 +219,7 @@ extension RedPacketService {
                     return Observable.error(element)
                 }
                 
-                os_log("%{public}s[%{public}ld], %{public}s: fetch claim result fail. Retry %s times", ((#file as NSString).lastPathComponent), #line, #function, String(index + 1))
+                os_log("%{public}s[%{public}ld], %{public}s: fetch refund result fail. Retry %s times", ((#file as NSString).lastPathComponent), #line, #function, String(index + 1))
                 
                 // max retry 6 times
                 guard index < 6 else {
@@ -249,26 +236,24 @@ extension RedPacketService {
 
 extension RedPacketService {
     
-    // Shared Observable sequeue from Single<TransactionHash>
-    func claim(for redPacket: RedPacket, use walletModel: WalletModel, nonce: EthereumQuantity) -> Observable<TransactionHash> {
+    func refund(for redPacket: RedPacket, use walletModel: WalletModel, nonce: EthereumQuantity) -> Observable<TransactionHash> {
         let id = redPacket.id
         
-        guard let observable = claimQueue[id] else {
-            let single = RedPacketService.claim(for: redPacket, use: walletModel, nonce: nonce)
+        guard let observable = refundQueue[id] else {
+            let single = RedPacketService.refund(for: redPacket, use: walletModel, nonce: nonce)
             
             let shared = single.asObservable()
                 .flatMapLatest { transactionHash -> Observable<TransactionHash> in
                     do {
-                        // red packet claim transaction success
-                        // set status to .claim_pending
+                        // red packet refund transaction success
+                        // set status to .refund_pending
                         let realm = try RedPacketService.realm()
                         guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
                             return Single.error(Error.internal("cannot reslove red packet to check availablity")).asObservable()
                         }
                         try realm.write {
-                            redPacket.claim_transaction_hash = transactionHash.hex()
-                            redPacket.status = .claim_pending
-                            redPacket.claim_address = walletModel.address
+                            redPacket.refund_transaction_hash = transactionHash.hex()
+                            redPacket.status = .refund_pending
                         }
                         
                         return Single.just(transactionHash).asObservable()
@@ -278,17 +263,17 @@ extension RedPacketService {
                 }
                 .share()
             
-            claimQueue[id] = shared
+            refundQueue[id] = shared
             
             // Subscribe in service to prevent task canceled
             shared
                 .asSingle()
                 .do(afterSuccess: { _ in
-                    os_log("%{public}s[%{public}ld], %{public}s: afterSuccess claim", ((#file as NSString).lastPathComponent), #line, #function)
-                    self.claimQueue[id] = nil
+                    os_log("%{public}s[%{public}ld], %{public}s: afterSuccess refund", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.refundQueue[id] = nil
                 }, afterError: { _ in
-                    os_log("%{public}s[%{public}ld], %{public}s: afterError claim", ((#file as NSString).lastPathComponent), #line, #function)
-                    self.claimQueue[id] = nil
+                    os_log("%{public}s[%{public}ld], %{public}s: afterError refund", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.refundQueue[id] = nil
                 })
                 .subscribe()
                 .disposed(by: disposeBag)
@@ -296,15 +281,46 @@ extension RedPacketService {
             return shared
         }
         
-        os_log("%{public}s[%{public}ld], %{public}s: use claim in queue", ((#file as NSString).lastPathComponent), #line, #function)
+        os_log("%{public}s[%{public}ld], %{public}s: use refund in queue", ((#file as NSString).lastPathComponent), #line, #function)
         return observable
     }
     
-    private func claimResult(for redPacket: RedPacket) -> Observable<ClaimSuccess> {
+    func refundResult(for redPacket: RedPacket) -> Observable<RefundSuccess> {
         let id = redPacket.id
         
-        guard let observable = claimResultQueue[id] else {
-            // read red packet object from disk to prevent claim_transaction_hash write to disk but not updated issue
+        guard let observable = refundResultQueue[id] else {
+            let single = RedPacketService.refundResult(for: redPacket)
+            
+            let shared = single.asObservable()
+                .share()
+            
+            refundResultQueue[id] = shared
+            
+            // Subscribe in service to prevent task canceled
+            shared
+                .asSingle()
+                .do(afterSuccess: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterSuccess refundResult", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.refundResultQueue[id] = nil
+                }, afterError: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterError refundResult", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.refundResultQueue[id] = nil
+                })
+                .subscribe()
+                .disposed(by: disposeBag)
+            
+            return shared
+        }
+        
+        os_log("%{public}s[%{public}ld], %{public}s: use refundResult in queue", ((#file as NSString).lastPathComponent), #line, #function)
+        return observable
+    }
+    
+    func updateRefundResult(for redPacket: RedPacket) -> Observable<RefundSuccess> {
+        let id = redPacket.id
+        
+        guard let observable = updateRefundResultQueue[id] else {
+            // read red packet object from disk to prevent refund_transaction_hash write to disk but not updated issue
             let realm: Realm
             do {
                 realm = try RedPacketService.realm()
@@ -315,73 +331,40 @@ extension RedPacketService {
                 return Single.error(Error.internal("cannot reslove red packet to check availablity")).asObservable()
             }
             
-            let single = RedPacketService.claimResult(for: redPacket)
+            let single = self.refundResult(for: redPacket)
             
             let shared = single.asObservable()
                 .share()
             
-            claimResultQueue[id] = shared
-            
-            // Subscribe in service to prevent task canceled
-            shared
-                .asSingle()
-                .do(afterSuccess: { _ in
-                    os_log("%{public}s[%{public}ld], %{public}s: afterSuccess claimResult", ((#file as NSString).lastPathComponent), #line, #function)
-                    self.claimResultQueue[id] = nil
-                }, afterError: { _ in
-                    os_log("%{public}s[%{public}ld], %{public}s: afterError claimResult", ((#file as NSString).lastPathComponent), #line, #function)
-                    self.claimResultQueue[id] = nil
-                })
-                .subscribe()
-                .disposed(by: disposeBag)
-            
-            return shared
-        }
-        
-        os_log("%{public}s[%{public}ld], %{public}s: use claimResult in queue", ((#file as NSString).lastPathComponent), #line, #function)
-        return observable
-    }
+            updateRefundResultQueue[id] = shared
 
-    func updateClaimResult(for redPacket: RedPacket) -> Observable<ClaimSuccess> {
-        os_log("%{public}s[%{public}ld], %{public}s: update claim result for red packet - %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.red_packet_id ?? "nil")
-        
-        let id = redPacket.id
-        
-        guard let observable = updateClaimResultQueue[id] else {
-            let single = self.claimResult(for: redPacket)
-            
-            let shared = single.asObservable()
-                .share()
-            
-            updateClaimResultQueue[id] = shared
-            
             // Subscribe in service to prevent task canceled
             shared
                 .asSingle()
-                .do(onSuccess: { claimSuccess in
+                .do(onSuccess: { refundSuccess in
                     do {
                         let realm = try RedPacketService.realm()
                         guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
                             return
                         }
                         
-                        guard redPacket.status == .claim_pending else {
+                        guard redPacket.status == .refund_pending else {
                             os_log("%{public}s[%{public}ld], %{public}s: discard change due to red packet status already %s.", ((#file as NSString).lastPathComponent), #line, #function, redPacket.status.rawValue)
                             return
                         }
                         
-                        os_log("%{public}s[%{public}ld], %{public}s: change red packet status to .claimed", ((#file as NSString).lastPathComponent), #line, #function)
+                        os_log("%{public}s[%{public}ld], %{public}s: change red packet status to .refunded", ((#file as NSString).lastPathComponent), #line, #function)
                         try realm.write {
-                            redPacket.claim_amount = claimSuccess.claimed_value
-                            redPacket.status = .claimed
+                            redPacket.refund_amount = refundSuccess.remaining_balance
+                            redPacket.status = .refunded
                         }
                     } catch {
                         os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
                     }
-                    
+
                 }, afterSuccess: { _ in
-                    os_log("%{public}s[%{public}ld], %{public}s: afterSuccess claimResult", ((#file as NSString).lastPathComponent), #line, #function)
-                    self.updateClaimResultQueue[id] = nil
+                    os_log("%{public}s[%{public}ld], %{public}s: afterSuccess updateRefundResult", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.updateRefundResultQueue[id] = nil
                 }, onError: { error in
                     guard case RedPacketService.Error.refundFail = error else {
                         return
@@ -393,25 +376,23 @@ extension RedPacketService {
                             return
                         }
                         
-                        guard redPacket.status == .claim_pending else {
-                            os_log("%{public}s[%{public}ld], %{public}s: discard change due to red packet status already %s. not .claim_pending", ((#file as NSString).lastPathComponent), #line, #function, redPacket.status.rawValue)
+                        guard redPacket.status == .refund_pending else {
+                            os_log("%{public}s[%{public}ld], %{public}s: discard change due to red packet status already %s. not .refund_pending", ((#file as NSString).lastPathComponent), #line, #function, redPacket.status.rawValue)
                             return
                         }
                         
-                        let rollbackStatus: RedPacketStatus = redPacket.create_nonce.value != nil ? .normal : .incoming
-                        os_log("%{public}s[%{public}ld], %{public}s: rollback red packet status to %s", ((#file as NSString).lastPathComponent), #line, #function, rollbackStatus.rawValue)
+                        os_log("%{public}s[%{public}ld], %{public}s: rollback red packet status to expired", ((#file as NSString).lastPathComponent), #line, #function)
                         try realm.write {
-                            redPacket.claim_address = nil
-                            redPacket.claim_transaction_hash = nil
-                            redPacket.status = rollbackStatus
+                            redPacket.refund_transaction_hash = nil
+                            redPacket.status = .expired
                         }
                     } catch {
                         os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
                     }
-                    
+
                 }, afterError: { _ in
-                    os_log("%{public}s[%{public}ld], %{public}s: afterError claimResult", ((#file as NSString).lastPathComponent), #line, #function)
-                    self.updateClaimResultQueue[id] = nil
+                    os_log("%{public}s[%{public}ld], %{public}s: afterError updateRefundResult", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.updateRefundResultQueue[id] = nil
                 })
                 .subscribe()
                 .disposed(by: disposeBag)
@@ -419,18 +400,16 @@ extension RedPacketService {
             return shared
         }
         
-        os_log("%{public}s[%{public}ld], %{public}s: use updateClaimResult in queue", ((#file as NSString).lastPathComponent), #line, #function)
+        os_log("%{public}s[%{public}ld], %{public}s: use updateRefund in queue", ((#file as NSString).lastPathComponent), #line, #function)
         return observable
     }
-    
+
 }
 
 extension RedPacketService {
     
-    struct ClaimSuccess {
+    struct RefundSuccess {
         let id: String
-        let claimer: String
-        let claimed_value: BigUInt
+        let remaining_balance: BigUInt
     }
-    
 }

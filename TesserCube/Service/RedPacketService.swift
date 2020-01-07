@@ -17,13 +17,27 @@ private enum SchemaVersions: UInt64 {
     case version_1 = 1
     case version_2_rc1 = 4
     case version_2_rc2 = 5
+    case version_2_rc3 = 8
     
-    static let currentVersion: SchemaVersions = .version_2_rc2
+    static let currentVersion: SchemaVersions = .version_2_rc3
 }
 
 final class RedPacketService {
     
     let disposeBag = DisposeBag()
+    
+    // Global observable queue:
+    // Reuse sequence if shared observable object if already in queue
+    // ANd also subscribe in service when observable created to prevent task canceled
+    var createResultQueue: [RedPacket.ID: Observable<CreationSuccess>] = [:]
+    var updateCreateResultQueue: [RedPacket.ID: Observable<CreationSuccess>] = [:]
+    var checkAvailabilityQueue: [RedPacket.ID: Observable<RedPacketAvailability>] = [:]
+    var claimQueue: [RedPacket.ID: Observable<TransactionHash>] = [:]
+    var claimResultQueue: [RedPacket.ID: Observable<ClaimSuccess>] = [:]
+    var updateClaimResultQueue: [RedPacket.ID: Observable<ClaimSuccess>] = [:]
+    var refundQueue: [RedPacket.ID: Observable<TransactionHash>] = [:]
+    var refundResultQueue: [RedPacket.ID: Observable<RefundSuccess>] = [:]
+    var updateRefundResultQueue: [RedPacket.ID: Observable<RefundSuccess>] = [:]
     
     // per packet. 0.002025 ETH
     public static var redPacketMinAmount: Decimal {
@@ -66,6 +80,14 @@ final class RedPacketService {
         let schemeVersion: UInt64 = SchemaVersions.currentVersion.rawValue
         config.schemaVersion = schemeVersion
         config.migrationBlock = { migration, oldSchemeVersion in
+            if oldSchemeVersion < SchemaVersions.version_2_rc3.rawValue {
+                // add network property
+                migration.enumerateObjects(ofType: RedPacket.className()) { old, new in
+                    
+                    new?["_network"] = RedPacketNetwork.rinkeby.rawValue
+                }
+            }
+            
             if oldSchemeVersion < SchemaVersions.version_2_rc2.rawValue {
                 // auto migrate
             }

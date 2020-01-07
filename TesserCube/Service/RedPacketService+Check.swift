@@ -8,6 +8,7 @@
 
 import os
 import Foundation
+import RealmSwift
 import RxSwift
 import Web3
 import BigInt
@@ -20,6 +21,12 @@ extension RedPacketService {
 
         // Only for contract v1
         assert(redPacket.contract_version == 1)
+        
+        do {
+            try checkNetwork(for: redPacket)
+        } catch {
+            return Single.error(error)
+        }
         
         // Init web3
         let web3 = WalletService.web3
@@ -58,19 +65,89 @@ extension RedPacketService {
                 
                 guard let balance = dict["balance"] as? BigUInt,
                 let total = dict["total"] as? BigUInt,
-                let claimed = dict["claimed"] as? BigUInt else {
+                let claimed = dict["claimed"] as? BigUInt,
+                let expired = dict["expired"] as? Bool else {
                     single(.error(Error.checkAvailabilityFail))
                     return
                 }
                 
                 let availability = RedPacketAvailability(balance: balance,
                                                          total: Int(total),
-                                                         claimed: Int(claimed))
+                                                         claimed: Int(claimed),
+                                                         expired: expired)
                 single(.success(availability))
             }
             
             return Disposables.create { }
         }
+    }
+    
+    // Shared Observable sequeue from Single<RedPacketAvailability>
+    func checkAvailability(for redPacket: RedPacket) -> Observable<RedPacketAvailability> {
+        let id = redPacket.id
+        
+        guard let observable = checkAvailabilityQueue[id] else {
+            let single = RedPacketService.checkAvailability(for: redPacket)
+            
+            let shared = single.asObservable()
+                .flatMapLatest { availability -> Observable<RedPacketAvailability> in
+                    let realm: Realm
+                    do {
+                        realm = try RedPacketService.realm()
+                    } catch {
+                        return Single.error(Error.internal(error.localizedDescription)).asObservable()
+                    }
+                    guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
+                        return Single.error(Error.internal("cannot reslove red packet to check availablity")).asObservable()
+                    }
+                    
+                    do {
+                        switch redPacket.status {
+                        case .normal, .incoming:
+                            try realm.write {
+                                // .empty > .expired
+                                if availability.claimed == availability.total {
+                                    redPacket.status = .empty
+                                } else if availability.expired {
+                                    redPacket.status = .expired
+                                }
+                            }
+                        case .claimed:
+                            try realm.write {
+                                if availability.expired {
+                                    redPacket.status = .expired
+                                }
+                            }
+                        default:
+                            break
+                        }
+                    } catch {
+                        return Single.error(Error.internal(error.localizedDescription)).asObservable()
+                    }
+                    
+                    return Single.just(availability).asObservable()
+                }
+                .share()
+            
+            checkAvailabilityQueue[id] = shared
+
+            shared
+                .asSingle()
+                .do(afterSuccess: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterSuccess checkAvailability", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.checkAvailabilityQueue[id] = nil
+                }, afterError: { _ in
+                    os_log("%{public}s[%{public}ld], %{public}s: afterError checkAvailability", ((#file as NSString).lastPathComponent), #line, #function)
+                    self.checkAvailabilityQueue[id] = nil
+                })
+                .subscribe()
+                .disposed(by: disposeBag)
+            
+            return shared
+        }
+        
+        os_log("%{public}s[%{public}ld], %{public}s: use checkAvailability in queue", ((#file as NSString).lastPathComponent), #line, #function)
+        return observable
     }
     
 }
@@ -125,6 +202,8 @@ extension RedPacketService {
                     return
                 }
                 
+                os_log("%{public}s[%{public}ld], %{public}s: %s claimer(s)", ((#file as NSString).lastPathComponent), #line, #function, String(claimer_addrs.count))
+
                 let records = zip(claimed_list, claimer_addrs).map { claimed, claimer in
                     return RedPacketClaimedRecord(claimed: claimed, claimer: claimer)
                 }
@@ -144,6 +223,7 @@ extension RedPacketService {
         let balance: BigUInt
         let total: Int
         let claimed: Int
+        let expired: Bool
     }
     
     struct RedPacketClaimedRecord {
