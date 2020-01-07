@@ -122,7 +122,7 @@ class InterpretResultView: UIView, Thematic {
     let recipeintsLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SFProDisplay.regular.font(size: 14)
-        label.textColor = ._secondaryLabel
+        label.textColor = ._systemGray
         label.text = L10n.MessageCardCell.Label.recipeints
         return label
     }()
@@ -139,6 +139,7 @@ class InterpretResultView: UIView, Thematic {
         label.numberOfLines = 2
         label.text = String(repeating: "Message content here. ", count: 10)
         label.font = FontFamily.SFProDisplay.regular.font(size: 16)
+        label.textColor = .black
         return label
     }()
     
