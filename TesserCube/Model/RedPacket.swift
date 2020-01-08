@@ -20,7 +20,7 @@ public class RedPacket: Object {
     @objc public dynamic var aes_version = 1
     @objc public dynamic var contract_version = 1
     @objc public dynamic var contract_address: String = ""
-    @objc public dynamic var _network = RedPacketNetwork.rinkeby.rawValue
+    @objc public dynamic var _network = EthereumNetwork.rinkeby.rawValue
 
     let uuids = List<String>()
     @objc public dynamic var is_random = false
@@ -49,8 +49,8 @@ public class RedPacket: Object {
     
     @objc private dynamic var _status = RedPacketStatus.initial.rawValue
     
-    public dynamic var network: RedPacketNetwork {
-        get { return RedPacketNetwork(rawValue: _network) ?? .rinkeby }
+    public dynamic var network: EthereumNetwork {
+        get { return EthereumNetwork(rawValue: _network) ?? .rinkeby }
         set { _network = newValue.rawValue }
     }
         
@@ -94,7 +94,7 @@ public enum RedPacketStatus: String {
     case refunded
 }
 
-public enum RedPacketNetwork: String {
+public enum EthereumNetwork: String {
     case mainnet = "Mainnet"
     case rinkeby = "Rinkeby"
 }

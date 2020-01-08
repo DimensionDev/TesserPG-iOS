@@ -83,8 +83,7 @@ final class RedPacketService {
             if oldSchemeVersion < SchemaVersions.version_2_rc3.rawValue {
                 // add network property
                 migration.enumerateObjects(ofType: RedPacket.className()) { old, new in
-                    
-                    new?["_network"] = RedPacketNetwork.rinkeby.rawValue
+                    new?["_network"] = EthereumNetwork.rinkeby.rawValue
                 }
             }
             

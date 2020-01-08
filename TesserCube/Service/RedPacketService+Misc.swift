@@ -34,9 +34,9 @@ extension RedPacketService {
     
     static func checkNetwork(for redPacket: RedPacket) throws {
         #if MAINNET
-        let currentNetwork: RedPacketNetwork = .mainnet
+        let currentNetwork: EthereumNetwork = .mainnet
         #else
-        let currentNetwork: RedPacketNetwork = .rinkeby
+        let currentNetwork: EthereumNetwork = .rinkeby
         #endif
         
         guard currentNetwork == redPacket.network else {
