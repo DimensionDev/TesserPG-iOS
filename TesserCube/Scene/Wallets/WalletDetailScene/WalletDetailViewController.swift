@@ -94,7 +94,8 @@ final class WalletDetailViewController: TCBaseViewController {
             button.color = .systemBlue
             button.setTitleColor(.white, for: .normal)
             button.setTitle("Copy Address", for: .normal)
-            button.rx.tap.bind {
+            button.rx.tap.bind { [weak self] in
+                guard let `self` = self else { return }
                 UIPasteboard.general.string = self.viewModel.walletModel.address
             }
             .disposed(by: disposeBag)
@@ -105,7 +106,8 @@ final class WalletDetailViewController: TCBaseViewController {
             button.color = .systemBlue
             button.setTitleColor(.white, for: .normal)
             button.setTitle("Add Token", for: .normal)
-            button.rx.tap.bind {
+            button.rx.tap.bind { [weak self] in
+                guard let `self` = self else { return }
                 let viewModel = AddTokenViewModel()
                 Coordinator.main.present(scene: .addToken(viewModel: viewModel), from: self, transition: .modal, completion: nil)
             }
@@ -138,6 +140,11 @@ final class WalletDetailViewController: TCBaseViewController {
         // Setup tableView data source
         tableView.delegate = self
         tableView.dataSource = viewModel
+    }
+    
+    deinit {
+        os_log("%{public}s[%{public}ld], %{public}s: deinit", ((#file as NSString).lastPathComponent), #line, #function)
+
     }
     
 }
