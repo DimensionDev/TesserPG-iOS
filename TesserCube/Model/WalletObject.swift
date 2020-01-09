@@ -14,11 +14,11 @@ final class WalletObject: Object {
     @objc dynamic var id = UUID().uuidString
     @objc dynamic var address = ""
     @objc dynamic var name = ""
-    @objc dynamic var _balance: String?
+    @objc dynamic var _eth_balance: String?
     
     public dynamic var balance: BigUInt? {
-        get { _balance.flatMap { BigUInt($0, radix: 10) } }
-        set { _balance = newValue.flatMap { String($0) } }
+        get { _eth_balance.flatMap { BigUInt($0, radix: 10) } }
+        set { _eth_balance = newValue.flatMap { String($0) } }
     }
     
     override public static func primaryKey() -> String? {

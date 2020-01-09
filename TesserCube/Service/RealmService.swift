@@ -16,8 +16,9 @@ private enum SchemaVersions: UInt64 {
     case version_2_rc3 = 8
     case version_2_rc4 = 9
     case version_2_rc5 = 10
+    case version_2_rc6 = 11
     
-    static let currentVersion: SchemaVersions = .version_2_rc5
+    static let currentVersion: SchemaVersions = .version_2_rc6
 }
 
 final class RealmService {
@@ -44,9 +45,14 @@ extension RealmService {
         let schemeVersion: UInt64 = SchemaVersions.currentVersion.rawValue
         config.schemaVersion = schemeVersion
         config.migrationBlock = { migration, oldSchemeVersion in
+            if oldSchemeVersion < SchemaVersions.version_2_rc6.rawValue {
+                migration.renameProperty(onType: WalletObject.className(), from: "_balance", to: "_eth_balance") // Renaming
+            }
+            
             if oldSchemeVersion < SchemaVersions.version_2_rc5.rawValue {
                 // auto migrate
             }
+            
             if oldSchemeVersion < SchemaVersions.version_2_rc4.rawValue {
                 // auto migrate
             }
