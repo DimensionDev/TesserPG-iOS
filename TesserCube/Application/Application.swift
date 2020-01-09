@@ -51,6 +51,9 @@ class Application: NSObject {
         }
 
         IQKeyboardManager.shared.enable = true
+        
+        // Make singleton init to preload data if needs
+        _ = WalletService.default
         _ = RedPacketService.shared
     }
     

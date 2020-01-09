@@ -382,6 +382,14 @@
 		DB4A700923C6D43B00C2349C /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A700723C6D43B00C2349C /* UIBarButtonItem.swift */; };
 		DB4A700A23C6D43B00C2349C /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A700723C6D43B00C2349C /* UIBarButtonItem.swift */; };
 		DB4A700B23C6D43B00C2349C /* UIBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A700723C6D43B00C2349C /* UIBarButtonItem.swift */; };
+		DB4A700D23C6F44100C2349C /* RealmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A700C23C6F44100C2349C /* RealmService.swift */; };
+		DB4A700E23C6F44100C2349C /* RealmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A700C23C6F44100C2349C /* RealmService.swift */; };
+		DB4A700F23C6F44100C2349C /* RealmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A700C23C6F44100C2349C /* RealmService.swift */; };
+		DB4A701023C6F44100C2349C /* RealmService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A700C23C6F44100C2349C /* RealmService.swift */; };
+		DB4A701223C7006C00C2349C /* WalletObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A701123C7006C00C2349C /* WalletObject.swift */; };
+		DB4A701323C7006C00C2349C /* WalletObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A701123C7006C00C2349C /* WalletObject.swift */; };
+		DB4A701423C7006C00C2349C /* WalletObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A701123C7006C00C2349C /* WalletObject.swift */; };
+		DB4A701523C7006C00C2349C /* WalletObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A701123C7006C00C2349C /* WalletObject.swift */; };
 		DB4CBCA8224F932B00ED6BF0 /* InterpretMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4CBCA7224F932B00ED6BF0 /* InterpretMessageViewController.swift */; };
 		DB4CBCAA224F962A00ED6BF0 /* InterpretMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4CBCA9224F962A00ED6BF0 /* InterpretMessageViewModel.swift */; };
 		DB4F300122A11F820003804B /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146DF22421F93008ECC22 /* Contact.swift */; };
@@ -951,6 +959,8 @@
 		DB4A700123C5FC2D00C2349C /* AddTokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTokenViewController.swift; sourceTree = "<group>"; };
 		DB4A700423C6CB8600C2349C /* TokenTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenTableViewCell.swift; sourceTree = "<group>"; };
 		DB4A700723C6D43B00C2349C /* UIBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonItem.swift; sourceTree = "<group>"; };
+		DB4A700C23C6F44100C2349C /* RealmService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmService.swift; sourceTree = "<group>"; };
+		DB4A701123C7006C00C2349C /* WalletObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletObject.swift; sourceTree = "<group>"; };
 		DB4CBCA7224F932B00ED6BF0 /* InterpretMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretMessageViewController.swift; sourceTree = "<group>"; };
 		DB4CBCA9224F962A00ED6BF0 /* InterpretMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterpretMessageViewModel.swift; sourceTree = "<group>"; };
 		DB4F309722A14C0D0003804B /* DMSPGPError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSPGPError.swift; sourceTree = "<group>"; };
@@ -1343,6 +1353,7 @@
 				833FF38C224F97BD00EFE0A9 /* ProfileService+Message.swift */,
 				DBC24B1323026BA800A4AE8D /* WordSuggestionService.swift */,
 				DB3B58E12282929700879834 /* WormholdService.swift */,
+				DB4A700C23C6F44100C2349C /* RealmService.swift */,
 				DB0ABA17237585B500AD3B7F /* WalletService.swift */,
 				DB03DD5C237BFD4F00D96201 /* WalletService+Web3.swift */,
 				DB415E7F238BB6AF0090C28F /* RedPacketService.swift */,
@@ -1428,6 +1439,7 @@
 				DB1327142253651C00BD7B98 /* KeyBridge.swift */,
 				83C90B42231678B90048743A /* GenerateKeyData.swift */,
 				DB03DD62237C104F00D96201 /* Wallet.swift */,
+				DB4A701123C7006C00C2349C /* WalletObject.swift */,
 				DB03DD67237C105B00D96201 /* WalletModel.swift */,
 				DB415E82238BB7370090C28F /* RedPacket.swift */,
 				DB32518623BA198100A4DDD8 /* RedPacketValue.swift */,
@@ -3039,6 +3051,7 @@
 				DB66FE6D224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */,
 				832146AA223F6756008ECC22 /* UIViewController+EmptyView.swift in Sources */,
 				DBEE89612372A3B90080C194 /* PasswordTextFieldTableViewCell.swift in Sources */,
+				DB4A700D23C6F44100C2349C /* RealmService.swift in Sources */,
 				83FE345C22B72DEC0077C1A5 /* IntroSpotlight.swift in Sources */,
 				832146D82241D980008ECC22 /* ImportKeyViewController.swift in Sources */,
 				DB15695E23278EA200220926 /* FetchableRecord+all.swift in Sources */,
@@ -3080,6 +3093,7 @@
 				DB4A6FFF23C5F17200C2349C /* WalletDetailViewController.swift in Sources */,
 				DB9FE9EC23A8B6A400499632 /* RedPacket+V1.swift in Sources */,
 				DBD4A55923ACBA4B0030FFA6 /* RedPacketRawPayLoad.swift in Sources */,
+				DB4A701223C7006C00C2349C /* WalletObject.swift in Sources */,
 				83214688223F40BC008ECC22 /* MainTabbarViewController.swift in Sources */,
 				8304E995221BF10000122637 /* AppDelegate.swift in Sources */,
 				831C831422CC9BEB008DE52C /* ImportPublicKeyConfirmViewController.swift in Sources */,
@@ -3187,6 +3201,7 @@
 				8325E487222E768500EE9B83 /* Debounce.swift in Sources */,
 				8310B34522325E0C00C35AEC /* String+Compare.swift in Sources */,
 				DBC9BD3823B094F200252437 /* RedPacketPayloadEncryptor.swift in Sources */,
+				DB4A701323C7006C00C2349C /* WalletObject.swift in Sources */,
 				DBC24B1523026BA800A4AE8D /* WordSuggestionService.swift in Sources */,
 				833FF395224F9D8100EFE0A9 /* KeyboardInterpretor.swift in Sources */,
 				83DFC73722577B9800993160 /* WormHole.swift in Sources */,
@@ -3244,6 +3259,7 @@
 				83D8451623AB607300AA6B36 /* UIButton+Vertical.swift in Sources */,
 				DB415E84238BB7370090C28F /* RedPacket.swift in Sources */,
 				83DFC72D2252EF3100993160 /* KeyRecordDBAction.swift in Sources */,
+				DB4A700E23C6F44100C2349C /* RealmService.swift in Sources */,
 				83955B79237271EF00161498 /* EditingRedPacketViewController.swift in Sources */,
 				8393371723A9C70200C540EF /* TCKeyboardModeContainer.swift in Sources */,
 				8325E4A82230FEC500EE9B83 /* UIInputViewController+TextProxy.swift in Sources */,
@@ -3292,6 +3308,7 @@
 				DB63A0F822DDCB0E00C2DDA6 /* WormholdService.swift in Sources */,
 				DB63A11A22E066ED00C2DDA6 /* ComposeMessageViewModel.swift in Sources */,
 				DB63A0DF22DD939C00C2DDA6 /* MessageCardCell.swift in Sources */,
+				DB4A700F23C6F44100C2349C /* RealmService.swift in Sources */,
 				DB415E85238BEE5E0090C28F /* RedPacketService.swift in Sources */,
 				DB15695B23277FD900220926 /* ProfileService+Contact.swift in Sources */,
 				DB415EA8238CBF9C0090C28F /* FullContactInfo.swift in Sources */,
@@ -3308,6 +3325,7 @@
 				835294B923279F40000E6170 /* DMSReceipientKeyIDUtil.swift in Sources */,
 				DB63A12522E06E0900C2DDA6 /* String+Localization.swift in Sources */,
 				DB32518923BA198100A4DDD8 /* RedPacketValue.swift in Sources */,
+				DB4A701423C7006C00C2349C /* WalletObject.swift in Sources */,
 				DB63A0E422DD9B5600C2DDA6 /* CALayer+Shadow.swift in Sources */,
 				DB415E89238BF00D0090C28F /* RedPacket.swift in Sources */,
 				DB63A11E22E0687C00C2DDA6 /* ContactPickerTagCollectionViewCell.swift in Sources */,
@@ -3392,6 +3410,7 @@
 				DB1169DA22E19C360099BA25 /* UILabel.swift in Sources */,
 				DB63A14D22E1809200C2DDA6 /* ComposeActionViewController.swift in Sources */,
 				DB8D7318231E393E005D15DD /* Email.swift in Sources */,
+				DB4A701023C6F44100C2349C /* RealmService.swift in Sources */,
 				DB1169CF22E1859A0099BA25 /* UIViewController+EmptyView.swift in Sources */,
 				DB15696123278EA200220926 /* FetchableRecord+all.swift in Sources */,
 				DB1169C622E184F40099BA25 /* ContactListViewModel.swift in Sources */,
@@ -3437,6 +3456,7 @@
 				DB8D731B231E394E005D15DD /* KeyRecord.swift in Sources */,
 				DB9FEA1223AB65D600499632 /* RedPacketService+Error.swift in Sources */,
 				DB1169B422E183780099BA25 /* String.swift in Sources */,
+				DB4A701523C7006C00C2349C /* WalletObject.swift in Sources */,
 				DB1169BA22E183C30099BA25 /* MessageDBAction.swift in Sources */,
 				DB9FEA1723AB686F00499632 /* RedPacketService+Misc.swift in Sources */,
 				DB1169BC22E183CB0099BA25 /* KeyFactory+TCKey.swift in Sources */,

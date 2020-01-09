@@ -6,12 +6,25 @@
 //  Copyright © 2019 Sujitech. All rights reserved.
 //
 
+import os
+import Foundation
+import RealmSwift
 import RxSwift
 import RxCocoa
 import KeychainAccess
 import DMS_HDWallet_Cocoa
 import Web3
 
+// Use keychain persist the mnemonic & password of the HDWallet
+// The keychain data would not be clean except user erase the device
+// Now we switch from the keychain model projection to realm DB model
+//  1. check if alread saving data in keyPath "wallets"
+//  2.a: if true and realm DB is empty: migrate all record in realm DB
+//  2.b: else: do nothing and just fine
+// And when insert a new wallet record:
+// - insert to the keychain first then create the record in the realm DB
+// And when remove the wallet record
+// - remove the realm record then remove it from keychain
 final public class WalletService {
     
     static let balanceDecimalFormatter: NumberFormatter = {
@@ -32,6 +45,10 @@ final public class WalletService {
 
     private let wallets: BehaviorRelay<[Wallet]>       // persistence to keychain, walletViewModels drives
     public let walletModels: BehaviorRelay<[WalletModel]>
+    
+    static func realm() throws -> Realm {
+        return try RealmService.realm()
+    }
 
     // MARK: - Singleton
     public static let `default` = WalletService(keychain: Keychain(service: "com.Sujitech.TesserCube", accessGroup: "7LFDZ96332.com.Sujitech.TesserCube"))
@@ -61,7 +78,7 @@ final public class WalletService {
                 guard let `self` = self else { return }
                 self.save()
             })
-        .disposed(by: disposeBag)
+            .disposed(by: disposeBag)
     }
 
 }
@@ -98,8 +115,19 @@ extension WalletService {
     }
 
     func remove(wallet: Wallet) {
-        let vms = walletModels.value.filter { $0.wallet != wallet }
-        walletModels.accept(vms)
+        let removedWalletModel = walletModels.value.filter { $0.wallet == wallet }
+        
+        do {
+            let realm = try WalletService.realm()
+            try realm.write {
+                realm.delete(removedWalletModel.map { $0.walletObject })
+            }
+        } catch {
+            os_log("%{public}s[%{public}ld], %{public}s: remove walletObject fail: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
+        }
+        
+        let newWalletViewModels = walletModels.value.filter { $0.wallet != wallet }
+        walletModels.accept(newWalletViewModels)
     }
 
 }
