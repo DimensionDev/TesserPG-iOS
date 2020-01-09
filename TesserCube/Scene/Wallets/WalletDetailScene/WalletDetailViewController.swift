@@ -86,7 +86,24 @@ extension WalletDetailViewModel: UITableViewDataSource {
             } else {
                 assertionFailure()
             }
+            
             cell = _cell
+
+            // Setup cell separator line
+            UITableView.removeSeparatorLine(for: cell)
+            
+            let isFirst = indexPath.row == 0
+            if isFirst {
+                UITableView.setupTopSectionSeparatorLine(for: cell)
+            }
+            
+            let isLast = indexPath.row == tokens.value.count - 1
+            if isLast {
+                UITableView.setupBottomSectionSeparatorLine(for: cell)
+            } else {
+                UITableView.setupBottomCellSeparatorLine(for: cell)
+            }
+            
         }
                 
         return cell

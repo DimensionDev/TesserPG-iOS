@@ -152,7 +152,7 @@ extension RedPacketDetailViewModel: UITableViewDataSource {
                 cell = _cell
             }
             
-            UITableView.removeSectionSeparatorLine(for: cell)
+            UITableView.removeSeparatorLine(for: cell)
             
             let isFirst = indexPath.row == 0
             if isFirst {
