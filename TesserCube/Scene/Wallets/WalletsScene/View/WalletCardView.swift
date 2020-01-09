@@ -100,23 +100,27 @@ extension WalletCardView {
             headerLabel.leadingAnchor.constraint(equalTo: cardView.layoutMarginsGuide.leadingAnchor),
             headerLabel.trailingAnchor.constraint(equalTo: cardView.layoutMarginsGuide.trailingAnchor),
         ])
+        headerLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         
         captionLabel.translatesAutoresizingMaskIntoConstraints = false
         cardView.addSubview(captionLabel)
         NSLayoutConstraint.activate([
-            captionLabel.topAnchor.constraint(equalToSystemSpacingBelow: headerLabel.bottomAnchor, multiplier: 1.0),
+            captionLabel.topAnchor.constraint(equalTo: headerLabel.bottomAnchor, constant: 8),
             captionLabel.leadingAnchor.constraint(equalTo: cardView.layoutMarginsGuide.leadingAnchor),
             captionLabel.trailingAnchor.constraint(equalTo: cardView.layoutMarginsGuide.trailingAnchor),
         ])
+        captionLabel.setContentHuggingPriority(.defaultLow, for: .vertical)
+        captionLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         
         balanceLabel.translatesAutoresizingMaskIntoConstraints = false
         cardView.addSubview(balanceLabel)
         NSLayoutConstraint.activate([
-            balanceLabel.topAnchor.constraint(equalToSystemSpacingBelow: captionLabel.bottomAnchor, multiplier: 1.0),
+            balanceLabel.topAnchor.constraint(equalTo: captionLabel.bottomAnchor, constant: 8),
             balanceLabel.leadingAnchor.constraint(equalTo: cardView.layoutMarginsGuide.leadingAnchor),
             cardView.layoutMarginsGuide.bottomAnchor.constraint(equalTo: balanceLabel.bottomAnchor),
         ])
         balanceLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        balanceLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         
         balanceAmountLabel.translatesAutoresizingMaskIntoConstraints = false
         cardView.addSubview(balanceAmountLabel)

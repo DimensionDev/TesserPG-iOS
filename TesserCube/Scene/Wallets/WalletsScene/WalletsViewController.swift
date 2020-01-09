@@ -479,7 +479,8 @@ extension WalletsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch WalletsViewModel.Section.allCases[indexPath.section] {
         case .wallet:
-            return
+            // handle by collection delegate
+            break
 
         case .redPacket:
             guard let cell = tableView.cellForRow(at: indexPath) as? RedPacketCardTableViewCell,
@@ -596,31 +597,16 @@ extension WalletsViewController: UICollectionViewDelegate {
             return
         }
     
-        guard let walletCardCollectionViewCell = collectionView.cellForItem(at: indexPath) as? WalletCardCollectionViewCell else {
+        guard let _ = collectionView.cellForItem(at: indexPath) as? WalletCardCollectionViewCell else {
             return
         }
         
-        guard let actions = viewModel.collectionView(collectionView, presentingViewController: self, isContextMenu: false, actionsForRowAt: indexPath),
-        !actions.isEmpty else {
+        guard let walletModel = viewModel.currentWalletModel.value else {
             return
         }
         
-        let alertController: UIAlertController = {
-            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            let alertActions = actions.map { $0.alertAction }
-            for alertAction in alertActions {
-                alertController.addAction(alertAction)
-            }
-            return alertController
-        }()
-        
-        if let popoverPresentationController = alertController.popoverPresentationController {
-            popoverPresentationController.sourceView = walletCardCollectionViewCell
-        }
-        
-        DispatchQueue.main.async {
-            self.present(alertController, animated: true, completion: nil)
-        }
+        let viewModel = WalletDetailViewModel(walletModel: walletModel)
+        Coordinator.main.present(scene: .walletDetail(viewModel: viewModel), from: self, transition: .detail, completion: nil)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

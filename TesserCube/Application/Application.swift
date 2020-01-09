@@ -51,6 +51,7 @@ class Application: NSObject {
         }
 
         IQKeyboardManager.shared.enable = true
+        _ = RedPacketService.shared
     }
     
     private class func initPersistentData() {

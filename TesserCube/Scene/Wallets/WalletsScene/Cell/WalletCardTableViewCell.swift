@@ -14,7 +14,7 @@ final class WalletCardTableViewCell: UITableViewCell {
     var disposeBag = DisposeBag()
 
     static let cardVerticalMargin: CGFloat = 8
-    let walletCardView = WalletCardView()
+    let walletCardView = WalletCardView(frame: .zero)
 
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -41,6 +41,7 @@ final class WalletCardTableViewCell: UITableViewCell {
         // Setup appearance
         clipsToBounds = false
         selectionStyle = .none
+        backgroundColor = .clear
 
         walletCardView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(walletCardView)
@@ -49,6 +50,7 @@ final class WalletCardTableViewCell: UITableViewCell {
             walletCardView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             contentView.layoutMarginsGuide.trailingAnchor.constraint(equalTo: walletCardView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: walletCardView.bottomAnchor, constant: WalletCardTableViewCell.cardVerticalMargin),
+            walletCardView.heightAnchor.constraint(equalToConstant: WalletCollectionTableViewCell.cellHeight),
         ])
     }
 

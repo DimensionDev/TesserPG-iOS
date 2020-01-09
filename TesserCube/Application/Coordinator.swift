@@ -39,6 +39,8 @@ class Coordinator {
         case interpretAction(message: String)
         case brokenMessage(message: String?)
         case createWallet
+        case walletDetail(viewModel: WalletDetailViewModel)
+        case addToken(viewModel: AddTokenViewModel)
         case backupMnemonic(viewModel: BackupMnemonicCollectionViewModel)
         case confirmMnemonic(viewModel: ConfirmMnemonicCollectionViewModel)
         case importWallet
@@ -181,6 +183,11 @@ extension Coordinator {
         case .createWallet:
             let vc = CreateWalletViewController()
             return vc
+        case .walletDetail(let viewModel):
+            let vc = WalletDetailViewController()
+            vc.viewModel = viewModel
+            vc.hidesBottomBarWhenPushed = true
+            return vc
         case .backupMnemonic(let viewModel):
             let vc = BackupMnemonicViewController()
             vc.viewModel = viewModel
@@ -191,6 +198,10 @@ extension Coordinator {
             return vc
         case .importWallet:
             let vc = ImportWalletViewController()
+            return vc
+        case .addToken(let viewModel):
+            let vc = AddTokenViewController()
+            vc.viewModel = viewModel
             return vc
         case .openRedPacket:
             let vc = OpenRedPacketViewController()
