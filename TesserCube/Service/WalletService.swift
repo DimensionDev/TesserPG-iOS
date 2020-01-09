@@ -122,12 +122,12 @@ extension WalletService {
             try realm.write {
                 realm.delete(removedWalletModel.map { $0.walletObject })
             }
+            
+            let newWalletViewModels = walletModels.value.filter { $0.wallet != wallet }
+            walletModels.accept(newWalletViewModels)
         } catch {
             os_log("%{public}s[%{public}ld], %{public}s: remove walletObject fail: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
         }
-        
-        let newWalletViewModels = walletModels.value.filter { $0.wallet != wallet }
-        walletModels.accept(newWalletViewModels)
     }
 
 }
