@@ -6,6 +6,7 @@
 //  Copyright © 2020 Sujitech. All rights reserved.
 //
 
+import os
 import Foundation
 import RealmSwift
 
@@ -17,8 +18,9 @@ private enum SchemaVersions: UInt64 {
     case version_2_rc4 = 9
     case version_2_rc5 = 10
     case version_2_rc6 = 11
+    case version_2_rc7 = 12
     
-    static let currentVersion: SchemaVersions = .version_2_rc6
+    static let currentVersion: SchemaVersions = .version_2_rc7
 }
 
 final class RealmService {
@@ -39,36 +41,34 @@ extension RealmService {
         
         let realmName = "RedPacket_v2"
         config.fileURL = TCDBManager.dbDirectoryUrl.appendingPathComponent("\(realmName).realm")
-        config.objectTypes = [RedPacket.self, ERC20Token.self, WalletObject.self]
+        config.objectTypes = [RedPacket.self, ERC20Token.self, WalletObject.self, WalletToken.self]
         
         // setup migration
         let schemeVersion: UInt64 = SchemaVersions.currentVersion.rawValue
         config.schemaVersion = schemeVersion
         config.migrationBlock = { migration, oldSchemeVersion in
-            if oldSchemeVersion < SchemaVersions.version_2_rc6.rawValue {
-                migration.renameProperty(onType: WalletObject.className(), from: "_balance", to: "_eth_balance") // Renaming
-            }
-            
-            if oldSchemeVersion < SchemaVersions.version_2_rc5.rawValue {
+            if oldSchemeVersion < SchemaVersions.version_2_rc1.rawValue {
                 // auto migrate
             }
-            
-            if oldSchemeVersion < SchemaVersions.version_2_rc4.rawValue {
+            if oldSchemeVersion < SchemaVersions.version_2_rc2.rawValue {
                 // auto migrate
             }
-            
             if oldSchemeVersion < SchemaVersions.version_2_rc3.rawValue {
                 // add network property
                 migration.enumerateObjects(ofType: RedPacket.className()) { old, new in
                     new?["_network"] = EthereumNetwork.rinkeby.rawValue
                 }
             }
-            
-            if oldSchemeVersion < SchemaVersions.version_2_rc2.rawValue {
+            if oldSchemeVersion < SchemaVersions.version_2_rc4.rawValue {
                 // auto migrate
             }
-            
-            if oldSchemeVersion < SchemaVersions.version_2_rc1.rawValue {
+            if oldSchemeVersion < SchemaVersions.version_2_rc5.rawValue {
+                // auto migrate
+            }
+            if oldSchemeVersion < SchemaVersions.version_2_rc6.rawValue {
+                migration.renameProperty(onType: WalletObject.className(), from: "_balance", to: "_eth_balance") // Renaming
+            }
+            if oldSchemeVersion < SchemaVersions.version_2_rc7.rawValue {
                 // auto migrate
             }
         }
@@ -83,7 +83,12 @@ extension RealmService {
                                                  withIntermediateDirectories: true,
                                                  attributes: nil)
         
-        return try Realm(configuration: config)
+        do {
+            return try Realm(configuration: config)
+        } catch {
+            os_log("%{public}s[%{public}ld], %{public}s: realm create fail: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
+            throw error
+        }
     }
     
 }

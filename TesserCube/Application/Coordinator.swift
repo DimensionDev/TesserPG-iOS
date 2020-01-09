@@ -40,7 +40,7 @@ class Coordinator {
         case brokenMessage(message: String?)
         case createWallet
         case walletDetail(viewModel: WalletDetailViewModel)
-        case addToken(viewModel: AddTokenViewModel)
+        case addToken(viewModel: AddTokenViewModel, delegate: AddTokenViewControllerDelegate)
         case backupMnemonic(viewModel: BackupMnemonicCollectionViewModel)
         case confirmMnemonic(viewModel: ConfirmMnemonicCollectionViewModel)
         case importWallet
@@ -199,9 +199,10 @@ extension Coordinator {
         case .importWallet:
             let vc = ImportWalletViewController()
             return vc
-        case .addToken(let viewModel):
+        case let  .addToken(viewModel, delegate):
             let vc = AddTokenViewController()
             vc.viewModel = viewModel
+            vc.delegate = delegate
             return vc
         case .openRedPacket:
             let vc = OpenRedPacketViewController()

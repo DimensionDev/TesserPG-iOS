@@ -92,6 +92,7 @@ final class RedPacketService {
     
     private init() {
         guard let realm = try? RedPacketService.realm() else {
+
             assertionFailure()
             return
         }

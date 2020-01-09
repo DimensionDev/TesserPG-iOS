@@ -13,6 +13,10 @@ import RxSwift
 import RxCocoa
 import RxRealm
 
+protocol AddTokenViewControllerDelegate: class {
+    func addTokenViewController(_ controller: AddTokenViewController, didSelectToken token: ERC20Token)
+}
+
 final class AddTokenViewModel: NSObject {
     
     let disposeBag = DisposeBag()
@@ -41,6 +45,15 @@ final class AddTokenViewModel: NSObject {
             .drive(filteredTokens)
             .disposed(by: disposeBag)
     }
+    
+}
+
+extension AddTokenViewModel {
+    
+    func addToken(token: ERC20Token) {
+        
+    }
+    
 }
 
 // MARK: - UITableViewDataSource
@@ -76,6 +89,8 @@ final class AddTokenViewController: TCBaseViewController {
     
     let disposeBag = DisposeBag()
     var viewModel: AddTokenViewModel!
+    
+    weak var delegate: AddTokenViewControllerDelegate?
     
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
@@ -156,8 +171,10 @@ extension AddTokenViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let token = viewModel.filteredTokens.value[indexPath.row]
-        os_log("%{public}s[%{public}ld], %{public}s: did select token - %s", ((#file as NSString).lastPathComponent), #line, #function, token.name)
 
+        delegate?.addTokenViewController(self, didSelectToken: token)
+        os_log("%{public}s[%{public}ld], %{public}s: did select token - %s", ((#file as NSString).lastPathComponent), #line, #function, token.name)
+        // delegate control dismiss
     }
     
 }

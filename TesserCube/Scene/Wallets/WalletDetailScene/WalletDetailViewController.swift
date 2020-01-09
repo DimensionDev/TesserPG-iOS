@@ -8,19 +8,40 @@
 
 import os
 import UIKit
+import RealmSwift
 import RxSwift
 import RxCocoa
+import RxRealm
 
 final class WalletDetailViewModel: NSObject {
+    
+    let disposeBag = DisposeBag()
     
     // Input
     let walletModel: WalletModel
     
     // Output
+    let tokens = BehaviorRelay<[WalletToken]>(value: [])
     
     init(walletModel: WalletModel) {
         self.walletModel = walletModel
         super.init()
+    
+        // Setup tokens data 
+        do {
+            let realm = try WalletService.realm()
+            let tokens = realm.objects(WalletToken.self)
+                .filter("wallet.address == %@", walletModel.address)
+                .sorted(byKeyPath: "index", ascending: true)
+            Observable.array(from: tokens)
+                .subscribe(onNext: { [weak self] tokens in
+                    guard let `self` = self else { return }
+                    self.tokens.accept(tokens)
+                })
+                .disposed(by: disposeBag)
+        } catch {
+            os_log("%{public}s[%{public}ld], %{public}s: WalletDetailViewModel.init error: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
+        }
     }
     
 }
@@ -44,7 +65,7 @@ extension WalletDetailViewModel: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch Section.allCases[section] {
         case .wallet:   return 1
-        case .token:    return 0
+        case .token:    return tokens.value.count
         }
     }
     
@@ -58,8 +79,14 @@ extension WalletDetailViewModel: UITableViewDataSource {
             
             cell = _cell
         case .token:
-            fatalError()
-            break
+            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: TokenTableViewCell.self), for: indexPath) as! TokenTableViewCell
+            let walletToken = tokens.value[indexPath.row]
+            if let token = walletToken.token {
+                AddTokenViewModel.configure(cell: _cell, with: token)
+            } else {
+                assertionFailure()
+            }
+            cell = _cell
         }
                 
         return cell
@@ -74,6 +101,7 @@ final class WalletDetailViewController: TCBaseViewController {
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.register(WalletCardTableViewCell.self, forCellReuseIdentifier: String(describing: WalletCardTableViewCell.self))
+        tableView.register(TokenTableViewCell.self, forCellReuseIdentifier: String(describing: TokenTableViewCell.self))
         tableView.separatorStyle = .none
         return tableView
     }()
@@ -109,7 +137,7 @@ final class WalletDetailViewController: TCBaseViewController {
             button.rx.tap.bind { [weak self] in
                 guard let `self` = self else { return }
                 let viewModel = AddTokenViewModel()
-                Coordinator.main.present(scene: .addToken(viewModel: viewModel), from: self, transition: .modal, completion: nil)
+                Coordinator.main.present(scene: .addToken(viewModel: viewModel, delegate: self), from: self, transition: .modal, completion: nil)
             }
             .disposed(by: disposeBag)
             return button
@@ -124,7 +152,7 @@ final class WalletDetailViewController: TCBaseViewController {
     override func configUI() {
         super.configUI()
         
-        title = "Red Packet Detail"
+        title = "Wallet " + viewModel.walletModel.walletObject.name
         navigationItem.largeTitleDisplayMode = .never
         
         // Layout tableView
@@ -140,6 +168,12 @@ final class WalletDetailViewController: TCBaseViewController {
         // Setup tableView data source
         tableView.delegate = self
         tableView.dataSource = viewModel
+        
+        viewModel.tokens.asDriver()
+            .drive(onNext: { [weak self] _ in
+                self?.tableView.reloadData()
+            })
+            .disposed(by: disposeBag)
     }
     
     deinit {
@@ -191,6 +225,39 @@ extension WalletDetailViewController: UITableViewDelegate {
             return UITableView.automaticDimension
         default:
             return 10
+        }
+    }
+    
+}
+
+// MARK: - AddTokenViewControllerDelegate
+extension WalletDetailViewController: AddTokenViewControllerDelegate {
+    
+    func addTokenViewController(_ controller: AddTokenViewController, didSelectToken token: ERC20Token) {
+        do {
+            let realm = try WalletService.realm()
+            if realm.objects(WalletToken.self).filter("wallet.address == %@ && token.address == %@", viewModel.walletModel.address, token.address).first == nil {
+                let index: Int = {
+                    let tokens = realm.objects(WalletToken.self).filter("wallet.address == %@", viewModel.walletModel.address)
+                    let maxIndex = tokens.max(ofProperty: "index") as Int?
+                    return maxIndex ?? 0
+                }()
+                
+                let walletToken = WalletToken()
+                walletToken.wallet = viewModel.walletModel.walletObject
+                walletToken.token = token
+                walletToken.index = index
+                
+                try realm.write {
+                    realm.add(walletToken)
+                }
+            }
+            controller.dismiss(animated: true, completion: nil)
+        } catch {
+            let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: L10n.Common.Button.ok, style: .default, handler: nil)
+            alertController.addAction(okAction)
+            controller.present(alertController, animated: true, completion: nil)
         }
     }
     
