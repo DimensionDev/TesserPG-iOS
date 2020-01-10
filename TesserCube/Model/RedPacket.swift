@@ -20,7 +20,7 @@ public class RedPacket: Object {
     @objc public dynamic var aes_version = 1
     @objc public dynamic var contract_version = 1
     @objc public dynamic var contract_address: String = ""
-    @objc public dynamic var _network = EthereumNetwork.rinkeby.rawValue
+    @objc private dynamic var _network = EthereumNetwork.rinkeby.rawValue
 
     let uuids = List<String>()
     @objc public dynamic var is_random = false
@@ -35,19 +35,23 @@ public class RedPacket: Object {
     
     @objc public dynamic var sender_address = ""
     @objc public dynamic var sender_name = ""
-    @objc public dynamic var _send_total = "0"
+    @objc private dynamic var _send_total = "0"
     @objc public dynamic var send_message = ""
     
     @objc public dynamic var last_share_time: Date?
     
     @objc public dynamic var claim_address: String?
     @objc public dynamic var claim_transaction_hash: String?
-    @objc public dynamic var _claim_amount = "0"
+    @objc private dynamic var _claim_amount = "0"
     
     @objc public dynamic var refund_transaction_hash: String?
-    @objc public dynamic var _refund_amount = "0"
+    @objc private dynamic var _refund_amount = "0"
     
     @objc private dynamic var _status = RedPacketStatus.initial.rawValue
+    
+    @objc private dynamic var _token_type = RedPacketTokenType.eth.rawValue
+    @objc public dynamic var erc20_token: ERC20Token?
+    @objc public dynamic var erc20_approve_transaction_hash: String?
     
     public dynamic var network: EthereumNetwork {
         get { return EthereumNetwork(rawValue: _network) ?? .rinkeby }
@@ -70,13 +74,17 @@ public class RedPacket: Object {
         get { return RedPacketStatus(rawValue: _status) ?? .initial }
         set { _status = newValue.rawValue }
     }
+    public dynamic var token_type: RedPacketTokenType {
+        get { return RedPacketTokenType(rawValue: _token_type) ?? .eth }
+        set { _token_type = newValue.rawValue }
+    }
     
     override public static func primaryKey() -> String? {
         return "id"
     }
     
     override public class func ignoredProperties() -> [String] {
-        return ["network", "send_total", "claim_amount", "refund_amount"]
+        return ["network", "send_total", "claim_amount", "refund_amount", "token_type"]
     }
 }
 
@@ -92,6 +100,11 @@ public enum RedPacketStatus: String {
     case empty      // all claimed
     case refund_pending
     case refunded
+}
+
+public enum RedPacketTokenType: String {
+    case eth
+    case erc20
 }
 
 public enum EthereumNetwork: String {

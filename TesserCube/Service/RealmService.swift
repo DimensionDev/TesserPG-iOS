@@ -15,7 +15,7 @@ private enum SchemaVersions: UInt64 {
     case version_2_rc1 = 4
     case version_2_rc2 = 5
     case version_2_rc3 = 8
-    case version_2_rc8 = 16
+    case version_2_rc8 = 17
     
     static let currentVersion: SchemaVersions = .version_2_rc8
 }
@@ -51,13 +51,16 @@ extension RealmService {
                 // auto migrate
             }
             if oldSchemeVersion < SchemaVersions.version_2_rc3.rawValue {
-                // add network property
+                // add network property default value
                 migration.enumerateObjects(ofType: RedPacket.className()) { old, new in
                     new?["_network"] = EthereumNetwork.rinkeby.rawValue
                 }
             }
             if oldSchemeVersion < SchemaVersions.version_2_rc8.rawValue {
-                // auto migrate
+                // add token_type property default value
+                migration.enumerateObjects(ofType: RedPacket.className()) { old, new in
+                    new?["_token_type"] = RedPacketTokenType.eth.rawValue
+                }
             }
         }
         
