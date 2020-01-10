@@ -28,6 +28,9 @@ class Web3Tests: XCTestCase {
         let bytesString = try! String(contentsOfFile: path!)
         return try! EthereumData(ethereumValue: bytesString.trimmingCharacters(in: .whitespacesAndNewlines))
     }()
+    
+    // Zeenus on Rinkeby
+    let erc20ContractAddressHex = "0x1f9061b953bba0e36bf50f21876132dcf276fc6e"
 
     override func setUp() {
         // mainnet
@@ -159,17 +162,20 @@ extension Web3Tests {
         let privateKey = try! EthereumPrivateKey(hexPrivateKey: "0x" + hexPrivateKey)
         let fromAddressPrivateKey = privateKey
         
-        let toEthereumAddress = try! EthereumAddress(hex: "0xDB07c331Bd039f89CC22E0294eE6829Fdaca658e", eip55: false)
+        let toEthereumAddress = try! EthereumAddress(hex: "0x1f9061B953bBa0E36BF50F21876132DcF276fC6e", eip55: false)
 
+        // let value = EthereumQuantity(quantity: 1 * BigUInt(10).power(16))
+        let value = EthereumQuantity(quantity: 0)
+        
         firstly {
             web3.eth.getTransactionCount(address: fromAddressPrivateKey.address, block: .latest)
         }.done { nonce in
             let transaction = EthereumTransaction(
                 nonce: nonce,
                 gasPrice: EthereumQuantity(quantity: 10.gwei),
-                gas: 21000,
+                gas: 300000,
                 to: toEthereumAddress,
-                value: EthereumQuantity(quantity: 1 * BigUInt(10).power(16)))       // 0.01 ETH
+                value: value)       // 0.01 ETH
             let signedTransaction = try! transaction.sign(with: fromAddressPrivateKey, chainId: 4)
             
             self.web3.eth.sendRawTransaction(transaction: signedTransaction) { response in
@@ -314,6 +320,17 @@ extension Web3Tests {
         wait(for: [nonceExpectation], timeout: 10.0)
         XCTAssertNotNil(nonce)
         
+        // (
+        //     bytes32[] memory _hashes,
+        //     bool _ifrandom,
+        //     uint _duration,
+        //     bytes32 _seed,
+        //     string memory _message,
+        //     string memory _name,
+        //     uint _token_type,
+        //     address _token_addr,
+        //     uint _total_tokens
+        // )
         // prepare create call parameters
         let uuids = [
             "8090D64A-03A6-4E2A-B457-9A0376696F8E",
@@ -324,16 +341,42 @@ extension Web3Tests {
             print("\(uuid): \(hash.toHexString())")
             return BigUInt(hash)
         }
+        
+        // let _tokenType = 0
+        let _tokenType = 1
+        let _tokenAddr: String = {
+            if _tokenType == 0 {
+                return contractAddressHex
+            } else {
+                return erc20ContractAddressHex
+            }
+        }()
+        
         let ifrandom = true
         let duration: BigUInt = 86400
         let seed = BigUInt.randomInteger(withMaximumWidth: 32)
         let message = "Message"
         let name = "Name"
-        
-        let value = EthereumQuantity(quantity: 1 * BigUInt(10).power(16))       // 0.01 ETH
+        let tokenType = BigUInt(_tokenType)
+        let tokenAddr = try! EthereumAddress(hex: _tokenAddr, eip55: false)
+        let totalTokens: BigUInt = {
+            if _tokenType == 0 {
+                return 1 * BigUInt(10).power(16)       // 0.01 ETH
+            } else {
+                return BigUInt(10)
+            }
+        }()
+        let _value: BigUInt = {
+            if _tokenType == 0 {
+                return totalTokens
+            } else {
+                return 0
+            }
+        }()
+        let value = EthereumQuantity(quantity: _value)
         
         // Build contract method call transaction
-        let createInvocation = createCall!(_hashes, ifrandom, duration, seed, message, name)
+        let createInvocation = createCall!(_hashes, ifrandom, duration, seed, message, name, tokenType, tokenAddr, totalTokens)
         let createTransaction = createInvocation.createTransaction(nonce: nonce, from: ethereumAddress, value: value, gas: 4300000, gasPrice: EthereumQuantity(quantity: 10.gwei))
         XCTAssertNotNil(createTransaction)
         
@@ -363,7 +406,7 @@ extension Web3Tests {
         let contractAddress = try! EthereumAddress(hex: contractAddressHex, eip55: false)
         let contract = try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: contractAddress)
         
-        let transactionHashHex = "0x9c95c70d30f4872f919ed3358d396eb6a64812245fdeb00cf9ad99ceb290b97b"
+        let transactionHashHex = "0xa7d5c850a5c9ebeb5b64740126ee4b3ea9cb48ac42ee56fb00c2c9c202a409be"
         let transactionHash = EthereumData(Bytes(hex: transactionHashHex))
         
         let check = Web3Tests.checkClaimEvent(web3: web3, contract: contract, transactionHash: transactionHash, in: self)
@@ -382,7 +425,7 @@ extension Web3Tests {
             "8090D64A-03A6-4E2A-B457-9A0376696F8E",
             "338D6AE4-F1BC-40CD-B036-0210686F5585",
         ]
-        let uuid = uuids[0]
+        let uuid = uuids[1]
         
         // Rinkeby test account
         // let mnemonic = ["ensure", "fossil", "scan", "dash", "tomato", "country", "draft", "organ", "loud", "garbage", "keen", "cat"]
@@ -423,7 +466,7 @@ extension Web3Tests {
         XCTAssertNotNil(nonce)
         
         // Red Packet ID
-        let id = BigUInt(hexString: "6a3127839906cc37afb11002c662c0957a089c9302f6bfd776bed09588635a0a")
+        let id = BigUInt(hexString: "3b9cbb7fe5d2ca83dfe14fc114b397624de87fbf5e24aefcd7e357f731553d03")
         XCTAssertNotNil(id)
         
         let recipient = ethereumAddress
@@ -464,7 +507,7 @@ extension Web3Tests {
         
         // 1st claimed on uuid[0]: claim transactionHash 0x2e294556131657c3d45aac24d61380bb8cae9dc148180223d4e2bb2b72ce0c21 ClaimSuccess
         // 2nd claimed on uuid[0]: claim transactionHash 0xcdc9f3b81041d6266d5da96e8e9179e82d1f2c3ec3877a723dbde5df0ffb1e1c Status: 0 Failure
-        let transactionHashHex = "0xcdc9f3b81041d6266d5da96e8e9179e82d1f2c3ec3877a723dbde5df0ffb1e1c"
+        let transactionHashHex = "0x139a1a3861c27a7753840b74748d04cfb74ef54f2d377f7a3b7013da54dc8f10"
         let transactionHash = EthereumData(Bytes(hex: transactionHashHex))
         
         let check = Web3Tests.checkClaimEvent(web3: web3, contract: contract, transactionHash: transactionHash, in: self)
@@ -502,6 +545,50 @@ extension Web3Tests {
                     print(result)
                     
                     if event.name == "CreationSuccess" {
+                        if let idData = result?["id"] as? Data, idData.count == 32 {
+                            print("id: \(idData.toHexString())")
+                        }
+                    }
+                }
+            }
+            
+            checkExpectation.fulfill()
+        }
+        
+        return checkExpectation
+    }
+    
+    static func checkApproveEvent(web3: Web3, contract: EthereumContract, transactionHash: EthereumData, in testCase: XCTestCase) -> XCTestExpectation {
+        // Check emitted event log
+        let checkExpectation = testCase.expectation(description: "receiptExpectation")
+        web3.eth.getTransactionReceipt(transactionHash: transactionHash) { response in
+            guard let receipt = response.result else {
+                XCTFail()
+                return
+            }
+            
+            guard let status = receipt?.status else {
+                XCTFail()
+                return
+            }
+            
+            if status.quantity == 0 {
+                print("Status: 0 [failure]")
+            }
+            
+            guard let logs = receipt?.logs else {
+                XCTFail()
+                return
+            }
+            
+            print(receipt?.logs)
+            for event in contract.events {
+                for log in logs {
+                    let result = try? ABI.decodeLog(event: event, from: log)
+                    print(event.name)
+                    print(result)
+                    
+                    if event.name == "Approve" {
                         if let idData = result?["id"] as? Data, idData.count == 32 {
                             print("id: \(idData.toHexString())")
                         }
@@ -637,6 +724,80 @@ extension Web3Tests {
         let transactionHash = EthereumData(Bytes(hex: transactionHashHex))
         
         let check = Web3Tests.checkClaimEvent(web3: web3, contract: contract, transactionHash: transactionHash, in: self)
+        wait(for: [check], timeout: 30)
+    }
+    
+}
+
+extension Web3Tests {
+    
+    func testApprove() {
+        let chainID: EthereumQuantity = 4   // rinkeby
+        
+        let contractAddressHex = self.contractAddress
+        let contractAddress = try! EthereumAddress(hex: contractAddressHex, eip55: false)
+
+        // Rinkeby test account
+        let mnemonic = ["ensure", "fossil", "scan", "dash", "tomato", "country", "draft", "organ", "loud", "garbage", "keen", "cat"]
+        let passphrase = "dimension"
+
+        // Ganache test account
+        // let mnemonic = ["flower", "parent", "dizzy", "mercy", "sentence", "wall", "weird", "measure", "chicken", "shoulder", "broom", "island"]
+        // let passphrase = ""
+
+        let wallet = try! HDWallet(mnemonic: mnemonic, passphrase: passphrase, network: .mainnet(.ether))
+        let address = try! wallet.address()
+        let ethereumAddress = try! EthereumAddress(hex: address, eip55: false)
+
+        let hexPrivateKey = try! wallet.privateKey().key.toHexString()
+        let privateKey = try! EthereumPrivateKey(hexPrivateKey: "0x" + hexPrivateKey)
+        
+        // Get transaction nonce
+        var nonce: EthereumQuantity? = nil
+        let nonceExpectation = expectation(description: "nonce")
+        web3.eth.getTransactionCount(address: ethereumAddress, block: .latest) { response in
+            nonce = response.result
+            nonceExpectation.fulfill()
+        }
+        wait(for: [nonceExpectation], timeout: 10.0)
+        XCTAssertNotNil(nonce)
+        
+        let erc20ContractAddress = try! EthereumAddress(hex: erc20ContractAddressHex, eip55: false)
+        let erc20 = GenericERC20Contract(address: erc20ContractAddress, eth: web3.eth)
+        
+        let approveInvocation = erc20.approve(spender: contractAddress, value: BigUInt(10))
+        let approveTransaction = approveInvocation.createTransaction(nonce: nonce, from: ethereumAddress, value: 0, gas: 300000, gasPrice: EthereumQuantity(quantity: 10.gwei))
+        XCTAssertNotNil(approveTransaction)
+        
+        let signedRefundTransaction = try! approveTransaction?.sign(with: privateKey, chainId: chainID)
+        XCTAssertNotNil(signedRefundTransaction)
+            
+        let callExpectation = expectation(description: "call")
+        var transactionHash: EthereumData?
+        web3.eth.sendRawTransaction(transaction: signedRefundTransaction!) { response in
+            switch response.status {
+            case let .success(data):
+                transactionHash = data
+                callExpectation.fulfill()
+            case let .failure(error):
+                XCTFail(error.localizedDescription)
+            }
+        }
+        
+        wait(for: [callExpectation], timeout: 15.0)
+        
+        XCTAssertNotNil(transactionHash)
+        print("approve transactionHash: \(transactionHash!.hex())")
+    }
+    
+    func testApproveResult() {
+        let erc20ContractAddress = try! EthereumAddress(hex: erc20ContractAddressHex, eip55: false)
+        let erc20 = GenericERC20Contract(address: erc20ContractAddress, eth: web3.eth)
+        
+        let transactionHashHex = "0x3218676aa0f5f77a720b6a67590f1782c6ce829726fbf56978559feb216515a0"
+        let transactionHash = EthereumData(Bytes(hex: transactionHashHex))
+        
+        let check = Web3Tests.checkApproveEvent(web3: web3, contract: erc20, transactionHash: transactionHash, in: self)
         wait(for: [check], timeout: 30)
     }
     
