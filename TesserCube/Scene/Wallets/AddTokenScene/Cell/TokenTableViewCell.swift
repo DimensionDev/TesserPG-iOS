@@ -7,14 +7,18 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 final class TokenTableViewCell: UITableViewCell {
+    
+    var disposeBag = DisposeBag()
     
     let logoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = ._systemFill
-        imageView.cornerRadius = 4
-        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 4
+        imageView.layer.masksToBounds = true
         return imageView
     }()
     
@@ -41,10 +45,13 @@ final class TokenTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        
         logoImageView.image = nil
         symbolLabel.text = ""
         nameLabel.text = ""
         balanceLabel.text = ""
+        
+        disposeBag = DisposeBag()
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

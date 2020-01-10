@@ -10,6 +10,8 @@ import UIKit
 import RxSwift
 
 final class WalletCardTableViewCell: UITableViewCell {
+    
+    static let cellHeight: CGFloat = 120.0
 
     var disposeBag = DisposeBag()
 
@@ -50,7 +52,7 @@ final class WalletCardTableViewCell: UITableViewCell {
             walletCardView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
             contentView.layoutMarginsGuide.trailingAnchor.constraint(equalTo: walletCardView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: walletCardView.bottomAnchor, constant: WalletCardTableViewCell.cardVerticalMargin),
-            walletCardView.heightAnchor.constraint(equalToConstant: WalletCollectionTableViewCell.cellHeight),
+            walletCardView.heightAnchor.constraint(equalToConstant: WalletCardTableViewCell.cellHeight),
         ])
     }
 

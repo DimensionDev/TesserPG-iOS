@@ -42,6 +42,7 @@ final class EditingRedPacketViewModel: NSObject {
 
     enum TableViewCellType {
         case wallet                 // select a wallet to send red packet
+        case token                  // select token type
         case amount                 // input the amount for send
         case share                  // input the count for shares
         case name                   // input the sender name
@@ -51,6 +52,7 @@ final class EditingRedPacketViewModel: NSObject {
     let sections: [[TableViewCellType]] = [
         [
             .wallet,
+            .token,
         ],
         [
             .amount,
@@ -158,6 +160,11 @@ extension EditingRedPacketViewModel: UITableViewDataSource {
                 .drive(selectWalletModel)
                 .disposed(by: _cell.disposeBag)
             cell = _cell
+            
+        case .token:
+            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SelectTokenTableViewCell.self), for: indexPath) as! SelectTokenTableViewCell
+            
+            cell = _cell
         
         case .amount:
             let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: InputRedPacketAmoutTableViewCell.self), for: indexPath) as! InputRedPacketAmoutTableViewCell
@@ -241,6 +248,7 @@ class EditingRedPacketViewController: UIViewController {
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.register(SelectWalletTableViewCell.self, forCellReuseIdentifier: String(describing: SelectWalletTableViewCell.self))
+        tableView.register(SelectTokenTableViewCell.self, forCellReuseIdentifier: String(describing: SelectTokenTableViewCell.self))
         
         tableView.register(InputRedPacketAmoutTableViewCell.self, forCellReuseIdentifier: String(describing: InputRedPacketAmoutTableViewCell.self))
         tableView.register(InputRedPacketShareTableViewCell.self, forCellReuseIdentifier: String(describing: InputRedPacketShareTableViewCell.self))
@@ -620,17 +628,31 @@ extension EditingRedPacketViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        #if TARGET_IS_KEYBOARD
-        guard viewModel.sections[indexPath.section][indexPath.row] == .wallet else {
-            return
+        switch viewModel.sections[indexPath.section][indexPath.row] {
+        case .wallet:
+            #if TARGET_IS_KEYBOARD
+            let walletSelectVC = RedPacketWalletSelectViewController()
+            walletSelectVC.delegate = self
+            walletSelectVC.wallets = viewModel.walletModels.value
+            walletSelectVC.selectedWallet = viewModel.selectWalletModel.value
+            navigationController?.pushViewController(walletSelectVC, animated: true)
+            #else
+            break
+            #endif
+
+        case .token:
+            guard let walletModel = self.viewModel.selectWalletModel.value else {
+                return
+            }
+            
+            let tokenSelectViewController = RedPacketTokenSelectViewController()
+            let viewModel = RedPacketTokenSelectViewModel(walletModel: walletModel)
+            tokenSelectViewController.viewModel = viewModel
+            navigationController?.presentationController?.delegate = tokenSelectViewController as UIAdaptivePresentationControllerDelegate
+            navigationController?.pushViewController(tokenSelectViewController, animated: true)
+        default:
+            break
         }
-        
-        let walletSelectVC = RedPacketWalletSelectViewController()
-        walletSelectVC.delegate = self
-        walletSelectVC.wallets = viewModel.walletModels.value
-        walletSelectVC.selectedWallet = viewModel.selectWalletModel.value
-        navigationController?.pushViewController(walletSelectVC, animated: true)
-        #endif
     }
     
 }
