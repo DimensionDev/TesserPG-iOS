@@ -15,12 +15,9 @@ private enum SchemaVersions: UInt64 {
     case version_2_rc1 = 4
     case version_2_rc2 = 5
     case version_2_rc3 = 8
-    case version_2_rc4 = 9
-    case version_2_rc5 = 10
-    case version_2_rc6 = 11
-    case version_2_rc7 = 12
+    case version_2_rc8 = 16
     
-    static let currentVersion: SchemaVersions = .version_2_rc7
+    static let currentVersion: SchemaVersions = .version_2_rc8
 }
 
 final class RealmService {
@@ -59,16 +56,7 @@ extension RealmService {
                     new?["_network"] = EthereumNetwork.rinkeby.rawValue
                 }
             }
-            if oldSchemeVersion < SchemaVersions.version_2_rc4.rawValue {
-                // auto migrate
-            }
-            if oldSchemeVersion < SchemaVersions.version_2_rc5.rawValue {
-                // auto migrate
-            }
-            if oldSchemeVersion < SchemaVersions.version_2_rc6.rawValue {
-                migration.renameProperty(onType: WalletObject.className(), from: "_balance", to: "_eth_balance") // Renaming
-            }
-            if oldSchemeVersion < SchemaVersions.version_2_rc7.rawValue {
+            if oldSchemeVersion < SchemaVersions.version_2_rc8.rawValue {
                 // auto migrate
             }
         }
