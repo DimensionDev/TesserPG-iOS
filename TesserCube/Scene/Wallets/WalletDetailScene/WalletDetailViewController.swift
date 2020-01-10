@@ -81,11 +81,7 @@ extension WalletDetailViewModel: UITableViewDataSource {
         case .token:
             let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: TokenTableViewCell.self), for: indexPath) as! TokenTableViewCell
             let walletToken = tokens.value[indexPath.row]
-            if let token = walletToken.token {
-                AddTokenViewModel.configure(cell: _cell, with: token)
-            } else {
-                assertionFailure()
-            }
+            WalletDetailViewModel.configure(cell: _cell, with: walletToken)
             
             cell = _cell
 
@@ -108,6 +104,34 @@ extension WalletDetailViewModel: UITableViewDataSource {
                 
         return cell
     }
+    
+}
+
+extension WalletDetailViewModel {
+    
+    static func configure(cell: TokenTableViewCell, with walletToken: WalletToken) {
+        guard let token = walletToken.token else {
+            return
+        }
+        
+        cell.symbolLabel.text = token.symbol
+        cell.nameLabel.text = token.name
+        
+        let balanceInDecimal = walletToken.balance
+            .flatMap { Decimal(string: String($0)) }
+            .map { decimal in decimal / pow(10, token.decimals) }
+        
+        let balanceInDecimalString: String? = balanceInDecimal.flatMap { decimal in
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            formatter.minimumIntegerDigits = 1
+            formatter.maximumFractionDigits = min(4, token.decimals)
+            formatter.groupingSeparator = ""
+            return formatter.string(from: decimal as NSNumber)
+        }
+        cell.balanceLabel.text = balanceInDecimalString ?? "-"
+    }
+    
 }
 
 final class WalletDetailViewController: TCBaseViewController {
@@ -166,6 +190,28 @@ final class WalletDetailViewController: TCBaseViewController {
         return stackView
     }()
     
+    let tokenSectionHeaderView: UIView = {
+        let headerView = UIView()
+        headerView.preservesSuperviewLayoutMargins = true
+        
+        let label = UILabel()
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        headerView.addSubview(label)
+        NSLayoutConstraint.activate([
+            label.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 16),
+            label.leadingAnchor.constraint(equalTo: headerView.layoutMarginsGuide.leadingAnchor),
+            label.trailingAnchor.constraint(equalTo: headerView.layoutMarginsGuide.trailingAnchor),
+            headerView.bottomAnchor.constraint(equalTo: label.bottomAnchor, constant: 4),
+        ])
+        
+        label.textColor = ._secondaryLabel
+        label.font = FontFamily.SFProText.regular.font(size: 13)
+        label.text = "My Tokens"
+        
+        return headerView
+    }()
+    
     override func configUI() {
         super.configUI()
         
@@ -188,6 +234,7 @@ final class WalletDetailViewController: TCBaseViewController {
         
         viewModel.tokens.asDriver()
             .drive(onNext: { [weak self] _ in
+                os_log("%{public}s[%{public}ld], %{public}s: tokens changed. reload tableView", ((#file as NSString).lastPathComponent), #line, #function)
                 self?.tableView.reloadData()
             })
             .disposed(by: disposeBag)
@@ -207,8 +254,8 @@ extension WalletDetailViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         switch WalletDetailViewModel.Section.allCases[section] {
-        case .token:
-            return UIView() // TODO:
+        case .token where !viewModel.tokens.value.isEmpty:
+            return tokenSectionHeaderView
         default:
             return UIView()
         }
@@ -216,7 +263,7 @@ extension WalletDetailViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         switch WalletDetailViewModel.Section.allCases[section] {
-        case .token:
+        case .token where !viewModel.tokens.value.isEmpty:
             return UITableView.automaticDimension
         default:
             return 10
@@ -224,6 +271,14 @@ extension WalletDetailViewController: UITableViewDelegate {
     }
     
     // Cell
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch WalletDetailViewModel.Section.allCases[indexPath.section] {
+        case .token:
+            tableView.deselectRow(at: indexPath, animated: true)
+        default:
+            break
+        }
+    }
 
     // Footer
     
@@ -269,7 +324,14 @@ extension WalletDetailViewController: AddTokenViewControllerDelegate {
                     realm.add(walletToken)
                 }
             }
-            controller.dismiss(animated: true, completion: nil)
+            
+            controller.dismiss(animated: true, completion: {
+                // reload balance after new token inserted
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                    self?.viewModel.walletModel.updateBalance()
+                }
+            })
+            
         } catch {
             let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
             let okAction = UIAlertAction(title: L10n.Common.Button.ok, style: .default, handler: nil)

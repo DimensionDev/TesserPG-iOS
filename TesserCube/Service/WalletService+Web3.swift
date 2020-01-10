@@ -102,6 +102,35 @@ extension WalletService {
         }
     }
     
+    public static func getERC20TokenBalance(forWallet address: String, ofContract contract: String) -> Single<BigUInt> {
+        guard let contractAddress = try? EthereumAddress(hex: contract, eip55: false) else {
+            return Single.error(Error.contractAddressInvalid)
+        }
+        let erc20Contract = GenericERC20Contract(address: contractAddress, eth: web3.eth)
+        
+        guard let ethereumAddress = try? EthereumAddress(hex: address, eip55: false) else {
+            return Single.error(Error.contractAddressInvalid)
+        }
+        
+        return Single.create { single -> Disposable in
+            erc20Contract.balanceOf(address: ethereumAddress).call(block: .latest) { dict, error in
+                if let error = error {
+                    single(.error(error))
+                    os_log("%{public}s[%{public}ld], %{public}s: error: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
+                } else {
+                    guard let balance = dict?["_balance"] as? BigUInt else {
+                        single(.error(Error.invalidAmount))
+                        return
+                    }
+                    single(.success(balance))
+                }
+            }
+            
+            return Disposables.create { }
+        }
+        
+    }
+    
     /// Deploy red packet contract
     ///
     /// Return deploy transaction hash

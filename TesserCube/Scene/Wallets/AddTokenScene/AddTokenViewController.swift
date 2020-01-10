@@ -81,6 +81,7 @@ extension AddTokenViewModel {
     static func configure(cell: TokenTableViewCell, with token: ERC20Token) {
         cell.symbolLabel.text = token.symbol
         cell.nameLabel.text = token.name
+        cell.balanceLabel.text = ""
     }
     
 }

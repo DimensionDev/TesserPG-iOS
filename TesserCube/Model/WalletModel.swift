@@ -81,7 +81,49 @@ public class WalletModel {
                     
                 } catch {
                     os_log("%{public}s[%{public}ld], %{public}s: update walletObject balance fail: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
-
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        let walletID = walletObject.id
+        let walletAddress = self.address
+        
+        updateBalanceTrigger.asObserver()
+            .flatMapLatest { _ -> Observable<Result<(String, BigUInt), Error>> in
+                do {
+                    let realm = try WalletService.realm()
+                    let tokenAddresses = realm.objects(WalletToken.self).filter("wallet.id == %@", walletID).compactMap { $0.token?.address }
+                    
+                    let balanceResultTuple = Array(tokenAddresses).map { tokenAddress in
+                        return WalletService.getERC20TokenBalance(forWallet: walletAddress, ofContract: tokenAddress)
+                            .map { balance in (tokenAddress, balance) }
+                            .map { Result<(String, BigUInt), Error>.success($0)}
+                            .asObservable()
+                    }
+                    
+                    return Observable<Result<(String, BigUInt), Error>>.merge(balanceResultTuple)
+                } catch {
+                    return Observable.just(Result.failure(error))
+                }
+            }
+            .subscribe(onNext: { result in
+                switch result {
+                case let .success(tuple):
+                    let (tokenAddress, balance) = tuple
+                    do {
+                        let realm = try WalletService.realm()
+                        guard let walletToken = realm.objects(WalletToken.self).filter("wallet.id == %@ && token.address == %@", walletID, tokenAddress).first else {
+                            return
+                        }
+                        try realm.write {
+                            walletToken.balance = balance
+                        }
+                    } catch {
+                        os_log("%{public}s[%{public}ld], %{public}s: update token balance error: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
+                    }
+                    
+                case let .failure(error):
+                    os_log("%{public}s[%{public}ld], %{public}s: erc20 fetch balance error: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
                 }
             })
             .disposed(by: disposeBag)
