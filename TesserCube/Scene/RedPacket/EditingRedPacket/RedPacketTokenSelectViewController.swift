@@ -14,7 +14,7 @@ import RxCocoa
 import RxRealm
 
 protocol RedPacketTokenSelectViewControllerDelegate: class {
-    func redPacketTokenSelectViewController(_ viewController: RedPacketTokenSelectViewController, didSelectWalletToken walletToken: WalletToken)
+    func redPacketTokenSelectViewController(_ viewController: RedPacketTokenSelectViewController, didSelectTokenType selectTokenType: RedPacketTokenSelectViewModel.SelectTokenType)
 }
 
 final class RedPacketTokenSelectViewModel: NSObject {
@@ -56,6 +56,11 @@ extension RedPacketTokenSelectViewModel {
         case eth
         case erc20
     }
+    
+    enum SelectTokenType {
+        case eth
+        case erc20(walletToken: WalletToken)
+    }
 }
 
 extension RedPacketTokenSelectViewModel {
@@ -76,7 +81,7 @@ extension RedPacketTokenSelectViewModel {
             let formatter = NumberFormatter()
             formatter.numberStyle = .decimal
             formatter.minimumIntegerDigits = 1
-            formatter.maximumFractionDigits = min(4, token.decimals)
+            formatter.maximumFractionDigits = (token.decimals + 1) / 2
             formatter.groupingSeparator = ""
             return formatter.string(from: decimal as NSNumber)
         }
@@ -142,14 +147,14 @@ final class RedPacketTokenSelectViewController: UIViewController {
     let disposeBag = DisposeBag()
     var viewModel: RedPacketTokenSelectViewModel!
     
+    weak var delegate: RedPacketTokenSelectViewControllerDelegate?
+    
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.register(TokenTableViewCell.self, forCellReuseIdentifier: String(describing: TokenTableViewCell.self))
         return tableView
     }()
-    
-    weak var delegate: RedPacketTokenSelectViewControllerDelegate?
-    
+
 }
 
 extension RedPacketTokenSelectViewController {
@@ -185,6 +190,15 @@ extension RedPacketTokenSelectViewController {
 // MARK: - UITableViewDelegate
 extension RedPacketTokenSelectViewController: UITableViewDelegate {
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch RedPacketTokenSelectViewModel.Section.allCases[indexPath.section] {
+        case .eth:
+            delegate?.redPacketTokenSelectViewController(self, didSelectTokenType: .eth)
+        case .erc20:
+            let walletToken = viewModel.tokens.value[indexPath.row]
+            delegate?.redPacketTokenSelectViewController(self, didSelectTokenType: .erc20(walletToken: walletToken))
+        }
+    }
 }
 
 extension RedPacketTokenSelectViewController: UIAdaptivePresentationControllerDelegate {

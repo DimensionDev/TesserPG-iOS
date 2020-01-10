@@ -550,6 +550,8 @@
 		DBB64C7623C874D10099BE09 /* WalletCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD4323B32DED00252437 /* WalletCardView.swift */; };
 		DBB64C7723C874D10099BE09 /* WalletCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD4323B32DED00252437 /* WalletCardView.swift */; };
 		DBB64C7C23C875A90099BE09 /* WalletsViewModel+Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB64C7B23C875A90099BE09 /* WalletsViewModel+Cell.swift */; };
+		DBB64C8223C881B60099BE09 /* EditingRedPacketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB64C8123C881B60099BE09 /* EditingRedPacketViewModel.swift */; };
+		DBB64C8323C881B60099BE09 /* EditingRedPacketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB64C8123C881B60099BE09 /* EditingRedPacketViewModel.swift */; };
 		DBB81AE1225DFF7A003D63C6 /* UIScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB81AE0225DFF7A003D63C6 /* UIScreen.swift */; };
 		DBB933D6239E7062003236EB /* WalletSectionFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB933D5239E7062003236EB /* WalletSectionFooterView.swift */; };
 		DBB933D7239E7062003236EB /* WalletSectionFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB933D5239E7062003236EB /* WalletSectionFooterView.swift */; };
@@ -1035,6 +1037,7 @@
 		DBB64C6523C869A10099BE09 /* RealOnlyTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealOnlyTextField.swift; sourceTree = "<group>"; };
 		DBB64C6E23C874030099BE09 /* WalletDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletDetailViewModel.swift; sourceTree = "<group>"; };
 		DBB64C7B23C875A90099BE09 /* WalletsViewModel+Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WalletsViewModel+Cell.swift"; sourceTree = "<group>"; };
+		DBB64C8123C881B60099BE09 /* EditingRedPacketViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingRedPacketViewModel.swift; sourceTree = "<group>"; };
 		DBB81AE0225DFF7A003D63C6 /* UIScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScreen.swift; sourceTree = "<group>"; };
 		DBB933D2239A5FB5003236EB /* SelectRedPacketRecipientsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectRedPacketRecipientsTableViewCell.swift; sourceTree = "<group>"; };
 		DBB933D5239E7062003236EB /* WalletSectionFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletSectionFooterView.swift; sourceTree = "<group>"; };
@@ -2174,6 +2177,14 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		DBB64C8423C88F210099BE09 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DBB64C8123C881B60099BE09 /* EditingRedPacketViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		DBBA87F82248B8F900B290AC /* ComposeMessageScene */ = {
 			isa = PBXGroup;
 			children = (
@@ -2243,6 +2254,7 @@
 		DBC9CF042387C898009E13C5 /* EditingRedPacket */ = {
 			isa = PBXGroup;
 			children = (
+				DBB64C8423C88F210099BE09 /* ViewModel */,
 				DB1C6FD0239F59EF002A37AD /* View */,
 				DBC9CF032387C88E009E13C5 /* Cell */,
 				83955B76237271EF00161498 /* EditingRedPacketViewController.swift */,
@@ -2960,6 +2972,7 @@
 				83D8451523AB606F00AA6B36 /* UIButton+Vertical.swift in Sources */,
 				DBEE896C2372DE8B0080C194 /* MnemonicCollectionViewModel.swift in Sources */,
 				DB3B58E22282929700879834 /* WormholdService.swift in Sources */,
+				DBB64C8223C881B60099BE09 /* EditingRedPacketViewModel.swift in Sources */,
 				DB0EC52623ACA32D00BDA2B5 /* Web3Secret.swift in Sources */,
 				83783383224CB7F500F2C0BF /* strings.swift in Sources */,
 				DB66FE6A224A330D00D82704 /* String.swift in Sources */,
@@ -3214,6 +3227,7 @@
 				DBBBC199224E29E50080790F /* ContactMappable.swift in Sources */,
 				DB6AA3ED2273247C00A7ADDF /* KeyFactory+BCOpenPGP.swift in Sources */,
 				83B93D49221D7E8900F556C0 /* ImageKey.swift in Sources */,
+				DBB64C8323C881B60099BE09 /* EditingRedPacketViewModel.swift in Sources */,
 				DB415EAC238CD1E60090C28F /* ClaimRedPacketViewController.swift in Sources */,
 				833FF392224F97D900EFE0A9 /* Message.swift in Sources */,
 				83955B8123729B6B00161498 /* RedPacketWalletProvider.swift in Sources */,

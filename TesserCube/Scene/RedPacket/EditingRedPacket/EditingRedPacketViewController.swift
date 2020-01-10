@@ -10,212 +10,7 @@ import os
 import UIKit
 import RxSwift
 import RxCocoa
-import RxSwiftUtilities
-import BigInt
-import DMS_HDWallet_Cocoa
 import Web3
-
-final class EditingRedPacketViewModel: NSObject {
-    
-    let disposeBag = DisposeBag()
-    let createActivityIndicator = ActivityIndicator()
-    
-    // Input
-    let redPacketSplitType = BehaviorRelay(value: SplitType.average)
-    
-    let walletModels = BehaviorRelay<[WalletModel]>(value: [])
-    let selectWalletModel = BehaviorRelay<WalletModel?>(value: nil)
-    
-    let amount = BehaviorRelay(value: Decimal(0))       // user input value. default 0
-    let share = BehaviorRelay(value: 1)
-    
-    let name = BehaviorRelay(value: "")
-    let message = BehaviorRelay(value: "")
-    
-    // Output
-    let isCreating: Driver<Bool>
-    let canDismiss = BehaviorRelay(value: true)
-    let amountInputCoinCurrencyUnitLabelText: Driver<String>
-    let minimalAmount = BehaviorRelay(value: RedPacketService.redPacketMinAmount)
-    let total = BehaviorRelay(value: Decimal(0))     // should not 0 after user input amount
-    let sendRedPacketButtonText: Driver<String>
-
-    enum TableViewCellType {
-        case wallet                 // select a wallet to send red packet
-        case token                  // select token type
-        case amount                 // input the amount for send
-        case share                  // input the count for shares
-        case name                   // input the sender name
-        case message                // input the comment message
-    }
-    
-    let sections: [[TableViewCellType]] = [
-        [
-            .wallet,
-            .token,
-        ],
-        [
-            .amount,
-            .share,
-        ],
-        [
-            .name,
-            .message,
-        ],
-    ]
-    
-    override init() {
-        isCreating = createActivityIndicator.asDriver()
-        amountInputCoinCurrencyUnitLabelText = redPacketSplitType.asDriver()
-            .map { type in type == .average ? "ETH per share" : "ETH" }
-        sendRedPacketButtonText = total.asDriver()
-            .map { total in
-                guard total > 0, let totalInETH = NumberFormatter.decimalFormatterForETH.string(from: total as NSNumber) else {
-                    return "Send"
-                }
-                
-                return "Send \(totalInETH) ETH"
-            }
-        super.init()
-        
-        // Update default select wallet model when wallet model pool change
-        walletModels.asDriver()
-            .map { $0.first }
-            .drive(selectWalletModel)
-            .disposed(by: disposeBag)
-        
-        Driver.combineLatest(share.asDriver(), redPacketSplitType.asDriver()) { share, splitType -> Decimal in
-                switch splitType {
-                case .average:
-                    return RedPacketService.redPacketMinAmount
-                case .random:
-                    return Decimal(share) * RedPacketService.redPacketMinAmount
-                }
-            }
-            .drive(minimalAmount)
-            .disposed(by: disposeBag)
-        
-        Driver.combineLatest(redPacketSplitType.asDriver(), amount.asDriver(), share.asDriver()) { splitType, amount, share -> Decimal in
-                switch splitType {
-                case .random:
-                    return amount
-                case .average:
-                    return amount * Decimal(share)
-                }
-            }
-            .drive(total)
-            .disposed(by: disposeBag)
-        
-        isCreating.asDriver()
-            .map { !$0 }
-            .drive(canDismiss)
-            .disposed(by: disposeBag)
-    }
-    
-    deinit {
-        os_log("%{public}s[%{public}ld], %{public}s", ((#file as NSString).lastPathComponent), #line, #function)
-    }
-    
-}
-
-extension EditingRedPacketViewModel {
-    
-    enum SplitType: Int, CaseIterable {
-        case average
-        case random
-        
-        var title: String {
-            switch self {
-            case .average:
-                return "Average"
-            case .random:
-                return "Random"
-            }
-        }
-    }
-    
-}
-
-// MARK: - UITableViewDataSource
-extension EditingRedPacketViewModel: UITableViewDataSource {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return sections.count
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: UITableViewCell
-        
-        switch sections[indexPath.section][indexPath.row] {
-        case .wallet:
-            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SelectWalletTableViewCell.self), for: indexPath) as! SelectWalletTableViewCell
-            walletModels.asDriver()
-                .drive(_cell.viewModel.walletModels)
-                .disposed(by: _cell.disposeBag)
-            _cell.viewModel.selectWalletModel.asDriver()
-                .drive(selectWalletModel)
-                .disposed(by: _cell.disposeBag)
-            cell = _cell
-            
-        case .token:
-            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SelectTokenTableViewCell.self), for: indexPath) as! SelectTokenTableViewCell
-            
-            cell = _cell
-        
-        case .amount:
-            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: InputRedPacketAmoutTableViewCell.self), for: indexPath) as! InputRedPacketAmoutTableViewCell
-            
-            // Bind coin currency unit label text to label
-            amountInputCoinCurrencyUnitLabelText.asDriver()
-                .drive(_cell.coinCurrencyUnitLabel.rx.text)
-                .disposed(by: _cell.disposeBag)
-            
-            _cell.amount.asDriver()
-                .drive(amount)
-                .disposed(by: _cell.disposeBag)
-            
-            minimalAmount.asDriver()
-                .drive(_cell.minimalAmount)
-                .disposed(by: _cell.disposeBag)
-            
-            cell = _cell
-        
-        case .share:
-            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: InputRedPacketShareTableViewCell.self), for: indexPath) as! InputRedPacketShareTableViewCell
-            
-            _cell.share.asDriver()
-                .drive(share)
-                .disposed(by: disposeBag)
-            
-            cell = _cell
-            
-        case .name:
-            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: InputRedPacketSenderTableViewCell.self), for: indexPath) as! InputRedPacketSenderTableViewCell
-            
-            _cell.nameTextField.rx.text.orEmpty.asDriver()
-                .drive(name)
-                .disposed(by: _cell.disposeBag)
-            
-            cell = _cell
-            
-        case .message:
-            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: InputRedPacketMessageTableViewCell.self), for: indexPath) as! InputRedPacketMessageTableViewCell
-            
-            _cell.messageTextField.rx.text.orEmpty.asDriver()
-                .drive(message)
-                .disposed(by: _cell.disposeBag)
-            
-            cell = _cell
-        }
-        
-        return cell
-    }
-    
-}
 
 class EditingRedPacketViewController: UIViewController {
     
@@ -372,25 +167,7 @@ class EditingRedPacketViewController: UIViewController {
             .disposed(by: disposeBag)
         
         // Bind wallet model balance to wallet section footer view
-        viewModel.selectWalletModel.asDriver()
-            .flatMapLatest { walletModel -> Driver<String> in
-                guard let walletModel = walletModel else {
-                    return Driver.just("Current balance: - ")
-                }
-                
-                return walletModel.balanceInDecimal.asDriver()
-                    .map { decimal in
-                        let placeholder = "Current balance: - "
-                        guard let decimal = decimal else {
-                            return placeholder
-                        }
-                        
-                        let formatter = WalletService.balanceDecimalFormatter
-                        return formatter.string(from: decimal as NSNumber).flatMap { decimalString in
-                            return "Current balance: \(decimalString) ETH"
-                        } ?? placeholder
-                }
-            }
+        viewModel.walletSectionFooterViewText.asDriver()
             .drive(walletSectionFooterView.walletBalanceLabel.rx.text)
             .disposed(by: disposeBag)
         
@@ -648,6 +425,7 @@ extension EditingRedPacketViewController: UITableViewDelegate {
             let tokenSelectViewController = RedPacketTokenSelectViewController()
             let viewModel = RedPacketTokenSelectViewModel(walletModel: walletModel)
             tokenSelectViewController.viewModel = viewModel
+            tokenSelectViewController.delegate = self
             navigationController?.presentationController?.delegate = tokenSelectViewController as UIAdaptivePresentationControllerDelegate
             navigationController?.pushViewController(tokenSelectViewController, animated: true)
         default:
@@ -664,6 +442,17 @@ extension EditingRedPacketViewController: RedPacketWalletSelectViewControllerDel
         viewModel.selectWalletModel.accept(wallet)
         viewController.navigationController?.popViewController(animated: true)
     }
+    
+}
+
+// MARK: - RedPacketTokenSelectViewControllerDelegate
+extension EditingRedPacketViewController: RedPacketTokenSelectViewControllerDelegate {
+    
+    func redPacketTokenSelectViewController(_ viewController: RedPacketTokenSelectViewController, didSelectTokenType selectTokenType: RedPacketTokenSelectViewModel.SelectTokenType) {
+        viewModel.selectTokenType.accept(selectTokenType)
+        viewController.navigationController?.popViewController(animated: true)
+    }
+    
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate

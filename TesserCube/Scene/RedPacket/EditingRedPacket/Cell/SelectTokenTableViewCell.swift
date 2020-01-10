@@ -17,7 +17,7 @@ final class SelectTokenTableViewCell: UITableViewCell {
         return label
     }()
     
-    private(set) lazy var walletTextField: UITextField = {
+    private(set) lazy var tokenNameTextField: UITextField = {
         let textField = ReadOnlyTextField()
         textField.isEnabled = false
         // User touching UITextField will trigger `textDidChange` callback, which makes our keyboard reset all the custom views
@@ -55,13 +55,13 @@ extension SelectTokenTableViewCell {
         ])
         titleLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         
-        walletTextField.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(walletTextField)
+        tokenNameTextField.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(tokenNameTextField)
         NSLayoutConstraint.activate([
-            walletTextField.topAnchor.constraint(equalTo: contentView.topAnchor),
-            walletTextField.leadingAnchor.constraint(equalToSystemSpacingAfter: titleLabel.trailingAnchor, multiplier: 1.0),
-            contentView.layoutMarginsGuide.trailingAnchor.constraint(equalTo: walletTextField.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: walletTextField.bottomAnchor),
+            tokenNameTextField.topAnchor.constraint(equalTo: contentView.topAnchor),
+            tokenNameTextField.leadingAnchor.constraint(equalToSystemSpacingAfter: titleLabel.trailingAnchor, multiplier: 1.0),
+            contentView.layoutMarginsGuide.trailingAnchor.constraint(equalTo: tokenNameTextField.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: tokenNameTextField.bottomAnchor),
         ])
     }
     
