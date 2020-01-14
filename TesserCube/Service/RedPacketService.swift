@@ -39,14 +39,14 @@ final class RedPacketService {
     var refundResultQueue: [RedPacket.ID: Observable<RefundSuccess>] = [:]
     var updateRefundResultQueue: [RedPacket.ID: Observable<RefundSuccess>] = [:]
     
-    // per packet. 0.002025 ETH
+    // per packet. 0.001 ETH
     public static var redPacketMinAmount: Decimal {
-        return Decimal(0.002025)
+        return Decimal(0.001)
     }
     
-    // per packet. 0.002025 ETH
+    // per packet. 0.001 ETH
     public static var redPacketMinAmountInWei: BigUInt {
-        return 2025000.gwei
+        return 1000000.gwei
     }
     
     public static let redPacketContractABIData: Data = {
