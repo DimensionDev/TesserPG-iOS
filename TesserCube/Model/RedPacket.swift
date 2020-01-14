@@ -51,7 +51,9 @@ public class RedPacket: Object {
     
     @objc private dynamic var _token_type = RedPacketTokenType.eth.rawValue
     @objc public dynamic var erc20_token: ERC20Token?
+    let erc20_approve_transaction_nonce = RealmOptional<Int>()
     @objc public dynamic var erc20_approve_transaction_hash: String?
+    @objc private dynamic var _erc20_approve_value: String?
     
     public dynamic var network: EthereumNetwork {
         get { return EthereumNetwork(rawValue: _network) ?? .rinkeby }
@@ -78,13 +80,17 @@ public class RedPacket: Object {
         get { return RedPacketTokenType(rawValue: _token_type) ?? .eth }
         set { _token_type = newValue.rawValue }
     }
+    public dynamic var erc20_approve_value: BigUInt? {
+        get { return _erc20_approve_value.flatMap { BigUInt($0, radix: 10)! } }
+        set { _erc20_approve_value = newValue.flatMap { String($0) } }
+    }
     
     override public static func primaryKey() -> String? {
         return "id"
     }
     
     override public class func ignoredProperties() -> [String] {
-        return ["network", "send_total", "claim_amount", "refund_amount", "token_type"]
+        return ["network", "send_total", "claim_amount", "refund_amount", "token_type", "erc20_approve_value"]
     }
 }
 
@@ -105,6 +111,13 @@ public enum RedPacketStatus: String {
 public enum RedPacketTokenType: String {
     case eth
     case erc20
+    
+    public var contractParameter: BigUInt {
+        switch self {
+        case .eth:      return BigUInt(0)
+        case .erc20:    return BigUInt(1)
+        }
+    }
 }
 
 public enum EthereumNetwork: String {
