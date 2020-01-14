@@ -12,6 +12,17 @@ import RxSwift
 import RxCocoa
 import Web3
 
+// [RP_Mode]:           segmented control with two segments: [.average, .random]
+// [RP_Wallet]:         selected wallet for send RP
+// [RP_Token]:          token type: [.eth, .erc20(WalletToken)]. Default .eth
+// [UI_CurrentBalance]: label: "Current balance: <token_in_decimal> <token_symbol>"
+// [RP_Amount]:         send amount in decimal.
+//                      format with token <(decimals + 1) / 2> for .maximumFractionDigits.
+// [UI_Amount_Hint]:    label: "<symbol per share>" (.average mode) or "<token_symbol>" (.random mode)
+// [RP_Share]:          send share count. 1...100
+// [RP_Name]:           one-line trimmed sender name. Max up to 30 (include) chars. Not empty
+// [RP_Message]:        one-line trimmed message. Max up to 140 (include) chars. Could empty
+// [UI_SendButton]:     button: "Send <send_total_amoun_in_decimal> <token_symbol>"
 class EditingRedPacketViewController: UIViewController {
     
     let disposeBag = DisposeBag()
