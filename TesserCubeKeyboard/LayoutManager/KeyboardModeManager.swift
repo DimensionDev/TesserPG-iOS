@@ -159,14 +159,19 @@ class KeyboardModeManager: NSObject {
                     let inputRecipientTextView = encryptVC.contentInputView
                     let tempText = inputRecipientTextView.inputTextField.text ?? ""
                     inputRecipientTextView.inputTextField.text = (tempText + key)
-                    inputRecipientTextView.inputTextField.repositionCursor()
+                    return
+                }
+                if let selectRecipientVC = topNaviVC.topViewController as? SelectRecipientViewController {
+                    let inputRecipientTextView = selectRecipientVC.selectRecipientView?.recipientInputView
+                    let tempText = inputRecipientTextView?.inputTextField.text ?? ""
+                    inputRecipientTextView?.inputTextField.text = (tempText + key)
+                    inputRecipientTextView?.inputTextField.repositionCursor()
                     return
                 }
                 if let signVC = topNaviVC.topViewController as? SignViewController {
                     let inputRecipientTextView = signVC.contentInputView
                     let tempText = inputRecipientTextView.inputTextField.text ?? ""
                     inputRecipientTextView.inputTextField.text = (tempText + key)
-                    inputRecipientTextView.inputTextField.repositionCursor()
                     return
                 }
             }
@@ -205,17 +210,25 @@ class KeyboardModeManager: NSObject {
                     let tempText = inputRecipientTextView.inputTextField.text ?? ""
                     if !tempText.isEmpty {
                         inputRecipientTextView.inputTextField.text = String(tempText[tempText.startIndex ..< tempText.index(before: tempText.endIndex)])
-                        inputRecipientTextView.inputTextField.repositionCursor()
+//                        inputRecipientTextView.inputTextField.repositionCursor()
                     }
                     return
                 }
-                
+                if let selectRecipientVC = topNaviVC.topViewController as? SelectRecipientViewController {
+                    let inputRecipientTextView = selectRecipientVC.selectRecipientView?.recipientInputView
+                    let tempText = inputRecipientTextView?.inputTextField.text ?? ""
+                    if !tempText.isEmpty {
+                        inputRecipientTextView?.inputTextField.text = String(tempText[tempText.startIndex ..< tempText.index(before: tempText.endIndex)])
+                        inputRecipientTextView?.inputTextField.repositionCursor()
+                    }
+                    return
+                }
                 if let signVC = topNaviVC.topViewController as? SignViewController {
                     let inputRecipientTextView = signVC.contentInputView
                     let tempText = inputRecipientTextView.inputTextField.text ?? ""
                     if !tempText.isEmpty {
                         inputRecipientTextView.inputTextField.text = String(tempText[tempText.startIndex ..< tempText.index(before: tempText.endIndex)])
-                        inputRecipientTextView.inputTextField.repositionCursor()
+//                        inputRecipientTextView.inputTextField.repositionCursor()
                     }
                 }
             }
@@ -258,7 +271,9 @@ class KeyboardModeManager: NSObject {
                 if let encryptVC = topNaviVC.topViewController as? EncryptViewController {
                     return encryptVC.contentInputView.inputTextField.text
                 }
-                
+                if let selectRecipientVC = topNaviVC.topViewController as? SelectRecipientViewController {
+                    return selectRecipientVC.selectRecipientView?.recipientInputView.inputTextField.text
+                }
                 if let signVC = topNaviVC.topViewController as? SignViewController {
                     return signVC.contentInputView.inputTextField.text
                 }

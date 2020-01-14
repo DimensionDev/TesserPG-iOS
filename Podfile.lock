@@ -119,10 +119,7 @@ DEPENDENCIES:
   - WordSuggestion (~> 0.2.1)
 
 SPEC REPOS:
-  https://github.com/SujiTech/Specs.git:
-    - DMS_HDWallet_Cocoa
-    - secp256k1.swift
-  trunk:
+  https://github.com/CocoaPods/Specs.git:
     - AlignedCollectionViewFlowLayout
     - BigInt
     - BlueCryptor
@@ -156,6 +153,9 @@ SPEC REPOS:
     - "UITextView+Placeholder"
     - Web3
     - WordSuggestion
+  https://github.com/SujiTech/Specs.git:
+    - DMS_HDWallet_Cocoa
+    - secp256k1.swift
 
 EXTERNAL SOURCES:
   RxSwiftUtilities:
@@ -212,6 +212,6 @@ SPEC CHECKSUMS:
   Web3: a4eb0d0cdedbef3f0e4c97ea83a4232a1b1f952b
   WordSuggestion: 424d96dd2cfe4259c72959f9bdcffc864f0e65d4
 
-PODFILE CHECKSUM: 5f6ab958c631c29a330a1f09402b9ed617b083fb
+PODFILE CHECKSUM: d826b195034d592aaa1f9d540c6d760b8891b776
 
 COCOAPODS: 1.8.4

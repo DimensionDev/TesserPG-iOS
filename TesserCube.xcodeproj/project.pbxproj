@@ -14,6 +14,7 @@
 		8304E99F221BF10100122637 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8304E99D221BF10100122637 /* LaunchScreen.storyboard */; };
 		8304E9AA221BF10200122637 /* TesserCubeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8304E9A9221BF10200122637 /* TesserCubeTests.swift */; };
 		8304E9B5221BF10200122637 /* TesserCubeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8304E9B4221BF10200122637 /* TesserCubeUITests.swift */; };
+		830A3F9D23B5F3690053FAB5 /* KeyboardMultiLineInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830A3F9C23B5F3690053FAB5 /* KeyboardMultiLineInputView.swift */; };
 		8310B34522325E0C00C35AEC /* String+Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8310B34422325E0C00C35AEC /* String+Compare.swift */; };
 		8313F6912247164000C09C2D /* FloatingAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F6902247164000C09C2D /* FloatingAction.swift */; };
 		8313F6932247165F00C09C2D /* FloatingActionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F6922247165F00C09C2D /* FloatingActionGroup.swift */; };
@@ -705,6 +706,7 @@
 		8304E9B6221BF10200122637 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8304E9C4221BF1CD00122637 /* TesserCube.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TesserCube.entitlements; sourceTree = "<group>"; };
 		8304E9C6221BF1DD00122637 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
+		830A3F9C23B5F3690053FAB5 /* KeyboardMultiLineInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardMultiLineInputView.swift; sourceTree = "<group>"; };
 		8310B34422325E0C00C35AEC /* String+Compare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Compare.swift"; sourceTree = "<group>"; };
 		8313F6902247164000C09C2D /* FloatingAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingAction.swift; sourceTree = "<group>"; };
 		8313F6922247165F00C09C2D /* FloatingActionGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingActionGroup.swift; sourceTree = "<group>"; };
@@ -1555,6 +1557,7 @@
 			children = (
 				832D1D9E23A8CB99006FDF6D /* EncryptViewController.swift */,
 				8393371823A9F85E00C540EF /* SelectRecipientViewController.swift */,
+				830A3F9C23B5F3690053FAB5 /* KeyboardMultiLineInputView.swift */,
 			);
 			path = Encrypt;
 			sourceTree = "<group>";
@@ -3094,6 +3097,7 @@
 				83DFC73F2259F0E700993160 /* TCCardView.swift in Sources */,
 				83B93D4F221D89FD00F556C0 /* KeyboardLayout.swift in Sources */,
 				8325E4AA22310B1900EE9B83 /* SuggestHelper.swift in Sources */,
+				830A3F9D23B5F3690053FAB5 /* KeyboardMultiLineInputView.swift in Sources */,
 				83B93E882223CCF700F556C0 /* KeyboardInputView.swift in Sources */,
 				DB03DD5E237BFD4F00D96201 /* WalletService+Web3.swift in Sources */,
 				DB449991228C1417000B7E8A /* MessageDigitalSignatureSettings.swift in Sources */,

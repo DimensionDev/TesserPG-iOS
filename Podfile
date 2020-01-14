@@ -1,5 +1,6 @@
 source 'https://github.com/SujiTech/Specs.git'
-source 'https://cdn.cocoapods.org/'
+source 'https://github.com/CocoaPods/Specs.git'
+#source 'https://cdn.cocoapods.org/'
 
 platform :ios, '11.0'
 use_frameworks!
