@@ -552,6 +552,14 @@
 		DBB64C7C23C875A90099BE09 /* WalletsViewModel+Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB64C7B23C875A90099BE09 /* WalletsViewModel+Cell.swift */; };
 		DBB64C8223C881B60099BE09 /* EditingRedPacketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB64C8123C881B60099BE09 /* EditingRedPacketViewModel.swift */; };
 		DBB64C8323C881B60099BE09 /* EditingRedPacketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB64C8123C881B60099BE09 /* EditingRedPacketViewModel.swift */; };
+		DBB64C8623CC43000099BE09 /* RedPacketService+Approve.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB64C8523CC43000099BE09 /* RedPacketService+Approve.swift */; };
+		DBB64C8723CC43000099BE09 /* RedPacketService+Approve.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB64C8523CC43000099BE09 /* RedPacketService+Approve.swift */; };
+		DBB64C8823CC57780099BE09 /* RedPacketService+Approve.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB64C8523CC43000099BE09 /* RedPacketService+Approve.swift */; };
+		DBB64C8923CC57780099BE09 /* RedPacketService+Approve.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB64C8523CC43000099BE09 /* RedPacketService+Approve.swift */; };
+		DBB64C8B23CC8B8C0099BE09 /* WalletValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB64C8A23CC8B8C0099BE09 /* WalletValue.swift */; };
+		DBB64C8C23CC8B8C0099BE09 /* WalletValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB64C8A23CC8B8C0099BE09 /* WalletValue.swift */; };
+		DBB64C8D23CC8B8C0099BE09 /* WalletValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB64C8A23CC8B8C0099BE09 /* WalletValue.swift */; };
+		DBB64C8E23CC8B8C0099BE09 /* WalletValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB64C8A23CC8B8C0099BE09 /* WalletValue.swift */; };
 		DBB64C9023CC93DA0099BE09 /* RedPacketHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB64C8F23CC93DA0099BE09 /* RedPacketHelper.swift */; };
 		DBB64C9123CC93DA0099BE09 /* RedPacketHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB64C8F23CC93DA0099BE09 /* RedPacketHelper.swift */; };
 		DBB64C9223CC93DA0099BE09 /* RedPacketHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBB64C8F23CC93DA0099BE09 /* RedPacketHelper.swift */; };
@@ -1042,6 +1050,8 @@
 		DBB64C6E23C874030099BE09 /* WalletDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletDetailViewModel.swift; sourceTree = "<group>"; };
 		DBB64C7B23C875A90099BE09 /* WalletsViewModel+Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WalletsViewModel+Cell.swift"; sourceTree = "<group>"; };
 		DBB64C8123C881B60099BE09 /* EditingRedPacketViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditingRedPacketViewModel.swift; sourceTree = "<group>"; };
+		DBB64C8523CC43000099BE09 /* RedPacketService+Approve.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RedPacketService+Approve.swift"; sourceTree = "<group>"; };
+		DBB64C8A23CC8B8C0099BE09 /* WalletValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletValue.swift; sourceTree = "<group>"; };
 		DBB64C8F23CC93DA0099BE09 /* RedPacketHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedPacketHelper.swift; sourceTree = "<group>"; };
 		DBB81AE0225DFF7A003D63C6 /* UIScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScreen.swift; sourceTree = "<group>"; };
 		DBB933D2239A5FB5003236EB /* SelectRedPacketRecipientsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectRedPacketRecipientsTableViewCell.swift; sourceTree = "<group>"; };
@@ -1399,6 +1409,7 @@
 				DB9FEA0923AA423F00499632 /* RedPacketService+Claim.swift */,
 				DB9FEA1823AB727F00499632 /* RedPacketService+Check.swift */,
 				DB32518123B9DAD400A4DDD8 /* RedPacketService+Refund.swift */,
+				DBB64C8523CC43000099BE09 /* RedPacketService+Approve.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -1477,6 +1488,7 @@
 				DB03DD62237C104F00D96201 /* Wallet.swift */,
 				DB4A701123C7006C00C2349C /* WalletObject.swift */,
 				DB03DD67237C105B00D96201 /* WalletModel.swift */,
+				DBB64C8A23CC8B8C0099BE09 /* WalletValue.swift */,
 				DB415E82238BB7370090C28F /* RedPacket.swift */,
 				DB32518623BA198100A4DDD8 /* RedPacketValue.swift */,
 				DB9FE9EB23A8B6A400499632 /* RedPacket+V1.swift */,
@@ -3033,6 +3045,7 @@
 				DB0F101E23893B3100F49D2C /* CreatedRedPacketViewController.swift in Sources */,
 				DBEE89652372B87E0080C194 /* BackupMnemonicViewController.swift in Sources */,
 				DB8D730F231E0EF0005D15DD /* MeViewModel+ContextMenuActionTableViewDelegate.swift in Sources */,
+				DBB64C8623CC43000099BE09 /* RedPacketService+Approve.swift in Sources */,
 				DB8D7311231E2791005D15DD /* ProfileService+KeyRecord.swift in Sources */,
 				8316ADAB22CB4E1000246E5A /* ConfirmContactCell.swift in Sources */,
 				DBB64C6623C869A10099BE09 /* RealOnlyTextField.swift in Sources */,
@@ -3066,6 +3079,7 @@
 				8320AF4A22B64D1C00843FE7 /* IntroWizardViewController.swift in Sources */,
 				8313F69622475AC600C09C2D /* SharePublicKeyActivity.swift in Sources */,
 				DB32515023B4B9C100A4DDD8 /* RedPacketDetailTableSectionHeaderView.swift in Sources */,
+				DBB64C8B23CC8B8C0099BE09 /* WalletValue.swift in Sources */,
 				832146DA2241FAC6008ECC22 /* PasteKeyViewController.swift in Sources */,
 				DBC19D832375006900170151 /* BackupMnemonicCollectionViewModel.swift in Sources */,
 				832146BA223F8AA1008ECC22 /* KeyCardCell.swift in Sources */,
@@ -3247,6 +3261,7 @@
 				83B93E8A222411C300F556C0 /* UIView+blinking.swift in Sources */,
 				DB0ABA19237585B800AD3B7F /* WalletService.swift in Sources */,
 				83DFC73F2259F0E700993160 /* TCCardView.swift in Sources */,
+				DBB64C8C23CC8B8C0099BE09 /* WalletValue.swift in Sources */,
 				DBB64C6C23C872A80099BE09 /* WalletCardTableViewCell.swift in Sources */,
 				83B93D4F221D89FD00F556C0 /* KeyboardLayout.swift in Sources */,
 				8325E4AA22310B1900EE9B83 /* SuggestHelper.swift in Sources */,
@@ -3282,6 +3297,7 @@
 				DBB64C5D23C867A30099BE09 /* TokenTableViewCell.swift in Sources */,
 				DB9FEA1023AB65D600499632 /* RedPacketService+Error.swift in Sources */,
 				DBF6B2AE232F6950008F83AE /* UIColor+Keyboard.swift in Sources */,
+				DBB64C8723CC43000099BE09 /* RedPacketService+Approve.swift in Sources */,
 				83B93D4B221D7EB000F556C0 /* Shapes.swift in Sources */,
 				8378335A224889B100F2C0BF /* ProfileService.swift in Sources */,
 				837833562248840600F2C0BF /* TCTypes.swift in Sources */,
@@ -3409,6 +3425,7 @@
 				DB63A0E422DD9B5600C2DDA6 /* CALayer+Shadow.swift in Sources */,
 				DB415E89238BF00D0090C28F /* RedPacket.swift in Sources */,
 				DB63A11E22E0687C00C2DDA6 /* ContactPickerTagCollectionViewCell.swift in Sources */,
+				DBB64C8D23CC8B8C0099BE09 /* WalletValue.swift in Sources */,
 				DB9FEA1123AB65D600499632 /* RedPacketService+Error.swift in Sources */,
 				DB15696023278EA200220926 /* FetchableRecord+all.swift in Sources */,
 				DB4A701923C70D3000C2349C /* WalletToken.swift in Sources */,
@@ -3425,6 +3442,7 @@
 				DB1169CC22E185640099BA25 /* NotificationName.swift in Sources */,
 				DB9FE9EE23A8B6B100499632 /* RedPacket+V1.swift in Sources */,
 				83C90B45231678DF0048743A /* GenerateKeyData.swift in Sources */,
+				DBB64C8823CC57780099BE09 /* RedPacketService+Approve.swift in Sources */,
 				DB32515723B4BDD000A4DDD8 /* UITableView.swift in Sources */,
 				DB63A12322E0691900C2DDA6 /* UIViewController+Alert.swift in Sources */,
 				DB63A0F322DDCAB400C2DDA6 /* Message.swift in Sources */,
@@ -3467,6 +3485,7 @@
 				DB1169C222E184390099BA25 /* SenderContactPickerView.swift in Sources */,
 				DB32518523B9DAD400A4DDD8 /* RedPacketService+Refund.swift in Sources */,
 				DB415E8D238BFA420090C28F /* CreatedRedPacketViewController.swift in Sources */,
+				DBB64C8E23CC8B8C0099BE09 /* WalletValue.swift in Sources */,
 				DB1169B022E1831E0099BA25 /* Contact.swift in Sources */,
 				DBB64C9323CC93DA0099BE09 /* RedPacketHelper.swift in Sources */,
 				DB1169C322E184C30099BA25 /* UIViewController+Alert.swift in Sources */,
@@ -3500,6 +3519,7 @@
 				DB1169A122E182730099BA25 /* Assets.swift in Sources */,
 				DBC9BD3A23B094F200252437 /* RedPacketPayloadEncryptor.swift in Sources */,
 				DB1169BD22E183CD0099BA25 /* KeyFactory+BCOpenPGP.swift in Sources */,
+				DBB64C8923CC57780099BE09 /* RedPacketService+Approve.swift in Sources */,
 				DB9FEA0823A9E88B00499632 /* RedPacketService+Create.swift in Sources */,
 				DB415E86238BEE5E0090C28F /* RedPacketService.swift in Sources */,
 				DB415EA9238CBF9C0090C28F /* FullContactInfo.swift in Sources */,

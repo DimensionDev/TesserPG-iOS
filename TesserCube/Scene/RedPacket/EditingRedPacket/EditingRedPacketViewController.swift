@@ -235,20 +235,21 @@ extension EditingRedPacketViewController {
             return
         }
         
-        guard let availableBalance = selectWalletModel.balance.value else {
+        guard let availableBalance = viewModel.walletBalanceForSelectToken.value else {
             alertController.message = "Can not read select wallet balance\nPlease try later"
             present(alertController, animated: true, completion: nil)
             return
         }
         
-        guard viewModel.total.value > 0,
-            let sendTotal = viewModel.total.value.wei else {
-                alertController.message = "Please input valid amount"
-                present(alertController, animated: true, completion: nil)
-                return
+        let sendTotalInDecimal = viewModel.totalInDecimal.value
+        guard viewModel.totalInDecimal.value > 0,
+        let sendTotalInBigUInt = sendTotalInDecimal.tokenInBigUInt(for: viewModel.selectTokenDecimal.value) else {
+            alertController.message = "Please input valid amount"
+            present(alertController, animated: true, completion: nil)
+            return
         }
-
-        guard sendTotal < availableBalance else {
+    
+        guard sendTotalInBigUInt < availableBalance else {
             alertController.message = "Insufficient account balance\nPlease input valid amount"
             present(alertController, animated: true, completion: nil)
             return
@@ -293,56 +294,123 @@ extension EditingRedPacketViewController {
         redPacket.is_random = isRandom
         redPacket.sender_address = senderAddress
         redPacket.sender_name = senderName
-        redPacket.send_total = sendTotal
+        redPacket.send_total = sendTotalInBigUInt
         redPacket.send_message = sendMessage
         redPacket.status = .initial
         
-        // get nonce -> call create transaction
-        // success: push to CreatedRedPacketViewController
-        // failure: stand in same place and just alert user error
-        WalletService.getTransactionCount(address: walletAddress).asObservable()
-            .withLatestFrom(viewModel.isCreating) { ($0, $1) }     // (nonce, isCreating)
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
-            .filter { $0.1 == false }                               // not creating
-            .map { $0.0 }                                           // nonce
-            .retry(3)
-            .do(onNext: { nonce in
-                let nonce = Int(nonce.quantity)
-                redPacket.create_nonce.value = nonce
-            })
-            .flatMap { nonce -> Observable<TransactionHash> in
-                return RedPacketService.create(for: redPacket, use: selectWalletModel, nonce: nonce)
-                    .trackActivity(self.viewModel.createActivityIndicator)
-            }
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] transactionHash in
-                do {
-                    // red packet create transaction success
-                    // set status to .pending
-                    let realm = try RedPacketService.realm()
-                    try realm.write {
-                        redPacket.create_transaction_hash = transactionHash.hex()
-                        redPacket.status = .pending
-                        realm.add(redPacket)
+        let selectWalletValue = WalletValue(from: selectWalletModel)
+        
+        let tokenType = viewModel.selectTokenType.value
+        switch tokenType {
+        case .eth:
+            // get nonce -> call create transaction
+            // success: push to CreatedRedPacketViewController
+            // failure: stand in same place and just alert user error
+            WalletService.getTransactionCount(address: walletAddress).asObservable()
+                .withLatestFrom(viewModel.isCreating) { ($0, $1) }     // (nonce, isCreating)
+                .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+                .filter { $0.1 == false }                               // not creating
+                .map { $0.0 }                                           // nonce
+                .retry(3)
+                .do(onNext: { nonce in
+                    let nonce = Int(nonce.quantity)
+                    redPacket.create_nonce.value = nonce
+                })
+                .flatMap { nonce -> Observable<TransactionHash> in
+                    return RedPacketService.shared.create(for: redPacket, use: selectWalletValue, nonce: nonce)
+                        .trackActivity(self.viewModel.createActivityIndicator)
+                }
+                .observeOn(MainScheduler.instance)
+                .subscribe(onNext: { [weak self] transactionHash in
+                    do {
+                        // red packet create transaction success
+                        // set status to .pending
+                        let realm = try RedPacketService.realm()
+                        try realm.write {
+                            redPacket.create_transaction_hash = transactionHash.hex()
+                            redPacket.status = .pending
+                            realm.add(redPacket)
+                        }
+                        
+                        let createdRedPacketViewController = CreatedRedPacketViewController()
+                        createdRedPacketViewController.viewModel = CreatedRedPacketViewModel(redPacket: redPacket, walletModel: selectWalletModel)
+                        self?.navigationController?.pushViewController(createdRedPacketViewController, animated: true)
+                        
+                    } catch {
+                        alertController.message = error.localizedDescription
+                        self?.present(alertController, animated: true, completion: nil)
+                        return
                     }
-        
-                    let createdRedPacketViewController = CreatedRedPacketViewController()
-                    createdRedPacketViewController.viewModel = CreatedRedPacketViewModel(redPacket: redPacket)
-                    self?.navigationController?.pushViewController(createdRedPacketViewController, animated: true)
-        
-                } catch {
+                    
+                }, onError: { [weak self] error in
+                    // red packet create transaction fail
+                    // discard record and alert user
                     alertController.message = error.localizedDescription
                     self?.present(alertController, animated: true, completion: nil)
-                    return
+                })
+                .disposed(by: viewModel.disposeBag)
+            
+        case .erc20(walletToken: let walletToken):
+            guard let token = walletToken.token else {
+                alertController.message = "Cannot retrieve token entity"
+                self.present(alertController, animated: true, completion: nil)
+                return
+            }
+                        
+            let tokenID = token.id
+            redPacket.token_type = .erc20
+            redPacket.erc20_token = token
+            
+            WalletService.getTransactionCount(address: walletAddress).asObservable()
+                .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+                .retry(3)
+                .do(onNext: { nonce in
+                    let nonce = Int(nonce.quantity)
+                    redPacket.create_nonce.value = nonce
+                })
+                .flatMap { nonce -> Observable<TransactionHash> in
+                    do {
+                        let realm = try RedPacketService.realm()
+                        guard let token = realm.object(ofType: ERC20Token.self, forPrimaryKey: tokenID) else {
+                            return Observable.error(RedPacketService.Error.internal("cannot retrieve token"))
+                        }
+                        return RedPacketService.approve(for: redPacket, use: selectWalletModel, on: token, nonce: nonce)
+                            .trackActivity(self.viewModel.createActivityIndicator)
+                    } catch {
+                        return Observable.error(error)
+                    }
                 }
+                .observeOn(MainScheduler.instance)
+                .subscribe(onNext: { [weak self] transactionHash in
+                    do {
+                        // red packet token approve success
+                        let realm = try RedPacketService.realm()
+                        try realm.write {
+                            redPacket.erc20_approve_transaction_hash = transactionHash.hex()
+                            redPacket.status = .pending
+                            realm.add(redPacket)
+                        }
+                        
+                        let createdRedPacketViewController = CreatedRedPacketViewController()
+                        createdRedPacketViewController.viewModel = CreatedRedPacketViewModel(redPacket: redPacket, walletModel: selectWalletModel)
+                        self?.navigationController?.pushViewController(createdRedPacketViewController, animated: true)
+                        
+                    } catch {
+                        alertController.message = error.localizedDescription
+                        self?.present(alertController, animated: true, completion: nil)
+                        return
+                    }
+                }, onError: { [weak self] error in
+                    // red packet create transaction fail
+                    // discard record and alert user
+                    alertController.message = error.localizedDescription
+                    self?.present(alertController, animated: true, completion: nil)
+                })
+                .disposed(by: viewModel.disposeBag)
 
-            }, onError: { [weak self] error in
-                // red packet create transaction fail
-                // discard record and alert user
-                alertController.message = error.localizedDescription
-                self?.present(alertController, animated: true, completion: nil)
-            })
-            .disposed(by: viewModel.disposeBag)
+            // RedPacketService.approve(for: redPacket, use: selectWalletModel, on: token, nonce: nonce)
+        }
+        
     }
     
 }

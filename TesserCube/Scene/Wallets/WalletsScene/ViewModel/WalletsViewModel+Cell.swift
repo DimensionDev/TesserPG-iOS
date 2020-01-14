@@ -37,11 +37,11 @@ extension WalletsViewModel {
     static func configure(cell: WalletCardCollectionViewCell, with model: WalletModel) {
         let address = model.address
         #if DEBUG
-        #if MAINNET
-        cell.walletCardView.headerLabel.text = String(address.prefix(6)) + " - Mainnet"
-        #else
-        cell.walletCardView.headerLabel.text = String(address.prefix(6)) + " - Rinkeby"
-        #endif
+            #if MAINNET
+            cell.walletCardView.headerLabel.text = String(address.prefix(6)) + " - Mainnet"
+            #else
+            cell.walletCardView.headerLabel.text = String(address.prefix(6)) + " - Rinkeby"
+            #endif
         #else
         cell.walletCardView.headerLabel.text = String(address.prefix(6))
         #endif

@@ -23,6 +23,7 @@ final class CreatedRedPacketViewModel: NSObject {
     
     // Input
     let redPacket: RedPacket
+    let walletModel: WalletModel
     
     // Output
     let isFetching: Driver<Bool>
@@ -31,8 +32,10 @@ final class CreatedRedPacketViewModel: NSObject {
     
     var redPacketNotificationToken: NotificationToken?
     
-    init(redPacket: RedPacket) {
+    init(redPacket: RedPacket, walletModel: WalletModel) {
         self.redPacket = redPacket
+        self.walletModel = walletModel
+        
         isFetching = activityIndicator.asDriver()
         canShare = BehaviorRelay(value: RedPacketService.armoredEncPayload(for: redPacket) != nil)
         
@@ -52,6 +55,14 @@ final class CreatedRedPacketViewModel: NSObject {
 
 extension CreatedRedPacketViewModel {
     
+    func fetchResult() {
+        if redPacket.create_transaction_hash != nil {
+            fetchCreateResult()
+        } else {
+            fetchApproveResult()
+        }
+    }
+        
     func fetchCreateResult() {
         RedPacketService.shared.updateCreateResult(for: redPacket)
             .trackActivity(activityIndicator)
@@ -64,9 +75,30 @@ extension CreatedRedPacketViewModel {
             .disposed(by: disposeBag)
     }
     
-}
-
-extension CreatedRedPacketViewModel {
+    private func fetchApproveResult() {
+        RedPacketService.shared.updateApproveResult(for: redPacket)
+            .trackActivity(activityIndicator)
+            .subscribe(onNext: { approveEvent in
+                // do nothing
+                // fetch create in realm listener
+            }, onError: { [weak self] error in
+                self?.error.accept(error)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func createAfterApprove() {
+        let walletValue = WalletValue(from: self.walletModel)
+        RedPacketService.shared.createAfterApprove(for: self.redPacket, use: walletValue)
+            .trackActivity(activityIndicator)
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+            .subscribe(onNext: { transactionHash in
+                // do nothing
+            }, onError: { [weak self] error in
+                self?.error.accept(error)
+            })
+            .disposed(by: disposeBag)
+    }
     
     
 }
@@ -99,10 +131,10 @@ extension CreatedRedPacketViewModel {
         #else
         cell.emailLabel.text = ""       // no more email
         #endif
-
-        let formatter = NumberFormatter.decimalFormatterForETH
-        let totalAmountInDecimal = (Decimal(string: String(redPacket.send_total)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
-        let totalAmountInDecimalString = formatter.string(from: totalAmountInDecimal as NSNumber) ?? "-"
+        
+        let helper = RedPacketHelper(for: redPacket)
+        let totalAmountInDecimalString = helper.sendAmountInDecimalString ?? "-"
+        let symbol = helper.symbol
         
         switch redPacket.status {
         case .initial, .pending:
@@ -116,15 +148,14 @@ extension CreatedRedPacketViewModel {
             cell.redPacketDetailLabel.text = "Trying to claim…"
             cell.indicatorLabel.text = ""
         case .normal:
-            cell.redPacketStatusLabel.text = "Sent \(totalAmountInDecimalString) ETH"
+            cell.redPacketStatusLabel.text = "Sent \(totalAmountInDecimalString) \(symbol)"
             cell.indicatorLabel.text = "Ready for collection"
         case .claim_pending:
             cell.redPacketStatusLabel.text = "Claiming…"
             cell.indicatorLabel.text = ""
         case .claimed:
-            let amountInDecimal = (Decimal(string: String(redPacket.claim_amount)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
-            let amountInDecimalString = formatter.string(from: amountInDecimal as NSNumber) ?? "-"
-            cell.redPacketStatusLabel.text = "Got \(amountInDecimalString) ETH"
+            let amountInDecimalString = helper.claimAmountInDecimalString ?? "-"
+            cell.redPacketStatusLabel.text = "Got \(amountInDecimalString) \(symbol)"
             cell.indicatorLabel.text = ""
         case .empty:
             cell.redPacketStatusLabel.text = "Too late to get any"
@@ -136,20 +167,19 @@ extension CreatedRedPacketViewModel {
             cell.redPacketStatusLabel.text = "Refunding…"
             cell.indicatorLabel.text = ""
         case .refunded:
-            let amountInDecimal = (Decimal(string: String(redPacket.refund_amount)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
-            let amountInDecimalString = formatter.string(from: amountInDecimal as NSNumber) ?? "-"
-            cell.redPacketStatusLabel.text = "Refund \(amountInDecimalString) ETH"
+            let amountInDecimalString = helper.refundAmountInDecimalString ?? "-"
+            cell.redPacketStatusLabel.text = "Refund \(amountInDecimalString) \(symbol)"
             cell.indicatorLabel.text = ""
         }
 
         let share = redPacket.uuids.count
         let unit = share > 1 ? "shares" : "share"
-        cell.redPacketDetailLabel.text = "\(totalAmountInDecimalString) ETH in total / \(share) \(unit)"
+        cell.redPacketDetailLabel.text = "\(totalAmountInDecimalString) \(symbol) in total / \(share) \(unit)"
 
         if let blockCreationTime = redPacket.block_creation_time.value {
             let createDate = Date(timeIntervalSince1970: TimeInterval(blockCreationTime))
             cell.createdDateLabel.text = createDate.timeAgoSinceNow + " created"
-            
+
         } else {
             cell.createdDateLabel.text = " "
         }
@@ -240,6 +270,12 @@ extension CreatedRedPacketViewController {
                 self.viewModel.canShare.accept(RedPacketService.armoredEncPayload(for: self.viewModel.redPacket) != nil)
                 os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, changes.description)
                 
+                // continue create if ERC20Token approve success
+                let redPacket = self.viewModel.redPacket
+                if redPacket.status == .pending && redPacket.create_transaction_hash == nil, redPacket.erc20_approve_value != nil {
+                    
+                }
+                
             default:
                 break
             }
@@ -256,7 +292,7 @@ extension CreatedRedPacketViewController {
             .disposed(by: disposeBag)
         
         // Teigger fetch create result action
-        viewModel.fetchCreateResult()
+        viewModel.fetchResult()
     }
     
 }

@@ -11,6 +11,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxRealm
+import Web3
 
 class WalletsViewController: TCBaseViewController {
 
@@ -86,9 +87,27 @@ class WalletsViewController: TCBaseViewController {
                     // update view model data source
                     self.viewModel.redPackets.accept(redPackets.reversed())
                     
+                    let pendingCreateAfterApproveRedPackets = redPackets.filter { redPacket in
+                        guard redPacket.status == .pending && redPacket.create_transaction_hash == nil, redPacket.erc20_approve_value != nil else {
+                            return false
+                        }
+                        
+                        return true
+                    }
+                    for redPacket in pendingCreateAfterApproveRedPackets {
+                        guard let walletModel = WalletService.default.walletModels.value.first(where: { $0.address == redPacket.sender_address }) else {
+                            continue
+                        }
+
+                        let walletValue = WalletValue(from: walletModel)
+                        RedPacketService.shared.createAfterApprove(for: redPacket, use: walletValue)
+                            .subscribe()
+                            .disposed(by: self.disposeBag)
+                    }
+                    
                     // fetch create result
                     let pendingRedPackets = redPackets.filter { $0.status == .pending }
-                    for redPacket in pendingRedPackets {
+                    for redPacket in pendingRedPackets where redPacket.create_transaction_hash != nil {
                         RedPacketService.shared.updateCreateResult(for: redPacket)
                             .subscribe()
                             .disposed(by: self.disposeBag)

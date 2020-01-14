@@ -27,6 +27,8 @@ final class RedPacketService {
     // Global observable queue:
     // Reuse sequence if shared observable object if already in queue
     // And also subscribe in service when observable created to prevent task canceled
+    var approveResultQueue: [RedPacket.ID: Observable<ApproveEvent>] = [:]
+    var createQueue: [RedPacket.ID: Observable<TransactionHash>] = [:]
     var createResultQueue: [RedPacket.ID: Observable<CreationSuccess>] = [:]
     var updateCreateResultQueue: [RedPacket.ID: Observable<CreationSuccess>] = [:]
     var checkAvailabilityQueue: [RedPacket.ID: Observable<RedPacketAvailability>] = [:]
