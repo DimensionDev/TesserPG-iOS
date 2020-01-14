@@ -25,6 +25,7 @@ final class RedPacketTokenSelectViewModel: NSObject {
     let walletModel: WalletModel
     
     // Output
+    let lastTokensCount = BehaviorRelay(value: 0)
     let tokens = BehaviorRelay<[WalletToken]>(value: [])
     
     init(walletModel: WalletModel) {
@@ -179,11 +180,17 @@ extension RedPacketTokenSelectViewController {
         tableView.dataSource = viewModel
         
         viewModel.tokens.asDriver()
-            .drive(onNext: { [weak self] _ in
-                self?.tableView.reloadData()
+            .drive(onNext: { [weak self] tokens in
+                guard let `self` = self else { return }
+                self.tableView.reloadData()
                 
-                // Trigger update token balance action
-                self?.viewModel.walletModel.updateBalance()
+                if self.viewModel.lastTokensCount.value != tokens.count {
+                    // Trigger update tokens balance action
+                    os_log("%{public}s[%{public}ld], %{public}s: update tokens balance", ((#file as NSString).lastPathComponent), #line, #function)
+
+                    self.viewModel.walletModel.updateBalance()
+                    self.viewModel.lastTokensCount.accept(tokens.count)
+                }
             })
             .disposed(by: disposeBag)
     }

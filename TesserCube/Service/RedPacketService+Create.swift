@@ -413,6 +413,11 @@ extension RedPacketService {
                             return
                         }
                         
+                        var network: EthereumNetwork?
+                        if redPacket.network != .mainnet {
+                            network = redPacket.network
+                        }
+                        
                         let rawPayload = RedPacketRawPayLoad(
                             contract_version: UInt8(redPacket.contract_version),
                             contract_address: redPacket.contract_address,
@@ -426,7 +431,10 @@ extension RedPacketService {
                             is_random: redPacket.is_random,
                             total: String(redPacket.send_total),
                             creation_time: UInt64(creationSuccess.creation_time),
-                            duration: UInt64(redPacket.duration)
+                            duration: UInt64(redPacket.duration),
+                            network: network,
+                            token_type: redPacket.token_type,
+                            token: redPacket.erc20_token.flatMap { RedPacketRawPayLoad.ERC20Token(from: $0) }
                         )
                         let rawPayloadString: String? = {
                             let encoder = JSONEncoder()

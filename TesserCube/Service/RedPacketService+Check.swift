@@ -220,10 +220,10 @@ extension RedPacketService {
 extension RedPacketService {
     
     struct RedPacketAvailability {
-        let balance: BigUInt
-        let total: Int
-        let claimed: Int
-        let expired: Bool
+        let balance: BigUInt        // remains
+        let total: Int              // total share count
+        let claimed: Int            // claimed share count
+        let expired: Bool           // is expired
     }
     
     struct RedPacketClaimedRecord {

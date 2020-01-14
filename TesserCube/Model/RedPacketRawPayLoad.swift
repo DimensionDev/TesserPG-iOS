@@ -19,7 +19,12 @@ public struct RedPacketRawPayLoad: Codable {
     let total: String           // BigUInt
     let creation_time: UInt64   // Unix timestamp
     let duration: UInt64        // in seconds
+    let network: EthereumNetwork?
+    let token_type: RedPacketTokenType
+    let token: ERC20Token?
 }
+
+typealias ERC20TokenObject = ERC20Token
 
 extension RedPacketRawPayLoad {
     public struct Sender: Codable {
@@ -27,4 +32,20 @@ extension RedPacketRawPayLoad {
         let name: String
         let message: String
     }
+    
+    public struct ERC20Token: Codable {
+        let address: String
+        let name: String
+        let decimals: Int
+        let symbol: String
+        
+        init(from token: ERC20TokenObject) {
+            self.address = token.address
+            self.name = token.name
+            self.decimals = token.decimals
+            self.symbol = token.symbol
+        }
+    }
 }
+
+

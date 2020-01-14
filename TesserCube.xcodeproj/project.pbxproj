@@ -624,7 +624,6 @@
 		DBD4A55A23ACBA4B0030FFA6 /* RedPacketRawPayLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD4A55823ACBA4B0030FFA6 /* RedPacketRawPayLoad.swift */; };
 		DBD4A55B23ACBA4B0030FFA6 /* RedPacketRawPayLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD4A55823ACBA4B0030FFA6 /* RedPacketRawPayLoad.swift */; };
 		DBD4A55C23ACBA4B0030FFA6 /* RedPacketRawPayLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD4A55823ACBA4B0030FFA6 /* RedPacketRawPayLoad.swift */; };
-		DBD4A55D23ACBA4B0030FFA6 /* RedPacketRawPayLoad.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD4A55823ACBA4B0030FFA6 /* RedPacketRawPayLoad.swift */; };
 		DBD63FDD229682E400E46FDC /* KeyFactory+TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */; };
 		DBD63FE02296864200E46FDC /* KeyFactory+TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */; };
 		DBD6887B237AB13A00B5B663 /* WalletsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD6887A237AB13A00B5B663 /* WalletsViewModel.swift */; };
@@ -3366,7 +3365,6 @@
 				DB5738C923A3846100B883D9 /* BackgroundTaskTests.swift in Sources */,
 				DB03DD50237BF8DF00D96201 /* Web3Tests.swift in Sources */,
 				DBC9BD5123B46D7B00252437 /* EncPayloadDecryptResult.swift in Sources */,
-				DBD4A55D23ACBA4B0030FFA6 /* RedPacketRawPayLoad.swift in Sources */,
 				DB0EC52A23ACA44100BDA2B5 /* Web3Secret.swift in Sources */,
 				DB0EC52423AC9ECD00BDA2B5 /* RedPacketRawPayloadTests.swift in Sources */,
 				DBC9BD3D23B1DC2500252437 /* RedPacketPayloadEncryptor.swift in Sources */,

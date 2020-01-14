@@ -108,7 +108,7 @@ public enum RedPacketStatus: String {
     case refunded
 }
 
-public enum RedPacketTokenType: String {
+public enum RedPacketTokenType: String, Codable {
     case eth
     case erc20
     
@@ -120,7 +120,7 @@ public enum RedPacketTokenType: String {
     }
 }
 
-public enum EthereumNetwork: String {
+public enum EthereumNetwork: String, Codable {
     case mainnet = "Mainnet"
     case rinkeby = "Rinkeby"
 }

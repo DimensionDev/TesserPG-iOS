@@ -92,7 +92,6 @@ extension RedPacketDetailViewModel: UITableViewDataSource {
         case .message:
             return 1
         case .claimer:
-            // TODO:
             return _claimedRecord.count
         }
     }
@@ -133,6 +132,8 @@ extension RedPacketDetailViewModel: UITableViewDataSource {
                 return record.claimer == contractEthereumAddress
             }()
             
+            let helper = RedPacketHelper(for: redPacket)
+            
             if isStubRecord {
                 let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RedPacketClaimerFetchActivityIndicatorTableViewCell.self), for: indexPath) as! RedPacketClaimerFetchActivityIndicatorTableViewCell
                 cell = _cell
@@ -143,10 +144,10 @@ extension RedPacketDetailViewModel: UITableViewDataSource {
                 _cell.nameLabel.text = String(address.prefix(6))
                 _cell.addressLabel.text = address
                 _cell.amountLabel.text = {
-                    let claimedAmountInDecimal = (Decimal(string: String(record.claimed)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
-                    let formatter = NumberFormatter.decimalFormatterForETH
+                    let claimedAmountInDecimal = (Decimal(string: String(record.claimed)) ?? Decimal(0)) / helper.exponent
+                    let formatter = helper.formatter
                     let ethDecimalString = formatter.string(from: claimedAmountInDecimal as NSNumber)
-                    return ethDecimalString.flatMap { $0 + " ETH" } ?? "- ETH"
+                    return ethDecimalString.flatMap { $0 + " \(helper.symbol)" } ?? "- \(helper.symbol)"
                 }()
                 
                 cell = _cell
@@ -244,6 +245,9 @@ extension RedPacketDetailViewController: UITableViewDelegate {
             return header
         
         case .claimer:
+            guard !viewModel._claimedRecord.isEmpty else {
+                return UIView()
+            }
             let header = RedPacketDetailTableSectionHeaderView()
             header.headerLabel.text = "Opened by"
             return header
@@ -255,7 +259,12 @@ extension RedPacketDetailViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         switch RedPacketDetailViewModel.Section.allCases[section] {
-        case .message, .claimer:
+        case .message:
+            return UITableView.automaticDimension
+        case .claimer:
+            guard !viewModel._claimedRecord.isEmpty else {
+                return 10
+            }
             return UITableView.automaticDimension
         default:
             return 10

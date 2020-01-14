@@ -191,7 +191,7 @@ extension WalletDetailViewController: AddTokenViewControllerDelegate {
                 let index: Int = {
                     let tokens = realm.objects(WalletToken.self).filter("wallet.address == %@", viewModel.walletModel.address)
                     let maxIndex = tokens.max(ofProperty: "index") as Int?
-                    return maxIndex ?? 0
+                    return maxIndex.flatMap { $0 + 1 } ?? 0
                 }()
                 
                 let walletToken = WalletToken()
