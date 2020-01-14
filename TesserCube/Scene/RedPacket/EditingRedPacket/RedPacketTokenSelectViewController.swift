@@ -181,6 +181,9 @@ extension RedPacketTokenSelectViewController {
         viewModel.tokens.asDriver()
             .drive(onNext: { [weak self] _ in
                 self?.tableView.reloadData()
+                
+                // Trigger update token balance action
+                self?.viewModel.walletModel.updateBalance()
             })
             .disposed(by: disposeBag)
     }

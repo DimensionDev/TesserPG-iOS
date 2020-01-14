@@ -134,6 +134,7 @@ public class WalletModel {
 extension WalletModel {
 
     func updateBalance() {
+        os_log("%{public}s[%{public}ld], %{public}s", ((#file as NSString).lastPathComponent), #line, #function)
         updateBalanceTrigger.onNext(())
     }
 
