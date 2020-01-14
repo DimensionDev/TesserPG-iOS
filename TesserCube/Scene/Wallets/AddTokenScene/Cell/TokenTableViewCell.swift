@@ -71,11 +71,13 @@ extension TokenTableViewCell {
     private func _init() {
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(logoImageView)
+        let contentViewHeightLayoutConstraint = logoImageView.heightAnchor.constraint(equalToConstant: 40)
+        contentViewHeightLayoutConstraint.priority = .defaultHigh
         NSLayoutConstraint.activate([
             logoImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             logoImageView.leadingAnchor.constraint(equalTo: contentView.layoutMarginsGuide.leadingAnchor),
             contentView.bottomAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 10),
-            logoImageView.heightAnchor.constraint(equalToConstant: 40),
+            contentViewHeightLayoutConstraint,
             logoImageView.widthAnchor.constraint(equalToConstant: 40),
         ])
         
