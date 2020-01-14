@@ -23,6 +23,7 @@ final class EditingRedPacketViewModel: NSObject {
     
     let walletModels = BehaviorRelay<[WalletModel]>(value: [])
     let selectWalletModel = BehaviorRelay<WalletModel?>(value: nil)
+    let selectTokenType = BehaviorRelay(value: RedPacketTokenSelectViewModel.SelectTokenType.eth)
     
     let amount = BehaviorRelay(value: Decimal(0))       // user input value. default 0
     let share = BehaviorRelay(value: 1)
@@ -30,18 +31,26 @@ final class EditingRedPacketViewModel: NSObject {
     let name = BehaviorRelay(value: "")
     let message = BehaviorRelay(value: "")
     
-    let selectTokenType = BehaviorRelay(value: RedPacketTokenSelectViewModel.SelectTokenType.eth)
-    
     // Output
     let isCreating = BehaviorRelay(value: false)
     let canDismiss = BehaviorRelay(value: true)
-    let amountInputCoinCurrencyUnitLabelText: Driver<String>
+    
     let minimalAmount = BehaviorRelay(value: RedPacketService.redPacketMinAmount)
     let totalInDecimal = BehaviorRelay(value: Decimal(0))     // should not 0 after user input amount
     let selectTokenDecimal = BehaviorRelay(value: 18)         // default 18 for ETH
-    let sendRedPacketButtonText: Driver<String>
     let walletBalanceForSelectToken = BehaviorRelay<BigUInt?>(value: nil)
+    
+    // "Current balance: <token_in_decimal> <token_symbol>"
+    // Combine `walletBalanceForSelectToken` and `selectTokenType` to drive
     let walletSectionFooterViewText: Driver<String>
+
+    // "<token_symbol> per share" or "<token_symbol>"
+    // Combine `redPacketSplitType` and `selectTokenType` to drive
+    let amountInputCoinCurrencyUnitLabelText: Driver<String>
+    
+    // "Send <send_total_amount_in_decimal> <token_symbol>"
+    // Combine `totalInDecimal` and `selectTokenType`
+    let sendRedPacketButtonText: Driver<String>
     
     enum TableViewCellType {
         case wallet                 // select a wallet to send red packet
@@ -72,17 +81,16 @@ final class EditingRedPacketViewModel: NSObject {
             .asDriver()
             .drive(isCreating)
             .disposed(by: disposeBag)
-        amountInputCoinCurrencyUnitLabelText = redPacketSplitType.asDriver()
-            .map { type in type == .average ? "ETH per share" : "ETH" }
-        sendRedPacketButtonText = totalInDecimal.asDriver()
-            .map { total in
-                guard total > 0, let totalInETH = NumberFormatter.decimalFormatterForETH.string(from: total as NSNumber) else {
-                    return "Send"
-                }
-                
-                return "Send \(totalInETH) ETH"
+        amountInputCoinCurrencyUnitLabelText = Driver.combineLatest(redPacketSplitType.asDriver(), selectTokenType.asDriver()) { (redPacketSplitType, selectTokenType) -> String in
+            let symbol: String
+            switch selectTokenType {
+            case .eth: symbol = "ETH"
+            case .erc20(let walletToken):
+                symbol = walletToken.token?.symbol ?? ""
+            }
+            
+            return redPacketSplitType == .average ? "\(symbol) per share" : symbol
         }
-        
         selectTokenType.asDriver()
             .withLatestFrom(selectWalletModel.asDriver()) {
                 return ($0, $1)
@@ -102,7 +110,6 @@ final class EditingRedPacketViewModel: NSObject {
             }
             .drive(walletBalanceForSelectToken)
             .disposed(by: disposeBag)
-        
         selectTokenType.asDriver()
             .map { tokenType in
                 switch tokenType {
@@ -112,45 +119,64 @@ final class EditingRedPacketViewModel: NSObject {
             }
             .drive(selectTokenDecimal)
             .disposed(by: disposeBag)
-        
-        walletSectionFooterViewText = walletBalanceForSelectToken.asDriver()
-            .withLatestFrom(selectTokenType.asDriver()) { (balance, selectTokenType) -> String in
-                let placeholder = "Current balance: - "
-
-                let decimals: Int
-                let symbol: String
-                switch selectTokenType {
-                case .eth:
-                    decimals = 18
-                    symbol = "ETH"
-                case let .erc20(walletToken):
-                    guard let token = walletToken.token else {
-                        return placeholder
-                    }
-                    
-                    decimals = token.decimals
-                    symbol = token.symbol
-                }
-        
-                let _balanceInDecimal = balance
-                    .flatMap { Decimal(string: String($0)) }
-                    .map { balance in balance / pow(10, decimals) }
-                
-                guard let balanceInDecimal = _balanceInDecimal else {
+        walletSectionFooterViewText = Driver.combineLatest(walletBalanceForSelectToken.asDriver(), selectTokenType.asDriver()) { (walletBalanceForSelectToken, selectTokenType) -> String in
+            let placeholder = "Current balance: - "
+            
+            let decimals: Int
+            let symbol: String
+            switch selectTokenType {
+            case .eth:
+                decimals = 18
+                symbol = "ETH"
+            case let .erc20(walletToken):
+                guard let token = walletToken.token else {
                     return placeholder
                 }
                 
-                let formatter = NumberFormatter()
-                formatter.numberStyle = .decimal
-                formatter.minimumIntegerDigits = 1
-                formatter.maximumFractionDigits = (decimals + 1) / 2
-                formatter.groupingSeparator = ""
-                
-                return formatter.string(from: balanceInDecimal as NSNumber).flatMap { decimalString in
-                    return "Current balance: \(decimalString) \(symbol)"
-                    } ?? placeholder
+                decimals = token.decimals
+                symbol = token.symbol
             }
-        
+            
+            let _balanceInDecimal = walletBalanceForSelectToken
+                .flatMap { Decimal(string: String($0)) }
+                .map { balance in balance / pow(10, decimals) }
+            
+            guard let balanceInDecimal = _balanceInDecimal else {
+                return placeholder
+            }
+            
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            formatter.minimumIntegerDigits = 1
+            formatter.maximumFractionDigits = (decimals + 1) / 2
+            formatter.groupingSeparator = ""
+            
+            return formatter.string(from: balanceInDecimal as NSNumber).flatMap { decimalString in
+                return "Current balance: \(decimalString) \(symbol)"
+            } ?? placeholder
+        }
+        sendRedPacketButtonText = Driver.combineLatest(totalInDecimal.asDriver(), selectTokenType.asDriver()) { (totalInDecimal, selectTokenType) -> String in
+            switch selectTokenType {
+            case .eth:
+                guard totalInDecimal > 0, let totalInETH = NumberFormatter.decimalFormatterForETH.string(from: totalInDecimal as NSNumber) else {
+                    return "Send"
+                }
+                
+                return "Send \(totalInETH) ETH"
+            case .erc20(let walletToken):
+                guard let token = walletToken.token else {
+                    return "Send"
+                }
+                
+                let formatter = NumberFormatter.decimalFormatterForToken(decimals: token.decimals)
+                guard totalInDecimal > 0, let tokenInSymbol = formatter.string(from: totalInDecimal as NSNumber) else {
+                    return "Send"
+                }
+                
+                return "Send \(tokenInSymbol) \(token.symbol)"
+            }
+        }
+
         super.init()
         
         // Update default select wallet model when wallet model pool change
