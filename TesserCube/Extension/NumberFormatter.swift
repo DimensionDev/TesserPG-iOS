@@ -19,4 +19,13 @@ extension NumberFormatter {
         return formatter
     }
     
+    static func decimalFormatterForToken(decimals: Int) -> NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.minimumIntegerDigits = 1
+        formatter.maximumFractionDigits = (decimals + 1) / 2
+        formatter.groupingSeparator = ""
+        return formatter
+    }
+    
 }
