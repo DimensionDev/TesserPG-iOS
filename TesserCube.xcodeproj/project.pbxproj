@@ -279,6 +279,8 @@
 		DB1169E122E1A1130099BA25 /* TCActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146C4223FC9E4008ECC22 /* TCActionButton.swift */; };
 		DB1169E222E1A2620099BA25 /* ImageUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146CA2240AEC0008ECC22 /* ImageUtil.swift */; };
 		DB1169E522E1B63D0099BA25 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DB1169E722E1B63D0099BA25 /* InfoPlist.strings */; };
+		DB128DE323CEDA9A0083AD5C /* CustomTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB128DE223CEDA9A0083AD5C /* CustomTokenViewController.swift */; };
+		DB128DE623CEDC5D0083AD5C /* TokenAddressInputTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB128DE523CEDC5D0083AD5C /* TokenAddressInputTableViewCell.swift */; };
 		DB1327152253651C00BD7B98 /* KeyBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1327142253651C00BD7B98 /* KeyBridge.swift */; };
 		DB1327162253651C00BD7B98 /* KeyBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1327142253651C00BD7B98 /* KeyBridge.swift */; };
 		DB1449732313F9CF000FA38E /* BrokenMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB63A10D22DF2A5900C2DDA6 /* BrokenMessageViewController.swift */; };
@@ -957,6 +959,8 @@
 		DB1169E622E1B63D0099BA25 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		DB1169E822E1B63E0099BA25 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		DB1169E922E1B6420099BA25 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		DB128DE223CEDA9A0083AD5C /* CustomTokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTokenViewController.swift; sourceTree = "<group>"; };
+		DB128DE523CEDC5D0083AD5C /* TokenAddressInputTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenAddressInputTableViewCell.swift; sourceTree = "<group>"; };
 		DB1327142253651C00BD7B98 /* KeyBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBridge.swift; sourceTree = "<group>"; };
 		DB15695823277FD900220926 /* ProfileService+Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileService+Contact.swift"; sourceTree = "<group>"; };
 		DB15695D23278EA200220926 /* FetchableRecord+all.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FetchableRecord+all.swift"; sourceTree = "<group>"; };
@@ -2001,6 +2005,15 @@
 			path = MessageCardScene;
 			sourceTree = "<group>";
 		};
+		DB128DE423CEDC490083AD5C /* CustomTokenScene */ = {
+			isa = PBXGroup;
+			children = (
+				DB128DE223CEDA9A0083AD5C /* CustomTokenViewController.swift */,
+				DB128DE523CEDC5D0083AD5C /* TokenAddressInputTableViewCell.swift */,
+			);
+			path = CustomTokenScene;
+			sourceTree = "<group>";
+		};
 		DB1449762314F1F1000FA38E /* Action */ = {
 			isa = PBXGroup;
 			children = (
@@ -2307,6 +2320,7 @@
 				DBC19D8A237509E700170151 /* ImportWalletScene */,
 				DB4A700023C5F17500C2349C /* WalletDetailScene */,
 				DB4A700323C6CB7100C2349C /* AddTokenScene */,
+				DB128DE423CEDC490083AD5C /* CustomTokenScene */,
 			);
 			path = Wallets;
 			sourceTree = "<group>";
@@ -3075,6 +3089,7 @@
 				DB03DD5D237BFD4F00D96201 /* WalletService+Web3.swift in Sources */,
 				DBC9CEFE2387B974009E13C5 /* SeparatorView.swift in Sources */,
 				832146B3223F8725008ECC22 /* TCCardView.swift in Sources */,
+				DB128DE323CEDA9A0083AD5C /* CustomTokenViewController.swift in Sources */,
 				8320AF4A22B64D1C00843FE7 /* IntroWizardViewController.swift in Sources */,
 				8313F69622475AC600C09C2D /* SharePublicKeyActivity.swift in Sources */,
 				DB32515023B4B9C100A4DDD8 /* RedPacketDetailTableSectionHeaderView.swift in Sources */,
@@ -3107,6 +3122,7 @@
 				DBC9CEF52387B688009E13C5 /* OptionFieldView.swift in Sources */,
 				DB32515523B4BDC900A4DDD8 /* UITableView.swift in Sources */,
 				DBB81AE1225DFF7A003D63C6 /* UIScreen.swift in Sources */,
+				DB128DE623CEDC5D0083AD5C /* TokenAddressInputTableViewCell.swift in Sources */,
 				DB0ABA09237549E000AD3B7F /* WalletCardTableViewCell.swift in Sources */,
 				DB44999A228C244F000B7E8A /* MessageDigitalSignatureSettingsViewController.swift in Sources */,
 				DB616C0922A4CBB4002768B4 /* UILabel.swift in Sources */,

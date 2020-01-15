@@ -41,6 +41,7 @@ class Coordinator {
         case createWallet
         case walletDetail(viewModel: WalletDetailViewModel)
         case addToken(viewModel: AddTokenViewModel, delegate: AddTokenViewControllerDelegate)
+        case customToken(viewModel: CustomTokenViewModel, delegate: CustomTokenViewControllerDelegate)
         case backupMnemonic(viewModel: BackupMnemonicCollectionViewModel)
         case confirmMnemonic(viewModel: ConfirmMnemonicCollectionViewModel)
         case importWallet
@@ -201,6 +202,11 @@ extension Coordinator {
             return vc
         case let  .addToken(viewModel, delegate):
             let vc = AddTokenViewController()
+            vc.viewModel = viewModel
+            vc.delegate = delegate
+            return vc
+        case let .customToken(viewModel, delegate):
+            let vc = CustomTokenViewController()
             vc.viewModel = viewModel
             vc.delegate = delegate
             return vc
