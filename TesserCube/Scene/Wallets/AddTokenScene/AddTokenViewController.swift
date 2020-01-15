@@ -26,20 +26,48 @@ final class AddTokenViewModel: NSObject {
     var searchText = BehaviorRelay(value: "")
     
     // Output
+    var trie = BehaviorRelay(value: Trie<Character>())
     var filteredTokens = BehaviorRelay<[ERC20Token]>(value: [])
     
     override init() {
         super.init()
         
-        Driver.combineLatest(tokens.asDriver(), searchText.asDriver()) { tokens, searchText -> [ERC20Token] in
-                guard !searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+        // Subscribe on background thread to avoid blocking the main thread
+        Driver.combineLatest(trie.asDriver(), tokens.asDriver(), searchText.asDriver())
+            .map { trie, tokens, searchText -> [ERC20Token] in
+                let searchText = searchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+                guard !searchText.isEmpty else {
                     return tokens
                 }
                 
-                return tokens.filter { token -> Bool in
-                    return token.address.contains(searchText) ||
-                           token.name.contains(searchText) ||
-                           token.symbol.contains(searchText)
+                guard !trie.children.isEmpty else {
+                    return tokens.filter { token in token.symbol.localizedCaseInsensitiveContains(searchText) }
+                }
+                
+                var filteredTokens: [ERC20Token] = []
+                let passthroughs = trie.passthrough(ArraySlice(searchText.charactersArray))
+                let symbolBestMatchIDs = passthroughs
+                    .map { $0.values } // [Set<ID>]
+                    .map { set in set.compactMap { $0 as? String } } // [[ID]]
+                    .flatMap { $0 } // [ID]
+                let symbolBestMatchIDSet = Set(symbolBestMatchIDs)
+                let targetTokens = tokens.filter { symbolBestMatchIDSet.contains($0.id) }
+                
+                filteredTokens.append(contentsOf: symbolBestMatchIDSet
+                    .compactMap { id in targetTokens.first(where: { $0.id == id}) }
+                )
+                
+                // search name when at least 3 chars for profile propose
+                if searchText.count > 2 {
+                    filteredTokens.append(contentsOf: tokens
+                        .filter { $0.name.localizedCaseInsensitiveContains(searchText) }
+                    )
+                }
+                
+                return filteredTokens.reduce(into: [ERC20Token]()) { result, token in
+                    if !result.contains(token) {
+                        result.append(token)
+                    }
                 }
             }
             .drive(filteredTokens)
@@ -171,6 +199,14 @@ final class AddTokenViewController: TCBaseViewController {
             Observable.array(from: tokens)
                 .subscribe(onNext: { [weak self] tokens in
                     self?.viewModel.tokens.accept(tokens)
+                    
+                    var newTrie: Trie<Character> = Trie()
+                    for token in tokens {
+                        let symbol = token.symbol.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+                        newTrie.inserted(ArraySlice(symbol.charactersArray), value: token.id)
+                    }
+                    self?.viewModel.trie.accept(newTrie)
+                    
                 })
                 .disposed(by: disposeBag)
         } catch {

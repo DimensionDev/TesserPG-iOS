@@ -474,6 +474,7 @@
 		DB63A14D22E1809200C2DDA6 /* ComposeActionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB63A14C22E1809200C2DDA6 /* ComposeActionViewController.swift */; };
 		DB63A14E22E180DE00C2DDA6 /* ComposeMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBBA87F52248B8F500B290AC /* ComposeMessageViewController.swift */; };
 		DB63A14F22E180E100C2DDA6 /* TCBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146CC2240B135008ECC22 /* TCBaseViewController.swift */; };
+		DB667CA523CEE41B00703664 /* Trie.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB667CA423CEE41B00703664 /* Trie.swift */; };
 		DB66FE67224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE66224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift */; };
 		DB66FE6A224A330D00D82704 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE69224A330D00D82704 /* String.swift */; };
 		DB66FE6D224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE6C224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift */; };
@@ -1022,6 +1023,7 @@
 		DB63A13D22E17D3300C2DDA6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		DB63A13F22E17D3300C2DDA6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DB63A14C22E1809200C2DDA6 /* ComposeActionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeActionViewController.swift; sourceTree = "<group>"; };
+		DB667CA423CEE41B00703664 /* Trie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trie.swift; sourceTree = "<group>"; };
 		DB66FE66224A2D5200D82704 /* ContactPickerTagCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPickerTagCollectionViewCell.swift; sourceTree = "<group>"; };
 		DB66FE69224A330D00D82704 /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		DB66FE6C224A354D00D82704 /* ContactPickerTextFieldCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPickerTextFieldCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -2112,6 +2114,7 @@
 		DB4A700323C6CB7100C2349C /* AddTokenScene */ = {
 			isa = PBXGroup;
 			children = (
+				DB667CA623CEE41E00703664 /* Helper */,
 				DB4A700623C6D1EB00C2349C /* Cell */,
 				DB4A700123C5FC2D00C2349C /* AddTokenViewController.swift */,
 			);
@@ -2166,6 +2169,14 @@
 				DB63A13F22E17D3300C2DDA6 /* Info.plist */,
 			);
 			path = TesserCubeComposeAction;
+			sourceTree = "<group>";
+		};
+		DB667CA623CEE41E00703664 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				DB667CA423CEE41B00703664 /* Trie.swift */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		DB66FE6B224A34C100D82704 /* Cell */ = {
@@ -3187,6 +3198,7 @@
 				DBA78434234C802F0089E130 /* ContactsListViewController+Previews.swift in Sources */,
 				DB4A6FFF23C5F17200C2349C /* WalletDetailViewController.swift in Sources */,
 				DB9FE9EC23A8B6A400499632 /* RedPacket+V1.swift in Sources */,
+				DB667CA523CEE41B00703664 /* Trie.swift in Sources */,
 				DBD4A55923ACBA4B0030FFA6 /* RedPacketRawPayLoad.swift in Sources */,
 				DB4A701223C7006C00C2349C /* WalletObject.swift in Sources */,
 				83214688223F40BC008ECC22 /* MainTabbarViewController.swift in Sources */,
