@@ -9,6 +9,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import Kingfisher
 
 final class TokenTableViewCell: UITableViewCell {
     
@@ -16,7 +17,7 @@ final class TokenTableViewCell: UITableViewCell {
     
     let logoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = ._systemFill
+        // imageView.backgroundColor = ._systemFill
         imageView.layer.cornerRadius = 4
         imageView.layer.masksToBounds = true
         return imageView
@@ -47,6 +48,8 @@ final class TokenTableViewCell: UITableViewCell {
         super.prepareForReuse()
         
         logoImageView.image = nil
+        logoImageView.kf.cancelDownloadTask()
+        
         symbolLabel.text = ""
         nameLabel.text = ""
         balanceLabel.text = ""

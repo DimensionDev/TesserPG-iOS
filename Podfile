@@ -37,6 +37,9 @@ def common_pods
   pod 'DMS_HDWallet_Cocoa', '~> 0.2.1'
 
   pod 'DataCompression', '~> 3.6.0'
+
+  pod 'Kingfisher', '~> 5.0'
+
 end
 
 def common_ui_pods

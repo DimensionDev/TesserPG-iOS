@@ -112,6 +112,18 @@ extension AddTokenViewModel: UITableViewDataSource {
 extension AddTokenViewModel {
     
     static func configure(cell: TokenTableViewCell, with token: ERC20Token) {
+        switch token.network {
+        case .mainnet:
+            guard let imageURL = URL(string: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/\(token.address)/logo.png") else {
+                return
+            }
+            cell.logoImageView.kf.setImage(with: imageURL, placeholder: UIImage.placeholder(color: ._systemFill))
+        default:
+            guard let imageURL = URL(string: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x60B4E7dfc29dAC77a6d9f4b2D8b4568515E59c26/logo.png") else {
+                return
+            }
+            cell.logoImageView.kf.setImage(with: imageURL, placeholder: UIImage.placeholder(color: ._systemFill))
+        }
         cell.symbolLabel.text = token.symbol
         cell.nameLabel.text = token.name
         cell.balanceLabel.text = ""
