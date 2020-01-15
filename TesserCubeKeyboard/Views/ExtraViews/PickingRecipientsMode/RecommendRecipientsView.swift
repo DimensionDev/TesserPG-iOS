@@ -45,6 +45,19 @@ class RecommendRecipientsView: UIView, Thematic {
         let view = UIView(frame: .zero)
         view.backgroundColor = UIColor(hex: 0xD1D3D9)
         view.addShadow(ofColor: UIColor(hex: 0xDDDDDD)!, radius: 0, offset: CGSize(width: 0, height: 1), opacity: 1)
+        
+        let container = UIView(frame: .zero)
+        container.backgroundColor = .white
+        container.layer.cornerRadius = 16
+        container.layer.masksToBounds = true
+        view.addSubview(container)
+        
+        container.snp.makeConstraints { maker in
+            maker.leading.equalToSuperview().offset(5)
+            maker.top.equalToSuperview().offset(5)
+            maker.trailing.equalToSuperview().offset(-5)
+            maker.bottom.equalToSuperview().offset(-5)
+        }
         return view
     }()
     
@@ -57,6 +70,7 @@ class RecommendRecipientsView: UIView, Thematic {
     
     var recipientInputView: KeyboardInputView = {
         let inputView = KeyboardInputView(frame: .zero)
+        inputView.inputTextField.placeholder = "Search"
         return inputView
     }()
     
@@ -105,7 +119,7 @@ class RecommendRecipientsView: UIView, Thematic {
         recipientsTableView.delegate = self
         recipientsTableView.dataSource = self
         
-//        addSubview(titleLabelView)
+        addSubview(titleLabelView)
         addSubview(recipientsTableView)
         addSubview(resultLabel)
         
@@ -227,9 +241,9 @@ class RecommendRecipientsView: UIView, Thematic {
     }
 }
 
-extension RecommendRecipientsView: ReceipientTextFieldDelegate {
+extension RecommendRecipientsView: KeyboardInputTextFieldDelegate {
     
-    func receipientTextField(_ textField: ReceipientTextField, textDidChange text: String?) {
+    func receipientTextField(_ textField: KeyboardInputTextField, textDidChange text: String?) {
         let searchCrit = text ?? ""
 //        searchForRecipients(searchCrit)
         searchText.accept(searchCrit)

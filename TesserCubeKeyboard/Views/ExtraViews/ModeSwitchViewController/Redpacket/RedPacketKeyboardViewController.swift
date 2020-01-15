@@ -36,5 +36,7 @@ class RedPacketKeyboardViewController: UIViewController, TCkeyboardModeProvider 
             editingRedPacketVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             editingRedPacketVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
+        
+        navigationItem.rightBarButtonItem = editingRedPacketVC.nextBarButtonItem
     }
 }
