@@ -204,7 +204,7 @@ extension WalletDetailViewController: AddTokenViewControllerDelegate {
                 }
             }
             
-            controller.dismiss(animated: true, completion: {
+            controller.presentingViewController?.dismiss(animated: true, completion: {
                 // reload balance after new token inserted
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
                     self?.viewModel.walletModel.updateBalance()

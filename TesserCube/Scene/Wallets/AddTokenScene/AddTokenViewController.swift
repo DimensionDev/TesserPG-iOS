@@ -46,6 +46,11 @@ final class AddTokenViewModel: NSObject {
             .disposed(by: disposeBag)
     }
     
+    deinit {
+        os_log("%{public}s[%{public}ld], %{public}s: deinit", ((#file as NSString).lastPathComponent), #line, #function)
+
+    }
+    
 }
 
 extension AddTokenViewModel {
@@ -92,6 +97,8 @@ final class AddTokenViewController: TCBaseViewController {
     var viewModel: AddTokenViewModel!
     
     weak var delegate: AddTokenViewControllerDelegate?
+
+    private weak var searchController: UISearchController?
     
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
@@ -110,12 +117,33 @@ final class AddTokenViewController: TCBaseViewController {
         return barButtonItem
     }()
     
+    private(set) lazy var customTokenBarButtonItem: UIBarButtonItem = {
+        let barButtonItem = UIBarButtonItem(title: "Custom Token", style: .plain, target: self, action: #selector(AddTokenViewController.customTokenBarButtonItemPressed(_:)))
+        return barButtonItem
+    }()
+    
     override func configUI() {
         super.configUI()
         
+        let searchController: UISearchController = {
+            let controller = UISearchController(searchResultsController: nil)
+            controller.obscuresBackgroundDuringPresentation = false
+            controller.hidesNavigationBarDuringPresentation = false
+            controller.delegate = self
+            controller.searchBar.delegate = self
+            controller.searchResultsUpdater = self
+            
+            return controller
+        }()
+        self.searchController = searchController
+        
         title = "Add Token"
         navigationItem.leftBarButtonItem = closeBarButtonItem
-    
+        navigationItem.rightBarButtonItem = customTokenBarButtonItem
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+        definesPresentationContext = true
+
         // Layout tableView
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
@@ -155,6 +183,33 @@ final class AddTokenViewController: TCBaseViewController {
                 self?.tableView.reloadData()
             })
             .disposed(by: disposeBag)
+        
+        searchController.searchBar.rx.text.orEmpty
+            .throttle(.milliseconds(300), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .asDriver(onErrorJustReturn: "")
+            .drive(viewModel.searchText)
+            .disposed(by: disposeBag)
+        
+        // Setup notification
+        NotificationCenter.default.addObserver(self, selector: #selector(AddTokenViewController.keyboardWillShowNotification(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(AddTokenViewController.keyboardWillHideNotification(_:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+        os_log("%{public}s[%{public}ld], %{public}s: deinit", ((#file as NSString).lastPathComponent), #line, #function)
+    }
+    
+}
+
+extension AddTokenViewController {
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        os_log("%{public}s[%{public}ld], %{public}s", ((#file as NSString).lastPathComponent), #line, #function)
+        super.viewWillDisappear(animated)
+
+        searchController?.isActive = false
     }
     
 }
@@ -162,7 +217,13 @@ final class AddTokenViewController: TCBaseViewController {
 extension AddTokenViewController {
     
     @objc private func closeBarButtonItemPressed(_ sender: UIBarButtonItem) {
+        searchController?.isActive = false
         dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func customTokenBarButtonItemPressed(_ sender: UIBarButtonItem) {
+        let viewModel = CustomTokenViewModel()
+        Coordinator.main.present(scene: .customToken(viewModel: viewModel, delegate: self), from: self, transition: .detail, completion: nil)
     }
     
 }
@@ -177,5 +238,59 @@ extension AddTokenViewController: UITableViewDelegate {
         os_log("%{public}s[%{public}ld], %{public}s: did select token - %s", ((#file as NSString).lastPathComponent), #line, #function, token.name)
         // delegate control dismiss
     }
+    
+}
+
+// MARK: - UISearchControllerDelegate
+extension AddTokenViewController: UISearchControllerDelegate {
+    
+}
+
+// MARK: - UISearchBarDelegate
+extension AddTokenViewController: UISearchBarDelegate {
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        viewModel.searchText.accept("")     // reset search text when cancel searching
+    }
+    
+}
+
+// MARK: - UISearchResultsUpdating
+extension AddTokenViewController: UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        os_log("%{public}s[%{public}ld], %{public}s", ((#file as NSString).lastPathComponent), #line, #function)
+
+    }
+    
+}
+
+extension AddTokenViewController {
+    
+    @objc private func keyboardWillShowNotification(_ notification: Notification) {
+        guard let endFrame = notification.userInfo?["UIKeyboardFrameEndUserInfoKey"] as? CGRect else {
+            return
+        }
+        
+        // Keyboard only display in search mode
+        tableView.contentInset.bottom = endFrame.height
+        tableView.scrollIndicatorInsets.bottom = endFrame.height - view.safeAreaInsets.bottom
+    }
+    
+    @objc private func keyboardWillHideNotification(_ notification: Notification) {
+        // back to normal mode
+        tableView.contentInset.bottom = 0
+        tableView.scrollIndicatorInsets.bottom = 0
+    }
+    
+}
+
+// MARK: - UIAdaptivePresentationControllerDelegate
+extension AddTokenViewController: UIAdaptivePresentationControllerDelegate {
+    
+}
+
+// MARK: - CustomTokenViewControllerDelegate
+extension AddTokenViewController: CustomTokenViewControllerDelegate {
     
 }
