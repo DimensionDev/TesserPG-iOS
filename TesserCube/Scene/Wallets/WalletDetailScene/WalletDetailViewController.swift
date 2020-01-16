@@ -56,7 +56,7 @@ final class WalletDetailViewController: TCBaseViewController {
             button.setTitle("Add Token", for: .normal)
             button.rx.tap.bind { [weak self] in
                 guard let `self` = self else { return }
-                let viewModel = AddTokenViewModel()
+                let viewModel = AddTokenViewModel(customTokenViewControllerDelegate: self)
                 Coordinator.main.present(scene: .addToken(viewModel: viewModel, delegate: self), from: self, transition: .modal, completion: nil)
             }
             .disposed(by: disposeBag)
@@ -219,4 +219,55 @@ extension WalletDetailViewController: AddTokenViewControllerDelegate {
         }
     }
     
+}
+
+// MARK: - CustomTokenViewControllerDelegate
+extension WalletDetailViewController: CustomTokenViewControllerDelegate {
+    
+    func customTokenViewController(_ controller: CustomTokenViewController, didFinishWithToken token: ERC20Token) {
+        do {
+            let realm = try WalletService.realm()
+            
+            let addedToken: ERC20Token
+            if let existToken = realm.objects(ERC20Token.self).filter("address == %@", token.address).first {
+                addedToken = existToken
+            } else {
+                try realm.write {
+                    realm.add(token)
+                }
+                addedToken = token
+            }
+            
+            let index: Int = {
+                let tokens = realm.objects(WalletToken.self).filter("wallet.address == %@", viewModel.walletModel.address)
+                let maxIndex = tokens.max(ofProperty: "index") as Int?
+                return maxIndex.flatMap { $0 + 1 } ?? 0
+            }()
+            
+            if realm.objects(WalletToken.self).filter("wallet.address == %@ && token.address == %@", viewModel.walletModel.address, addedToken.address).first == nil {
+                let walletToken = WalletToken()
+                walletToken.wallet = viewModel.walletModel.walletObject
+                walletToken.token = addedToken
+                walletToken.index = index
+
+                try realm.write {
+                    realm.add(walletToken)
+                }
+            }
+
+            controller.presentingViewController?.dismiss(animated: true, completion: {
+                // reload balance after new token inserted
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                    self?.viewModel.walletModel.updateBalance()
+                }
+            })
+
+        } catch {
+            let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: L10n.Common.Button.ok, style: .default, handler: nil)
+            alertController.addAction(okAction)
+            controller.present(alertController, animated: true, completion: nil)
+        }
+    }
+
 }

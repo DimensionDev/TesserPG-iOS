@@ -20,6 +20,7 @@ protocol AddTokenViewControllerDelegate: class {
 final class AddTokenViewModel: NSObject {
     
     let disposeBag = DisposeBag()
+    weak var customTokenViewControllerDelegate: CustomTokenViewControllerDelegate?
     
     // Input
     var tokens = BehaviorRelay<[ERC20Token]>(value: [])
@@ -29,7 +30,8 @@ final class AddTokenViewModel: NSObject {
     var trie = BehaviorRelay(value: Trie<Character>())
     var filteredTokens = BehaviorRelay<[ERC20Token]>(value: [])
     
-    override init() {
+    init(customTokenViewControllerDelegate: CustomTokenViewControllerDelegate?) {
+        self.customTokenViewControllerDelegate = customTokenViewControllerDelegate
         super.init()
         
         // Subscribe on background thread to avoid blocking the main thread
@@ -271,7 +273,8 @@ extension AddTokenViewController {
     
     @objc private func customTokenBarButtonItemPressed(_ sender: UIBarButtonItem) {
         let viewModel = CustomTokenViewModel()
-        Coordinator.main.present(scene: .customToken(viewModel: viewModel, delegate: self), from: self, transition: .detail, completion: nil)
+        let delegate = self.viewModel.customTokenViewControllerDelegate
+        Coordinator.main.present(scene: .customToken(viewModel: viewModel, delegate: delegate), from: self, transition: .detail, completion: nil)
     }
     
 }
@@ -335,10 +338,5 @@ extension AddTokenViewController {
 
 // MARK: - UIAdaptivePresentationControllerDelegate
 extension AddTokenViewController: UIAdaptivePresentationControllerDelegate {
-    
-}
-
-// MARK: - CustomTokenViewControllerDelegate
-extension AddTokenViewController: CustomTokenViewControllerDelegate {
     
 }

@@ -41,7 +41,7 @@ class Coordinator {
         case createWallet
         case walletDetail(viewModel: WalletDetailViewModel)
         case addToken(viewModel: AddTokenViewModel, delegate: AddTokenViewControllerDelegate)
-        case customToken(viewModel: CustomTokenViewModel, delegate: CustomTokenViewControllerDelegate)
+        case customToken(viewModel: CustomTokenViewModel, delegate: CustomTokenViewControllerDelegate?)
         case backupMnemonic(viewModel: BackupMnemonicCollectionViewModel)
         case confirmMnemonic(viewModel: ConfirmMnemonicCollectionViewModel)
         case importWallet

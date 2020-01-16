@@ -13,7 +13,6 @@ import CryptoSwift
 
 extension RedPacketService {
     
-    
     static func prepareWalletMeta(from walletModel: WalletModel) throws -> WalletMeta {
         let walletAddress = try EthereumAddress(hex: walletModel.address, eip55: false)
         let privateKeyHex = try walletModel.hdWallet.privateKey().key.toHexString()

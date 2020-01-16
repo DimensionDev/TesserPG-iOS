@@ -92,16 +92,29 @@ public class WalletModel {
             .flatMapLatest { _ -> Observable<Result<(String, BigUInt), Error>> in
                 do {
                     let realm = try WalletService.realm()
-                    let tokenAddresses = realm.objects(WalletToken.self).filter("wallet.id == %@", walletID).compactMap { $0.token?.address }
+                    let result = realm.objects(WalletToken.self).filter("wallet.id == %@", walletID)
+                        .sorted(by: { (lhs, rhs) -> Bool in
+                            if (lhs._token_balance ?? "").isEmpty || (rhs._token_balance ?? "").isEmpty {
+                                return true
+                            }
+                            
+                            return false
+                        })
+                        .compactMap { $0.token?.address }
+                    let tokenAddresses = Array(result)
                     
-                    let balanceResultTuple = Array(tokenAddresses).map { tokenAddress in
-                        return WalletService.getERC20TokenBalance(forWallet: walletAddress, ofContract: tokenAddress)
-                            .map { balance in (tokenAddress, balance) }
-                            .map { Result<(String, BigUInt), Error>.success($0)}
-                            .asObservable()
-                    }
+                    return Observable.from(tokenAddresses)
+                        .map { tokenAddress -> Observable<Result<(String, BigUInt), Error>> in
+                            os_log("%{public}s[%{public}ld], %{public}s: update token %s balance", ((#file as NSString).lastPathComponent), #line, #function, tokenAddress)
+
+                            return WalletService.getERC20TokenBalance(forWallet: walletAddress, ofContract: tokenAddress)
+                                .map { balance in (tokenAddress, balance) }
+                                .map { Result<(String, BigUInt), Error>.success($0)}
+                                .asObservable()
+                                .catchErrorJustReturn(Result.failure(WalletService.Error.invalidAmount))
+                        }
+                        .merge(maxConcurrent: 1)    // make task execute in sequence
                     
-                    return Observable<Result<(String, BigUInt), Error>>.merge(balanceResultTuple)
                 } catch {
                     return Observable.just(Result.failure(error))
                 }
@@ -110,6 +123,8 @@ public class WalletModel {
                 switch result {
                 case let .success(tuple):
                     let (tokenAddress, balance) = tuple
+                    os_log("%{public}s[%{public}ld], %{public}s: update token %s balance %s", ((#file as NSString).lastPathComponent), #line, #function, tokenAddress, String(balance))
+
                     do {
                         let realm = try WalletService.realm()
                         guard let walletToken = realm.objects(WalletToken.self).filter("wallet.id == %@ && token.address == %@", walletID, tokenAddress).first else {
@@ -125,6 +140,11 @@ public class WalletModel {
                 case let .failure(error):
                     os_log("%{public}s[%{public}ld], %{public}s: erc20 fetch balance error: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
                 }
+            }, onError: { _ in
+                assertionFailure()
+            }, onDisposed: {
+                os_log("%{public}s[%{public}ld], %{public}s: token update disposed", ((#file as NSString).lastPathComponent), #line, #function)
+                
             })
             .disposed(by: disposeBag)
     }
