@@ -17,7 +17,6 @@ final class TokenTableViewCell: UITableViewCell {
     
     let logoImageView: UIImageView = {
         let imageView = UIImageView()
-        // imageView.backgroundColor = ._systemFill
         imageView.layer.cornerRadius = 4
         imageView.layer.masksToBounds = true
         return imageView

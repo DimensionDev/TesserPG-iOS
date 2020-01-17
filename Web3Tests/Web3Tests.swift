@@ -10,6 +10,7 @@ import XCTest
 import Web3
 import CryptoSwift
 import DMS_HDWallet_Cocoa
+@testable import TesserCube
 
 class Web3Tests: XCTestCase {
 

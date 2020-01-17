@@ -15,7 +15,7 @@ private enum SchemaVersions: UInt64 {
     case version_2_rc1 = 4
     case version_2_rc2 = 5
     case version_2_rc3 = 8
-    case version_2_rc8 = 19
+    case version_2_rc8 = 20
     
     static let currentVersion: SchemaVersions = .version_2_rc8
 }

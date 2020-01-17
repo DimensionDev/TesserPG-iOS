@@ -42,7 +42,7 @@ extension WalletsViewModel {
         var image: UIImage? {
             if #available(iOS 13.0, *) {
                 switch self {
-                case .copyWalletAddress:    return UIImage(systemName: "doc.on.clipboard")
+                case .copyWalletAddress:    return UIImage(systemName: "doc.on.doc")
                 case .backupMnemonic:       return UIImage(systemName: "pencil.and.ellipsis.rectangle")
                 case .deleteWallet:         return UIImage(systemName: "trash")
                 case .claimRedPacket:       return UIImage(systemName: "envelope.open")

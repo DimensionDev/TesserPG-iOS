@@ -105,11 +105,11 @@ extension RedPacketService {
                         switch redPacket.status {
                         case .normal, .incoming:
                             try realm.write {
-                                // .empty > .expired
-                                if availability.claimed == availability.total {
-                                    redPacket.status = .empty
-                                } else if availability.expired {
+                                // .expired > .empty
+                                if availability.expired {
                                     redPacket.status = .expired
+                                } else if availability.claimed == availability.total {
+                                    redPacket.status = .empty
                                 }
                             }
                         case .claimed:

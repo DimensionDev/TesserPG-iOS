@@ -27,17 +27,42 @@ final class RedPacketService {
     // Global observable queue:
     // Reuse sequence if shared observable object if already in queue
     // And also subscribe in service when observable created to prevent task canceled
-    var approveResultQueue: [RedPacket.ID: Observable<ApproveEvent>] = [:]
-    var createQueue: [RedPacket.ID: Observable<TransactionHash>] = [:]
-    var createResultQueue: [RedPacket.ID: Observable<CreationSuccess>] = [:]
-    var updateCreateResultQueue: [RedPacket.ID: Observable<CreationSuccess>] = [:]
-    var checkAvailabilityQueue: [RedPacket.ID: Observable<RedPacketAvailability>] = [:]
-    var claimQueue: [RedPacket.ID: Observable<TransactionHash>] = [:]
-    var claimResultQueue: [RedPacket.ID: Observable<ClaimSuccess>] = [:]
-    var updateClaimResultQueue: [RedPacket.ID: Observable<ClaimSuccess>] = [:]
-    var refundQueue: [RedPacket.ID: Observable<TransactionHash>] = [:]
-    var refundResultQueue: [RedPacket.ID: Observable<RefundSuccess>] = [:]
-    var updateRefundResultQueue: [RedPacket.ID: Observable<RefundSuccess>] = [:]
+    var approveResultQueue: [RedPacket.ID: Observable<ApproveEvent>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
+    }
+    var createQueue: [RedPacket.ID: Observable<TransactionHash>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
+    }
+    var createResultQueue: [RedPacket.ID: Observable<CreationSuccess>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
+    }
+    var updateCreateResultQueue: [RedPacket.ID: Observable<CreationSuccess>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
+    }
+    var checkAvailabilityQueue: [RedPacket.ID: Observable<RedPacketAvailability>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
+    }
+    var claimQueue: [RedPacket.ID: Observable<TransactionHash>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
+    }
+    var claimResultQueue: [RedPacket.ID: Observable<ClaimSuccess>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
+    }
+    var updateClaimResultQueue: [RedPacket.ID: Observable<ClaimSuccess>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
+    }
+    var refundQueue: [RedPacket.ID: Observable<TransactionHash>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
+    }
+    var refundResultQueue: [RedPacket.ID: Observable<RefundSuccess>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
+    }
+    var updateRefundResultQueue: [RedPacket.ID: Observable<RefundSuccess>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
+    }
+    
+    // Output
+    let isQueueChanged = PublishSubject<Void>()
     
     // per packet. 0.001 ETH
     public static var redPacketMinAmount: Decimal {

@@ -119,6 +119,20 @@ final class EditingRedPacketViewModel: NSObject {
             }
             .drive(selectTokenDecimal)
             .disposed(by: disposeBag)
+        selectTokenType.asDriver()
+            .map { tokenType -> Decimal in
+                switch tokenType {
+                case .eth:                      return RedPacketService.redPacketMinAmount
+                case .erc20(let walletToken):
+                    guard let decimals = walletToken.token?.decimals else {
+                        return RedPacketService.redPacketMinAmount
+                    }
+                    
+                    return 1 / pow(10, (decimals + 1) / 2)
+                }
+        }
+        .drive(minimalAmount)
+        .disposed(by: disposeBag)
         walletSectionFooterViewText = Driver.combineLatest(walletBalanceForSelectToken.asDriver(), selectTokenType.asDriver()) { (walletBalanceForSelectToken, selectTokenType) -> String in
             let placeholder = "Current balance: - "
             

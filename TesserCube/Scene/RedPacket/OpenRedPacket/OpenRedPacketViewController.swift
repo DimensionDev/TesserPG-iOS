@@ -46,6 +46,7 @@ extension OpenRedPacketViewModel {
             redPacket.status = .incoming
             redPacket.network = rawPayload.network ?? .mainnet
             redPacket.token_type = rawPayload.token_type
+            redPacket.received_time = Date()
             
             // Check token type if .erc20
             if rawPayload.token_type == .erc20 {

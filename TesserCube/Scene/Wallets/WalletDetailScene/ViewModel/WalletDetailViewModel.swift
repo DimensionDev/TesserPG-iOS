@@ -108,12 +108,31 @@ extension WalletDetailViewModel: UITableViewDataSource {
     
 }
 
-
 extension WalletDetailViewModel {
     
     static func configure(cell: TokenTableViewCell, with walletToken: WalletToken) {
         // fix target membership compile issue
         RedPacketTokenSelectViewModel.configure(cell: cell, with: walletToken)
+    }
+    
+}
+
+extension WalletDetailViewModel {
+    
+    func removeToken(at indexPath: IndexPath) -> Bool {
+        let token = self.tokens.value[indexPath.row]
+        
+        do {
+            let realm = try WalletService.realm()
+            try realm.write {
+                realm.delete(token)
+            }
+            
+            return true
+        } catch {
+            return false
+        }
+        
     }
     
 }

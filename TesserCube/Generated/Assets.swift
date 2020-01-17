@@ -41,6 +41,10 @@ internal enum Asset {
   internal static let mockPoster = ImageAsset(name: "mock_poster")
   internal static let arrowDropDown24px = ImageAsset(name: "arrow_drop_down_24px")
   internal static let ethereumLogo = ImageAsset(name: "ethereum-logo")
+  internal static let redPacketCardBackground = ColorAsset(name: "red_packet_card_background")
+  internal static let redPacketCardHeaderBackground = ColorAsset(name: "red_packet_card_header_background")
+  internal static let redPacketCardHeaderLabelTextColor = ColorAsset(name: "red_packet_card_header_label_text_color")
+  internal static let redPacketDefaultLogo = ImageAsset(name: "red_packet_default_logo")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 

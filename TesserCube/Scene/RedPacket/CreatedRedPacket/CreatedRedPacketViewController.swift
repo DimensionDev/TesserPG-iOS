@@ -15,6 +15,7 @@ import RealmSwift
 import Web3
 import DMS_HDWallet_Cocoa
 import DateToolsSwift
+import Kingfisher
 
 final class CreatedRedPacketViewModel: NSObject {
     
@@ -125,63 +126,134 @@ extension CreatedRedPacketViewModel: UITableViewDataSource {
 extension CreatedRedPacketViewModel {
     
     static func configure(cell: RedPacketCardTableViewCell, with redPacket: RedPacket) {
-        cell.nameLabel.text = redPacket.sender_name
-        #if DEBUG
-        cell.emailLabel.text = redPacket.network.rawValue
+        // Set name
+        #if !MAINNET
+        let name = "From: " + redPacket.sender_name + " (Rinkeby)"
         #else
-        cell.emailLabel.text = ""       // no more email
+        let name = "From: " + redPacket.sender_name
         #endif
+        cell.nameLabel.text = name
+        
+        // Set image
+        switch redPacket.token_type {
+        case .eth:
+            cell.logoImageView.image = Asset.ethereumLogo.image
+        case .erc20:
+            let processor = DownsamplingImageProcessor(size: cell.logoImageView.frame.size)
+            guard let token = redPacket.erc20_token,
+                var imageURL = URL(string: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/\(token.address)/logo.png") else {
+                cell.logoImageView.image = UIImage.placeholder(color: ._systemFill)
+                break
+            }
+            
+            if token.network == .rinkeby {
+                imageURL = URL(string: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x60B4E7dfc29dAC77a6d9f4b2D8b4568515E59c26/logo.png")!
+            }
+            
+            cell.logoImageView.kf
+                .setImage(with: imageURL,
+                          placeholder: UIImage.placeholder(color: ._systemFill),
+                          options: [
+                            .processor(processor),
+                            .scaleFactor(UIScreen.main.scale),
+                            .transition(.fade(1)),
+                            .cacheOriginalImage
+                    ]
+                )
+        }
+        
+        // Set message
+        if !redPacket.send_message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            cell.messageLabel.text = redPacket.send_message
+            cell.messageLabel.textColor = .white
+        } else {
+            cell.messageLabel.text = "Best Wishes!"
+            cell.messageLabel.textColor = UIColor.white.withAlphaComponent(0.8)
+        }
         
         let helper = RedPacketHelper(for: redPacket)
         let totalAmountInDecimalString = helper.sendAmountInDecimalString ?? "-"
         let symbol = helper.symbol
         
-        switch redPacket.status {
-        case .initial, .pending:
-            cell.redPacketStatusLabel.text = "Outgoing Red Packet"
-            cell.indicatorLabel.text = "Publishing…"
-        case .fail:
-            cell.redPacketStatusLabel.text = "Failed to send"
-            cell.indicatorLabel.text = ""
-        case .incoming:
-            cell.redPacketStatusLabel.text = "Incoming Red Packet"
-            cell.redPacketDetailLabel.text = "Trying to claim…"
-            cell.indicatorLabel.text = ""
-        case .normal:
-            cell.redPacketStatusLabel.text = "Sent \(totalAmountInDecimalString) \(symbol)"
-            cell.indicatorLabel.text = "Ready for collection"
-        case .claim_pending:
-            cell.redPacketStatusLabel.text = "Claiming…"
-            cell.indicatorLabel.text = ""
-        case .claimed:
-            let amountInDecimalString = helper.claimAmountInDecimalString ?? "-"
-            cell.redPacketStatusLabel.text = "Got \(amountInDecimalString) \(symbol)"
-            cell.indicatorLabel.text = ""
-        case .empty:
-            cell.redPacketStatusLabel.text = "Too late to get any"
-            cell.indicatorLabel.text = ""
-        case .expired:
-            cell.redPacketStatusLabel.text = "Too late to get any"
-            cell.indicatorLabel.text = ""
-        case .refund_pending:
-            cell.redPacketStatusLabel.text = "Refunding…"
-            cell.indicatorLabel.text = ""
-        case .refunded:
-            let amountInDecimalString = helper.refundAmountInDecimalString ?? "-"
-            cell.redPacketStatusLabel.text = "Refund \(amountInDecimalString) \(symbol)"
-            cell.indicatorLabel.text = ""
-        }
-
+        // Set detail
         let share = redPacket.uuids.count
         let unit = share > 1 ? "shares" : "share"
-        cell.redPacketDetailLabel.text = "\(totalAmountInDecimalString) \(symbol) in total / \(share) \(unit)"
-
+        cell.detailLabel.text = "\(totalAmountInDecimalString) \(symbol) / \(share) \(unit)"
+        
+        // Set create time
         if let blockCreationTime = redPacket.block_creation_time.value {
             let createDate = Date(timeIntervalSince1970: TimeInterval(blockCreationTime))
-            cell.createdDateLabel.text = createDate.timeAgoSinceNow + " created"
-
+            if abs(createDate.timeIntervalSinceNow) > 1 * 24 * 60 * 60 {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateStyle = .short
+                dateFormatter.timeStyle = .short
+                cell.leftFooterLabel.text = dateFormatter.string(from: createDate)
+            } else {
+                cell.leftFooterLabel.text = createDate.timeAgoSinceNow + " created"
+            }
         } else {
-            cell.createdDateLabel.text = " "
+            cell.leftFooterLabel.text = " "
+        }
+        
+        // Set recived time
+        if let receivedDate = redPacket.received_time {
+            if abs(receivedDate.timeIntervalSinceNow) > 1 * 24 * 60 * 60 {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateStyle = .short
+                dateFormatter.timeStyle = .short
+                cell.rightFooterLabel.text = dateFormatter.string(from: receivedDate)
+            } else {
+                cell.rightFooterLabel.text = receivedDate.timeAgoSinceNow + " received"
+            }
+        } else {
+            cell.rightFooterLabel.text = " "
+        }
+        
+        // Custom base on status
+        switch redPacket.status {
+        case .initial, .pending:
+            cell.statusLabel.text = "Sending \(totalAmountInDecimalString) \(symbol)"
+        case .fail:
+            cell.statusLabel.text = "Failed to send"
+        case .incoming:
+            cell.statusLabel.text = ""
+        case .normal:
+            cell.statusLabel.text = ""
+        case .claim_pending:
+            cell.statusLabel.text = "Opening…"
+        case .claimed:
+            if let claimAmountInDecimalString = helper.claimAmountInDecimalString {
+                cell.statusLabel.text = "Got \(claimAmountInDecimalString) \(symbol)"
+            }
+        case .empty:
+            cell.statusLabel.text = "No more claimable"
+            cell.detailLabel.text = "Too late to get any"
+        case .expired:
+            // if refunded
+            if helper.refundAmountInBigUInt != BigUInt(0), let refundAmountInDecimalString = helper.refundAmountInDecimalString {
+                cell.statusLabel.text = "Refunded \(refundAmountInDecimalString) \(symbol)"
+                break
+            }
+            // if not refund and could be refund
+            if helper.refundAmountInBigUInt == BigUInt(0), WalletService.default.walletModels.value.first(where: { $0.address == redPacket.sender_address }) != nil {
+                cell.statusLabel.text = "Refundable"
+                break
+            }
+            // if not refund and can not refund
+            if helper.refundAmountInBigUInt == BigUInt(0) {
+                cell.statusLabel.text = "Expired"
+                cell.detailLabel.text = "Too late to get any"
+                break
+            }
+            
+        case .refund_pending:
+            cell.statusLabel.text = "Refunding…"
+        case .refunded:
+            if let refundAmountInDecimalString = helper.refundAmountInDecimalString {
+                cell.statusLabel.text = "Refund \(refundAmountInDecimalString)"
+            } else {
+                cell.statusLabel.text = "Refunded"
+            }
         }
     }
     

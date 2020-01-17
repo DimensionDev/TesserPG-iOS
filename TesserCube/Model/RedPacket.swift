@@ -55,6 +55,8 @@ public class RedPacket: Object {
     @objc public dynamic var erc20_approve_transaction_hash: String?
     @objc private dynamic var _erc20_approve_value: String?
     
+    @objc public dynamic var received_time: Date?
+    
     public dynamic var network: EthereumNetwork {
         get { return EthereumNetwork(rawValue: _network) ?? .rinkeby }
         set { _network = newValue.rawValue }

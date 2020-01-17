@@ -212,7 +212,6 @@
 		DB0EC52723ACA32D00BDA2B5 /* Web3Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0EC52523ACA32D00BDA2B5 /* Web3Secret.swift */; };
 		DB0EC52823ACA32D00BDA2B5 /* Web3Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0EC52523ACA32D00BDA2B5 /* Web3Secret.swift */; };
 		DB0EC52923ACA32D00BDA2B5 /* Web3Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0EC52523ACA32D00BDA2B5 /* Web3Secret.swift */; };
-		DB0EC52A23ACA44100BDA2B5 /* Web3Secret.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0EC52523ACA32D00BDA2B5 /* Web3Secret.swift */; };
 		DB0F101C2389278F00F49D2C /* RecipientCellTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8325E48A222F6D4500EE9B83 /* RecipientCellTableViewCell.xib */; };
 		DB0F101E23893B3100F49D2C /* CreatedRedPacketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0F101D23893B3100F49D2C /* CreatedRedPacketViewController.swift */; };
 		DB0F101F23893B3100F49D2C /* CreatedRedPacketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0F101D23893B3100F49D2C /* CreatedRedPacketViewController.swift */; };
@@ -293,6 +292,8 @@
 		DB15695F23278EA200220926 /* FetchableRecord+all.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB15695D23278EA200220926 /* FetchableRecord+all.swift */; };
 		DB15696023278EA200220926 /* FetchableRecord+all.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB15695D23278EA200220926 /* FetchableRecord+all.swift */; };
 		DB15696123278EA200220926 /* FetchableRecord+all.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB15695D23278EA200220926 /* FetchableRecord+all.swift */; };
+		DB1C325923D1852600E62781 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D5C221E6D0B00F556C0 /* UIImage+Color.swift */; };
+		DB1C325A23D1852600E62781 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D5C221E6D0B00F556C0 /* UIImage+Color.swift */; };
 		DB1C6FD2239F6705002A37AD /* InputRedPacketMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1C6FD1239F6705002A37AD /* InputRedPacketMessageTableViewCell.swift */; };
 		DB1C6FD3239F6705002A37AD /* InputRedPacketMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1C6FD1239F6705002A37AD /* InputRedPacketMessageTableViewCell.swift */; };
 		DB1E0FFF23D0592B00DE17EC /* TokenInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1E0FFD23D0592B00DE17EC /* TokenInfoTableViewCell.swift */; };
@@ -594,7 +595,6 @@
 		DBC9BD3823B094F200252437 /* RedPacketPayloadEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD3623B094F200252437 /* RedPacketPayloadEncryptor.swift */; };
 		DBC9BD3923B094F200252437 /* RedPacketPayloadEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD3623B094F200252437 /* RedPacketPayloadEncryptor.swift */; };
 		DBC9BD3A23B094F200252437 /* RedPacketPayloadEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD3623B094F200252437 /* RedPacketPayloadEncryptor.swift */; };
-		DBC9BD3D23B1DC2500252437 /* RedPacketPayloadEncryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD3623B094F200252437 /* RedPacketPayloadEncryptor.swift */; };
 		DBC9BD3F23B1EF4F00252437 /* OpenRedPacketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD3E23B1EF4F00252437 /* OpenRedPacketViewController.swift */; };
 		DBC9BD4223B3297200252437 /* WalletCardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD4123B3297200252437 /* WalletCardCollectionViewCell.swift */; };
 		DBC9BD4423B32DEE00252437 /* WalletCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD4323B32DED00252437 /* WalletCardView.swift */; };
@@ -603,7 +603,6 @@
 		DBC9BD4E23B46CC300252437 /* EncPayloadDecryptResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD4C23B46CC300252437 /* EncPayloadDecryptResult.swift */; };
 		DBC9BD4F23B46CC300252437 /* EncPayloadDecryptResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD4C23B46CC300252437 /* EncPayloadDecryptResult.swift */; };
 		DBC9BD5023B46CC300252437 /* EncPayloadDecryptResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD4C23B46CC300252437 /* EncPayloadDecryptResult.swift */; };
-		DBC9BD5123B46D7B00252437 /* EncPayloadDecryptResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC9BD4C23B46CC300252437 /* EncPayloadDecryptResult.swift */; };
 		DBC9CEE62387896C009E13C5 /* redpacket.bin in Resources */ = {isa = PBXBuildFile; fileRef = DBC9CEE42387896B009E13C5 /* redpacket.bin */; };
 		DBC9CEE72387896C009E13C5 /* redpacket.json in Resources */ = {isa = PBXBuildFile; fileRef = DBC9CEE52387896C009E13C5 /* redpacket.json */; };
 		DBC9CEE82387B0B0009E13C5 /* EditingRedPacketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83955B76237271EF00161498 /* EditingRedPacketViewController.swift */; };
@@ -3412,10 +3411,7 @@
 			files = (
 				DB5738C923A3846100B883D9 /* BackgroundTaskTests.swift in Sources */,
 				DB03DD50237BF8DF00D96201 /* Web3Tests.swift in Sources */,
-				DBC9BD5123B46D7B00252437 /* EncPayloadDecryptResult.swift in Sources */,
-				DB0EC52A23ACA44100BDA2B5 /* Web3Secret.swift in Sources */,
 				DB0EC52423AC9ECD00BDA2B5 /* RedPacketRawPayloadTests.swift in Sources */,
-				DBC9BD3D23B1DC2500252437 /* RedPacketPayloadEncryptor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3470,6 +3466,7 @@
 				DB32518923BA198100A4DDD8 /* RedPacketValue.swift in Sources */,
 				DB4A701423C7006C00C2349C /* WalletObject.swift in Sources */,
 				DB63A0E422DD9B5600C2DDA6 /* CALayer+Shadow.swift in Sources */,
+				DB1C325923D1852600E62781 /* UIImage+Color.swift in Sources */,
 				DB415E89238BF00D0090C28F /* RedPacket.swift in Sources */,
 				DB63A11E22E0687C00C2DDA6 /* ContactPickerTagCollectionViewCell.swift in Sources */,
 				DBB64C8D23CC8B8C0099BE09 /* WalletValue.swift in Sources */,
@@ -3616,6 +3613,7 @@
 				DB1169CD22E185640099BA25 /* NotificationName.swift in Sources */,
 				DB415E88238BEF7A0090C28F /* RedPacketCardTableViewCell.swift in Sources */,
 				DB63A14E22E180DE00C2DDA6 /* ComposeMessageViewController.swift in Sources */,
+				DB1C325A23D1852600E62781 /* UIImage+Color.swift in Sources */,
 				DB1169C522E184D00099BA25 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */,
 				83C90B46231678DF0048743A /* GenerateKeyData.swift in Sources */,
 				DB415EA2238CBEB20090C28F /* WalletService+Web3.swift in Sources */,

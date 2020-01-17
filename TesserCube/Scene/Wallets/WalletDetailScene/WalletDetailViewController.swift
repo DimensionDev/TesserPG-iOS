@@ -179,6 +179,26 @@ extension WalletDetailViewController: UITableViewDelegate {
         }
     }
     
+    // Delete action
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let sectionType = WalletDetailViewModel.Section.allCases[indexPath.section]
+        guard case .token = sectionType else {
+            return nil
+        }
+ 
+        // remove token
+        let removeAction = UIContextualAction(style: .destructive, title: "Remove") { [weak self] action, view, completionHandler in
+            os_log("%{public}s[%{public}ld], %{public}s: remove item at %s", ((#file as NSString).lastPathComponent), #line, #function, indexPath.description)
+            let result = self?.viewModel.removeToken(at: indexPath) ?? false
+            completionHandler(result)
+        }
+        
+        let configuration = UISwipeActionsConfiguration(actions: [removeAction])
+        configuration.performsFirstActionWithFullSwipe = false
+        
+        return configuration
+    }
+    
 }
 
 // MARK: - AddTokenViewControllerDelegate
