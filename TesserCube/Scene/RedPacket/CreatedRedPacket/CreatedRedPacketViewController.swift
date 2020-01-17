@@ -141,7 +141,7 @@ extension CreatedRedPacketViewModel {
         case .erc20:
             let processor = DownsamplingImageProcessor(size: cell.logoImageView.frame.size)
             guard let token = redPacket.erc20_token,
-                var imageURL = URL(string: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/\(token.address)/logo.png") else {
+            var imageURL = URL(string: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/\(token.address)/logo.png") else {
                 cell.logoImageView.image = UIImage.placeholder(color: ._systemFill)
                 break
             }
@@ -150,6 +150,8 @@ extension CreatedRedPacketViewModel {
                 imageURL = URL(string: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x60B4E7dfc29dAC77a6d9f4b2D8b4568515E59c26/logo.png")!
             }
             
+            os_log("%{public}s[%{public}ld], %{public}s: load token image: %s", ((#file as NSString).lastPathComponent), #line, #function, imageURL.description)
+
             cell.logoImageView.kf
                 .setImage(with: imageURL,
                           placeholder: UIImage.placeholder(color: ._systemFill),

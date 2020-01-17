@@ -62,7 +62,7 @@ final class RedPacketCardTableViewCell: UITableViewCell {
         return label
     }()
     let logoImageView: UIImageView = {
-        let imageView = UIImageView()
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
         imageView.layer.cornerRadius = 4
         imageView.layer.masksToBounds = true
         imageView.contentMode = .scaleAspectFit
@@ -93,32 +93,11 @@ final class RedPacketCardTableViewCell: UITableViewCell {
         label.textColor = .white
         return label
     }()
-    
-    
-    let redPacketStatusLabel: UILabel = {
-        let label = UILabel()
-        label.font = FontFamily.SFProDisplay.regular.font(size: 22)
-        label.textColor = .systemYellow
-        return label
-    }()
-
-    let createdDateLabel: UILabel = {
-        let label = UILabel()
-        label.font = FontFamily.SFProText.regular.font(size: 14)
-        label.textColor = .systemYellow
-        return label
-    }()
-    let indicatorLabel: UILabel = {
-        let label = UILabel()
-        label.font = FontFamily.SFProText.regular.font(size: 14)
-        label.textColor = .systemYellow
-        label.textAlignment = .right
-        return label
-    }()
 
     override func prepareForReuse() {
         super.prepareForReuse()
 
+        logoImageView.kf.cancelDownloadTask()
         disposeBag = DisposeBag()
     }
 
