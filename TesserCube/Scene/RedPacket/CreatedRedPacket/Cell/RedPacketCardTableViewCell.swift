@@ -217,7 +217,7 @@ final class RedPacketCardTableViewCell: UITableViewCell {
             rightFooterLabel.leadingAnchor.constraint(equalTo: leftFooterLabel.trailingAnchor, constant: 8),
             rightFooterLabel.trailingAnchor.constraint(equalTo: cardView.layoutMarginsGuide.trailingAnchor),
         ])
-        indicatorLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        rightFooterLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
 
         nameLabel.text = "From: Sender"
         statusLabel.text = "Opening…"
@@ -226,12 +226,6 @@ final class RedPacketCardTableViewCell: UITableViewCell {
         detailLabel.text = "0.2 ETH / 3 shares"
         leftFooterLabel.text = "2 hr ago created"
         rightFooterLabel.text = "2 hr ago received"
-
-        //        emailLabel.text = "(name@mail.com)"
-//        redPacketStatusLabel.text = "Outgoing Red Packet"
-//        redPacketDetailLabel.text = "Giving 0.2 ETH / 3 shares"
-//        createdDateLabel.text = "2 hr ago created"
-//        indicatorLabel.text = "Publishing…"
 
         // Setup appearance
         clipsToBounds = false
