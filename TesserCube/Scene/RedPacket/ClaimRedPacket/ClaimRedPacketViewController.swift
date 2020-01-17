@@ -185,13 +185,33 @@ extension ClaimRedPacketViewModel: UITableViewDataSource {
         case 1:
             let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SelectWalletTableViewCell.self), for: indexPath) as! SelectWalletTableViewCell
             
-            // Setup wallet view model
-            walletModels.asDriver()
-                .drive(_cell.viewModel.walletModels)
+            walletModels.bind(to: _cell.walletPickerView.rx.items) { index, item, view in
+                let label = (view as? UILabel) ?? UILabel()
+                label.textAlignment = .center
+                label.adjustsFontSizeToFitWidth = true
+                label.text = "Wallet \(item.address.prefix(6))"
+                return label
+            }
+            .disposed(by: _cell.disposeBag)
+            
+            selectWalletModel.asDriver()
+                .map { walletModel in
+                    guard let walletModel = walletModel else {
+                        return L10n.Common.Label.nameNone
+                    }
+                    
+                    return "Wallet \(walletModel.address.prefix(6))"
+                }
+                .drive(_cell.walletTextField.rx.text)
                 .disposed(by: _cell.disposeBag)
-            _cell.viewModel.selectWalletModel.asDriver()
+        
+            #if !TARGET_IS_KEYBOARD
+            _cell.walletPickerView.rx.modelSelected(WalletModel.self)
+                .asDriver()
+                .map { $0.first }
                 .drive(selectWalletModel)
-                .disposed(by: _cell.disposeBag)
+                .disposed(by: disposeBag)
+            #endif
             
             // Setup separator line
             UITableView.setupTopSectionSeparatorLine(for: _cell)

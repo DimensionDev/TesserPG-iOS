@@ -79,9 +79,18 @@ extension CreatedRedPacketViewModel {
     private func fetchApproveResult() {
         RedPacketService.shared.updateApproveResult(for: redPacket)
             .trackActivity(activityIndicator)
-            .subscribe(onNext: { approveEvent in
-                // do nothing
-                // fetch create in realm listener
+            .subscribe(onNext: { [weak self] approveEvent in
+                // fetch create in realm listener in app: do nothing here
+                
+                #if TARGET_IS_KEYBOARD
+                // and open app if in the keyboard
+                guard let `self` = self else { return }
+                // Delay for realm database write finish
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    UIApplication.sharedApplication().openCreatedRedPacketView(redpacket: self.redPacket)
+                }
+                #endif
+                
             }, onError: { [weak self] error in
                 self?.error.accept(error)
             })
@@ -306,7 +315,10 @@ extension CreatedRedPacketViewController {
         
         title = "Red Packet Created"
         navigationItem.hidesBackButton = true
+        
+        #if !TARGET_IS_KEYBOARD
         navigationItem.rightBarButtonItem = doneBarButtonItem
+        #endif
         
         // Layout tableView
         tableView.translatesAutoresizingMaskIntoConstraints = false

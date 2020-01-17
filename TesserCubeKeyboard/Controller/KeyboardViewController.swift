@@ -255,6 +255,8 @@ class KeyboardViewController: UIInputViewController {
     override func viewWillAppear(_ animated: Bool) {
 //        self.bannerView?.isHidden = false
         self.keyboardHeight = self.height(forOrientation: self.interfaceOrientation, withTopBanner: true)
+        
+        KeyboardModeManager.shared.mode = .typing
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -474,7 +476,7 @@ class KeyboardViewController: UIInputViewController {
     }
     
     func contextChanged() {
-        KeyboardModeManager.shared.mode = .typing
+//        KeyboardModeManager.shared.mode = .typing
         self.updateCapsIfNeeded()
         self.layout?.returnKeyEnabled = self.textDocumentProxy.hasText
         self.layout?.returnKeyType = (self.textDocumentProxy.returnKeyType ?? .default)

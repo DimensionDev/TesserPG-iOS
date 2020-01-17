@@ -8,6 +8,8 @@
 
 import UIKit
 import ConsolePrint
+import RxSwift
+import RxCocoa
 
 enum KeyboardMode {
     case typing
@@ -159,42 +161,49 @@ class KeyboardModeManager: NSObject {
                     let inputRecipientTextView = encryptVC.contentInputView
                     let tempText = inputRecipientTextView.inputTextField.text ?? ""
                     inputRecipientTextView.inputTextField.text = (tempText + key)
-                    inputRecipientTextView.inputTextField.repositionCursor()
+                    return
+                }
+                if let selectRecipientVC = topNaviVC.topViewController as? SelectRecipientViewController {
+                    let inputRecipientTextView = selectRecipientVC.selectRecipientView?.recipientInputView
+                    let tempText = inputRecipientTextView?.inputTextField.text ?? ""
+                    inputRecipientTextView?.inputTextField.text = (tempText + key)
+                    inputRecipientTextView?.inputTextField.repositionCursor()
                     return
                 }
                 if let signVC = topNaviVC.topViewController as? SignViewController {
                     let inputRecipientTextView = signVC.contentInputView
                     let tempText = inputRecipientTextView.inputTextField.text ?? ""
                     inputRecipientTextView.inputTextField.text = (tempText + key)
-                    inputRecipientTextView.inputTextField.repositionCursor()
+                    return
+                }
+                if let redpacketVC = topNaviVC.topViewController as? RedPacketKeyboardViewController {
+                    guard let editRedPacketVC = redpacketVC.children.first as? EditingRedPacketViewController else {
+                        return
+                    }
+                    for cell in editRedPacketVC.tableView.visibleCells {
+                        if let amountCell = cell as? KeyboardInputRedPacketAmoutCell, amountCell.amountTextField.inputTextField.textFieldIsSelected {
+                            if amountCell.textField(amountCell.amountTextField.inputTextField, shouldChangeCharactersIn: NSMakeRange(amountCell.amountTextField.inputTextField.text?.count ?? 0, 0), replacementString: key) {
+                                amountCell.amountTextField.inputTextField.text = (amountCell.amountTextField.inputTextField.text ?? "") + key
+                            }
+                            amountCell.amountTextField.inputTextField.repositionCursor()
+                        }
+                        if let senderCell = cell as? KeyboardInputRedPacketSenderCell, senderCell.nameTextField.inputTextField.textFieldIsSelected {
+                            senderCell.nameTextField.inputTextField.text = (senderCell.nameTextField.inputTextField.text ?? "") + key
+                            senderCell.nameTextField.inputTextField.repositionCursor()
+                            editRedPacketVC.viewModel.name.accept(senderCell.nameTextField.inputTextField.text ?? "")
+                        }
+                        if let messageCell = cell as? KeyboardInputRedPacketMessageCell, messageCell.messageTextField.inputTextField.textFieldIsSelected {
+                            messageCell.messageTextField.inputTextField.text = (messageCell.messageTextField.inputTextField.text ?? "") + key
+                            messageCell.messageTextField.inputTextField.repositionCursor()
+                            editRedPacketVC.viewModel.message.accept(messageCell.messageTextField.inputTextField.text ?? "")
+                        }
+                    }
                     return
                 }
             }
         }
         keyboardVC?.textDocumentProxy.insertText(key)
         contextDidChange()
-//        if case let .command(_) = mode, let recipientView = recommendView {
-//            let inputRecipientTextView = recipientView.recipientInputView
-//            let tempText = inputRecipientTextView.inputTextField.text ?? ""
-//            inputRecipientTextView.inputTextField.text = (tempText + key)
-//            inputRecipientTextView.inputTextField.repositionCursor()
-//        } else if case let .command(_) = mode, let redPacketViewControllerNaviVC = editingRedPacketViewControllerNaviVC {
-//            if let selectRecipientsVC = redPacketViewControllerNaviVC.children.last as? RedPacketRecipientSelectViewController {
-//                let inputRecipientTextView = selectRecipientsVC.recipientInputView
-//                let tempText = inputRecipientTextView.inputTextField.text ?? ""
-//                inputRecipientTextView.inputTextField.text = (tempText + key)
-//                inputRecipientTextView.inputTextField.repositionCursor()
-//            }
-//            if let editingRedPacketVC = redPacketViewControllerNaviVC.children.last as? EditingRedPacketViewController {
-//                let inputRecipientTextView = editingRedPacketVC.amountInputView
-//                let tempText = inputRecipientTextView!.inputTextField.text ?? ""
-//                inputRecipientTextView!.inputTextField.text = (tempText + key)
-//                inputRecipientTextView!.inputTextField.repositionCursor()
-//            }
-//        } else {
-//            keyboardVC?.textDocumentProxy.insertText(key)
-//            contextDidChange()
-//        }
     }
     
     func deleteBackward() {
@@ -205,51 +214,56 @@ class KeyboardModeManager: NSObject {
                     let tempText = inputRecipientTextView.inputTextField.text ?? ""
                     if !tempText.isEmpty {
                         inputRecipientTextView.inputTextField.text = String(tempText[tempText.startIndex ..< tempText.index(before: tempText.endIndex)])
-                        inputRecipientTextView.inputTextField.repositionCursor()
+//                        inputRecipientTextView.inputTextField.repositionCursor()
                     }
                     return
                 }
-                
+                if let selectRecipientVC = topNaviVC.topViewController as? SelectRecipientViewController {
+                    let inputRecipientTextView = selectRecipientVC.selectRecipientView?.recipientInputView
+                    let tempText = inputRecipientTextView?.inputTextField.text ?? ""
+                    if !tempText.isEmpty {
+                        inputRecipientTextView?.inputTextField.text = String(tempText[tempText.startIndex ..< tempText.index(before: tempText.endIndex)])
+                        inputRecipientTextView?.inputTextField.repositionCursor()
+                    }
+                    return
+                }
                 if let signVC = topNaviVC.topViewController as? SignViewController {
                     let inputRecipientTextView = signVC.contentInputView
                     let tempText = inputRecipientTextView.inputTextField.text ?? ""
                     if !tempText.isEmpty {
                         inputRecipientTextView.inputTextField.text = String(tempText[tempText.startIndex ..< tempText.index(before: tempText.endIndex)])
-                        inputRecipientTextView.inputTextField.repositionCursor()
+//                        inputRecipientTextView.inputTextField.repositionCursor()
                     }
+                }
+                if let redpacketVC = topNaviVC.topViewController as? RedPacketKeyboardViewController {
+                    guard let editRedPacketVC = redpacketVC.children.first as? EditingRedPacketViewController else {
+                        return
+                    }
+                    for cell in editRedPacketVC.tableView.visibleCells {
+                        if let amountCell = cell as? KeyboardInputRedPacketAmoutCell,
+                            amountCell.amountTextField.inputTextField.textFieldIsSelected {
+                            let tempText = amountCell.amountTextField.inputTextField.text ?? ""
+                            amountCell.amountTextField.inputTextField.text = String(tempText[tempText.startIndex ..< tempText.index(before: tempText.endIndex)])
+                            amountCell.amountTextField.inputTextField.repositionCursor()
+                        }
+                        if let senderCell = cell as? KeyboardInputRedPacketSenderCell,
+                            senderCell.nameTextField.inputTextField.textFieldIsSelected {
+                            let tempText = senderCell.nameTextField.inputTextField.text ?? ""
+                            senderCell.nameTextField.inputTextField.text = String(tempText[tempText.startIndex ..< tempText.index(before: tempText.endIndex)])
+                            senderCell.nameTextField.inputTextField.repositionCursor()
+                        }
+                        if let messageCell = cell as? KeyboardInputRedPacketMessageCell, messageCell.messageTextField.inputTextField.textFieldIsSelected {
+                            let tempText = messageCell.messageTextField.inputTextField.text ?? ""
+                            messageCell.messageTextField.inputTextField.text = String(tempText[tempText.startIndex ..< tempText.index(before: tempText.endIndex)])
+                            messageCell.messageTextField.inputTextField.repositionCursor()
+                        }
+                    }
+                    return
                 }
             }
         }
         keyboardVC?.textDocumentProxy.deleteBackward()
         contextDidChange()
-//        if case let .command(_) = mode, let recipientView = recommendView {
-//            let inputRecipientTextView = recipientView.recipientInputView
-//            let tempText = inputRecipientTextView.inputTextField.text ?? ""
-//            if !tempText.isEmpty {
-//                inputRecipientTextView.inputTextField.text = String(tempText[tempText.startIndex ..< tempText.index(before: tempText.endIndex)])
-//                inputRecipientTextView.inputTextField.repositionCursor()
-//            }
-//        } else if case let .command(_) = mode, let redPacketViewControllerNaviVC = editingRedPacketViewControllerNaviVC {
-//            if let selectRecipientsVC = redPacketViewControllerNaviVC.children.last as? RedPacketRecipientSelectViewController {
-//                let inputRecipientTextView = selectRecipientsVC.recipientInputView
-//                let tempText = inputRecipientTextView.inputTextField.text ?? ""
-//                if !tempText.isEmpty {
-//                    inputRecipientTextView.inputTextField.text = String(tempText[tempText.startIndex ..< tempText.index(before: tempText.endIndex)])
-//                    inputRecipientTextView.inputTextField.repositionCursor()
-//                }
-//            }
-//            if let editingRedPacketVC = redPacketViewControllerNaviVC.children.last as? EditingRedPacketViewController {
-//                let inputRecipientTextView = editingRedPacketVC.amountInputView
-//                let tempText = inputRecipientTextView!.inputTextField.text ?? ""
-//                if !tempText.isEmpty {
-//                    inputRecipientTextView!.inputTextField.text = String(tempText[tempText.startIndex ..< tempText.index(before: tempText.endIndex)])
-//                    inputRecipientTextView!.inputTextField.repositionCursor()
-//                }
-//            }
-//        } else {
-//            keyboardVC?.textDocumentProxy.deleteBackward()
-//            contextDidChange()
-//        }
     }
     
     var documentContextBeforeInput: String? {
@@ -258,29 +272,30 @@ class KeyboardModeManager: NSObject {
                 if let encryptVC = topNaviVC.topViewController as? EncryptViewController {
                     return encryptVC.contentInputView.inputTextField.text
                 }
-                
+                if let selectRecipientVC = topNaviVC.topViewController as? SelectRecipientViewController {
+                    return selectRecipientVC.selectRecipientView?.recipientInputView.inputTextField.text
+                }
                 if let signVC = topNaviVC.topViewController as? SignViewController {
                     return signVC.contentInputView.inputTextField.text
+                }
+                if let redpacketVC = topNaviVC.topViewController as? RedPacketKeyboardViewController,
+                    let editRedPacketVC = redpacketVC.children.first as? EditingRedPacketViewController {
+                    for cell in editRedPacketVC.tableView.visibleCells {
+                        if let amountCell = cell as? KeyboardInputRedPacketAmoutCell, amountCell.amountTextField.inputTextField.textFieldIsSelected {
+                            return amountCell.amountTextField.inputTextField.text
+                        }
+                        if let senderCell = cell as? KeyboardInputRedPacketSenderCell,
+                            senderCell.nameTextField.inputTextField.textFieldIsSelected {
+                            return senderCell.nameTextField.inputTextField.text
+                        }
+                        if let messageCell = cell as? KeyboardInputRedPacketMessageCell, messageCell.messageTextField.inputTextField.textFieldIsSelected {
+                            return messageCell.messageTextField.inputTextField.text
+                        }
+                    }
                 }
             }
         }
         return keyboardVC?.textDocumentProxy.documentContextBeforeInput
-//        if case let .command(_) = mode, let recipientView = recommendView {
-//            let inputRecipientTextView = recipientView.recipientInputView
-//            return inputRecipientTextView.inputTextField.text
-//        } else if case let .command(_) = mode, let redPacketViewControllerNaviVC = editingRedPacketViewControllerNaviVC {
-//            if let selectRecipientsVC = redPacketViewControllerNaviVC.children.last as? RedPacketRecipientSelectViewController {
-//                let inputRecipientTextView = selectRecipientsVC.recipientInputView
-//                return inputRecipientTextView.inputTextField.text
-//            }
-//            if let editingRedPacketVC = redPacketViewControllerNaviVC.children.last as? EditingRedPacketViewController {
-//                let inputRecipientTextView = editingRedPacketVC.amountInputView
-//                return inputRecipientTextView!.inputTextField.text
-//            }
-//            return keyboardVC?.textDocumentProxy.documentContextBeforeInput
-//        } else {
-//            return keyboardVC?.textDocumentProxy.documentContextBeforeInput
-//        }
     }
     
     func contextDidChange() {
@@ -332,29 +347,6 @@ extension KeyboardModeManager {
             tcKeyboardModeContainer!.containerView.removeFromSuperview()
         }
     }
-    
-//    func addRecommendView() {
-//        if recommendView == nil {
-//
-//            recommendView = RecommendRecipientsView(frame: .zero)
-//            recommendView?.updateColor(theme: currentTheme)
-//            recommendView?.delegate = self
-//            recommendView?.optionFieldView = optionsView
-//            keyboardVC?.view.insertSubview(recommendView!, belowSubview: optionsView)
-//
-//            recommendView?.snp.makeConstraints{ make in
-//                make.leading.trailing.top.equalToSuperview()
-//                make.height.equalTo(metrics[.contactsBanner]!)
-//            }
-//        }
-//    }
-//
-//    func removeRecommendView() {
-//        if recommendView != nil {
-//            recommendView?.removeFromSuperview()
-//            recommendView = nil
-//        }
-//    }
 }
 
 extension KeyboardModeManager: RecommendRecipientsViewDelegate {
@@ -375,29 +367,6 @@ extension KeyboardModeManager: RecommendRecipientsViewDelegate {
         }
     }
 }
-
-// extension KeyboardModeManager: RedPacketRecipientSelectViewControllerDelegate {
-//     func redPacketRecipientSelectViewController(_ viewController: RedPacketRecipientSelectViewController, didSelect contactInfo: FullContactInfo) {
-//         let selectedData = optionsView.selectedContacts
-//         if selectedData.contains(where: { (data) -> Bool in
-//             return data.contact.id == contactInfo.contact.id
-//         }) {
-//             // This should not happen
-//             print(" This should not happen, account: \(contactInfo.contact.name)")
-//         } else {
-//             optionsView.addSelectedRecipient(contactInfo)
-//         }
-//     }
-//
-//     func redPacketRecipientSelectViewController(_ viewController: RedPacketRecipientSelectViewController, didDeselect contactInfo: FullContactInfo) {
-//         let selectedData = optionsView.selectedContacts
-//         if selectedData.contains(where: { (data) -> Bool in
-//             return data.contact.id == contactInfo.contact.id
-//         }) {
-//             optionsView.removeSelectedRecipient(contactInfo)
-//         }
-//     }
-// }
 
  extension KeyboardModeManager: SelectedRecipientViewDelegate {
      func selectedRecipientView(_ view: SelectedRecipientView, didClick contactInfo: FullContactInfo) {

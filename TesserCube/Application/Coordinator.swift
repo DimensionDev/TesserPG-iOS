@@ -54,13 +54,7 @@ class Coordinator {
     
     enum URLHost: String {
         case fullAccess
-        
-        var scene: Scene {
-            switch self {
-            case .fullAccess:
-                return .createKey
-            }
-        }
+        case createdRedPacket
     }
     
     func present(scene: Scene, from sender: UIViewController?, transition: Transition = .detail, completion: (() -> Void)? = nil) {
@@ -278,6 +272,19 @@ extension Coordinator {
                 } else {
                     return false
                 }
+            case .createdRedPacket:
+                guard let params = url.queryParameters, let redPacketId = params["ID"] else { return false }
+                guard let realm = try? RedPacketService.realm(), let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: redPacketId) else {
+                    return false
+                }
+                guard let walletModel = WalletService.default.walletModels.value.first(where: { $0.address == redPacket.sender_address }) else {
+                    return false
+                }
+                let createdRedPacketViewController = CreatedRedPacketViewController()
+                createdRedPacketViewController.viewModel = CreatedRedPacketViewModel(redPacket: redPacket, walletModel: walletModel)
+                let naviVC = UINavigationController(rootViewController: createdRedPacketViewController)
+                app.keyWindow?.rootViewController?.present(naviVC, animated: true, completion: nil)
+                return true
             }
 
         default:

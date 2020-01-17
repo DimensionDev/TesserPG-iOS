@@ -155,8 +155,8 @@ extension OptionFieldView: KeyboardModeListener {
         case .command:
             actionsView.actions = mode.actions
             actionsView.modeChangeButton?.isSelected = true
-            suggestionView?.isHidden = false
-            selectedRecipientsView?.isHidden = true
+//            suggestionView?.isHidden = false
+//            selectedRecipientsView?.isHidden = true
         default:
             break
         }

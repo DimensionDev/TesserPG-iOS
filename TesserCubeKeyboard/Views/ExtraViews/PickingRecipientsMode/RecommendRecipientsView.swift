@@ -45,18 +45,32 @@ class RecommendRecipientsView: UIView, Thematic {
         let view = UIView(frame: .zero)
         view.backgroundColor = UIColor(hex: 0xD1D3D9)
         view.addShadow(ofColor: UIColor(hex: 0xDDDDDD)!, radius: 0, offset: CGSize(width: 0, height: 1), opacity: 1)
+        
+        let container = UIView(frame: .zero)
+        container.backgroundColor = .white
+        container.layer.cornerRadius = 16
+        container.layer.masksToBounds = true
+        view.addSubview(container)
+        
+        container.snp.makeConstraints { maker in
+            maker.leading.equalToSuperview().offset(5)
+            maker.top.equalToSuperview().offset(5)
+            maker.trailing.equalToSuperview().offset(-5)
+            maker.bottom.equalToSuperview().offset(-5)
+        }
         return view
     }()
     
-    private var titleLabel: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.text = L10n.Keyboard.Label.selectRecipients
-        label.font = FontFamily.SFProDisplay.medium.font(size: 16)
-        return label
-    }()
+//    private var titleLabel: UILabel = {
+//        let label = UILabel(frame: .zero)
+//        label.text = L10n.Keyboard.Label.selectRecipients
+//        label.font = FontFamily.SFProDisplay.medium.font(size: 16)
+//        return label
+//    }()
     
     var recipientInputView: KeyboardInputView = {
         let inputView = KeyboardInputView(frame: .zero)
+        inputView.inputTextField.placeholder = "Search"
         return inputView
     }()
     
@@ -97,7 +111,7 @@ class RecommendRecipientsView: UIView, Thematic {
     
     private func configUI() {
         backgroundColor = UIColor(hex: 0xF0F0F0)
-        titleLabelView.addSubview(titleLabel)
+//        titleLabelView.addSubview(titleLabel)
         
         titleLabelView.addSubview(recipientInputView)
         recipientInputView.inputTextField.textFieldIsSelected = true
@@ -111,16 +125,16 @@ class RecommendRecipientsView: UIView, Thematic {
         
         bringSubviewToFront(titleLabelView)
         
-        titleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
-            make.centerY.equalToSuperview()
-            make.width.equalToSuperview().dividedBy(2.0)
-        }
+//        titleLabel.snp.makeConstraints { make in
+//            make.leading.equalToSuperview().offset(16)
+//            make.centerY.equalToSuperview()
+//            make.width.equalToSuperview().dividedBy(2.0)
+//        }
         
         recipientInputView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-10)
             make.centerY.equalToSuperview()
-            make.leading.equalTo(titleLabel.snp.trailing)
+            make.leading.equalToSuperview().offset(10)
         }
         
         titleLabelView.snp.makeConstraints { make in
@@ -149,12 +163,12 @@ class RecommendRecipientsView: UIView, Thematic {
             backgroundColor = UIColor(hex: 0xF0F0F0)
             titleLabelView.backgroundColor = UIColor(hex: 0xD1D3D9)
             titleLabelView.addShadow(ofColor: UIColor(hex: 0xDDDDDD)!, radius: 0, offset: CGSize(width: 0, height: 1), opacity: 1)
-            titleLabel.textColor = .black
+//            titleLabel.textColor = .black
         case .dark:
             backgroundColor = .keyboardCharKeyBackgroundDark
             titleLabelView.backgroundColor = .keyboardFuncKeyBackgroundDark
             titleLabelView.addShadow(ofColor: .keyboardBackgroundDark, radius: 0, offset: CGSize(width: 0, height: 1), opacity: 1)
-            titleLabel.textColor = .white
+//            titleLabel.textColor = .white
         }
     }
     
@@ -227,9 +241,9 @@ class RecommendRecipientsView: UIView, Thematic {
     }
 }
 
-extension RecommendRecipientsView: ReceipientTextFieldDelegate {
+extension RecommendRecipientsView: KeyboardInputTextFieldDelegate {
     
-    func receipientTextField(_ textField: ReceipientTextField, textDidChange text: String?) {
+    func receipientTextField(_ textField: KeyboardInputTextField, textDidChange text: String?) {
         let searchCrit = text ?? ""
 //        searchForRecipients(searchCrit)
         searchText.accept(searchCrit)

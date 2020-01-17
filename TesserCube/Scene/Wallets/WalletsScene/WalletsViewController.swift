@@ -99,6 +99,7 @@ class WalletsViewController: TCBaseViewController {
                             continue
                         }
 
+                        os_log("%{public}s[%{public}ld], %{public}s: createAfterApprove %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.id)
                         let walletValue = WalletValue(from: walletModel)
                         RedPacketService.shared.createAfterApprove(for: redPacket, use: walletValue)
                             .subscribe()
@@ -108,6 +109,7 @@ class WalletsViewController: TCBaseViewController {
                     // fetch create result
                     let pendingRedPackets = redPackets.filter { $0.status == .pending }
                     for redPacket in pendingRedPackets where redPacket.create_transaction_hash != nil {
+                        os_log("%{public}s[%{public}ld], %{public}s: updateCreateResult %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.id)
                         RedPacketService.shared.updateCreateResult(for: redPacket)
                             .subscribe()
                             .disposed(by: self.disposeBag)
@@ -116,6 +118,7 @@ class WalletsViewController: TCBaseViewController {
                     // fetch claim result
                     let claimPendingRedPackets = redPackets.filter { $0.status == .claim_pending }
                     for redPacket in claimPendingRedPackets {
+                        os_log("%{public}s[%{public}ld], %{public}s: updateClaimResult %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.id)
                         RedPacketService.shared.updateClaimResult(for: redPacket)
                             .subscribe()
                             .disposed(by: self.disposeBag)

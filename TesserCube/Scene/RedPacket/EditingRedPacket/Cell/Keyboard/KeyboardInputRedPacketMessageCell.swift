@@ -1,8 +1,8 @@
 //
-//  SelectTokenTableViewCell.swift
-//  TesserCube
+//  KeyboardInputRedPacketMessageCell.swift
+//  TesserCubeKeyboard
 //
-//  Created by Cirno MainasuK on 2020-1-10.
+//  Created by jk234ert on 1/14/20.
 //  Copyright © 2020 Sujitech. All rights reserved.
 //
 
@@ -10,30 +10,27 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-final class SelectTokenTableViewCell: UITableViewCell {
+final class KeyboardInputRedPacketMessageCell: UITableViewCell {
     
     var disposeBag = DisposeBag()
     
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = FontFamily.SFProText.regular.font(size: 17)
-        label.text = "Token"
+        label.text = "Message"
         return label
     }()
     
-    private(set) lazy var tokenNameTextField: UITextField = {
-        let textField = ReadOnlyTextField()
-        textField.isEnabled = false
-        // User touching UITextField will trigger `textDidChange` callback, which makes our keyboard reset all the custom views
-        textField.isUserInteractionEnabled = false
-        textField.font = FontFamily.SFProText.regular.font(size: 17)
-        textField.text = "ETH"
-        return textField
+    lazy var messageTextField: KeyboardInputView = {
+        let inputView = KeyboardInputView(frame: .zero)
+        inputView.inputTextField.textFont = FontFamily.SFProText.regular.font(size: 17)
+        inputView.inputTextField.repositionCursor()
+        inputView.inputTextField.placeholder = "Message"
+        return inputView
     }()
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
         disposeBag = DisposeBag()
     }
     
@@ -47,13 +44,8 @@ final class SelectTokenTableViewCell: UITableViewCell {
         _init()
     }
     
-}
-
-extension SelectTokenTableViewCell {
-    
     private func _init() {
         selectionStyle = .none
-        accessoryType = .disclosureIndicator
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(titleLabel)
@@ -65,14 +57,22 @@ extension SelectTokenTableViewCell {
         ])
         titleLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         
-        tokenNameTextField.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(tokenNameTextField)
+        // Layout detail view
+        messageTextField.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(messageTextField)
         NSLayoutConstraint.activate([
-            tokenNameTextField.topAnchor.constraint(equalTo: contentView.topAnchor),
-            tokenNameTextField.leadingAnchor.constraint(equalToSystemSpacingAfter: titleLabel.trailingAnchor, multiplier: 1.0),
-            contentView.layoutMarginsGuide.trailingAnchor.constraint(equalTo: tokenNameTextField.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: tokenNameTextField.bottomAnchor),
+            messageTextField.topAnchor.constraint(equalTo: contentView.topAnchor),
+            messageTextField.leadingAnchor.constraint(equalToSystemSpacingAfter: titleLabel.trailingAnchor, multiplier: 1.0),
+            contentView.layoutMarginsGuide.trailingAnchor.constraint(equalTo: messageTextField.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: messageTextField.bottomAnchor),
         ])
     }
     
+}
+
+extension KeyboardInputRedPacketMessageCell {
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        messageTextField.inputTextField.textFieldIsSelected = selected
+    }
 }
