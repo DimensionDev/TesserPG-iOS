@@ -24,8 +24,8 @@ class EncryptViewController: UIViewController, TCkeyboardModeProvider {
         return 200
     }
     
-    var contentInputView: KeyboardInputView = {
-        let inputView = KeyboardInputView(frame: .zero)
+    var contentInputView: KeyboardMultiLineInputView = {
+        let inputView = KeyboardMultiLineInputView(frame: .zero)
         inputView.layer.masksToBounds = true
         inputView.layer.cornerRadius = 10
         return inputView
@@ -43,9 +43,6 @@ class EncryptViewController: UIViewController, TCkeyboardModeProvider {
             contentInputView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -6),
             contentInputView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -6),
         ])
-        
-        contentInputView.inputTextField.textFieldIsSelected = true
-        contentInputView.inputTextField.customDelegate = self
         
         contentString.asDriver()
             .map { !$0.isEmpty }
@@ -74,8 +71,8 @@ class EncryptViewController: UIViewController, TCkeyboardModeProvider {
     }
 }
 
-extension EncryptViewController: ReceipientTextFieldDelegate {
-    func receipientTextField(_ textField: ReceipientTextField, textDidChange text: String?) {
+extension EncryptViewController: KeyboardTextViewDelegate {
+    func keyboardTextView(_ textView: KeyboardTextView, textDidChange text: String?) {
         contentString.accept(text ?? "")
     }
 }

@@ -14,6 +14,7 @@
 		8304E99F221BF10100122637 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8304E99D221BF10100122637 /* LaunchScreen.storyboard */; };
 		8304E9AA221BF10200122637 /* TesserCubeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8304E9A9221BF10200122637 /* TesserCubeTests.swift */; };
 		8304E9B5221BF10200122637 /* TesserCubeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8304E9B4221BF10200122637 /* TesserCubeUITests.swift */; };
+		830A3F9D23B5F3690053FAB5 /* KeyboardMultiLineInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 830A3F9C23B5F3690053FAB5 /* KeyboardMultiLineInputView.swift */; };
 		8310B34522325E0C00C35AEC /* String+Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8310B34422325E0C00C35AEC /* String+Compare.swift */; };
 		8313F6912247164000C09C2D /* FloatingAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F6902247164000C09C2D /* FloatingAction.swift */; };
 		8313F6932247165F00C09C2D /* FloatingActionGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8313F6922247165F00C09C2D /* FloatingActionGroup.swift */; };
@@ -101,6 +102,9 @@
 		834DB06F23175B1C004E6F50 /* DMSPGPError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4F309722A14C0D0003804B /* DMSPGPError.swift */; };
 		835294B923279F40000E6170 /* DMSReceipientKeyIDUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831EC43022B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift */; };
 		835294BA23279F40000E6170 /* DMSReceipientKeyIDUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 831EC43022B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift */; };
+		835A7C8023CD65AC00D4930B /* KeyboardInputRedPacketAmoutCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835A7C7F23CD65AC00D4930B /* KeyboardInputRedPacketAmoutCell.swift */; };
+		835A7C8323CD65CB00D4930B /* KeyboardInputRedPacketSenderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835A7C8223CD65CB00D4930B /* KeyboardInputRedPacketSenderCell.swift */; };
+		835A7C8523CD65D700D4930B /* KeyboardInputRedPacketMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 835A7C8423CD65D700D4930B /* KeyboardInputRedPacketMessageCell.swift */; };
 		837833552248840600F2C0BF /* TCTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837833542248840600F2C0BF /* TCTypes.swift */; };
 		837833562248840600F2C0BF /* TCTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837833542248840600F2C0BF /* TCTypes.swift */; };
 		837833582248897C00F2C0BF /* KeyFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146F32243ACCE008ECC22 /* KeyFactory.swift */; };
@@ -705,6 +709,7 @@
 		8304E9B6221BF10200122637 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8304E9C4221BF1CD00122637 /* TesserCube.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TesserCube.entitlements; sourceTree = "<group>"; };
 		8304E9C6221BF1DD00122637 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
+		830A3F9C23B5F3690053FAB5 /* KeyboardMultiLineInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardMultiLineInputView.swift; sourceTree = "<group>"; };
 		8310B34422325E0C00C35AEC /* String+Compare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Compare.swift"; sourceTree = "<group>"; };
 		8313F6902247164000C09C2D /* FloatingAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingAction.swift; sourceTree = "<group>"; };
 		8313F6922247165F00C09C2D /* FloatingActionGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingActionGroup.swift; sourceTree = "<group>"; };
@@ -778,6 +783,9 @@
 		833FF390224F97D900EFE0A9 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		833FF393224F9D8100EFE0A9 /* KeyboardInterpretor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardInterpretor.swift; sourceTree = "<group>"; };
 		834CA61822659EE900AC8355 /* FullAccessHintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullAccessHintView.swift; sourceTree = "<group>"; };
+		835A7C7F23CD65AC00D4930B /* KeyboardInputRedPacketAmoutCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardInputRedPacketAmoutCell.swift; sourceTree = "<group>"; };
+		835A7C8223CD65CB00D4930B /* KeyboardInputRedPacketSenderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardInputRedPacketSenderCell.swift; sourceTree = "<group>"; };
+		835A7C8423CD65D700D4930B /* KeyboardInputRedPacketMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardInputRedPacketMessageCell.swift; sourceTree = "<group>"; };
 		836F23C32373BF2900F938E6 /* RedPacketRecipientSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedPacketRecipientSelectViewController.swift; sourceTree = "<group>"; };
 		837833542248840600F2C0BF /* TCTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCTypes.swift; sourceTree = "<group>"; };
 		8378335D2248F1DE00F2C0BF /* HUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUD.swift; sourceTree = "<group>"; };
@@ -1513,6 +1521,16 @@
 			path = Alert;
 			sourceTree = "<group>";
 		};
+		835A7C8123CD65B000D4930B /* Keyboard */ = {
+			isa = PBXGroup;
+			children = (
+				835A7C7F23CD65AC00D4930B /* KeyboardInputRedPacketAmoutCell.swift */,
+				835A7C8223CD65CB00D4930B /* KeyboardInputRedPacketSenderCell.swift */,
+				835A7C8423CD65D700D4930B /* KeyboardInputRedPacketMessageCell.swift */,
+			);
+			path = Keyboard;
+			sourceTree = "<group>";
+		};
 		8378335C22488A8A00F2C0BF /* Database */ = {
 			isa = PBXGroup;
 			children = (
@@ -1555,6 +1573,7 @@
 			children = (
 				832D1D9E23A8CB99006FDF6D /* EncryptViewController.swift */,
 				8393371823A9F85E00C540EF /* SelectRecipientViewController.swift */,
+				830A3F9C23B5F3690053FAB5 /* KeyboardMultiLineInputView.swift */,
 			);
 			path = Encrypt;
 			sourceTree = "<group>";
@@ -2125,6 +2144,7 @@
 		DBC9CF032387C88E009E13C5 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				835A7C8123CD65B000D4930B /* Keyboard */,
 				DBC9CF002387C889009E13C5 /* SelectWalletTableViewCell.swift */,
 				DB42ECFC2387D6B700EB1687 /* InputRedPacketAmoutTableViewCell.swift */,
 				DB42ED022387E0B800EB1687 /* InputRedPacketShareTableViewCell.swift */,
@@ -3080,6 +3100,7 @@
 				83B93D4D221D844900F556C0 /* LayoutMetrics.swift in Sources */,
 				DBBBC199224E29E50080790F /* ContactMappable.swift in Sources */,
 				DB6AA3ED2273247C00A7ADDF /* KeyFactory+BCOpenPGP.swift in Sources */,
+				835A7C8023CD65AC00D4930B /* KeyboardInputRedPacketAmoutCell.swift in Sources */,
 				83B93D49221D7E8900F556C0 /* ImageKey.swift in Sources */,
 				DB415EAC238CD1E60090C28F /* ClaimRedPacketViewController.swift in Sources */,
 				833FF392224F97D900EFE0A9 /* Message.swift in Sources */,
@@ -3090,10 +3111,12 @@
 				DB9FEA1A23AB727F00499632 /* RedPacketService+Check.swift in Sources */,
 				83B93D63221E71CC00F556C0 /* SelectedRecipientView.swift in Sources */,
 				83B93E8A222411C300F556C0 /* UIView+blinking.swift in Sources */,
+				835A7C8523CD65D700D4930B /* KeyboardInputRedPacketMessageCell.swift in Sources */,
 				DB0ABA19237585B800AD3B7F /* WalletService.swift in Sources */,
 				83DFC73F2259F0E700993160 /* TCCardView.swift in Sources */,
 				83B93D4F221D89FD00F556C0 /* KeyboardLayout.swift in Sources */,
 				8325E4AA22310B1900EE9B83 /* SuggestHelper.swift in Sources */,
+				830A3F9D23B5F3690053FAB5 /* KeyboardMultiLineInputView.swift in Sources */,
 				83B93E882223CCF700F556C0 /* KeyboardInputView.swift in Sources */,
 				DB03DD5E237BFD4F00D96201 /* WalletService+Web3.swift in Sources */,
 				DB449991228C1417000B7E8A /* MessageDigitalSignatureSettings.swift in Sources */,
@@ -3112,6 +3135,7 @@
 				DB415EA7238CBF9C0090C28F /* FullContactInfo.swift in Sources */,
 				DB0F102423893BE900F49D2C /* RedPacketCardTableViewCell.swift in Sources */,
 				DBD4A55A23ACBA4B0030FFA6 /* RedPacketRawPayLoad.swift in Sources */,
+				835A7C8323CD65CB00D4930B /* KeyboardInputRedPacketSenderCell.swift in Sources */,
 				83B93D3A221D486600F556C0 /* KeyboardModel.swift in Sources */,
 				83C12EE12332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */,
 				8325E487222E768500EE9B83 /* Debounce.swift in Sources */,

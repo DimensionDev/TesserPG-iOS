@@ -106,3 +106,4 @@ iOSInjectionProject/
 .DS_Store
 TesserCube/Support Files/AppSecret.swift
 TesserCube/Resources/Web3/Web3Secret.swift
+TesserCube/Resources/Web3/redpacket.sol

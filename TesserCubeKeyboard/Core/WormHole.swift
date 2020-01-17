@@ -31,4 +31,11 @@ extension UIApplication {
         self.perform(Selector("openURL:"), with: url)
     }
     
+    public func openCreatedRedPacketView(redpacket: RedPacket) {
+        let url = URL(string: "tessercube://createdRedPacket")!
+        var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true)!
+        let items = [URLQueryItem(name: "ID", value: redpacket.id)]
+        urlComponents.queryItems = items
+        self.perform(Selector("openURL:"), with: urlComponents.url!)
+    }
 }

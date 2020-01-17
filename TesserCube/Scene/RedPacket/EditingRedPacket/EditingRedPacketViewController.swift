@@ -160,7 +160,12 @@ extension EditingRedPacketViewModel: UITableViewDataSource {
             cell = _cell
         
         case .amount:
+            #if TARGET_IS_KEYBOARD
+            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: KeyboardInputRedPacketAmoutCell.self), for: indexPath) as! KeyboardInputRedPacketAmoutCell
+            #else
             let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: InputRedPacketAmoutTableViewCell.self), for: indexPath) as! InputRedPacketAmoutTableViewCell
+            #endif
+            
             
             // Bind coin currency unit label text to label
             amountInputCoinCurrencyUnitLabelText.asDriver()
@@ -187,20 +192,32 @@ extension EditingRedPacketViewModel: UITableViewDataSource {
             cell = _cell
             
         case .name:
+            #if TARGET_IS_KEYBOARD
+            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: KeyboardInputRedPacketSenderCell.self), for: indexPath) as! KeyboardInputRedPacketSenderCell
+            _cell.nameTextField.inputTextField.rx.text.orEmpty.asDriver()
+                .drive(name)
+                .disposed(by: _cell.disposeBag)
+            #else
             let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: InputRedPacketSenderTableViewCell.self), for: indexPath) as! InputRedPacketSenderTableViewCell
-            
             _cell.nameTextField.rx.text.orEmpty.asDriver()
                 .drive(name)
                 .disposed(by: _cell.disposeBag)
+            #endif
             
             cell = _cell
             
         case .message:
+            #if TARGET_IS_KEYBOARD
+            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: KeyboardInputRedPacketMessageCell.self), for: indexPath) as! KeyboardInputRedPacketMessageCell
+            _cell.messageTextField.inputTextField.rx.text.orEmpty.asDriver()
+                .drive(message)
+                .disposed(by: _cell.disposeBag)
+            #else
             let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: InputRedPacketMessageTableViewCell.self), for: indexPath) as! InputRedPacketMessageTableViewCell
-            
             _cell.messageTextField.rx.text.orEmpty.asDriver()
                 .drive(message)
                 .disposed(by: _cell.disposeBag)
+            #endif
             
             cell = _cell
         }
@@ -242,11 +259,18 @@ class EditingRedPacketViewController: UIViewController {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.register(SelectWalletTableViewCell.self, forCellReuseIdentifier: String(describing: SelectWalletTableViewCell.self))
         
-        tableView.register(InputRedPacketAmoutTableViewCell.self, forCellReuseIdentifier: String(describing: InputRedPacketAmoutTableViewCell.self))
         tableView.register(InputRedPacketShareTableViewCell.self, forCellReuseIdentifier: String(describing: InputRedPacketShareTableViewCell.self))
         
+        
+        #if TARGET_IS_KEYBOARD
+        tableView.register(KeyboardInputRedPacketAmoutCell.self, forCellReuseIdentifier: String(describing: KeyboardInputRedPacketAmoutCell.self))
+        tableView.register(KeyboardInputRedPacketSenderCell.self, forCellReuseIdentifier: String(describing: KeyboardInputRedPacketSenderCell.self))
+        tableView.register(KeyboardInputRedPacketMessageCell.self, forCellReuseIdentifier: String(describing: KeyboardInputRedPacketMessageCell.self))
+        #else
+        tableView.register(InputRedPacketAmoutTableViewCell.self, forCellReuseIdentifier: String(describing: InputRedPacketAmoutTableViewCell.self))
         tableView.register(InputRedPacketSenderTableViewCell.self, forCellReuseIdentifier: String(describing: InputRedPacketSenderTableViewCell.self))
         tableView.register(InputRedPacketMessageTableViewCell.self, forCellReuseIdentifier: String(describing: InputRedPacketMessageTableViewCell.self))
+        #endif
         
         return tableView
     }()
@@ -272,11 +296,6 @@ class EditingRedPacketViewController: UIViewController {
         button.setTitleColor(.white, for: .normal)
         return button
     }()
-
-    // TODO:
-    weak var amountInputView: KeyboardInputView? {
-        return nil
-    }
 
     #if TARGET_IS_EXTENSION
     weak var optionsView: OptionFieldView?
@@ -433,39 +452,30 @@ extension EditingRedPacketViewController {
     private func sendRedPacket() {
         view.endEditing(true)
         
-        let alertController = UIAlertController(title: "Error", message: nil, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alertController.addAction(okAction)
-        
         guard let selectWalletModel = viewModel.selectWalletModel.value else {
-            alertController.message = "Please select valid wallet"
-            present(alertController, animated: true, completion: nil)
+            showSendRedPacketErrorAlert(message: "Please select valid wallet")
             return
         }
         
         let senderAddress = selectWalletModel.address
         guard let walletAddress = try? EthereumAddress(hex: senderAddress, eip55: false) else {
-            alertController.message = "Please select valid wallet"
-            present(alertController, animated: true, completion: nil)
+            showSendRedPacketErrorAlert(message: "Please select valid wallet")
             return
         }
         
         guard let availableBalance = selectWalletModel.balance.value else {
-            alertController.message = "Can not read select wallet balance\nPlease try later"
-            present(alertController, animated: true, completion: nil)
+            showSendRedPacketErrorAlert(message: "Can not read select wallet balance\nPlease try later")
             return
         }
         
         guard viewModel.total.value > 0,
             let sendTotal = viewModel.total.value.wei else {
-                alertController.message = "Please input valid amount"
-                present(alertController, animated: true, completion: nil)
+                showSendRedPacketErrorAlert(message: "Please input valid amount")
                 return
         }
 
         guard sendTotal < availableBalance else {
-            alertController.message = "Insufficient account balance\nPlease input valid amount"
-            present(alertController, animated: true, completion: nil)
+            showSendRedPacketErrorAlert(message: "Insufficient account balance\nPlease input valid amount")
             return
         }
         
@@ -474,14 +484,12 @@ extension EditingRedPacketViewController {
             .replacingOccurrences(of: "\n", with: " ")
         // should not empty
         guard !senderName.isEmpty else {
-            alertController.message = "Please input valid name"
-            present(alertController, animated: true, completion: nil)
+            showSendRedPacketErrorAlert(message: "Please input valid name")
             return
         }
         
         guard senderName.count <= 30 else {
-            alertController.message = "Name can be up to 30 characters\nPlease reduce the name length"
-            present(alertController, animated: true, completion: nil)
+            showSendRedPacketErrorAlert(message: "Name can be up to 30 characters\nPlease reduce the name length")
             return
         }
         
@@ -491,8 +499,7 @@ extension EditingRedPacketViewController {
             .replacingOccurrences(of: "\n", with: " ")
         
         guard sendMessage.count <= 140 else {
-            alertController.message = "Messages can be up to 140 characters\nPlease reduce the message length"
-            present(alertController, animated: true, completion: nil)
+            showSendRedPacketErrorAlert(message: "Messages can be up to 140 characters\nPlease reduce the message length")
             return
         }
         // Verify finish
@@ -540,24 +547,39 @@ extension EditingRedPacketViewController {
                         redPacket.status = .pending
                         realm.add(redPacket)
                     }
-        
+                    
+                    #if TARGET_IS_KEYBOARD
+                    UIApplication.sharedApplication().openCreatedRedPacketView(redpacket: redPacket)
+                    #else
                     let createdRedPacketViewController = CreatedRedPacketViewController()
                     createdRedPacketViewController.viewModel = CreatedRedPacketViewModel(redPacket: redPacket)
                     self?.navigationController?.pushViewController(createdRedPacketViewController, animated: true)
+                    #endif
         
                 } catch {
-                    alertController.message = error.localizedDescription
-                    self?.present(alertController, animated: true, completion: nil)
+                    self?.showSendRedPacketErrorAlert(message: error.localizedDescription)
                     return
                 }
 
             }, onError: { [weak self] error in
                 // red packet create transaction fail
                 // discard record and alert user
-                alertController.message = error.localizedDescription
-                self?.present(alertController, animated: true, completion: nil)
+                self?.showSendRedPacketErrorAlert(message: error.localizedDescription)
             })
             .disposed(by: viewModel.disposeBag)
+    }
+    
+    private func showSendRedPacketErrorAlert(message: String) {
+        #if TARGET_IS_KEYBOARD
+        KeyboardModeManager.shared.toastAlerter.alert(message: message, in: KeyboardModeManager.shared.keyboardVC!.view)
+        #else
+        let alertController = UIAlertController(title: "Error", message: nil, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(okAction)
+        alertController.message = message
+        present(alertController, animated: true, completion: nil)
+        #endif
+        
     }
     
 }
