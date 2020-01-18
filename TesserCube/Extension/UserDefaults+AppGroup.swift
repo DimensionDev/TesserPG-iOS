@@ -46,7 +46,27 @@ struct Preference {
         get { return UserDefaults.standard[#function] ?? 0 }
         set { UserDefaults.standard[#function] = newValue }
     }
+    
+}
 
+struct EthereumPreference {
+    
+    static var userDefaults: UserDefaults? { return UserDefaults.shared }
+    
+    static var ethereumNetwork: EthereumNetwork {
+        get { return UserDefaults.shared?[#function] ?? .mainnet }
+        set { UserDefaults.shared?[#function] = newValue }
+    }
+
+}
+
+extension UserDefaults {
+    
+    @objc dynamic var ethereumNetwork: String {
+        get { return EthereumPreference.ethereumNetwork.rawValue }
+        set { EthereumPreference.ethereumNetwork = EthereumNetwork(rawValue: newValue) ?? .mainnet }
+    }
+    
 }
 
 struct KeyboardPreference {

@@ -112,7 +112,7 @@ extension ClaimRedPacketViewModel {
                     .trackActivity(self.claimActivityIndicator)
             }
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] transactionHash in
+            .subscribe(onNext: { [weak self] transactionHash in     // now_claim_pending
                 // do nothing
                 // force realm operation listener notified then to fetch claim result to fix claimTransactionHash not found race issue
             }, onError: { [weak self] error in

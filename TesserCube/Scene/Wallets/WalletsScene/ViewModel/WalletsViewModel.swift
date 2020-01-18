@@ -18,6 +18,7 @@ class WalletsViewModel: NSObject {
     var diffableDataSource: UITableViewDataSource!
 
     // Input
+    let currentNetwork = BehaviorRelay(value: EthereumPreference.ethereumNetwork)
     let walletModels = BehaviorRelay<[WalletModel]>(value: [])
     let redPackets = BehaviorRelay<[RedPacket]>(value: [])
 
@@ -39,6 +40,12 @@ class WalletsViewModel: NSObject {
     override init() {
         super.init()
         
+        currentNetwork.asDriver()
+            .drive(onNext: { network in
+                EthereumPreference.ethereumNetwork = network
+            })
+            .disposed(by: disposeBag)
+        
         // Debug
         currentWalletModel.asDriver()
             .drive(onNext: { walletModel in
@@ -46,6 +53,7 @@ class WalletsViewModel: NSObject {
             })
             .disposed(by: disposeBag)
         
+        // Debug
         currentWalletPageIndex.asDriver()
             .drive(onNext: { index in
                 os_log("%{public}s[%{public}ld], %{public}s: currentWalletPageIndex update to %s", ((#file as NSString).lastPathComponent), #line, #function, String(index))

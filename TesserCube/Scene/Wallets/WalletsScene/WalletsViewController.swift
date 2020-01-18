@@ -18,6 +18,10 @@ class WalletsViewController: TCBaseViewController {
     private(set) lazy var viewModel = WalletsViewModel()
     private let disposeBag = DisposeBag()
     
+    private(set) lazy var networkBarButtonItem: UIBarButtonItem = {
+        let barButtonItem = UIBarButtonItem(title: viewModel.currentNetwork.value.rawValue, style: .plain, target: self, action: #selector(WalletsViewController.networkBarButtonItemPressed(_:)))
+        return barButtonItem
+    }()
     private let longPressGestureRecognizer = UILongPressGestureRecognizer()
 
     private let tableView: UITableView = {
@@ -45,7 +49,14 @@ class WalletsViewController: TCBaseViewController {
         super.configUI()
 
         title = L10n.MainTabbarViewController.TabBarItem.Wallets.title
+        
+        navigationItem.leftBarButtonItem = networkBarButtonItem
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(WalletsViewController.addBarButtonItemPressed(_:)))
+        
+        viewModel.currentNetwork.asDriver()
+            .map { $0.rawValue }
+            .drive(networkBarButtonItem.rx.title)
+            .disposed(by: disposeBag)
 
         // Layout tableView
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -363,6 +374,24 @@ extension WalletsViewController {
 }
 
 extension WalletsViewController {
+    
+    @objc private func networkBarButtonItemPressed(_ sender: UIBarButtonItem) {
+        let alertController = UIAlertController(title: "Select Ethereum Network", message: nil, preferredStyle: .actionSheet)
+        let mainnetAction = UIAlertAction(title: "Mainnet", style: .default) { _ in
+            self.viewModel.currentNetwork.accept(.mainnet)
+        }
+        alertController.addAction(mainnetAction)
+        let rinkebyAction = UIAlertAction(title: "Rinkeby", style: .default) { _ in
+            self.viewModel.currentNetwork.accept(.rinkeby)
+        }
+        alertController.addAction(rinkebyAction)
+        let cancelAction = UIAlertAction(title: L10n.Common.Button.cancel, style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        if let popoverPresentationController = alertController.popoverPresentationController {
+            popoverPresentationController.barButtonItem = sender
+        }
+        present(alertController, animated: true, completion: nil)
+    }
 
     @objc private func addBarButtonItemPressed(_ sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
