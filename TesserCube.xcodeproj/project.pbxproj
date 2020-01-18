@@ -298,6 +298,7 @@
 		DB15696123278EA200220926 /* FetchableRecord+all.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB15695D23278EA200220926 /* FetchableRecord+all.swift */; };
 		DB1C325923D1852600E62781 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D5C221E6D0B00F556C0 /* UIImage+Color.swift */; };
 		DB1C325A23D1852600E62781 /* UIImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D5C221E6D0B00F556C0 /* UIImage+Color.swift */; };
+		DB1C325C23D2D84400E62781 /* RedPacketSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1C325B23D2D84400E62781 /* RedPacketSectionHeaderView.swift */; };
 		DB1C6FD2239F6705002A37AD /* InputRedPacketMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1C6FD1239F6705002A37AD /* InputRedPacketMessageTableViewCell.swift */; };
 		DB1C6FD3239F6705002A37AD /* InputRedPacketMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1C6FD1239F6705002A37AD /* InputRedPacketMessageTableViewCell.swift */; };
 		DB1E0FFF23D0592B00DE17EC /* TokenInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1E0FFD23D0592B00DE17EC /* TokenInfoTableViewCell.swift */; };
@@ -976,6 +977,7 @@
 		DB1327142253651C00BD7B98 /* KeyBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyBridge.swift; sourceTree = "<group>"; };
 		DB15695823277FD900220926 /* ProfileService+Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileService+Contact.swift"; sourceTree = "<group>"; };
 		DB15695D23278EA200220926 /* FetchableRecord+all.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FetchableRecord+all.swift"; sourceTree = "<group>"; };
+		DB1C325B23D2D84400E62781 /* RedPacketSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedPacketSectionHeaderView.swift; sourceTree = "<group>"; };
 		DB1C6FD1239F6705002A37AD /* InputRedPacketMessageTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputRedPacketMessageTableViewCell.swift; sourceTree = "<group>"; };
 		DB1E0FFD23D0592B00DE17EC /* TokenInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenInfoTableViewCell.swift; sourceTree = "<group>"; };
 		DB1E0FFE23D0592B00DE17EC /* TokenAddressInputTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokenAddressInputTableViewCell.swift; sourceTree = "<group>"; };
@@ -2310,6 +2312,7 @@
 			isa = PBXGroup;
 			children = (
 				DBC9BD4323B32DED00252437 /* WalletCardView.swift */,
+				DB1C325B23D2D84400E62781 /* RedPacketSectionHeaderView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -3198,6 +3201,7 @@
 				832146D82241D980008ECC22 /* ImportKeyViewController.swift in Sources */,
 				DB15695E23278EA200220926 /* FetchableRecord+all.swift in Sources */,
 				DB9FE9E623A889D400499632 /* WalletCollectionTableViewCell.swift in Sources */,
+				DB1C325C23D2D84400E62781 /* RedPacketSectionHeaderView.swift in Sources */,
 				832146C5223FC9E4008ECC22 /* TCActionButton.swift in Sources */,
 				DBB64C6F23C874030099BE09 /* WalletDetailViewModel.swift in Sources */,
 				DB97AD162317BCD9007594E9 /* MessagesViewModel+ContextMenuActionTableViewDelegate.swift in Sources */,
