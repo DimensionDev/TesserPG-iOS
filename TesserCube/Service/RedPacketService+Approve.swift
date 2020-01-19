@@ -46,8 +46,9 @@ extension RedPacketService {
         }
         
         // Init web3
-        let web3 = WalletService.web3
-        let chainID = WalletService.chainID
+        let network = redPacket.network
+        let web3 = Web3Secret.web3(for: network)
+        let chainID = Web3Secret.chianID(for: network)
         
         // Init erc20 contract
         guard let erc20ContractAddress = try? EthereumAddress(hex: erc20Token.address, eip55: false) else {
@@ -106,7 +107,8 @@ extension RedPacketService {
         }
         
         // Init web3
-        let web3 = WalletService.web3
+        let network = redPacket.network
+        let web3 = Web3Secret.web3(for: network)
         
         // Prepare decoder
         

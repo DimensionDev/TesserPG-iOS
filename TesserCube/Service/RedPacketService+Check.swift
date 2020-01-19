@@ -29,7 +29,8 @@ extension RedPacketService {
         }
         
         // Init web3
-        let web3 = WalletService.web3
+        let network = redPacket.network
+        let web3 = Web3Secret.web3(for: network)
         
         // Init contract
         let contract: DynamicContract
@@ -161,7 +162,8 @@ extension RedPacketService {
         assert(redPacket.contract_version == 1)
         
         // Init web3
-        let web3 = WalletService.web3
+        let network = redPacket.network
+        let web3 = Web3Secret.web3(for: network)
         
         // Init contract
         let contract: DynamicContract

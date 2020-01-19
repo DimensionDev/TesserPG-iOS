@@ -110,10 +110,27 @@ class WalletsViewController: TCBaseViewController {
                         guard let walletModel = WalletService.default.walletModels.value.first(where: { $0.address == redPacket.sender_address }) else {
                             continue
                         }
-
+                        
+                        // Init web3
+                        let network = redPacket.network
+                        let web3 = Web3Secret.web3(for: network)
+                        
                         os_log("%{public}s[%{public}ld], %{public}s: createAfterApprove %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.id)
                         let walletValue = WalletValue(from: walletModel)
-                        RedPacketService.shared.createAfterApprove(for: redPacket, use: walletValue)
+                        let walletAddress: EthereumAddress
+                        do {
+                            walletAddress = try EthereumAddress(hex: walletValue.address, eip55: false)
+                        } catch {
+                            assertionFailure()
+                            continue
+                        }
+                        WalletService.getTransactionCount(address: walletAddress, web3: web3)
+                            .asObservable()
+                            .subscribeOn(ConcurrentDispatchQueueScheduler.init(qos: .userInitiated))
+                            .retry(3)
+                            .flatMap { nonce -> Observable<TransactionHash> in
+                                return RedPacketService.shared.createAfterApprove(for: redPacket, use: walletValue, nonce: nonce)
+                            }
                             .subscribe()
                             .disposed(by: self.disposeBag)
                     }

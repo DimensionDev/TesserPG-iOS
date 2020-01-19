@@ -55,6 +55,7 @@ final class RedPacketCardTableViewCell: UITableViewCell {
         view.backgroundColor = Asset.redPacketCardHeaderBackground.color
         view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         view.layer.cornerRadius = 10
+        view.layer.masksToBounds = true
         return view
     }()
     let nameLabel: UILabel = {

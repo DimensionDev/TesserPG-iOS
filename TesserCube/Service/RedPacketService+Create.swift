@@ -55,8 +55,9 @@ extension RedPacketService {
         }
 
         // Init web3
-        let web3 = WalletService.web3
-        let chainID = WalletService.chainID
+        let network = redPacket.network
+        let web3 = Web3Secret.web3(for: network)
+        let chainID = Web3Secret.chianID(for: network)
         
         // Init contract
         let contract: DynamicContract
@@ -153,7 +154,8 @@ extension RedPacketService {
         }
         
         // Init web3
-        let web3 = WalletService.web3
+        let network = redPacket.network
+        let web3 = Web3Secret.web3(for: network)
         
         // Init contract
         let contract: DynamicContract
@@ -275,28 +277,14 @@ extension RedPacketService {
         return observable
     }
     
-    func createAfterApprove(for redPacket: RedPacket, use walletValue: WalletValue) -> Observable<TransactionHash> {
+    func createAfterApprove(for redPacket: RedPacket, use walletValue: WalletValue, nonce: EthereumQuantity) -> Observable<TransactionHash> {
         os_log("%{public}s[%{public}ld], %{public}s", ((#file as NSString).lastPathComponent), #line, #function)
 
         let id = redPacket.id
         var queue = createQueue
         
         guard let observable = queue[id] else {
-            let walletAddress: EthereumAddress
-            do {
-                walletAddress = try EthereumAddress(hex: walletValue.address, eip55: false)
-            } catch {
-                return Observable.error(error)
-            }
-             
-            let single = WalletService.getTransactionCount(address: walletAddress)
-                .subscribeOn(ConcurrentMainScheduler.instance)
-                .observeOn(MainScheduler.instance)
-                .retry(3)
-                .flatMap { nonce -> Single<TransactionHash> in
-                    return RedPacketService.create(for: redPacket, use: walletValue, nonce: nonce)
-                }
-            
+            let single = RedPacketService.create(for: redPacket, use: walletValue, nonce: nonce)
             let shared = single.asObservable().share()
             queue[id] = shared
             

@@ -10,17 +10,13 @@ import Foundation
 
 extension RedPacket {
     
-    static func v1() -> RedPacket {
+    static func v1(for network: EthereumNetwork) -> RedPacket {
         let redPacket = RedPacket()
         
         redPacket.aes_version = 1
         redPacket.contract_version = 1
-        redPacket.contract_address = Web3Secret.contractAddressV1
-        #if MAINNET
-        redPacket.network = .mainnet
-        #else
-        redPacket.network = .rinkeby
-        #endif
+        redPacket.contract_address = Web3Secret.contractAddressV1(for: network)
+        redPacket.network = network
         
         #if DEBUG
         redPacket.duration = 86400         // 24h

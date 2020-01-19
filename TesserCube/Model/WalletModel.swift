@@ -19,9 +19,14 @@ public class WalletModel {
 
     // Input
     let wallet: Wallet
+    let currentEthereumNetwork = BehaviorRelay(value: EthereumPreference.ethereumNetwork)
     private let updateBalanceTrigger = PublishSubject<Void>()
 
     // Output
+    
+    // ETH balance
+    let mainnetBalance = BehaviorRelay<BigUInt?>(value: nil)
+    let rinkebyBalance = BehaviorRelay<BigUInt?>(value: nil)
     let balance = BehaviorRelay<BigUInt?>(value: nil)
     let balanceInDecimal: Driver<Decimal?>
 
@@ -29,6 +34,8 @@ public class WalletModel {
     let hdWallet: HDWallet
     let address: String
     let walletObject: WalletObject
+    
+    private var currentEthereumNetworkObserver: NSKeyValueObservation?
 
     public init(wallet: Wallet) throws {
         self.wallet = wallet
@@ -40,6 +47,8 @@ public class WalletModel {
         let realm = try WalletService.realm()
         if let walletObject = realm.objects(WalletObject.self).filter("address == %@", _address).first {
             self.walletObject = walletObject
+            self.mainnetBalance.accept(walletObject.balance)
+            self.rinkebyBalance.accept(walletObject.rinkeby_balance)
         } else {
             let walletObject = WalletObject()
             walletObject.address = _address
@@ -49,6 +58,15 @@ public class WalletModel {
             }
             self.walletObject = walletObject
         }
+
+        Driver.combineLatest(currentEthereumNetwork.asDriver(), mainnetBalance.asDriver(), rinkebyBalance.asDriver()) { (network, mainnetBalance, rinkebyBalance) -> BigUInt? in
+            switch network {
+            case .mainnet:  return mainnetBalance
+            case .rinkeby:  return rinkebyBalance
+            }
+        }
+        .drive(balance)
+        .disposed(by: disposeBag)
     
         balanceInDecimal = balance.asDriver()
             .map { balance in
@@ -60,14 +78,20 @@ public class WalletModel {
             balance.accept(walletObject.balance)
             updateBalance()
         }
+        
+        currentEthereumNetworkObserver = UserDefaults.shared!.observe(\.ethereumNetwork, options: [.initial, .new]) { [weak self] userDefaults, change in
+            self?.currentEthereumNetwork.accept(EthereumPreference.ethereumNetwork)
+        }
 
         // setup
-        updateBalanceTrigger.asObserver()
-            .flatMapLatest { WalletService.getBalance(for: self.address).asObservable() }
+        // update mainnet
+        Observable.combineLatest(currentEthereumNetwork.asObservable(), updateBalanceTrigger.asObserver())
+            .filter { $0.0 == .mainnet }
+            .flatMapLatest { _ in WalletService.getBalance(for: self.address, web3: Web3Secret.web3(for: .mainnet)).asObservable() }
             .subscribe(onNext: { [weak self] balance in     // ignore error case
                 guard let `self` = self else { return }
                 
-                self.balance.accept(balance)
+                self.mainnetBalance.accept(balance)
                 
                 // Update walletObject balance
                 do {
@@ -77,6 +101,31 @@ public class WalletModel {
                     }
                     try realm.write {
                         walletObject.balance = balance
+                    }
+                    
+                } catch {
+                    os_log("%{public}s[%{public}ld], %{public}s: update walletObject balance fail: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        // update rinkeby
+        Observable.combineLatest(currentEthereumNetwork.asObservable(), updateBalanceTrigger.asObserver())
+            .filter { $0.0 == .rinkeby }
+            .flatMapLatest { _ in WalletService.getBalance(for: self.address, web3: Web3Secret.web3(for: .rinkeby)).asObservable() }
+            .subscribe(onNext: { [weak self] balance in     // ignore error case
+                guard let `self` = self else { return }
+                
+                self.rinkebyBalance.accept(balance)
+                
+                // Update walletObject balance
+                do {
+                    let realm = try WalletService.realm()
+                    guard let walletObject = realm.objects(WalletObject.self).filter("address == %@", self.address).first else {
+                        return
+                    }
+                    try realm.write {
+                        walletObject.rinkeby_balance = balance
                     }
                     
                 } catch {
@@ -100,14 +149,18 @@ public class WalletModel {
                             
                             return false
                         })
-                        .compactMap { $0.token?.address }
-                    let tokenAddresses = Array(result)
+                        .compactMap { walletToken -> (String, EthereumNetwork)? in
+                            guard let token = walletToken.token else { return nil }
+                            return (token.address, token.network)
+                        }
+                    let tokenAddressWithNetworks = Array(result)
                     
-                    return Observable.from(tokenAddresses)
-                        .map { tokenAddress -> Observable<Result<(String, BigUInt), Error>> in
+                    return Observable.from(tokenAddressWithNetworks)
+                        .map { (tokenAddress, network) -> Observable<Result<(String, BigUInt), Error>> in
                             os_log("%{public}s[%{public}ld], %{public}s: update token %s balance", ((#file as NSString).lastPathComponent), #line, #function, tokenAddress)
 
-                            return WalletService.getERC20TokenBalance(forWallet: walletAddress, ofContract: tokenAddress)
+                            let web3 = Web3Secret.web3(for: network)
+                            return WalletService.getERC20TokenBalance(forWallet: walletAddress, ofContract: tokenAddress, web3: web3)
                                 .map { balance in (tokenAddress, balance) }
                                 .map { Result<(String, BigUInt), Error>.success($0)}
                                 .asObservable()
@@ -147,6 +200,10 @@ public class WalletModel {
                 
             })
             .disposed(by: disposeBag)
+    }
+    
+    deinit {
+        currentEthereumNetworkObserver?.invalidate()
     }
 
 }

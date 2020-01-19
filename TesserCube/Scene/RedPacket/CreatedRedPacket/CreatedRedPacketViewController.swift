@@ -99,9 +99,27 @@ extension CreatedRedPacketViewModel {
     
     func createAfterApprove() {
         let walletValue = WalletValue(from: self.walletModel)
-        RedPacketService.shared.createAfterApprove(for: self.redPacket, use: walletValue)
+        // Init web3
+        let network = redPacket.network
+        let web3 = Web3Secret.web3(for: network)
+        
+        let walletAddress: EthereumAddress
+        do {
+            walletAddress = try EthereumAddress(hex: walletValue.address, eip55: false)
+        } catch {
+            self.error.accept(error)
+            return
+        }
+        
+        WalletService.getTransactionCount(address: walletAddress, web3: web3)
             .trackActivity(activityIndicator)
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+            .subscribeOn(ConcurrentMainScheduler.instance)
+            .observeOn(MainScheduler.instance)
+            .retry(3)
+            .flatMap { nonce -> Observable<TransactionHash> in
+                return RedPacketService.shared.createAfterApprove(for: self.redPacket, use: walletValue, nonce: nonce)
+                    .trackActivity(self.activityIndicator)
+            }
             .subscribe(onNext: { transactionHash in
                 // do nothing
             }, onError: { [weak self] error in
@@ -109,7 +127,6 @@ extension CreatedRedPacketViewModel {
             })
             .disposed(by: disposeBag)
     }
-    
     
 }
 

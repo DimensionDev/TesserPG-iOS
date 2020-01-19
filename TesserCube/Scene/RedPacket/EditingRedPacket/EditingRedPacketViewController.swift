@@ -671,7 +671,7 @@ extension EditingRedPacketViewController {
         assert(uuids.count == viewModel.share.value)
         let isRandom = viewModel.redPacketSplitType.value == .random
         
-        let redPacket = RedPacket.v1()
+        let redPacket = RedPacket.v1(for: EthereumPreference.ethereumNetwork)
         redPacket.uuids.append(objectsIn: uuids)
         redPacket.is_random = isRandom
         redPacket.sender_address = senderAddress
@@ -682,13 +682,17 @@ extension EditingRedPacketViewController {
         
         let selectWalletValue = WalletValue(from: selectWalletModel)
         
+        // Init web3
+        let network = redPacket.network
+        let web3 = Web3Secret.web3(for: network)
+        
         let tokenType = viewModel.selectTokenType.value
         switch tokenType {
         case .eth:
             // get nonce -> call create transaction
             // success: push to CreatedRedPacketViewController
             // failure: stand in same place and just alert user error
-            WalletService.getTransactionCount(address: walletAddress).asObservable()
+            WalletService.getTransactionCount(address: walletAddress, web3: web3).asObservable()
                 .withLatestFrom(viewModel.isCreating) { ($0, $1) }     // (nonce, isCreating)
                 .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
                 .filter { $0.1 == false }                               // not creating
@@ -744,7 +748,7 @@ extension EditingRedPacketViewController {
             redPacket.token_type = .erc20
             redPacket.erc20_token = token
             
-            WalletService.getTransactionCount(address: walletAddress).asObservable()
+            WalletService.getTransactionCount(address: walletAddress, web3: web3).asObservable()
                 .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
                 .retry(3)
                 .do(onNext: { nonce in

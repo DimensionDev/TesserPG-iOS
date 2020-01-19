@@ -91,7 +91,11 @@ extension ClaimRedPacketViewModel {
         
         let id = redPacket.id
         
-        WalletService.getTransactionCount(address: walletAddress).asObservable()
+        // Init web3
+        let network = redPacket.network
+        let web3 = Web3Secret.web3(for: network)
+        
+        WalletService.getTransactionCount(address: walletAddress, web3: web3).asObservable()
             .trackActivity(busyActivityIndicator)
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
             .retry(3)

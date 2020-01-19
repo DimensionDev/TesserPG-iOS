@@ -325,6 +325,10 @@
 		DB32518823BA198100A4DDD8 /* RedPacketValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB32518623BA198100A4DDD8 /* RedPacketValue.swift */; };
 		DB32518923BA198100A4DDD8 /* RedPacketValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB32518623BA198100A4DDD8 /* RedPacketValue.swift */; };
 		DB32518A23BA198100A4DDD8 /* RedPacketValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB32518623BA198100A4DDD8 /* RedPacketValue.swift */; };
+		DB375FF323D322D20041A993 /* UserDefaults+AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D21221CEB9800F556C0 /* UserDefaults+AppGroup.swift */; };
+		DB375FF423D322D20041A993 /* UserDefaults+AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D21221CEB9800F556C0 /* UserDefaults+AppGroup.swift */; };
+		DB375FF523D3F2BF0041A993 /* MessageDigitalSignatureSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB44998F228C13CA000B7E8A /* MessageDigitalSignatureSettings.swift */; };
+		DB375FF623D3F2C00041A993 /* MessageDigitalSignatureSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB44998F228C13CA000B7E8A /* MessageDigitalSignatureSettings.swift */; };
 		DB3B58E22282929700879834 /* WormholdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3B58E12282929700879834 /* WormholdService.swift */; };
 		DB3B58E52282930600879834 /* WormholdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3B58E12282929700879834 /* WormholdService.swift */; };
 		DB415E80238BB6AF0090C28F /* RedPacketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB415E7F238BB6AF0090C28F /* RedPacketService.swift */; };
@@ -3470,6 +3474,7 @@
 				DB415EB3238E1E780090C28F /* DispatchQueue.swift in Sources */,
 				DB63A12722E06F1700C2DDA6 /* ListEmptyView.swift in Sources */,
 				DB63A10722DDD18100C2DDA6 /* MessagesViewModel.swift in Sources */,
+				DB375FF323D322D20041A993 /* UserDefaults+AppGroup.swift in Sources */,
 				DB63A0F822DDCB0E00C2DDA6 /* WormholdService.swift in Sources */,
 				DB63A11A22E066ED00C2DDA6 /* ComposeMessageViewModel.swift in Sources */,
 				DB63A0DF22DD939C00C2DDA6 /* MessageCardCell.swift in Sources */,
@@ -3528,6 +3533,7 @@
 				834DB06E23175B1C004E6F50 /* DMSPGPError.swift in Sources */,
 				DB63A0FB22DDCB6500C2DDA6 /* TCErrors.swift in Sources */,
 				DB63A11C22E0671B00C2DDA6 /* RecipientContactPickerView.swift in Sources */,
+				DB375FF523D3F2BF0041A993 /* MessageDigitalSignatureSettings.swift in Sources */,
 				83C12EE22332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */,
 				DB415E9D238CBDAA0090C28F /* UIView+blinking.swift in Sources */,
 				DB1169D422E19ABF0099BA25 /* MessageCardViewController.swift in Sources */,
@@ -3558,6 +3564,7 @@
 				DB32518523B9DAD400A4DDD8 /* RedPacketService+Refund.swift in Sources */,
 				DB415E8D238BFA420090C28F /* CreatedRedPacketViewController.swift in Sources */,
 				DBB64C8E23CC8B8C0099BE09 /* WalletValue.swift in Sources */,
+				DB375FF623D3F2C00041A993 /* MessageDigitalSignatureSettings.swift in Sources */,
 				DB1169B022E1831E0099BA25 /* Contact.swift in Sources */,
 				DBB64C9323CC93DA0099BE09 /* RedPacketHelper.swift in Sources */,
 				DB1169C322E184C30099BA25 /* UIViewController+Alert.swift in Sources */,
@@ -3647,6 +3654,7 @@
 				DB415EA2238CBEB20090C28F /* WalletService+Web3.swift in Sources */,
 				DB1169B622E183830099BA25 /* ProfileService+Message.swift in Sources */,
 				DB4A701A23C70D3000C2349C /* WalletToken.swift in Sources */,
+				DB375FF423D322D20041A993 /* UserDefaults+AppGroup.swift in Sources */,
 				DB9FE9F923A8C8C600499632 /* Decimal.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

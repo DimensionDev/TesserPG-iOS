@@ -37,9 +37,6 @@ final public class WalletService {
         return formatter
     }()
 
-    static let web3 = Web3Secret.web3
-    static let chainID = Web3Secret.chainID
-
     private let keychain: Keychain
     private let disposeBag = DisposeBag()
 
