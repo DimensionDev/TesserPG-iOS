@@ -127,7 +127,7 @@ extension AddTokenViewModel {
             cell.logoImageView.kf.setImage(with: imageURL, placeholder: UIImage.placeholder(color: ._systemFill), options: [
                 .processor(processor),
                 .scaleFactor(UIScreen.main.scale),
-                .transition(.fade(1)),
+                .transition(.fade(0.33)),
                 .cacheOriginalImage
             ])
         default:
@@ -137,7 +137,7 @@ extension AddTokenViewModel {
             cell.logoImageView.kf.setImage(with: imageURL, placeholder: UIImage.placeholder(color: ._systemFill), options: [
                 .processor(processor),
                 .scaleFactor(UIScreen.main.scale),
-                .transition(.fade(1)),
+                .transition(.fade(0.33)),
                 .cacheOriginalImage
             ])
         }
