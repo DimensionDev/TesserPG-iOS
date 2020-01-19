@@ -35,7 +35,8 @@ final class EditingRedPacketViewModel: NSObject {
     let isCreating = BehaviorRelay(value: false)
     let canDismiss = BehaviorRelay(value: true)
     
-    let minimalAmount = BehaviorRelay(value: RedPacketService.redPacketMinAmount)
+    let minimalUnitAmount = BehaviorRelay(value: RedPacketService.redPacketMinAmount)
+    let minimalTotalAmount = BehaviorRelay(value: RedPacketService.redPacketMinAmount)
     let totalInDecimal = BehaviorRelay(value: Decimal(0))     // should not 0 after user input amount
     let selectTokenDecimal = BehaviorRelay(value: 18)         // default 18 for ETH
     let walletBalanceForSelectToken = BehaviorRelay<BigUInt?>(value: nil)
@@ -131,7 +132,7 @@ final class EditingRedPacketViewModel: NSObject {
                     return 1 / pow(10, (decimals + 1) / 2)
                 }
         }
-        .drive(minimalAmount)
+        .drive(minimalUnitAmount)
         .disposed(by: disposeBag)
         walletSectionFooterViewText = Driver.combineLatest(walletBalanceForSelectToken.asDriver(), selectTokenType.asDriver()) { (walletBalanceForSelectToken, selectTokenType) -> String in
             let placeholder = "Current balance: - "
@@ -199,15 +200,15 @@ final class EditingRedPacketViewModel: NSObject {
             .drive(selectWalletModel)
             .disposed(by: disposeBag)
         
-        Driver.combineLatest(share.asDriver(), redPacketSplitType.asDriver()) { share, splitType -> Decimal in
+        Driver.combineLatest(minimalUnitAmount.asDriver(), share.asDriver(), redPacketSplitType.asDriver()) { unit, share, splitType -> Decimal in
             switch splitType {
             case .average:
-                return RedPacketService.redPacketMinAmount
+                return unit
             case .random:
-                return Decimal(share) * RedPacketService.redPacketMinAmount
+                return Decimal(share) * unit
             }
         }
-        .drive(minimalAmount)
+        .drive(minimalTotalAmount)
         .disposed(by: disposeBag)
         
         Driver.combineLatest(redPacketSplitType.asDriver(), amount.asDriver(), share.asDriver()) { splitType, amount, share -> Decimal in
@@ -341,7 +342,7 @@ extension EditingRedPacketViewModel: UITableViewDataSource {
                 .drive(amount)
                 .disposed(by: _cell.disposeBag)
             
-            minimalAmount.asDriver()
+            minimalTotalAmount.asDriver()
                 .drive(_cell.minimalAmount)
                 .disposed(by: _cell.disposeBag)
             
