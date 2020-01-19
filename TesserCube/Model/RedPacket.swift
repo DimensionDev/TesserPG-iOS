@@ -125,4 +125,5 @@ public enum RedPacketTokenType: String, Codable {
 public enum EthereumNetwork: String, Codable {
     case mainnet = "Mainnet"
     case rinkeby = "Rinkeby"
+    case ropsten = "Ropsten"
 }

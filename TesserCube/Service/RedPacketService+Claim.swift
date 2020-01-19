@@ -21,13 +21,7 @@ extension RedPacketService {
 
         // Only for contract v1
         assert(redPacket.contract_version == 1)
-        
-        do {
-            try checkNetwork(for: redPacket)
-        } catch {
-            return Single.error(error)
-        }
-        
+     
         // Only normal || incoming statuc red packet can process `claim` on the contract
         guard redPacket.status == .normal || redPacket.status == .incoming else {
             return Single.error(Error.internal("cannot claim unacceptable status red packet"))
@@ -47,7 +41,7 @@ extension RedPacketService {
         // Init web3
         let network = redPacket.network
         let web3 = Web3Secret.web3(for: network)
-        let chainID = Web3Secret.chianID(for: network)
+        let chainID = Web3Secret.chainID(for: network)
         
         // Init contract
         let contract: DynamicContract
@@ -141,12 +135,6 @@ extension RedPacketService {
 
         // Only for contract v1
         assert(redPacket.contract_version == 1)
-        
-        do {
-            try checkNetwork(for: redPacket)
-        } catch {
-            return Single.error(error)
-        }
         
         guard let claimTransactionHashHex = redPacket.claim_transaction_hash else {
             return Single.error(Error.internal("cannot read claim transaction hash"))

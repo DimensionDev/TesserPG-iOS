@@ -398,6 +398,10 @@ extension WalletsViewController {
             self.viewModel.currentNetwork.accept(.mainnet)
         }
         alertController.addAction(mainnetAction)
+        let ropstenAction = UIAlertAction(title: "Ropsten", style: .default) { _ in
+            self.viewModel.currentNetwork.accept(.ropsten)
+        }
+        alertController.addAction(ropstenAction)
         let rinkebyAction = UIAlertAction(title: "Rinkeby", style: .default) { _ in
             self.viewModel.currentNetwork.accept(.rinkeby)
         }

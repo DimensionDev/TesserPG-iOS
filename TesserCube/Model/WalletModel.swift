@@ -27,6 +27,7 @@ public class WalletModel {
     // ETH balance
     let mainnetBalance = BehaviorRelay<BigUInt?>(value: nil)
     let rinkebyBalance = BehaviorRelay<BigUInt?>(value: nil)
+    let ropstenBalance = BehaviorRelay<BigUInt?>(value: nil)
     let balance = BehaviorRelay<BigUInt?>(value: nil)
     let balanceInDecimal: Driver<Decimal?>
 
@@ -59,10 +60,11 @@ public class WalletModel {
             self.walletObject = walletObject
         }
 
-        Driver.combineLatest(currentEthereumNetwork.asDriver(), mainnetBalance.asDriver(), rinkebyBalance.asDriver()) { (network, mainnetBalance, rinkebyBalance) -> BigUInt? in
+        Driver.combineLatest(currentEthereumNetwork.asDriver(), mainnetBalance.asDriver(), rinkebyBalance.asDriver(), ropstenBalance.asDriver()) { (network, mainnetBalance, rinkebyBalance, ropstenBalance) -> BigUInt? in
             switch network {
             case .mainnet:  return mainnetBalance
             case .rinkeby:  return rinkebyBalance
+            case .ropsten:  return ropstenBalance
             }
         }
         .drive(balance)
@@ -101,6 +103,31 @@ public class WalletModel {
                     }
                     try realm.write {
                         walletObject.balance = balance
+                    }
+                    
+                } catch {
+                    os_log("%{public}s[%{public}ld], %{public}s: update walletObject balance fail: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        // update ropsten
+        Observable.combineLatest(currentEthereumNetwork.asObservable(), updateBalanceTrigger.asObserver())
+            .filter { $0.0 == .ropsten }
+            .flatMapLatest { _ in WalletService.getBalance(for: self.address, web3: Web3Secret.web3(for: .ropsten)).asObservable() }
+            .subscribe(onNext: { [weak self] balance in     // ignore error case
+                guard let `self` = self else { return }
+                
+                self.ropstenBalance.accept(balance)
+                
+                // Update walletObject balance
+                do {
+                    let realm = try WalletService.realm()
+                    guard let walletObject = realm.objects(WalletObject.self).filter("address == %@", self.address).first else {
+                        return
+                    }
+                    try realm.write {
+                        walletObject.ropsten_balance = balance
                     }
                     
                 } catch {

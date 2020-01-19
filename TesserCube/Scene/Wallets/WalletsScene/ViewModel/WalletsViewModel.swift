@@ -194,53 +194,6 @@ extension WalletsViewModel: UITableViewDataSource {
 
 }
 
-// MAKR: - UIPageViewControllerDataSource
-extension WalletsViewModel: UIPageViewControllerDataSource {
-    
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard !walletModels.value.isEmpty else {
-            return nil
-        }
-        
-        guard let walletCardViewController = viewController as? WalletCardViewController else {
-            return nil
-        }
-        
-        let index = walletCardViewController.index
-        guard index > 0 else {
-            return nil
-        }
-        
-        let viewController = WalletCardViewController()
-        viewController.index = index - 1
-        viewController.walletModel = walletModels.value[index - 1]
-        
-        return viewController
-    }
-    
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard !walletModels.value.isEmpty else {
-            return nil
-        }
-        
-        guard let walletCardViewController = viewController as? WalletCardViewController else {
-            return nil
-        }
-        
-        let index = walletCardViewController.index
-        guard index + 1 < walletModels.value.count else {
-            return nil
-        }
-        
-        let viewController = WalletCardViewController()
-        viewController.index = index + 1
-        viewController.walletModel = walletModels.value[index + 1]
-        
-        return viewController
-    }
-    
-}
-
 // MARK: - UICollectionViewDataSource
 extension WalletsViewModel: UICollectionViewDataSource {
     

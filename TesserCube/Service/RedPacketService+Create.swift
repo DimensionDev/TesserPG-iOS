@@ -24,12 +24,6 @@ extension RedPacketService {
     private static func create(for redPacket: RedPacket, use walletValue: WalletValue, nonce: EthereumQuantity) -> Single<TransactionHash> {
         // Only for contract v1
         assert(redPacket.contract_version == 1)
-        
-        do {
-            try checkNetwork(for: redPacket)
-        } catch {
-            return Single.error(error)
-        }
 
         // Only initial red packet can process `create` on the contract
         guard (redPacket.status == .initial && redPacket.token_type == .eth) ||
@@ -57,7 +51,7 @@ extension RedPacketService {
         // Init web3
         let network = redPacket.network
         let web3 = Web3Secret.web3(for: network)
-        let chainID = Web3Secret.chianID(for: network)
+        let chainID = Web3Secret.chainID(for: network)
         
         // Init contract
         let contract: DynamicContract

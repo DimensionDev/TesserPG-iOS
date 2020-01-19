@@ -24,6 +24,7 @@ final class EditingRedPacketViewModel: NSObject {
     let walletModels = BehaviorRelay<[WalletModel]>(value: [])
     let selectWalletModel = BehaviorRelay<WalletModel?>(value: nil)
     let selectTokenType = BehaviorRelay(value: RedPacketTokenSelectViewModel.SelectTokenType.eth)
+    let selectWalletNetwork = BehaviorRelay<EthereumNetwork?>(value: nil)
     
     let amount = BehaviorRelay(value: Decimal(0))       // user input value. default 0
     let share = BehaviorRelay(value: 1)
@@ -41,8 +42,8 @@ final class EditingRedPacketViewModel: NSObject {
     let selectTokenDecimal = BehaviorRelay(value: 18)         // default 18 for ETH
     let walletBalanceForSelectToken = BehaviorRelay<BigUInt?>(value: nil)
     
-    // "Current balance: <token_in_decimal> <token_symbol>"
-    // Combine `walletBalanceForSelectToken` and `selectTokenType` to drive
+    // "Current balance: <token_in_decimal> <token_symbol> (<netowrk>)"
+    // Combine `walletBalanceForSelectToken` and `selectTokenType` and `selectWalletNetwork` to drive
     let walletSectionFooterViewText: Driver<String>
     
     // "<token_symbol> per share" or "<token_symbol>"
@@ -134,7 +135,7 @@ final class EditingRedPacketViewModel: NSObject {
         }
         .drive(minimalUnitAmount)
         .disposed(by: disposeBag)
-        walletSectionFooterViewText = Driver.combineLatest(walletBalanceForSelectToken.asDriver(), selectTokenType.asDriver()) { (walletBalanceForSelectToken, selectTokenType) -> String in
+        walletSectionFooterViewText = Driver.combineLatest(walletBalanceForSelectToken.asDriver(), selectTokenType.asDriver(), selectWalletNetwork.asDriver()) { (walletBalanceForSelectToken, selectTokenType, selectWalletNetwork) -> String in
             let placeholder = "Current balance: - "
             
             let decimals: Int
@@ -166,8 +167,15 @@ final class EditingRedPacketViewModel: NSObject {
             formatter.maximumFractionDigits = (decimals + 1) / 2
             formatter.groupingSeparator = ""
             
+            let network: String = {
+                guard let network = selectWalletNetwork else {
+                    return ""
+                }
+                return "(\(network.rawValue))"
+            }()
+            
             return formatter.string(from: balanceInDecimal as NSNumber).flatMap { decimalString in
-                return "Current balance: \(decimalString) \(symbol)"
+                return "Current balance: \(decimalString) \(symbol)  \(network)"
                 } ?? placeholder
         }
         sendRedPacketButtonText = Driver.combineLatest(totalInDecimal.asDriver(), selectTokenType.asDriver()) { (totalInDecimal, selectTokenType) -> String in
@@ -198,6 +206,19 @@ final class EditingRedPacketViewModel: NSObject {
         walletModels.asDriver()
             .map { $0.first }
             .drive(selectWalletModel)
+            .disposed(by: disposeBag)
+        
+        selectWalletModel.asDriver()
+            .asDriver()
+            .flatMapLatest { walletModel -> Driver<EthereumNetwork?> in
+                guard let walletModel = walletModel else {
+                    return Driver.just(nil)
+                }
+                return walletModel.currentEthereumNetwork
+                    .asDriver()
+                    .map { $0 as EthereumNetwork? }
+            }
+            .drive(selectWalletNetwork)
             .disposed(by: disposeBag)
         
         Driver.combineLatest(minimalUnitAmount.asDriver(), share.asDriver(), redPacketSplitType.asDriver()) { unit, share, splitType -> Decimal in

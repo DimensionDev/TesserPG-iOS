@@ -22,12 +22,6 @@ extension RedPacketService {
         // Only for contract v1
         assert(redPacket.contract_version == 1)
         
-        do {
-            try checkNetwork(for: redPacket)
-        } catch {
-            return Single.error(error)
-        }
-        
         // Init wallet
         let walletAddress: EthereumAddress
         let walletPrivateKey: EthereumPrivateKey
@@ -42,7 +36,7 @@ extension RedPacketService {
         // Init web3
         let network = redPacket.network
         let web3 = Web3Secret.web3(for: network)
-        let chainID = Web3Secret.chianID(for: network)
+        let chainID = Web3Secret.chainID(for: network)
         
         // Init contract
         let contract: DynamicContract
@@ -131,13 +125,7 @@ extension RedPacketService {
         
         // Only for contract v1
         assert(redPacket.contract_version == 1)
-        
-        do {
-            try checkNetwork(for: redPacket)
-        } catch {
-            return Single.error(error)
-        }
-        
+
         guard let refundTransactionHashHex = redPacket.refund_transaction_hash else {
             return Single.error(Error.internal("cannot read refund transaction hash"))
         }

@@ -153,11 +153,7 @@ extension CreatedRedPacketViewModel {
     
     static func configure(cell: RedPacketCardTableViewCell, with redPacket: RedPacket) {
         // Set name
-        #if !MAINNET
-        let name = "From: " + redPacket.sender_name + " (Rinkeby)"
-        #else
-        let name = "From: " + redPacket.sender_name
-        #endif
+        let name = "From: " + redPacket.sender_name + " (\(redPacket.network.rawValue))"
         cell.nameLabel.text = name
         
         // Set image
