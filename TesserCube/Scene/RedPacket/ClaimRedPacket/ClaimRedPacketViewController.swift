@@ -15,6 +15,7 @@ import RealmSwift
 import Web3
 import DMS_HDWallet_Cocoa
 import DateToolsSwift
+import LocalAuthentication
 
 #if !TARGET_IS_EXTENSION
 import SVProgressHUD
@@ -74,7 +75,35 @@ final class ClaimRedPacketViewModel: NSObject {
 
 extension ClaimRedPacketViewModel {
     
-    func claimRedPacket() {
+    func authToClaimRedPacket() {
+        let authContext = LAContext()
+        var authError: NSError?
+
+        if redPacket.network == .mainnet, authContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authError) {
+            authContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Tessercube will use selected wallet to claim red packet") { (isAuth, error) in
+                DispatchQueue.main.async { [weak self] in
+                    guard let `self` = self else { return }
+
+                    guard error == nil, isAuth else {
+                        switch error! {
+                        case LAError.userCancel:
+                            break
+                        default:
+                            self.error.accept(error)
+                        }
+
+                        return // return here to break
+                    }
+
+                    self.claimRedPacket()
+                }
+            }   // end authContent.evaluatePolicy
+        } else {
+            self.claimRedPacket()
+        }   // end authContext.canEvaluatePolicy
+    }
+    
+    private func claimRedPacket() {
         // 1. claim                  // busy & claiming
         // 2. get claim result       // busy & claimPending
         
@@ -95,6 +124,7 @@ extension ClaimRedPacketViewModel {
         let network = redPacket.network
         let web3 = Web3Secret.web3(for: network)
         
+        canDismiss.accept(false)    // prevent dismiss before get nonce
         WalletService.getTransactionCount(address: walletAddress, web3: web3).asObservable()
             .trackActivity(busyActivityIndicator)
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
@@ -420,7 +450,7 @@ extension ClaimRedPacketViewController {
         if viewModel.redPacket.status == .claimed {
             dismiss(animated: true, completion: nil)
         } else {
-            viewModel.claimRedPacket()
+            viewModel.authToClaimRedPacket()
         }
     }
     
