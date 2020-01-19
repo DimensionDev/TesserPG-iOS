@@ -29,7 +29,8 @@ extension OpenRedPacketViewModel {
             let redPacket = RedPacket()
             redPacket.contract_version = Int(rawPayload.contract_version)
             redPacket.contract_address = rawPayload.contract_address
-            redPacket.uuids.append(objectsIn: rawPayload.passwords)
+            redPacket.password = rawPayload.password
+            redPacket.shares = rawPayload.shares
             redPacket.is_random = rawPayload.is_random
             redPacket.block_creation_time.value = Int(rawPayload.creation_time)
             redPacket.duration = Int(rawPayload.duration)

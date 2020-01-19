@@ -730,14 +730,12 @@ extension EditingRedPacketViewController {
         }
         // Verify finish
         
-        let uuids = (0..<viewModel.share.value).map { _ in
-            return UUID().uuidString
-        }
-        assert(uuids.count == viewModel.share.value)
+        let password = UUID().uuidString
         let isRandom = viewModel.redPacketSplitType.value == .random
         
         let redPacket = RedPacket.v1(for: EthereumPreference.ethereumNetwork)
-        redPacket.uuids.append(objectsIn: uuids)
+        redPacket.password = password
+        redPacket.shares = viewModel.share.value
         redPacket.is_random = isRandom
         redPacket.sender_address = senderAddress
         redPacket.sender_name = senderName

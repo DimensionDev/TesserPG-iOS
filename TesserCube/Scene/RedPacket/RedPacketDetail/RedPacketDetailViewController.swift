@@ -18,48 +18,48 @@ import DMS_HDWallet_Cocoa
 final class RedPacketDetailViewModel: NSObject {
         
     let disposeBag = DisposeBag()
-    let checkClaimedListActivityIndicator = ActivityIndicator()
+//    let checkClaimedListActivityIndicator = ActivityIndicator()
     
     // Input
     let redPacket: RedPacket
     
     // Output
-    let isFetchingClaimedList: Driver<Bool>
+//    let isFetchingClaimedList: Driver<Bool>
 
-    let claimedRecord = BehaviorRelay<[RedPacketService.RedPacketClaimedRecord]>(value: [])
-    let claimedRecordDiff: Observable<([RedPacketService.RedPacketClaimedRecord], [RedPacketService.RedPacketClaimedRecord])>
+//    let claimedRecord = BehaviorRelay<[RedPacketService.RedPacketClaimedRecord]>(value: [])
+//    let claimedRecordDiff: Observable<([RedPacketService.RedPacketClaimedRecord], [RedPacketService.RedPacketClaimedRecord])>
     
     // For DeepDiff safe update data source
-    var _claimedRecord: [RedPacketService.RedPacketClaimedRecord] = []
+//    var _claimedRecord: [RedPacketService.RedPacketClaimedRecord] = []
     
     init(redPacket: RedPacket) {
         self.redPacket = redPacket
-        isFetchingClaimedList = checkClaimedListActivityIndicator.asDriver()
-        claimedRecordDiff = BehaviorRelay.zip(claimedRecord, claimedRecord.skip(1)) { ($0, $1) }
+//        isFetchingClaimedList = checkClaimedListActivityIndicator.asDriver()
+//        claimedRecordDiff = BehaviorRelay.zip(claimedRecord, claimedRecord.skip(1)) { ($0, $1) }
         
         super.init()
         
         // Use contract claimer to indicate fetching status
-        if let contractEthereumAddress = try? EthereumAddress(hex: redPacket.contract_address, eip55: false) {
-            let record = RedPacketService.RedPacketClaimedRecord(claimed: 0, claimer: contractEthereumAddress)
-            claimedRecord.accept([record])
-            _claimedRecord = [record]
-        }
+//        if let contractEthereumAddress = try? EthereumAddress(hex: redPacket.contract_address, eip55: false) {
+//            let record = RedPacketService.RedPacketClaimedRecord(claimed: 0, claimer: contractEthereumAddress)
+//            claimedRecord.accept([record])
+//            _claimedRecord = [record]
+//        }
         
-        RedPacketService.checkClaimedList(for: redPacket)
-            .trackActivity(checkClaimedListActivityIndicator)
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
-            .retry(3)
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] records in
-                guard let `self` = self else { return }
-                self.claimedRecord.accept(records)
-
-            }, onError: { error in
-                os_log("%{public}s[%{public}ld], %{public}s: fetch claimed list error: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
-                self.claimedRecord.accept([])
-            })
-            .disposed(by: disposeBag)
+//        RedPacketService.checkClaimedList(for: redPacket)
+//            .trackActivity(checkClaimedListActivityIndicator)
+//            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+//            .retry(3)
+//            .observeOn(MainScheduler.instance)
+//            .subscribe(onNext: { [weak self] records in
+//                guard let `self` = self else { return }
+//                self.claimedRecord.accept(records)
+//
+//            }, onError: { error in
+//                os_log("%{public}s[%{public}ld], %{public}s: fetch claimed list error: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
+//                self.claimedRecord.accept([])
+//            })
+//            .disposed(by: disposeBag)
     }
     
 }
@@ -69,7 +69,7 @@ extension RedPacketDetailViewModel {
     enum Section: Int, CaseIterable {
         case redPacket
         case message
-        case claimer
+        // case claimer
     }
     
 }
@@ -81,7 +81,7 @@ extension RedPacketDetailViewModel: UITableViewDataSource {
         // Section
         // - 0: red packet cell
         // - 1: message cell
-        // - 2: claimer list cell section
+        // - 2: claimer list cell section (not use)
         return Section.allCases.count
     }
     
@@ -91,8 +91,8 @@ extension RedPacketDetailViewModel: UITableViewDataSource {
             return 1
         case .message:
             return 1
-        case .claimer:
-            return _claimedRecord.count
+        // case .claimer:
+        //     return _claimedRecord.count
         }
     }
     
@@ -121,51 +121,51 @@ extension RedPacketDetailViewModel: UITableViewDataSource {
             
             cell = _cell
             
-        case .claimer:
-            let record = _claimedRecord[indexPath.row]
-            let contractEthereumAddress = try? EthereumAddress(hex: redPacket.contract_address, eip55: false)
-            let isStubRecord: Bool = {
-                guard let contractEthereumAddress = contractEthereumAddress else {
-                    return false
-                }
-                
-                return record.claimer == contractEthereumAddress
-            }()
-            
-            let helper = RedPacketHelper(for: redPacket)
-            
-            if isStubRecord {
-                let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RedPacketClaimerFetchActivityIndicatorTableViewCell.self), for: indexPath) as! RedPacketClaimerFetchActivityIndicatorTableViewCell
-                cell = _cell
-            } else {
-                let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RedPacketClaimerTableViewCell.self), for: indexPath) as! RedPacketClaimerTableViewCell
-                
-                let address = record.claimer.hex(eip55: false)
-                _cell.nameLabel.text = String(address.prefix(6))
-                _cell.addressLabel.text = address
-                _cell.amountLabel.text = {
-                    let claimedAmountInDecimal = (Decimal(string: String(record.claimed)) ?? Decimal(0)) / helper.exponent
-                    let formatter = helper.formatter
-                    let ethDecimalString = formatter.string(from: claimedAmountInDecimal as NSNumber)
-                    return ethDecimalString.flatMap { $0 + " \(helper.symbol)" } ?? "- \(helper.symbol)"
-                }()
-                
-                cell = _cell
-            }
-            
-            UITableView.removeSeparatorLine(for: cell)
-            
-            let isFirst = indexPath.row == 0
-            if isFirst {
-                UITableView.setupTopSectionSeparatorLine(for: cell)
-            }
-            
-            let isLast = indexPath.row == _claimedRecord.count - 1
-            if isLast {
-                UITableView.setupBottomSectionSeparatorLine(for: cell)
-            } else {
-                UITableView.setupBottomCellSeparatorLine(for: cell)
-            }
+//        case .claimer:
+//            let record = _claimedRecord[indexPath.row]
+//            let contractEthereumAddress = try? EthereumAddress(hex: redPacket.contract_address, eip55: false)
+//            let isStubRecord: Bool = {
+//                guard let contractEthereumAddress = contractEthereumAddress else {
+//                    return false
+//                }
+//
+//                return record.claimer == contractEthereumAddress
+//            }()
+//
+//            let helper = RedPacketHelper(for: redPacket)
+//
+//            if isStubRecord {
+//                let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RedPacketClaimerFetchActivityIndicatorTableViewCell.self), for: indexPath) as! RedPacketClaimerFetchActivityIndicatorTableViewCell
+//                cell = _cell
+//            } else {
+//                let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RedPacketClaimerTableViewCell.self), for: indexPath) as! RedPacketClaimerTableViewCell
+//
+//                let address = record.claimer.hex(eip55: false)
+//                _cell.nameLabel.text = String(address.prefix(6))
+//                _cell.addressLabel.text = address
+//                _cell.amountLabel.text = {
+//                    let claimedAmountInDecimal = (Decimal(string: String(record.claimed)) ?? Decimal(0)) / helper.exponent
+//                    let formatter = helper.formatter
+//                    let ethDecimalString = formatter.string(from: claimedAmountInDecimal as NSNumber)
+//                    return ethDecimalString.flatMap { $0 + " \(helper.symbol)" } ?? "- \(helper.symbol)"
+//                }()
+//
+//                cell = _cell
+//            }
+//
+//            UITableView.removeSeparatorLine(for: cell)
+//
+//            let isFirst = indexPath.row == 0
+//            if isFirst {
+//                UITableView.setupTopSectionSeparatorLine(for: cell)
+//            }
+//
+//            let isLast = indexPath.row == _claimedRecord.count - 1
+//            if isLast {
+//                UITableView.setupBottomSectionSeparatorLine(for: cell)
+//            } else {
+//                UITableView.setupBottomCellSeparatorLine(for: cell)
+//            }
             
         }
         
@@ -210,25 +210,25 @@ final class RedPacketDetailViewController: TCBaseViewController {
         tableView.delegate = self
         tableView.dataSource = viewModel
         
-        viewModel.claimedRecordDiff.asObservable()
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] old, new in
-                guard let `self` = self else { return }
-                let changes = diff(old: old, new: new)
-                let insertionAnimation: UITableView.RowAnimation = old.count == 1 ? .fade : .automatic
-                let deletionAnimation: UITableView.RowAnimation = old.count == 1 ? .fade : .automatic
-                let replacementAnimation: UITableView.RowAnimation = old.count == 1 ? .fade : .automatic
-                self.tableView.reload(
-                    changes: changes,
-                    section: RedPacketDetailViewModel.Section.claimer.rawValue,
-                    insertionAnimation: insertionAnimation,
-                    deletionAnimation: deletionAnimation,
-                    replacementAnimation: replacementAnimation,
-                    updateData: {
-                        self.viewModel._claimedRecord = new
-                    }, completion: nil)
-            })
-            .disposed(by: disposeBag)
+//        viewModel.claimedRecordDiff.asObservable()
+//            .observeOn(MainScheduler.instance)
+//            .subscribe(onNext: { [weak self] old, new in
+//                guard let `self` = self else { return }
+//                let changes = diff(old: old, new: new)
+//                let insertionAnimation: UITableView.RowAnimation = old.count == 1 ? .fade : .automatic
+//                let deletionAnimation: UITableView.RowAnimation = old.count == 1 ? .fade : .automatic
+//                let replacementAnimation: UITableView.RowAnimation = old.count == 1 ? .fade : .automatic
+//                self.tableView.reload(
+//                    changes: changes,
+//                    section: RedPacketDetailViewModel.Section.claimer.rawValue,
+//                    insertionAnimation: insertionAnimation,
+//                    deletionAnimation: deletionAnimation,
+//                    replacementAnimation: replacementAnimation,
+//                    updateData: {
+//                        self.viewModel._claimedRecord = new
+//                    }, completion: nil)
+//            })
+//            .disposed(by: disposeBag)
     }
     
 }
@@ -244,13 +244,13 @@ extension RedPacketDetailViewController: UITableViewDelegate {
             header.headerLabel.text = "Message"
             return header
         
-        case .claimer:
-            guard !viewModel._claimedRecord.isEmpty else {
-                return UIView()
-            }
-            let header = RedPacketDetailTableSectionHeaderView()
-            header.headerLabel.text = "Opened by"
-            return header
+//        case .claimer:
+//            guard !viewModel._claimedRecord.isEmpty else {
+//                return UIView()
+//            }
+//            let header = RedPacketDetailTableSectionHeaderView()
+//            header.headerLabel.text = "Opened by"
+//            return header
             
         default:
             return UIView()
@@ -261,11 +261,11 @@ extension RedPacketDetailViewController: UITableViewDelegate {
         switch RedPacketDetailViewModel.Section.allCases[section] {
         case .message:
             return UITableView.automaticDimension
-        case .claimer:
-            guard !viewModel._claimedRecord.isEmpty else {
-                return 10
-            }
-            return UITableView.automaticDimension
+//        case .claimer:
+//            guard !viewModel._claimedRecord.isEmpty else {
+//                return 10
+//            }
+//            return UITableView.automaticDimension
         default:
             return 10
         }

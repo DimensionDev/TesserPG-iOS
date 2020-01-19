@@ -127,9 +127,14 @@
       "constant": false,
       "inputs": [
         {
-          "internalType": "bytes32[]",
-          "name": "_hashes",
-          "type": "bytes32[]"
+          "internalType": "bytes32",
+          "name": "_hash",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint8",
+          "name": "_number",
+          "type": "uint8"
         },
         {
           "internalType": "bool",
@@ -305,32 +310,6 @@
           "internalType": "bool",
           "name": "expired",
           "type": "bool"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "id",
-          "type": "bytes32"
-        }
-      ],
-      "name": "check_claimed_list",
-      "outputs": [
-        {
-          "internalType": "uint256[]",
-          "name": "claimed_list",
-          "type": "uint256[]"
-        },
-        {
-          "internalType": "address[]",
-          "name": "claimer_addrs",
-          "type": "address[]"
         }
       ],
       "payable": false,

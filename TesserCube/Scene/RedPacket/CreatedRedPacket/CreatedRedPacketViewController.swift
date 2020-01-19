@@ -200,7 +200,7 @@ extension CreatedRedPacketViewModel {
         let symbol = helper.symbol
         
         // Set detail
-        let share = redPacket.uuids.count
+        let share = redPacket.shares
         let unit = share > 1 ? "shares" : "share"
         cell.detailLabel.text = "\(totalAmountInDecimalString) \(symbol) / \(share) \(unit)"
         

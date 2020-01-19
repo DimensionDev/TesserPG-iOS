@@ -87,7 +87,7 @@ extension RedPacketService {
                     return Single.error(Error.internal("cannot reslove red packet to check availablity"))
                 }
             
-                guard availability.claimed < availability.total, availability.claimed < redPacket.uuids.count else {
+                guard availability.claimed < availability.total, availability.claimed < redPacket.shares else {
                     return Single.error(Error.noAvailableShareForClaim)
                 }
                 
@@ -95,7 +95,7 @@ extension RedPacketService {
                     return Single.error(Error.claimAfterExpired)
                 }
                 
-                let password = redPacket.uuids[availability.claimed]
+                let password = redPacket.password
                 let claimInvocation = claimCall(redPacketID, password, recipient, validation)
                 let gasLimit = EthereumQuantity(integerLiteral: 1000000)
                 let gasPrice = EthereumQuantity(quantity: 10.gwei)

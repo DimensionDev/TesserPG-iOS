@@ -99,6 +99,7 @@ class WalletsViewController: TCBaseViewController {
                     // update view model data source
                     self.viewModel.redPackets.accept(redPackets.reversed())
                     
+                    // fetch approve result then create
                     let pendingCreateAfterApproveRedPackets = redPackets.filter { redPacket in
                         guard redPacket.status == .pending && redPacket.create_transaction_hash == nil, redPacket.erc20_approve_value != nil else {
                             return false
@@ -128,6 +129,7 @@ class WalletsViewController: TCBaseViewController {
                             .asObservable()
                             .subscribeOn(ConcurrentDispatchQueueScheduler.init(qos: .userInitiated))
                             .retry(3)
+                            .observeOn(MainScheduler.instance)
                             .flatMap { nonce -> Observable<TransactionHash> in
                                 return RedPacketService.shared.createAfterApprove(for: redPacket, use: walletValue, nonce: nonce)
                             }

@@ -62,11 +62,12 @@ extension RedPacketService {
         }
         
         // Prepare parameters
-        let uuids = Array(redPacket.uuids)
-        let hashes: [BigUInt] = uuids.map { uuid in
-            let hash = SHA3(variant: .keccak256).calculate(for: uuid.bytes)
+        let hash: BigUInt = {
+            let password = redPacket.password
+            let hash = SHA3(variant: .keccak256).calculate(for: password.bytes)
             return BigUInt(hash)
-        }
+        }()
+        let number: UInt8 = UInt8(redPacket.shares)
         let ifRandom = redPacket.is_random
         let duration = redPacket.duration
         let seed = BigUInt.randomInteger(withMaximumWidth: 32)
@@ -99,7 +100,7 @@ extension RedPacketService {
         let gasLimit = EthereumQuantity(integerLiteral: 5000000)
         let gasPrice = EthereumQuantity(quantity: 10.gwei)
         
-        let createInvocation = createCall(hashes, ifRandom, duration, seed, message, name, tokenType, tokenAddr, totalTokens)
+        let createInvocation = createCall(hash, number, ifRandom, duration, seed, message, name, tokenType, tokenAddr, totalTokens)
         guard let createTransaction = createInvocation.createTransaction(nonce: nonce, from: walletAddress, value: value, gas: gasLimit, gasPrice: gasPrice) else {
             return Single.error(Error.internal("cannot construct transaction to send red packet"))
         }
@@ -278,6 +279,7 @@ extension RedPacketService {
         var queue = createQueue
         
         guard let observable = queue[id] else {
+            
             let single = RedPacketService.create(for: redPacket, use: walletValue, nonce: nonce)
             let shared = single.asObservable().share()
             queue[id] = shared
@@ -404,7 +406,8 @@ extension RedPacketService {
                             contract_version: UInt8(redPacket.contract_version),
                             contract_address: redPacket.contract_address,
                             rpid: creationSuccess.id,
-                            passwords: Array(redPacket.uuids),
+                            password: redPacket.password,
+                            shares: redPacket.shares,
                             sender: RedPacketRawPayLoad.Sender(
                                 address: redPacket.sender_address,
                                 name: redPacket.sender_name,
