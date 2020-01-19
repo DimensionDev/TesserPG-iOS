@@ -8,6 +8,7 @@
 
 import os
 import UIKit
+import LocalAuthentication
 import RxSwift
 import RxCocoa
 import Web3
@@ -466,7 +467,6 @@ class EditingRedPacketViewController: UIViewController {
         
         tableView.register(InputRedPacketShareTableViewCell.self, forCellReuseIdentifier: String(describing: InputRedPacketShareTableViewCell.self))
         
-        
         #if TARGET_IS_KEYBOARD
         tableView.register(KeyboardInputRedPacketAmoutCell.self, forCellReuseIdentifier: String(describing: KeyboardInputRedPacketAmoutCell.self))
         tableView.register(KeyboardInputRedPacketSenderCell.self, forCellReuseIdentifier: String(describing: KeyboardInputRedPacketSenderCell.self))
@@ -635,6 +635,39 @@ class EditingRedPacketViewController: UIViewController {
 }
 
 extension EditingRedPacketViewController {
+    
+    private func authToSendRedPacket() {
+        let authContext = LAContext()
+        var authError: NSError?
+        
+        if viewModel.selectWalletNetwork.value == .mainnet, authContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authError) {
+            authContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Tessercube will use selected wallet to send red packet") { (isAuth, error) in
+                DispatchQueue.main.async { [weak self] in
+                    guard let `self` = self else { return }
+                    
+                    guard error == nil, isAuth else {
+                        switch error! {
+                        case LAError.userCancel:
+                            break
+                        default:
+                            self.showSendRedPacketErrorAlert(message: error?.localizedDescription ?? "Authentication Fail")
+                        }
+                        
+                        return // return here to break
+                    }
+                    
+                    // Break if busy
+                    guard !self.viewModel.isBusy.value else {
+                        return
+                    }
+                    
+                    self.sendRedPacket()
+                }
+            }   // end authContent.evaluatePolicy
+        } else {
+            self.sendRedPacket()
+        }   // end authContext.canEvaluatePolicy
+    }
  
     private func sendRedPacket() {
         view.endEditing(true)
@@ -849,11 +882,11 @@ extension EditingRedPacketViewController {
     }
     
     @objc private func nextBarButtonItemClicked(_ sender: UIBarButtonItem) {
-        sendRedPacket()
+        authToSendRedPacket()
     }
     
     @objc private func sendRedPacketButtonPressed(_ sender: UIButton) {
-        sendRedPacket()
+        authToSendRedPacket()
     }
     
 }
