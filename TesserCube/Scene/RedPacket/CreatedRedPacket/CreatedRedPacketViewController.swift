@@ -274,7 +274,7 @@ extension CreatedRedPacketViewModel {
             cell.statusLabel.text = "Refunding…"
         case .refunded:
             if let refundAmountInDecimalString = helper.refundAmountInDecimalString {
-                cell.statusLabel.text = "Refund \(refundAmountInDecimalString)"
+                cell.statusLabel.text = "Refunded \(refundAmountInDecimalString) \(symbol)"
             } else {
                 cell.statusLabel.text = "Refunded"
             }
