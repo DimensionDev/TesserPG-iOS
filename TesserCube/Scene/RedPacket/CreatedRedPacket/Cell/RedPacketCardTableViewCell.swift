@@ -43,7 +43,7 @@ final class RedPacketCardTableViewCell: UITableViewCell {
         
         let effect: UIBlurEffect
         if #available(iOS 13.0, *) {
-            effect = UIBlurEffect(style: .systemMaterial)
+            effect = UIBlurEffect(style: .systemMaterialLight)      // use light mode sytle effect
         } else {
             effect = UIBlurEffect(style: .regular)
         }
