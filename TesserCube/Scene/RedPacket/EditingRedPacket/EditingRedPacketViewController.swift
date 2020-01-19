@@ -10,10 +10,8 @@ import os
 import UIKit
 import RxSwift
 import RxCocoa
-import RxSwiftUtilities
-import BigInt
-import DMS_HDWallet_Cocoa
 import Web3
+import RxSwiftUtilities
 
 final class EditingRedPacketViewModel: NSObject {
     
@@ -25,6 +23,7 @@ final class EditingRedPacketViewModel: NSObject {
     
     let walletModels = BehaviorRelay<[WalletModel]>(value: [])
     let selectWalletModel = BehaviorRelay<WalletModel?>(value: nil)
+    let selectTokenType = BehaviorRelay(value: RedPacketTokenSelectViewModel.SelectTokenType.eth)
     
     let amount = BehaviorRelay(value: Decimal(0))       // user input value. default 0
     let share = BehaviorRelay(value: 1)
@@ -33,15 +32,29 @@ final class EditingRedPacketViewModel: NSObject {
     let message = BehaviorRelay(value: "")
     
     // Output
-    let isCreating: Driver<Bool>
+    let isCreating = BehaviorRelay(value: false)
     let canDismiss = BehaviorRelay(value: true)
-    let amountInputCoinCurrencyUnitLabelText: Driver<String>
+    
     let minimalAmount = BehaviorRelay(value: RedPacketService.redPacketMinAmount)
-    let total = BehaviorRelay(value: Decimal(0))     // should not 0 after user input amount
+    let totalInDecimal = BehaviorRelay(value: Decimal(0))     // should not 0 after user input amount
+    let selectTokenDecimal = BehaviorRelay(value: 18)         // default 18 for ETH
+    let walletBalanceForSelectToken = BehaviorRelay<BigUInt?>(value: nil)
+    
+    // "Current balance: <token_in_decimal> <token_symbol>"
+    // Combine `walletBalanceForSelectToken` and `selectTokenType` to drive
+    let walletSectionFooterViewText: Driver<String>
+    
+    // "<token_symbol> per share" or "<token_symbol>"
+    // Combine `redPacketSplitType` and `selectTokenType` to drive
+    let amountInputCoinCurrencyUnitLabelText: Driver<String>
+    
+    // "Send <send_total_amount_in_decimal> <token_symbol>"
+    // Combine `totalInDecimal` and `selectTokenType`
     let sendRedPacketButtonText: Driver<String>
-
+    
     enum TableViewCellType {
         case wallet                 // select a wallet to send red packet
+        case token                  // select token type
         case amount                 // input the amount for send
         case share                  // input the count for shares
         case name                   // input the sender name
@@ -51,6 +64,7 @@ final class EditingRedPacketViewModel: NSObject {
     let sections: [[TableViewCellType]] = [
         [
             .wallet,
+            .token,
         ],
         [
             .amount,
@@ -63,17 +77,120 @@ final class EditingRedPacketViewModel: NSObject {
     ]
     
     override init() {
-        isCreating = createActivityIndicator.asDriver()
-        amountInputCoinCurrencyUnitLabelText = redPacketSplitType.asDriver()
-            .map { type in type == .average ? "ETH per share" : "ETH" }
-        sendRedPacketButtonText = total.asDriver()
-            .map { total in
-                guard total > 0, let totalInETH = NumberFormatter.decimalFormatterForETH.string(from: total as NSNumber) else {
+        createActivityIndicator
+            .asDriver()
+            .drive(isCreating)
+            .disposed(by: disposeBag)
+        amountInputCoinCurrencyUnitLabelText = Driver.combineLatest(redPacketSplitType.asDriver(), selectTokenType.asDriver()) { (redPacketSplitType, selectTokenType) -> String in
+            let symbol: String
+            switch selectTokenType {
+            case .eth: symbol = "ETH"
+            case .erc20(let walletToken):
+                symbol = walletToken.token?.symbol ?? ""
+            }
+            
+            return redPacketSplitType == .average ? "\(symbol) per share" : symbol
+        }
+        selectTokenType.asDriver()
+            .withLatestFrom(selectWalletModel.asDriver()) {
+                return ($0, $1)
+        }
+        .flatMapLatest { (selectTokenType, selectWalletModel) -> Driver<BigUInt?> in
+            guard let walletModel = selectWalletModel else {
+                return Driver.just(nil)
+            }
+            switch selectTokenType {
+            case .eth:
+                return walletModel.balance.asDriver()
+            case .erc20(let walletToken):
+                return Observable.from(object: walletToken)
+                    .map { $0.balance }
+                    .asDriver(onErrorJustReturn: nil)
+            }
+        }
+        .drive(walletBalanceForSelectToken)
+        .disposed(by: disposeBag)
+        selectTokenType.asDriver()
+            .map { tokenType in
+                switch tokenType {
+                case .eth:                      return 18
+                case .erc20(let walletToken):   return walletToken.token?.decimals ?? 0
+                }
+        }
+        .drive(selectTokenDecimal)
+        .disposed(by: disposeBag)
+        selectTokenType.asDriver()
+            .map { tokenType -> Decimal in
+                switch tokenType {
+                case .eth:                      return RedPacketService.redPacketMinAmount
+                case .erc20(let walletToken):
+                    guard let decimals = walletToken.token?.decimals else {
+                        return RedPacketService.redPacketMinAmount
+                    }
+                    
+                    return 1 / pow(10, (decimals + 1) / 2)
+                }
+        }
+        .drive(minimalAmount)
+        .disposed(by: disposeBag)
+        walletSectionFooterViewText = Driver.combineLatest(walletBalanceForSelectToken.asDriver(), selectTokenType.asDriver()) { (walletBalanceForSelectToken, selectTokenType) -> String in
+            let placeholder = "Current balance: - "
+            
+            let decimals: Int
+            let symbol: String
+            switch selectTokenType {
+            case .eth:
+                decimals = 18
+                symbol = "ETH"
+            case let .erc20(walletToken):
+                guard let token = walletToken.token else {
+                    return placeholder
+                }
+                
+                decimals = token.decimals
+                symbol = token.symbol
+            }
+            
+            let _balanceInDecimal = walletBalanceForSelectToken
+                .flatMap { Decimal(string: String($0)) }
+                .map { balance in balance / pow(10, decimals) }
+            
+            guard let balanceInDecimal = _balanceInDecimal else {
+                return placeholder
+            }
+            
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            formatter.minimumIntegerDigits = 1
+            formatter.maximumFractionDigits = (decimals + 1) / 2
+            formatter.groupingSeparator = ""
+            
+            return formatter.string(from: balanceInDecimal as NSNumber).flatMap { decimalString in
+                return "Current balance: \(decimalString) \(symbol)"
+                } ?? placeholder
+        }
+        sendRedPacketButtonText = Driver.combineLatest(totalInDecimal.asDriver(), selectTokenType.asDriver()) { (totalInDecimal, selectTokenType) -> String in
+            switch selectTokenType {
+            case .eth:
+                guard totalInDecimal > 0, let totalInETH = NumberFormatter.decimalFormatterForETH.string(from: totalInDecimal as NSNumber) else {
                     return "Send"
                 }
                 
                 return "Send \(totalInETH) ETH"
+            case .erc20(let walletToken):
+                guard let token = walletToken.token else {
+                    return "Send"
+                }
+                
+                let formatter = NumberFormatter.decimalFormatterForToken(decimals: token.decimals)
+                guard totalInDecimal > 0, let tokenInSymbol = formatter.string(from: totalInDecimal as NSNumber) else {
+                    return "Send"
+                }
+                
+                return "Send \(tokenInSymbol) \(token.symbol)"
             }
+        }
+        
         super.init()
         
         // Update default select wallet model when wallet model pool change
@@ -83,30 +200,37 @@ final class EditingRedPacketViewModel: NSObject {
             .disposed(by: disposeBag)
         
         Driver.combineLatest(share.asDriver(), redPacketSplitType.asDriver()) { share, splitType -> Decimal in
-                switch splitType {
-                case .average:
-                    return RedPacketService.redPacketMinAmount
-                case .random:
-                    return Decimal(share) * RedPacketService.redPacketMinAmount
-                }
+            switch splitType {
+            case .average:
+                return RedPacketService.redPacketMinAmount
+            case .random:
+                return Decimal(share) * RedPacketService.redPacketMinAmount
             }
-            .drive(minimalAmount)
-            .disposed(by: disposeBag)
+        }
+        .drive(minimalAmount)
+        .disposed(by: disposeBag)
         
         Driver.combineLatest(redPacketSplitType.asDriver(), amount.asDriver(), share.asDriver()) { splitType, amount, share -> Decimal in
-                switch splitType {
-                case .random:
-                    return amount
-                case .average:
-                    return amount * Decimal(share)
-                }
+            switch splitType {
+            case .random:
+                return amount
+            case .average:
+                return amount * Decimal(share)
             }
-            .drive(total)
-            .disposed(by: disposeBag)
+        }
+        .drive(totalInDecimal)
+        .disposed(by: disposeBag)
         
         isCreating.asDriver()
             .map { !$0 }
             .drive(canDismiss)
+            .disposed(by: disposeBag)
+        
+        // Reset select token type to .eth when select new wallet
+        selectWalletModel.asDriver()
+            .drive(onNext: { [weak self] _ in
+                self?.selectTokenType.accept(.eth)
+            })
             .disposed(by: disposeBag)
     }
     
@@ -151,21 +275,62 @@ extension EditingRedPacketViewModel: UITableViewDataSource {
         switch sections[indexPath.section][indexPath.row] {
         case .wallet:
             let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SelectWalletTableViewCell.self), for: indexPath) as! SelectWalletTableViewCell
-            walletModels.asDriver()
-                .drive(_cell.viewModel.walletModels)
-                .disposed(by: _cell.disposeBag)
-            _cell.viewModel.selectWalletModel.asDriver()
+
+            walletModels.bind(to: _cell.walletPickerView.rx.items) { index, item, view in
+                let label = (view as? UILabel) ?? UILabel()
+                label.textAlignment = .center
+                label.adjustsFontSizeToFitWidth = true
+                label.text = "Wallet \(item.address.prefix(6))"
+                return label
+            }
+            .disposed(by: _cell.disposeBag)
+            
+            #if !TARGET_IS_KEYBOARD
+            _cell.walletPickerView.rx.modelSelected(WalletModel.self)
+                .asDriver()
+                .map { $0.first }
                 .drive(selectWalletModel)
+                .disposed(by: disposeBag)
+            #endif
+//            _cell.walletPickerView.rx.modelSelected(WalletModel.self)
+//
+//                .asDriver()
+//                .drive(selectWalletModel)
+//                .disposed(by: _cell.disposeBag)
+//
+            selectWalletModel.asDriver()
+                .map { walletModel in
+                    guard let walletModel = walletModel else {
+                        return L10n.Common.Label.nameNone
+                    }
+
+                    return "Wallet \(walletModel.address.prefix(6))"
+                }
+                .drive(_cell.walletTextField.rx.text)
                 .disposed(by: _cell.disposeBag)
+            
             cell = _cell
-        
+            
+        case .token:
+            let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SelectTokenTableViewCell.self), for: indexPath) as! SelectTokenTableViewCell
+            selectTokenType.asDriver()
+                .map { type -> String in
+                    switch type {
+                    case .eth:                      return "ETH"
+                    case let .erc20(walletToken):   return walletToken.token?.name ?? "-"
+                    }
+                }
+                .drive(_cell.tokenNameTextField.rx.text)
+                .disposed(by: _cell.disposeBag)
+            
+            cell = _cell
+            
         case .amount:
             #if TARGET_IS_KEYBOARD
             let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: KeyboardInputRedPacketAmoutCell.self), for: indexPath) as! KeyboardInputRedPacketAmoutCell
             #else
             let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: InputRedPacketAmoutTableViewCell.self), for: indexPath) as! InputRedPacketAmoutTableViewCell
             #endif
-            
             
             // Bind coin currency unit label text to label
             amountInputCoinCurrencyUnitLabelText.asDriver()
@@ -181,7 +346,7 @@ extension EditingRedPacketViewModel: UITableViewDataSource {
                 .disposed(by: _cell.disposeBag)
             
             cell = _cell
-        
+            
         case .share:
             let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: InputRedPacketShareTableViewCell.self), for: indexPath) as! InputRedPacketShareTableViewCell
             
@@ -227,6 +392,18 @@ extension EditingRedPacketViewModel: UITableViewDataSource {
     
 }
 
+
+// [RP_Mode]:           segmented control with two segments: [.average, .random]
+// [RP_Wallet]:         selected wallet for send RP
+// [RP_Token]:          token type: [.eth, .erc20(WalletToken)]. Default .eth
+// [UI_CurrentBalance]: label: "Current balance: <token_in_decimal> <token_symbol>"
+// [RP_Amount]:         send amount in decimal.
+//                      format with token <(decimals + 1) / 2> for .maximumFractionDigits.
+// [UI_Amount_Hint]:    label: "<symbol per share>" (.average mode) or "<token_symbol>" (.random mode)
+// [RP_Share]:          send share count. 1...100
+// [RP_Name]:           one-line trimmed sender name. Max up to 30 (include) chars. Not empty
+// [RP_Message]:        one-line trimmed message. Max up to 140 (include) chars. Could empty
+// [UI_SendButton]:     button: "Send <send_total_amoun_in_decimal> <token_symbol>"
 class EditingRedPacketViewController: UIViewController {
     
     let disposeBag = DisposeBag()
@@ -258,6 +435,7 @@ class EditingRedPacketViewController: UIViewController {
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.register(SelectWalletTableViewCell.self, forCellReuseIdentifier: String(describing: SelectWalletTableViewCell.self))
+        tableView.register(SelectTokenTableViewCell.self, forCellReuseIdentifier: String(describing: SelectTokenTableViewCell.self))
         
         tableView.register(InputRedPacketShareTableViewCell.self, forCellReuseIdentifier: String(describing: InputRedPacketShareTableViewCell.self))
         
@@ -383,25 +561,7 @@ class EditingRedPacketViewController: UIViewController {
             .disposed(by: disposeBag)
         
         // Bind wallet model balance to wallet section footer view
-        viewModel.selectWalletModel.asDriver()
-            .flatMapLatest { walletModel -> Driver<String> in
-                guard let walletModel = walletModel else {
-                    return Driver.just("Current balance: - ")
-                }
-                
-                return walletModel.balanceInDecimal.asDriver()
-                    .map { decimal in
-                        let placeholder = "Current balance: - "
-                        guard let decimal = decimal else {
-                            return placeholder
-                        }
-                        
-                        let formatter = WalletService.balanceDecimalFormatter
-                        return formatter.string(from: decimal as NSNumber).flatMap { decimalString in
-                            return "Current balance: \(decimalString) ETH"
-                        } ?? placeholder
-                }
-            }
+        viewModel.walletSectionFooterViewText.asDriver()
             .drive(walletSectionFooterView.walletBalanceLabel.rx.text)
             .disposed(by: disposeBag)
         
@@ -463,18 +623,19 @@ extension EditingRedPacketViewController {
             return
         }
         
-        guard let availableBalance = selectWalletModel.balance.value else {
+        guard let availableBalance = viewModel.walletBalanceForSelectToken.value else {
             showSendRedPacketErrorAlert(message: "Can not read select wallet balance\nPlease try later")
             return
         }
         
-        guard viewModel.total.value > 0,
-            let sendTotal = viewModel.total.value.wei else {
-                showSendRedPacketErrorAlert(message: "Please input valid amount")
-                return
+        let sendTotalInDecimal = viewModel.totalInDecimal.value
+        guard viewModel.totalInDecimal.value > 0,
+        let sendTotalInBigUInt = sendTotalInDecimal.tokenInBigUInt(for: viewModel.selectTokenDecimal.value) else {
+            showSendRedPacketErrorAlert(message: "Please input valid amount")
+            return
         }
-
-        guard sendTotal < availableBalance else {
+    
+        guard sendTotalInBigUInt < availableBalance else {
             showSendRedPacketErrorAlert(message: "Insufficient account balance\nPlease input valid amount")
             return
         }
@@ -515,58 +676,118 @@ extension EditingRedPacketViewController {
         redPacket.is_random = isRandom
         redPacket.sender_address = senderAddress
         redPacket.sender_name = senderName
-        redPacket.send_total = sendTotal
+        redPacket.send_total = sendTotalInBigUInt
         redPacket.send_message = sendMessage
         redPacket.status = .initial
         
-        // get nonce -> call create transaction
-        // success: push to CreatedRedPacketViewController
-        // failure: stand in same place and just alert user error
-        WalletService.getTransactionCount(address: walletAddress).asObservable()
-            .withLatestFrom(viewModel.isCreating) { ($0, $1) }     // (nonce, isCreating)
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
-            .filter { $0.1 == false }                               // not creating
-            .map { $0.0 }                                           // nonce
-            .retry(3)
-            .do(onNext: { nonce in
-                let nonce = Int(nonce.quantity)
-                redPacket.create_nonce.value = nonce
-            })
-            .flatMap { nonce -> Observable<TransactionHash> in
-                return RedPacketService.create(for: redPacket, use: selectWalletModel, nonce: nonce)
-                    .trackActivity(self.viewModel.createActivityIndicator)
-            }
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] transactionHash in
-                do {
-                    // red packet create transaction success
-                    // set status to .pending
-                    let realm = try RedPacketService.realm()
-                    try realm.write {
-                        redPacket.create_transaction_hash = transactionHash.hex()
-                        redPacket.status = .pending
-                        realm.add(redPacket)
+        let selectWalletValue = WalletValue(from: selectWalletModel)
+        
+        let tokenType = viewModel.selectTokenType.value
+        switch tokenType {
+        case .eth:
+            // get nonce -> call create transaction
+            // success: push to CreatedRedPacketViewController
+            // failure: stand in same place and just alert user error
+            WalletService.getTransactionCount(address: walletAddress).asObservable()
+                .withLatestFrom(viewModel.isCreating) { ($0, $1) }     // (nonce, isCreating)
+                .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+                .filter { $0.1 == false }                               // not creating
+                .map { $0.0 }                                           // nonce
+                .retry(3)
+                .do(onNext: { nonce in
+                    let nonce = Int(nonce.quantity)
+                    redPacket.create_nonce.value = nonce
+                })
+                .flatMap { nonce -> Observable<TransactionHash> in
+                    return RedPacketService.shared.create(for: redPacket, use: selectWalletValue, nonce: nonce)
+                        .trackActivity(self.viewModel.createActivityIndicator)
+                }
+                .observeOn(MainScheduler.instance)
+                .subscribe(onNext: { [weak self] transactionHash in
+                    do {
+                        // red packet create transaction success
+                        // set status to .pending
+                        let realm = try RedPacketService.realm()
+                        try realm.write {
+                            redPacket.create_transaction_hash = transactionHash.hex()
+                            redPacket.status = .pending
+                            realm.add(redPacket)
+                        }
+                        
+                        #if TARGET_IS_KEYBOARD
+                        UIApplication.sharedApplication().openCreatedRedPacketView(redpacket: redPacket)
+                        #else
+                        let createdRedPacketViewController = CreatedRedPacketViewController()
+                        createdRedPacketViewController.viewModel = CreatedRedPacketViewModel(redPacket: redPacket, walletModel: selectWalletModel)
+                        self?.navigationController?.pushViewController(createdRedPacketViewController, animated: true)
+                        #endif
+                        
+                    } catch {
+                        self?.showSendRedPacketErrorAlert(message: error.localizedDescription)
+                        return
                     }
                     
-                    #if TARGET_IS_KEYBOARD
-                    UIApplication.sharedApplication().openCreatedRedPacketView(redpacket: redPacket)
-                    #else
-                    let createdRedPacketViewController = CreatedRedPacketViewController()
-                    createdRedPacketViewController.viewModel = CreatedRedPacketViewModel(redPacket: redPacket)
-                    self?.navigationController?.pushViewController(createdRedPacketViewController, animated: true)
-                    #endif
-        
-                } catch {
+                }, onError: { [weak self] error in
+                    // red packet create transaction fail
+                    // discard record and alert user
                     self?.showSendRedPacketErrorAlert(message: error.localizedDescription)
-                    return
+                })
+                .disposed(by: viewModel.disposeBag)
+            
+        case .erc20(walletToken: let walletToken):
+            guard let token = walletToken.token else {
+                showSendRedPacketErrorAlert(message: "Cannot retrieve token entity")
+                return
+            }
+                        
+            let tokenID = token.id
+            redPacket.token_type = .erc20
+            redPacket.erc20_token = token
+            
+            WalletService.getTransactionCount(address: walletAddress).asObservable()
+                .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+                .retry(3)
+                .do(onNext: { nonce in
+                    let nonce = Int(nonce.quantity)
+                    redPacket.create_nonce.value = nonce
+                })
+                .flatMap { nonce -> Observable<TransactionHash> in
+                    do {
+                        let realm = try RedPacketService.realm()
+                        guard let token = realm.object(ofType: ERC20Token.self, forPrimaryKey: tokenID) else {
+                            return Observable.error(RedPacketService.Error.internal("cannot retrieve token"))
+                        }
+                        return RedPacketService.approve(for: redPacket, use: selectWalletModel, on: token, nonce: nonce)
+                            .trackActivity(self.viewModel.createActivityIndicator)
+                    } catch {
+                        return Observable.error(error)
+                    }
                 }
-
-            }, onError: { [weak self] error in
-                // red packet create transaction fail
-                // discard record and alert user
-                self?.showSendRedPacketErrorAlert(message: error.localizedDescription)
-            })
-            .disposed(by: viewModel.disposeBag)
+                .observeOn(MainScheduler.instance)
+                .subscribe(onNext: { [weak self] transactionHash in
+                    do {
+                        // red packet token approve success
+                        let realm = try RedPacketService.realm()
+                        try realm.write {
+                            redPacket.erc20_approve_transaction_hash = transactionHash.hex()
+                            redPacket.status = .pending
+                            realm.add(redPacket)
+                        }
+            
+                        let createdRedPacketViewController = CreatedRedPacketViewController()
+                        createdRedPacketViewController.viewModel = CreatedRedPacketViewModel(redPacket: redPacket, walletModel: selectWalletModel)
+                        self?.navigationController?.pushViewController(createdRedPacketViewController, animated: true)
+                        
+                    } catch {
+                        self?.showSendRedPacketErrorAlert(message: error.localizedDescription)
+                    }
+                }, onError: { [weak self] error in
+                    // red packet create transaction fail
+                    // discard record and alert user
+                    self?.showSendRedPacketErrorAlert(message: error.localizedDescription)
+                })
+                .disposed(by: viewModel.disposeBag)
+        }
     }
     
     private func showSendRedPacketErrorAlert(message: String) {
@@ -642,17 +863,32 @@ extension EditingRedPacketViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        #if TARGET_IS_KEYBOARD
-        guard viewModel.sections[indexPath.section][indexPath.row] == .wallet else {
-            return
+        switch viewModel.sections[indexPath.section][indexPath.row] {
+        case .wallet:
+            #if TARGET_IS_KEYBOARD
+            let walletSelectVC = RedPacketWalletSelectViewController()
+            walletSelectVC.delegate = self
+            walletSelectVC.wallets = viewModel.walletModels.value
+            walletSelectVC.selectedWallet = viewModel.selectWalletModel.value
+            navigationController?.pushViewController(walletSelectVC, animated: true)
+            #else
+            break
+            #endif
+
+        case .token:
+            guard let walletModel = self.viewModel.selectWalletModel.value else {
+                return
+            }
+            
+            let tokenSelectViewController = RedPacketTokenSelectViewController()
+            let viewModel = RedPacketTokenSelectViewModel(walletModel: walletModel)
+            tokenSelectViewController.viewModel = viewModel
+            tokenSelectViewController.delegate = self
+            navigationController?.presentationController?.delegate = tokenSelectViewController as UIAdaptivePresentationControllerDelegate
+            navigationController?.pushViewController(tokenSelectViewController, animated: true)
+        default:
+            break
         }
-        
-        let walletSelectVC = RedPacketWalletSelectViewController()
-        walletSelectVC.delegate = self
-        walletSelectVC.wallets = viewModel.walletModels.value
-        walletSelectVC.selectedWallet = viewModel.selectWalletModel.value
-        navigationController?.pushViewController(walletSelectVC, animated: true)
-        #endif
     }
     
 }
@@ -664,6 +900,17 @@ extension EditingRedPacketViewController: RedPacketWalletSelectViewControllerDel
         viewModel.selectWalletModel.accept(wallet)
         viewController.navigationController?.popViewController(animated: true)
     }
+    
+}
+
+// MARK: - RedPacketTokenSelectViewControllerDelegate
+extension EditingRedPacketViewController: RedPacketTokenSelectViewControllerDelegate {
+    
+    func redPacketTokenSelectViewController(_ viewController: RedPacketTokenSelectViewController, didSelectTokenType selectTokenType: RedPacketTokenSelectViewModel.SelectTokenType) {
+        viewModel.selectTokenType.accept(selectTokenType)
+        viewController.navigationController?.popViewController(animated: true)
+    }
+    
 }
 
 // MARK: - UIAdaptivePresentationControllerDelegate

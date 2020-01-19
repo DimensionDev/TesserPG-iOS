@@ -44,6 +44,46 @@ extension OpenRedPacketViewModel {
             redPacket.send_total = sendTotal
             redPacket.send_message = rawPayload.sender.message
             redPacket.status = .incoming
+            redPacket.network = rawPayload.network ?? .mainnet
+            redPacket.token_type = rawPayload.token_type
+            redPacket.received_time = Date()
+            
+            // Check token type if .erc20
+            if rawPayload.token_type == .erc20 {
+                guard let token = rawPayload.token else {
+                    return Single.error(RedPacketService.Error.openRedPacketFail("cannot read token"))
+                }
+                do {
+                    let realm = try RedPacketService.realm()
+                    
+                    var _erc20Token: ERC20Token
+                    if let erc20Token = realm.object(ofType: ERC20Token.self, forPrimaryKey: token.address) {
+                        _erc20Token = erc20Token
+
+                    } else {
+                        // not store in database, insert new token
+                        let erc20Token = ERC20Token()
+                        erc20Token.id = token.address
+                        erc20Token.address = token.address
+                        erc20Token.name = token.name
+                        erc20Token.symbol = token.symbol
+                        erc20Token.decimals = token.decimals
+                        erc20Token.network = rawPayload.network ?? .mainnet
+                        erc20Token.is_user_defind = true
+                        
+                        try realm.write {
+                            realm.add(erc20Token)
+                        }
+                        _erc20Token = erc20Token
+                    }
+                    // set redPacket.erc20_token relationship
+                    redPacket.erc20_token = _erc20Token
+                    
+                } catch {
+                    return Single.error(RedPacketService.Error.openRedPacketFail(error.localizedDescription))
+                }
+                
+            }
             
             return Single.just(redPacket)
             

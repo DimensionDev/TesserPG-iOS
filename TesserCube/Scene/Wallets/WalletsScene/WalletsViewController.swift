@@ -11,6 +11,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxRealm
+import Web3
 
 class WalletsViewController: TCBaseViewController {
 
@@ -86,9 +87,29 @@ class WalletsViewController: TCBaseViewController {
                     // update view model data source
                     self.viewModel.redPackets.accept(redPackets.reversed())
                     
+                    let pendingCreateAfterApproveRedPackets = redPackets.filter { redPacket in
+                        guard redPacket.status == .pending && redPacket.create_transaction_hash == nil, redPacket.erc20_approve_value != nil else {
+                            return false
+                        }
+                        
+                        return true
+                    }
+                    for redPacket in pendingCreateAfterApproveRedPackets {
+                        guard let walletModel = WalletService.default.walletModels.value.first(where: { $0.address == redPacket.sender_address }) else {
+                            continue
+                        }
+
+                        os_log("%{public}s[%{public}ld], %{public}s: createAfterApprove %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.id)
+                        let walletValue = WalletValue(from: walletModel)
+                        RedPacketService.shared.createAfterApprove(for: redPacket, use: walletValue)
+                            .subscribe()
+                            .disposed(by: self.disposeBag)
+                    }
+                    
                     // fetch create result
                     let pendingRedPackets = redPackets.filter { $0.status == .pending }
-                    for redPacket in pendingRedPackets {
+                    for redPacket in pendingRedPackets where redPacket.create_transaction_hash != nil {
+                        os_log("%{public}s[%{public}ld], %{public}s: updateCreateResult %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.id)
                         RedPacketService.shared.updateCreateResult(for: redPacket)
                             .subscribe()
                             .disposed(by: self.disposeBag)
@@ -97,6 +118,7 @@ class WalletsViewController: TCBaseViewController {
                     // fetch claim result
                     let claimPendingRedPackets = redPackets.filter { $0.status == .claim_pending }
                     for redPacket in claimPendingRedPackets {
+                        os_log("%{public}s[%{public}ld], %{public}s: updateClaimResult %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.id)
                         RedPacketService.shared.updateClaimResult(for: redPacket)
                             .subscribe()
                             .disposed(by: self.disposeBag)
@@ -479,7 +501,8 @@ extension WalletsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch WalletsViewModel.Section.allCases[indexPath.section] {
         case .wallet:
-            return
+            // handle by collection delegate
+            break
 
         case .redPacket:
             guard let cell = tableView.cellForRow(at: indexPath) as? RedPacketCardTableViewCell,
@@ -596,31 +619,16 @@ extension WalletsViewController: UICollectionViewDelegate {
             return
         }
     
-        guard let walletCardCollectionViewCell = collectionView.cellForItem(at: indexPath) as? WalletCardCollectionViewCell else {
+        guard let _ = collectionView.cellForItem(at: indexPath) as? WalletCardCollectionViewCell else {
             return
         }
         
-        guard let actions = viewModel.collectionView(collectionView, presentingViewController: self, isContextMenu: false, actionsForRowAt: indexPath),
-        !actions.isEmpty else {
+        guard let walletModel = viewModel.currentWalletModel.value else {
             return
         }
         
-        let alertController: UIAlertController = {
-            let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-            let alertActions = actions.map { $0.alertAction }
-            for alertAction in alertActions {
-                alertController.addAction(alertAction)
-            }
-            return alertController
-        }()
-        
-        if let popoverPresentationController = alertController.popoverPresentationController {
-            popoverPresentationController.sourceView = walletCardCollectionViewCell
-        }
-        
-        DispatchQueue.main.async {
-            self.present(alertController, animated: true, completion: nil)
-        }
+        let viewModel = WalletDetailViewModel(walletModel: walletModel)
+        Coordinator.main.present(scene: .walletDetail(viewModel: viewModel), from: self, transition: .detail, completion: nil)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

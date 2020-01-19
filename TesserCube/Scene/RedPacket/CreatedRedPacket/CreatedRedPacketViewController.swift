@@ -15,6 +15,7 @@ import RealmSwift
 import Web3
 import DMS_HDWallet_Cocoa
 import DateToolsSwift
+import Kingfisher
 
 final class CreatedRedPacketViewModel: NSObject {
     
@@ -23,6 +24,7 @@ final class CreatedRedPacketViewModel: NSObject {
     
     // Input
     let redPacket: RedPacket
+    let walletModel: WalletModel
     
     // Output
     let isFetching: Driver<Bool>
@@ -31,8 +33,10 @@ final class CreatedRedPacketViewModel: NSObject {
     
     var redPacketNotificationToken: NotificationToken?
     
-    init(redPacket: RedPacket) {
+    init(redPacket: RedPacket, walletModel: WalletModel) {
         self.redPacket = redPacket
+        self.walletModel = walletModel
+        
         isFetching = activityIndicator.asDriver()
         canShare = BehaviorRelay(value: RedPacketService.armoredEncPayload(for: redPacket) != nil)
         
@@ -52,6 +56,14 @@ final class CreatedRedPacketViewModel: NSObject {
 
 extension CreatedRedPacketViewModel {
     
+    func fetchResult() {
+        if redPacket.create_transaction_hash != nil {
+            fetchCreateResult()
+        } else {
+            fetchApproveResult()
+        }
+    }
+        
     func fetchCreateResult() {
         RedPacketService.shared.updateCreateResult(for: redPacket)
             .trackActivity(activityIndicator)
@@ -64,9 +76,39 @@ extension CreatedRedPacketViewModel {
             .disposed(by: disposeBag)
     }
     
-}
-
-extension CreatedRedPacketViewModel {
+    private func fetchApproveResult() {
+        RedPacketService.shared.updateApproveResult(for: redPacket)
+            .trackActivity(activityIndicator)
+            .subscribe(onNext: { [weak self] approveEvent in
+                // fetch create in realm listener in app: do nothing here
+                
+                #if TARGET_IS_KEYBOARD
+                // and open app if in the keyboard
+                guard let `self` = self else { return }
+                // Delay for realm database write finish
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    UIApplication.sharedApplication().openCreatedRedPacketView(redpacket: self.redPacket)
+                }
+                #endif
+                
+            }, onError: { [weak self] error in
+                self?.error.accept(error)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func createAfterApprove() {
+        let walletValue = WalletValue(from: self.walletModel)
+        RedPacketService.shared.createAfterApprove(for: self.redPacket, use: walletValue)
+            .trackActivity(activityIndicator)
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+            .subscribe(onNext: { transactionHash in
+                // do nothing
+            }, onError: { [weak self] error in
+                self?.error.accept(error)
+            })
+            .disposed(by: disposeBag)
+    }
     
     
 }
@@ -93,65 +135,136 @@ extension CreatedRedPacketViewModel: UITableViewDataSource {
 extension CreatedRedPacketViewModel {
     
     static func configure(cell: RedPacketCardTableViewCell, with redPacket: RedPacket) {
-        cell.nameLabel.text = redPacket.sender_name
-        #if DEBUG
-        cell.emailLabel.text = redPacket.network.rawValue
+        // Set name
+        #if !MAINNET
+        let name = "From: " + redPacket.sender_name + " (Rinkeby)"
         #else
-        cell.emailLabel.text = ""       // no more email
+        let name = "From: " + redPacket.sender_name
         #endif
-
-        let formatter = NumberFormatter.decimalFormatterForETH
-        let totalAmountInDecimal = (Decimal(string: String(redPacket.send_total)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
-        let totalAmountInDecimalString = formatter.string(from: totalAmountInDecimal as NSNumber) ?? "-"
+        cell.nameLabel.text = name
         
-        switch redPacket.status {
-        case .initial, .pending:
-            cell.redPacketStatusLabel.text = "Outgoing Red Packet"
-            cell.indicatorLabel.text = "Publishing…"
-        case .fail:
-            cell.redPacketStatusLabel.text = "Failed to send"
-            cell.indicatorLabel.text = ""
-        case .incoming:
-            cell.redPacketStatusLabel.text = "Incoming Red Packet"
-            cell.redPacketDetailLabel.text = "Trying to claim…"
-            cell.indicatorLabel.text = ""
-        case .normal:
-            cell.redPacketStatusLabel.text = "Sent \(totalAmountInDecimalString) ETH"
-            cell.indicatorLabel.text = "Ready for collection"
-        case .claim_pending:
-            cell.redPacketStatusLabel.text = "Claiming…"
-            cell.indicatorLabel.text = ""
-        case .claimed:
-            let amountInDecimal = (Decimal(string: String(redPacket.claim_amount)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
-            let amountInDecimalString = formatter.string(from: amountInDecimal as NSNumber) ?? "-"
-            cell.redPacketStatusLabel.text = "Got \(amountInDecimalString) ETH"
-            cell.indicatorLabel.text = ""
-        case .empty:
-            cell.redPacketStatusLabel.text = "Too late to get any"
-            cell.indicatorLabel.text = ""
-        case .expired:
-            cell.redPacketStatusLabel.text = "Too late to get any"
-            cell.indicatorLabel.text = ""
-        case .refund_pending:
-            cell.redPacketStatusLabel.text = "Refunding…"
-            cell.indicatorLabel.text = ""
-        case .refunded:
-            let amountInDecimal = (Decimal(string: String(redPacket.refund_amount)) ?? Decimal(0)) / HDWallet.CoinType.ether.exponent
-            let amountInDecimalString = formatter.string(from: amountInDecimal as NSNumber) ?? "-"
-            cell.redPacketStatusLabel.text = "Refund \(amountInDecimalString) ETH"
-            cell.indicatorLabel.text = ""
-        }
+        // Set image
+        switch redPacket.token_type {
+        case .eth:
+            cell.logoImageView.image = Asset.ethereumLogo.image
+        case .erc20:
+            let processor = DownsamplingImageProcessor(size: cell.logoImageView.frame.size)
+            guard let token = redPacket.erc20_token,
+            var imageURL = URL(string: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/\(token.address)/logo.png") else {
+                cell.logoImageView.image = UIImage.placeholder(color: ._systemFill)
+                break
+            }
+            
+            if token.network == .rinkeby {
+                imageURL = URL(string: "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x60B4E7dfc29dAC77a6d9f4b2D8b4568515E59c26/logo.png")!
+            }
+            
+            os_log("%{public}s[%{public}ld], %{public}s: load token image: %s", ((#file as NSString).lastPathComponent), #line, #function, imageURL.description)
 
+            cell.logoImageView.kf
+                .setImage(with: imageURL,
+                          placeholder: UIImage.placeholder(color: ._systemFill),
+                          options: [
+                            .processor(processor),
+                            .scaleFactor(UIScreen.main.scale),
+                            .transition(.fade(1)),
+                            .cacheOriginalImage
+                    ]
+                )
+        }
+        
+        // Set message
+        if !redPacket.send_message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            cell.messageLabel.text = redPacket.send_message
+            cell.messageLabel.textColor = .white
+        } else {
+            cell.messageLabel.text = "Best Wishes!"
+            cell.messageLabel.textColor = UIColor.white.withAlphaComponent(0.8)
+        }
+        
+        let helper = RedPacketHelper(for: redPacket)
+        let totalAmountInDecimalString = helper.sendAmountInDecimalString ?? "-"
+        let symbol = helper.symbol
+        
+        // Set detail
         let share = redPacket.uuids.count
         let unit = share > 1 ? "shares" : "share"
-        cell.redPacketDetailLabel.text = "\(totalAmountInDecimalString) ETH in total / \(share) \(unit)"
-
+        cell.detailLabel.text = "\(totalAmountInDecimalString) \(symbol) / \(share) \(unit)"
+        
+        // Set create time
         if let blockCreationTime = redPacket.block_creation_time.value {
             let createDate = Date(timeIntervalSince1970: TimeInterval(blockCreationTime))
-            cell.createdDateLabel.text = createDate.timeAgoSinceNow + " created"
-            
+            if abs(createDate.timeIntervalSinceNow) > 1 * 24 * 60 * 60 {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateStyle = .short
+                dateFormatter.timeStyle = .short
+                cell.leftFooterLabel.text = dateFormatter.string(from: createDate)
+            } else {
+                cell.leftFooterLabel.text = createDate.timeAgoSinceNow + " created"
+            }
         } else {
-            cell.createdDateLabel.text = " "
+            cell.leftFooterLabel.text = " "
+        }
+        
+        // Set recived time
+        if let receivedDate = redPacket.received_time {
+            if abs(receivedDate.timeIntervalSinceNow) > 1 * 24 * 60 * 60 {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateStyle = .short
+                dateFormatter.timeStyle = .short
+                cell.rightFooterLabel.text = dateFormatter.string(from: receivedDate)
+            } else {
+                cell.rightFooterLabel.text = receivedDate.timeAgoSinceNow + " received"
+            }
+        } else {
+            cell.rightFooterLabel.text = " "
+        }
+        
+        // Custom base on status
+        switch redPacket.status {
+        case .initial, .pending:
+            cell.statusLabel.text = "Sending \(totalAmountInDecimalString) \(symbol)"
+        case .fail:
+            cell.statusLabel.text = "Failed to send"
+        case .incoming:
+            cell.statusLabel.text = ""
+        case .normal:
+            cell.statusLabel.text = ""
+        case .claim_pending:
+            cell.statusLabel.text = "Opening…"
+        case .claimed:
+            if let claimAmountInDecimalString = helper.claimAmountInDecimalString {
+                cell.statusLabel.text = "Got \(claimAmountInDecimalString) \(symbol)"
+            }
+        case .empty:
+            cell.statusLabel.text = "No more claimable"
+            cell.detailLabel.text = "Too late to get any"
+        case .expired:
+            // if refunded
+            if helper.refundAmountInBigUInt != BigUInt(0), let refundAmountInDecimalString = helper.refundAmountInDecimalString {
+                cell.statusLabel.text = "Refunded \(refundAmountInDecimalString) \(symbol)"
+                break
+            }
+            // if not refund and could be refund
+            if helper.refundAmountInBigUInt == BigUInt(0), WalletService.default.walletModels.value.first(where: { $0.address == redPacket.sender_address }) != nil {
+                cell.statusLabel.text = "Refundable"
+                break
+            }
+            // if not refund and can not refund
+            if helper.refundAmountInBigUInt == BigUInt(0) {
+                cell.statusLabel.text = "Expired"
+                cell.detailLabel.text = "Too late to get any"
+                break
+            }
+            
+        case .refund_pending:
+            cell.statusLabel.text = "Refunding…"
+        case .refunded:
+            if let refundAmountInDecimalString = helper.refundAmountInDecimalString {
+                cell.statusLabel.text = "Refund \(refundAmountInDecimalString)"
+            } else {
+                cell.statusLabel.text = "Refunded"
+            }
         }
     }
     
@@ -202,7 +315,10 @@ extension CreatedRedPacketViewController {
         
         title = "Red Packet Created"
         navigationItem.hidesBackButton = true
+        
+        #if !TARGET_IS_KEYBOARD
         navigationItem.rightBarButtonItem = doneBarButtonItem
+        #endif
         
         // Layout tableView
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -240,6 +356,12 @@ extension CreatedRedPacketViewController {
                 self.viewModel.canShare.accept(RedPacketService.armoredEncPayload(for: self.viewModel.redPacket) != nil)
                 os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, changes.description)
                 
+                // continue create if ERC20Token approve success
+                let redPacket = self.viewModel.redPacket
+                if redPacket.status == .pending && redPacket.create_transaction_hash == nil, redPacket.erc20_approve_value != nil {
+                    
+                }
+                
             default:
                 break
             }
@@ -256,7 +378,7 @@ extension CreatedRedPacketViewController {
             .disposed(by: disposeBag)
         
         // Teigger fetch create result action
-        viewModel.fetchCreateResult()
+        viewModel.fetchResult()
     }
     
 }

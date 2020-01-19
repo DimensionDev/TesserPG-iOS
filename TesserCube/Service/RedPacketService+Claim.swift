@@ -371,9 +371,48 @@ extension RedPacketService {
                         }
                         
                         os_log("%{public}s[%{public}ld], %{public}s: change red packet status to .claimed", ((#file as NSString).lastPathComponent), #line, #function)
+                        
+                        let walletTokenForAdd: WalletToken?
+                        if redPacket.token_type == .erc20 {
+                            guard let erc20Token = redPacket.erc20_token else {
+                                assertionFailure()
+                                return
+                            }
+                            
+                            if realm.objects(WalletToken.self).filter("wallet.address == %@ && token.address == %@", claimSuccess.claimer, erc20Token.address).first != nil {
+                                // not needs add WalletToken
+                                walletTokenForAdd = nil
+                            } else {
+                                // needs add WalletToken
+                                guard let wallet = realm.objects(WalletObject.self).filter("address == %@", claimSuccess.claimer).first else {
+                                    assertionFailure()
+                                    return
+                                }
+                                
+                                let index: Int = {
+                                    let tokens = realm.objects(WalletToken.self).filter("wallet.address == %@", claimSuccess.claimer)
+                                    let maxIndex = tokens.max(ofProperty: "index") as Int?
+                                    return maxIndex.flatMap { $0 + 1 } ?? 0
+                                }()
+                                let _walletTokenForAdd = WalletToken()
+                                _walletTokenForAdd.wallet = wallet
+                                _walletTokenForAdd.token = erc20Token
+                                _walletTokenForAdd.index = index
+                                
+                                walletTokenForAdd = _walletTokenForAdd
+                            }
+                        } else {
+                            walletTokenForAdd = nil
+                        }
+                        
                         try realm.write {
                             redPacket.claim_amount = claimSuccess.claimed_value
                             redPacket.status = .claimed
+                            
+                            // insert WalletToken in database
+                            if let walletTokenForAdd = walletTokenForAdd {
+                                realm.add(walletTokenForAdd)
+                            }
                         }
                     } catch {
                         os_log("%{public}s[%{public}ld], %{public}s: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)

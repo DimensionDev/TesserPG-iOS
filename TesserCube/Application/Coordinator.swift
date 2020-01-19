@@ -39,6 +39,9 @@ class Coordinator {
         case interpretAction(message: String)
         case brokenMessage(message: String?)
         case createWallet
+        case walletDetail(viewModel: WalletDetailViewModel)
+        case addToken(viewModel: AddTokenViewModel, delegate: AddTokenViewControllerDelegate)
+        case customToken(viewModel: CustomTokenViewModel, delegate: CustomTokenViewControllerDelegate?)
         case backupMnemonic(viewModel: BackupMnemonicCollectionViewModel)
         case confirmMnemonic(viewModel: ConfirmMnemonicCollectionViewModel)
         case importWallet
@@ -175,6 +178,11 @@ extension Coordinator {
         case .createWallet:
             let vc = CreateWalletViewController()
             return vc
+        case .walletDetail(let viewModel):
+            let vc = WalletDetailViewController()
+            vc.viewModel = viewModel
+            vc.hidesBottomBarWhenPushed = true
+            return vc
         case .backupMnemonic(let viewModel):
             let vc = BackupMnemonicViewController()
             vc.viewModel = viewModel
@@ -185,6 +193,16 @@ extension Coordinator {
             return vc
         case .importWallet:
             let vc = ImportWalletViewController()
+            return vc
+        case let  .addToken(viewModel, delegate):
+            let vc = AddTokenViewController()
+            vc.viewModel = viewModel
+            vc.delegate = delegate
+            return vc
+        case let .customToken(viewModel, delegate):
+            let vc = CustomTokenViewController()
+            vc.viewModel = viewModel
+            vc.delegate = delegate
             return vc
         case .openRedPacket:
             let vc = OpenRedPacketViewController()
@@ -259,8 +277,11 @@ extension Coordinator {
                 guard let realm = try? RedPacketService.realm(), let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: redPacketId) else {
                     return false
                 }
+                guard let walletModel = WalletService.default.walletModels.value.first(where: { $0.address == redPacket.sender_address }) else {
+                    return false
+                }
                 let createdRedPacketViewController = CreatedRedPacketViewController()
-                createdRedPacketViewController.viewModel = CreatedRedPacketViewModel(redPacket: redPacket)
+                createdRedPacketViewController.viewModel = CreatedRedPacketViewModel(redPacket: redPacket, walletModel: walletModel)
                 let naviVC = UINavigationController(rootViewController: createdRedPacketViewController)
                 app.keyWindow?.rootViewController?.present(naviVC, animated: true, completion: nil)
                 return true

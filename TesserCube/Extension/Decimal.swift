@@ -34,4 +34,24 @@ extension Decimal {
         return wei
     }
     
+    private var decimalInBitUIntFormatter: NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.groupingSeparator = ""
+        formatter.minimumIntegerDigits = 1
+        formatter.maximumFractionDigits = 0
+        formatter.minimumFractionDigits = 0
+        return formatter
+    }
+    
+    public func tokenInBigUInt(for decimals: Int) -> BigUInt? {
+        let tokens = self * pow(10, decimals)
+        guard let tokenInBigUIntString = decimalInBitUIntFormatter.string(from: tokens as NSNumber),
+        let tokenInBigUInt = BigUInt(tokenInBigUIntString) else {
+            return nil
+        }
+        
+        return tokenInBigUInt
+    }
+    
 }

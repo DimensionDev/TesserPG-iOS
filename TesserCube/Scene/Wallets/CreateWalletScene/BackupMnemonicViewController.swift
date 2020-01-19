@@ -30,7 +30,7 @@ class BackupMnemonicViewController: TCBaseViewController {
         let label = UILabel()
         label.font = FontFamily.SFProDisplay.regular.font(size: 17.0)
         label.textColor = ._secondaryLabel
-        label.text = "Keep the 12 words carefully.\nWrite on paper. Do not take screenshot.\nThis is the only way to recover your key, if lost."
+        label.text = "Keep the 12 words carefully.\nWrite on paper. Do not take screenshot.\nThis is the only way to recover your key."
         label.numberOfLines = 3
         label.textAlignment = .center
         return label

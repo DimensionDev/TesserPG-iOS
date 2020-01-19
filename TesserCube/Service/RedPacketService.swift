@@ -13,13 +13,11 @@ import RxSwift
 import BigInt
 import Web3
 
-private enum SchemaVersions: UInt64 {
-    case version_1 = 1
-    case version_2_rc1 = 4
-    case version_2_rc2 = 5
-    case version_2_rc3 = 8
-    
-    static let currentVersion: SchemaVersions = .version_2_rc3
+public struct PreloadERC20Token: Codable {
+    let address: String
+    let name: String
+    let symbol: String
+    let decimals: Int
 }
 
 final class RedPacketService {
@@ -28,36 +26,79 @@ final class RedPacketService {
     
     // Global observable queue:
     // Reuse sequence if shared observable object if already in queue
-    // ANd also subscribe in service when observable created to prevent task canceled
-    var createResultQueue: [RedPacket.ID: Observable<CreationSuccess>] = [:]
-    var updateCreateResultQueue: [RedPacket.ID: Observable<CreationSuccess>] = [:]
-    var checkAvailabilityQueue: [RedPacket.ID: Observable<RedPacketAvailability>] = [:]
-    var claimQueue: [RedPacket.ID: Observable<TransactionHash>] = [:]
-    var claimResultQueue: [RedPacket.ID: Observable<ClaimSuccess>] = [:]
-    var updateClaimResultQueue: [RedPacket.ID: Observable<ClaimSuccess>] = [:]
-    var refundQueue: [RedPacket.ID: Observable<TransactionHash>] = [:]
-    var refundResultQueue: [RedPacket.ID: Observable<RefundSuccess>] = [:]
-    var updateRefundResultQueue: [RedPacket.ID: Observable<RefundSuccess>] = [:]
-    
-    // per packet. 0.002025 ETH
-    public static var redPacketMinAmount: Decimal {
-        return Decimal(0.002025)
+    // And also subscribe in service when observable created to prevent task canceled
+    var approveResultQueue: [RedPacket.ID: Observable<ApproveEvent>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
+    }
+    var createQueue: [RedPacket.ID: Observable<TransactionHash>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
+    }
+    var createResultQueue: [RedPacket.ID: Observable<CreationSuccess>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
+    }
+    var updateCreateResultQueue: [RedPacket.ID: Observable<CreationSuccess>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
+    }
+    var checkAvailabilityQueue: [RedPacket.ID: Observable<RedPacketAvailability>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
+    }
+    var claimQueue: [RedPacket.ID: Observable<TransactionHash>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
+    }
+    var claimResultQueue: [RedPacket.ID: Observable<ClaimSuccess>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
+    }
+    var updateClaimResultQueue: [RedPacket.ID: Observable<ClaimSuccess>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
+    }
+    var refundQueue: [RedPacket.ID: Observable<TransactionHash>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
+    }
+    var refundResultQueue: [RedPacket.ID: Observable<RefundSuccess>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
+    }
+    var updateRefundResultQueue: [RedPacket.ID: Observable<RefundSuccess>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
     }
     
-    // per packet. 0.002025 ETH
+    // Output
+    let isQueueChanged = PublishSubject<Void>()
+    
+    // per packet. 0.001 ETH
+    public static var redPacketMinAmount: Decimal {
+        return Decimal(0.001)
+    }
+    
+    // per packet. 0.001 ETH
     public static var redPacketMinAmountInWei: BigUInt {
-        return 2025000.gwei
+        return 1000000.gwei
     }
     
     public static let redPacketContractABIData: Data = {
-        let path = Bundle(for: WalletService.self).path(forResource: "redpacket", ofType: "json")
+        let path = Bundle(for: RedPacketService.self).path(forResource: "redpacket", ofType: "json")
         return try! Data(contentsOf: URL(fileURLWithPath: path!))
     }()
     
     public static var redPacketContractByteCode: EthereumData = {
-        let path = Bundle(for: WalletService.self).path(forResource: "redpacket", ofType: "bin")
+        let path = Bundle(for: RedPacketService.self).path(forResource: "redpacket", ofType: "bin")
         let bytesString = try! String(contentsOfFile: path!)
         return try! EthereumData(ethereumValue: bytesString.trimmingCharacters(in: .whitespacesAndNewlines))
+    }()
+    
+    public static var preloadMainnetERC20Token: [PreloadERC20Token] = {
+        let path = Bundle(for: RedPacketService.self).path(forResource: "mainnet-erc20", ofType: "json")
+        let jsonData = try! Data(contentsOf: URL(fileURLWithPath: path!))
+        let decoder = JSONDecoder()
+        let tokens = try? decoder.decode([PreloadERC20Token].self, from: jsonData)
+        return tokens ?? []
+    }()
+    
+    public static var preloadRinkebyERC20Token: [PreloadERC20Token] = {
+        let path = Bundle(for: RedPacketService.self).path(forResource: "rinkeby-erc20", ofType: "json")
+        let jsonData = try! Data(contentsOf: URL(fileURLWithPath: path!))
+        let decoder = JSONDecoder()
+        let tokens = try? decoder.decode([PreloadERC20Token].self, from: jsonData)
+        return tokens ?? []
     }()
 
     public static func redPacketContract(for address: EthereumAddress?, web3: Web3) throws -> DynamicContract {
@@ -69,52 +110,55 @@ final class RedPacketService {
         }
     }
     
-    static var realmConfiguration: Realm.Configuration {
-        var config = Realm.Configuration()
-        
-        let realmName = "RedPacket_v2"
-        config.fileURL = TCDBManager.dbDirectoryUrl.appendingPathComponent("\(realmName).realm")
-        config.objectTypes = [RedPacket.self]
-        
-        // setup migration
-        let schemeVersion: UInt64 = SchemaVersions.currentVersion.rawValue
-        config.schemaVersion = schemeVersion
-        config.migrationBlock = { migration, oldSchemeVersion in
-            if oldSchemeVersion < SchemaVersions.version_2_rc3.rawValue {
-                // add network property
-                migration.enumerateObjects(ofType: RedPacket.className()) { old, new in
-                    
-                    new?["_network"] = RedPacketNetwork.rinkeby.rawValue
-                }
-            }
-            
-            if oldSchemeVersion < SchemaVersions.version_2_rc2.rawValue {
-                // auto migrate
-            }
-            
-            if oldSchemeVersion < SchemaVersions.version_2_rc1.rawValue {
-                // auto migrate
-            }
-        }
-        
-        return config
-    }
-    
     static func realm() throws -> Realm {
-        let config = RedPacketService.realmConfiguration
-    
-        try? FileManager.default.createDirectory(at: config.fileURL!.deletingLastPathComponent(),
-                                                 withIntermediateDirectories: true,
-                                                 attributes: nil)
-        
-        return try Realm(configuration: config)
+        return try RealmService.realm()
     }
     
     // MARK: - Singleton
     public static let shared = RedPacketService()
     
     private init() {
-        _ = try? RedPacketService.realm()
+        guard let realm = try? RedPacketService.realm() else {
+
+            assertionFailure()
+            return
+        }
+        
+        let tokens = realm.objects(ERC20Token.self)
+        guard tokens.isEmpty else {
+            return
+        }
+        
+        let preloadMainnetTokens: [ERC20Token] = RedPacketService.preloadMainnetERC20Token.map { preloadToken in
+            let token = ERC20Token()
+            token.id = preloadToken.address
+            token.address = preloadToken.address
+            token.name = preloadToken.name
+            token.symbol = preloadToken.symbol
+            token.decimals = preloadToken.decimals
+            token.network = .mainnet
+            token.is_user_defind = false
+            return token
+        }
+        
+        let preloadRinkebyTokens: [ERC20Token] = RedPacketService.preloadRinkebyERC20Token.map { preloadToken in
+            let token = ERC20Token()
+            token.id = preloadToken.address
+            token.address = preloadToken.address
+            token.name = preloadToken.name
+            token.symbol = preloadToken.symbol
+            token.decimals = preloadToken.decimals
+            token.network = .rinkeby
+            token.is_user_defind = false
+            return token
+        }.filter { token in
+            return preloadMainnetTokens.contains(where: { $0.address != token.address })
+        }
+        
+        try? realm.write {
+            realm.add(preloadMainnetTokens)
+            realm.add(preloadRinkebyTokens)
+        }
     }
 
 }

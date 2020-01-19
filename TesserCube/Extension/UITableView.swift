@@ -14,8 +14,7 @@ extension UITableView {
     private static let bottomSectionTag = 3869
     private static let bottomCellTag = 3870
     
-
-    public static func removeSectionSeparatorLine(for cell: UITableViewCell) {
+    public static func removeSeparatorLine(for cell: UITableViewCell) {
         if let oldSeparatorLine = cell.contentView.subviews.first(where: { $0.tag == topSectionTag }) {
             oldSeparatorLine.removeFromSuperview()
         }
@@ -37,7 +36,7 @@ extension UITableView {
         }
         
         let separatorLine: UIView = {
-            let separatorLine = UIView(frame: CGRect(x: 0, y: 0, width: cell.bounds.width, height: 0.5))
+            let separatorLine = UIView(frame: CGRect(x: 0, y: 0, width: cell.bounds.width, height: 0.5 * UIScreen.main.scale))
             separatorLine.tag = tag
             separatorLine.backgroundColor = ._separator
             return separatorLine

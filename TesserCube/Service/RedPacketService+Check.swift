@@ -105,11 +105,11 @@ extension RedPacketService {
                         switch redPacket.status {
                         case .normal, .incoming:
                             try realm.write {
-                                // .empty > .expired
-                                if availability.claimed == availability.total {
-                                    redPacket.status = .empty
-                                } else if availability.expired {
+                                // .expired > .empty
+                                if availability.expired {
                                     redPacket.status = .expired
+                                } else if availability.claimed == availability.total {
+                                    redPacket.status = .empty
                                 }
                             }
                         case .claimed:
@@ -220,10 +220,10 @@ extension RedPacketService {
 extension RedPacketService {
     
     struct RedPacketAvailability {
-        let balance: BigUInt
-        let total: Int
-        let claimed: Int
-        let expired: Bool
+        let balance: BigUInt        // remains
+        let total: Int              // total share count
+        let claimed: Int            // claimed share count
+        let expired: Bool           // is expired
     }
     
     struct RedPacketClaimedRecord {

@@ -22,6 +22,15 @@ extension RedPacketService {
                           walletPrivateKey: walletPrivateKey)
     }
     
+    static func prepareWalletMeta(from walletValue: WalletValue) throws -> WalletMeta {
+        let walletAddress = try EthereumAddress(hex: walletValue.address, eip55: false)
+        let privateKeyHex = try walletValue.hdWallet.privateKey().key.toHexString()
+        let walletPrivateKey = try EthereumPrivateKey(hexPrivateKey: "0x" + privateKeyHex)
+        
+        return WalletMeta(walletAddress: walletAddress,
+                          walletPrivateKey: walletPrivateKey)
+    }
+    
     static func prepareContract(for contractAddressString: String, in web3: Web3, version: Int = 1) throws -> DynamicContract {
         // Only for contract v1
         assert(version == 1)
@@ -34,9 +43,9 @@ extension RedPacketService {
     
     static func checkNetwork(for redPacket: RedPacket) throws {
         #if MAINNET
-        let currentNetwork: RedPacketNetwork = .mainnet
+        let currentNetwork: EthereumNetwork = .mainnet
         #else
-        let currentNetwork: RedPacketNetwork = .rinkeby
+        let currentNetwork: EthereumNetwork = .rinkeby
         #endif
         
         guard currentNetwork == redPacket.network else {

@@ -20,6 +20,9 @@ PODS:
     - SQLCipher (~> 3.4.1)
   - IQKeyboardManagerSwift (6.5.4)
   - KeychainAccess (3.2.1)
+  - Kingfisher (5.12.0):
+    - Kingfisher/Core (= 5.12.0)
+  - Kingfisher/Core (5.12.0)
   - MMWormhole (2.0.0):
     - MMWormhole/Core (= 2.0.0)
   - MMWormhole/Core (2.0.0)
@@ -100,6 +103,7 @@ DEPENDENCIES:
   - GRDBCipher (~> 3.7.0)
   - IQKeyboardManagerSwift (~> 6.5.0)
   - KeychainAccess (~> 3.2.0)
+  - Kingfisher (~> 5.0)
   - MMWormhole (~> 2.0.0)
   - RxBlocking (~> 5.0.0)
   - RxCocoa (~> 5.0.0)
@@ -138,6 +142,7 @@ SPEC REPOS:
     - GRDBCipher
     - IQKeyboardManagerSwift
     - KeychainAccess
+    - Kingfisher
     - MMWormhole
     - PromiseKit
     - Realm
@@ -190,6 +195,7 @@ SPEC CHECKSUMS:
   GRDBCipher: a3066d2953508039ea8fb423a1ba14c7b6d888be
   IQKeyboardManagerSwift: 2dde0fc70110e8eac7ccce2a46fdbec6a850b414
   KeychainAccess: d5470352939ced6d6f7fb51cb2e67aae51fc294f
+  Kingfisher: dc6e0f53bb5b12c3e75bedb0e01bbd7a640eea69
   MMWormhole: 0cd3fd35a9118b2e2d762b499f54eeaace0be791
   PromiseKit: c06835ba442ce5454ce3cdde470232804a6e4ff8
   Realm: 9357c3589555793e1860a7104a7412bca4a48d99
@@ -212,6 +218,6 @@ SPEC CHECKSUMS:
   Web3: a4eb0d0cdedbef3f0e4c97ea83a4232a1b1f952b
   WordSuggestion: 424d96dd2cfe4259c72959f9bdcffc864f0e65d4
 
-PODFILE CHECKSUM: 5f6ab958c631c29a330a1f09402b9ed617b083fb
+PODFILE CHECKSUM: 4966fe9bb1535b49ea2c66a7b7b2896ed0ad93cc
 
 COCOAPODS: 1.8.4

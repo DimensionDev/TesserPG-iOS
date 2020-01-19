@@ -43,13 +43,13 @@ extension WalletsViewModel {
             if #available(iOS 13.0, *) {
                 switch self {
                 case .copyWalletAddress:    return UIImage(systemName: "doc.on.doc")
-                case .backupMnemonic:       return UIImage(systemName: "pencil.circle")
+                case .backupMnemonic:       return UIImage(systemName: "pencil.and.ellipsis.rectangle")
                 case .deleteWallet:         return UIImage(systemName: "trash")
                 case .claimRedPacket:       return UIImage(systemName: "envelope.open")
                 case .checkRedPacketDetail: return UIImage(systemName: "envelope.open.fill")
                 case .refundRedPacket:      return UIImage(systemName: "tray.and.arrow.up")
                 case .shareRedPacketArmoredMessage:
-                                            return UIImage(systemName: "doc.on.doc")
+                                            return UIImage(systemName: "square.and.arrow.up")
                 default:                    return nil
                 }
             } else {
