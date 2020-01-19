@@ -24,6 +24,7 @@ final class AddTokenViewModel: NSObject {
     weak var customTokenViewControllerDelegate: CustomTokenViewControllerDelegate?
     
     // Input
+    var network: BehaviorRelay<EthereumNetwork>
     var tokens = BehaviorRelay<[ERC20Token]>(value: [])
     var searchText = BehaviorRelay(value: "")
     
@@ -31,13 +32,14 @@ final class AddTokenViewModel: NSObject {
     var trie = BehaviorRelay(value: Trie<Character>())
     var filteredTokens = BehaviorRelay<[ERC20Token]>(value: [])
     
-    init(customTokenViewControllerDelegate: CustomTokenViewControllerDelegate?) {
+    init(network: EthereumNetwork, customTokenViewControllerDelegate: CustomTokenViewControllerDelegate?) {
+        self.network = BehaviorRelay<EthereumNetwork>(value: network)
         self.customTokenViewControllerDelegate = customTokenViewControllerDelegate
         super.init()
         
         // Subscribe on background thread to avoid blocking the main thread
         Driver.combineLatest(trie.asDriver(), tokens.asDriver(), searchText.asDriver())
-            .map { trie, tokens, searchText -> [ERC20Token] in
+            .map { trie, tokens, searchText-> [ERC20Token] in
                 let searchText = searchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
                 guard !searchText.isEmpty else {
                     return tokens
@@ -216,29 +218,26 @@ final class AddTokenViewController: TCBaseViewController {
         // Setup view model
         do {
             let realm = try RedPacketService.realm()
-            #if MAINNET
-            let network = EthereumNetwork.mainnet.rawValue
-            #else
-            let network = EthereumNetwork.rinkeby.rawValue
-            #endif
+            let tokens = realm.objects(ERC20Token.self).sorted(byKeyPath: "symbol", ascending: true)
+            let tokenArray = Observable.array(from: tokens).asDriver(onErrorJustReturn: [])
             
-            let tokens = realm.objects(ERC20Token.self).filter("_network == %@", network).sorted(byKeyPath: "symbol", ascending: true)
-            Observable.array(from: tokens)
-                .subscribe(onNext: { [weak self] tokens in
-                    self?.viewModel.tokens.accept(tokens)
-                    
-                    var newTrie: Trie<Character> = Trie()
-                    for token in tokens {
-                        let symbol = token.symbol.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
-                        newTrie.inserted(ArraySlice(symbol.charactersArray), value: token.id)
-                    }
-                    self?.viewModel.trie.accept(newTrie)
-                    
-                })
-                .disposed(by: disposeBag)
+            Driver.combineLatest(tokenArray, viewModel.network.asDriver()) { tokens, network in
+                return tokens.filter { $0.network == network }
+            }
+            .drive(onNext: { [weak self] tokens in
+                self?.viewModel.tokens.accept(tokens)
+
+                var newTrie: Trie<Character> = Trie()
+                for token in tokens {
+                    let symbol = token.symbol.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
+                    newTrie.inserted(ArraySlice(symbol.charactersArray), value: token.id)
+                }
+                self?.viewModel.trie.accept(newTrie)
+            })
+            .disposed(by: disposeBag)
+            
         } catch {
             os_log("%{public}s[%{public}ld], %{public}s: setup viewModel fail: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
-
         }
         
         viewModel.filteredTokens.asDriver()
