@@ -39,25 +39,33 @@ final class RedPacketCardTableViewCell: UITableViewCell {
         cardView.cardBackgroundColor = Asset.redPacketCardBackground.color
         return cardView
     }()
-    //let headerVisualEffectView: UIVisualEffectView = {
-    //    let effect = UIVisualEffect(style: .light)
-    //    let visualEffectView = UIVisualEffectView(effect: effect)
-    //    return visualEffectView
-    //}()
+    let headerVisualEffectView: UIVisualEffectView = {
+        
+        let effect: UIBlurEffect
+        if #available(iOS 13.0, *) {
+            effect = UIBlurEffect(style: .systemMaterial)
+        } else {
+            effect = UIBlurEffect(style: .regular)
+        }
+        let visualEffectView = UIVisualEffectView(effect: effect)
+        return visualEffectView
+    }()
     let headerContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = Asset.redPacketCardHeaderBackground.color
+        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        view.layer.cornerRadius = 10
         return view
     }()
     let nameLabel: UILabel = {
         let label = UILabel()
-        label.font = FontFamily.SFProDisplay.bold.font(size: 14)
+        label.font = FontFamily.SFProText.semibold.font(size: 14)
         label.textColor = Asset.redPacketCardHeaderLabelTextColor.color
         return label
     }()
     let statusLabel: UILabel = {
         let label = UILabel()
-        label.font = FontFamily.SFProDisplay.regular.font(size: 14)
+        label.font = FontFamily.SFProText.semibold.font(size: 14)
         label.textColor = Asset.redPacketCardHeaderLabelTextColor.color
         return label
     }()
@@ -139,6 +147,15 @@ final class RedPacketCardTableViewCell: UITableViewCell {
             headerContainerView.topAnchor.constraint(equalTo: cardView.topAnchor),
             headerContainerView.leadingAnchor.constraint(equalTo: cardView.leadingAnchor),
             headerContainerView.trailingAnchor.constraint(equalTo: cardView.trailingAnchor),
+        ])
+        
+        headerVisualEffectView.translatesAutoresizingMaskIntoConstraints = false
+        headerContainerView.addSubview(headerVisualEffectView)
+        NSLayoutConstraint.activate([
+            headerVisualEffectView.topAnchor.constraint(equalTo: headerContainerView.topAnchor),
+            headerVisualEffectView.leadingAnchor.constraint(equalTo: headerContainerView.leadingAnchor),
+            headerVisualEffectView.trailingAnchor.constraint(equalTo: headerContainerView.trailingAnchor),
+            headerVisualEffectView.bottomAnchor.constraint(equalTo: headerContainerView.bottomAnchor),
         ])
         
         nameLabel.translatesAutoresizingMaskIntoConstraints = false

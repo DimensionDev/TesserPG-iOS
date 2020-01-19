@@ -24,6 +24,7 @@ class WalletsViewController: TCBaseViewController {
         let tableView = UITableView()
         tableView.register(WalletCollectionTableViewCell.self, forCellReuseIdentifier: String(describing: WalletCollectionTableViewCell.self))
         tableView.register(RedPacketCardTableViewCell.self, forCellReuseIdentifier: String(describing: RedPacketCardTableViewCell.self))
+        tableView.register(RedPacketSectionHeaderView.self, forHeaderFooterViewReuseIdentifier: String(describing: RedPacketSectionHeaderView.self))
         tableView.alwaysBounceVertical = true
         tableView.estimatedRowHeight = 150
         tableView.separatorStyle = .none
@@ -460,17 +461,63 @@ extension WalletsViewController {
 
 // MARK: - UITableViewDelegate
 extension WalletsViewController: UITableViewDelegate {
-
+    
+    // Scroll
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard scrollView === tableView else {
+            return
+        }
+        
+        let redPacketSection = WalletsViewModel.Section.redPacket.rawValue
+        guard tableView.numberOfSections > redPacketSection else {
+            return
+        }
+        
+        let redPacketSectionFrame = tableView.rect(forSection: redPacketSection)
+        guard let redPacketHeaderView = tableView.headerView(forSection: redPacketSection) as? RedPacketSectionHeaderView else {
+            return
+        }
+        
+        UIView.animate(withDuration: 0.33) {
+            if redPacketHeaderView.frame.origin.y > redPacketSectionFrame.origin.y {
+                // header view is sticky
+                redPacketHeaderView.blurEffectBackgroundView.effect = redPacketHeaderView.blurEffect
+            } else {
+                redPacketHeaderView.blurEffectBackgroundView.effect = nil
+            }
+        }
+    }
+    
+    // Header
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return UIView()
+        switch WalletsViewModel.Section.allCases[section] {
+        case .wallet:
+            return UIView()
+        case .redPacket:
+            guard !viewModel.filteredRedPackets.value.isEmpty else {
+                return UIView()
+            }
+            
+            let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: String(describing: RedPacketSectionHeaderView.self)) as? RedPacketSectionHeaderView
+            return headerView
+        }
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard section != 0 else {
-            return .leastNonzeroMagnitude
+        switch WalletsViewModel.Section.allCases[section] {
+        case .wallet:
+            return 20 - WalletCardTableViewCell.cardVerticalMargin
+        case .redPacket:
+            guard !viewModel.filteredRedPackets.value.isEmpty else {
+                return .leastNonzeroMagnitude
+            }
+            
+            return UITableView.automaticDimension
         }
-        return 20 - WalletCardTableViewCell.cardVerticalMargin
     }
+    
+    // Footer
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return UIView()
@@ -482,6 +529,8 @@ extension WalletsViewController: UITableViewDelegate {
         }
         return 20 - WalletCardTableViewCell.cardVerticalMargin
     }
+    
+    // Cell
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         switch WalletsViewModel.Section.allCases[indexPath.section] {
