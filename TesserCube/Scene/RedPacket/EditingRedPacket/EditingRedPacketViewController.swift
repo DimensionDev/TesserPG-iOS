@@ -16,6 +16,7 @@ import RxSwiftUtilities
 final class EditingRedPacketViewModel: NSObject {
     
     let disposeBag = DisposeBag()
+    let busyActivityIndicator = ActivityIndicator()
     let createActivityIndicator = ActivityIndicator()
     
     // Input
@@ -33,6 +34,7 @@ final class EditingRedPacketViewModel: NSObject {
     let message = BehaviorRelay(value: "")
     
     // Output
+    let isBusy = BehaviorRelay(value: false)
     let isCreating = BehaviorRelay(value: false)
     let canDismiss = BehaviorRelay(value: true)
     
@@ -79,6 +81,9 @@ final class EditingRedPacketViewModel: NSObject {
     ]
     
     override init() {
+        busyActivityIndicator.asDriver()
+            .drive(isBusy)
+            .disposed(by: disposeBag)
         createActivityIndicator
             .asDriver()
             .drive(isCreating)
@@ -592,20 +597,20 @@ class EditingRedPacketViewController: UIViewController {
             .drive(sendRedPacketButton.rx.title(for: .normal))
             .disposed(by: disposeBag)
         
-        viewModel.isCreating.asDriver()
-            .drive(onNext: { [weak self] isCreating in
-                self?.tableView.isUserInteractionEnabled = !isCreating
+        viewModel.isBusy.asDriver()
+            .drive(onNext: { [weak self] isBusy in
+                self?.tableView.isUserInteractionEnabled = !isBusy
                 
                 #if TARGET_IS_KEYBOARD
-                self?.navigationItem.rightBarButtonItem = isCreating ? self?.activityIndicatorBarButtonItem : self?.nextBarButtonItem
+                self?.navigationItem.rightBarButtonItem = isBusy ? self?.activityIndicatorBarButtonItem : self?.nextBarButtonItem
                 #else
-                self?.navigationItem.leftBarButtonItem = isCreating ? nil : self?.closeBarButtonItem
-                self?.sendRedPacketButton.isUserInteractionEnabled = !isCreating
-
-                let buttonTitle = isCreating ? "" : "Send"
+                self?.navigationItem.leftBarButtonItem = isBusy ? nil : self?.closeBarButtonItem
+                self?.sendRedPacketButton.isUserInteractionEnabled = !isBusy
+                
+                let buttonTitle = isBusy ? "" : "Send"
                 self?.sendRedPacketButton.setTitle(buttonTitle, for: .normal)
                 
-                isCreating ? self?.sendRedPacketActivityIndicatorView.startAnimating() : self?.sendRedPacketActivityIndicatorView.stopAnimating()
+                isBusy ? self?.sendRedPacketActivityIndicatorView.startAnimating() : self?.sendRedPacketActivityIndicatorView.stopAnimating()
                 #endif
             })
             .disposed(by: disposeBag)
@@ -633,6 +638,11 @@ extension EditingRedPacketViewController {
  
     private func sendRedPacket() {
         view.endEditing(true)
+        
+        // Break if busy
+        guard !viewModel.isBusy.value else {
+            return
+        }
         
         guard let selectWalletModel = viewModel.selectWalletModel.value else {
             showSendRedPacketErrorAlert(message: "Please select valid wallet")
@@ -715,10 +725,8 @@ extension EditingRedPacketViewController {
             // success: push to CreatedRedPacketViewController
             // failure: stand in same place and just alert user error
             WalletService.getTransactionCount(address: walletAddress, web3: web3).asObservable()
-                .withLatestFrom(viewModel.isCreating) { ($0, $1) }     // (nonce, isCreating)
+                .trackActivity(viewModel.busyActivityIndicator)
                 .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
-                .filter { $0.1 == false }                               // not creating
-                .map { $0.0 }                                           // nonce
                 .retry(3)
                 .do(onNext: { nonce in
                     let nonce = Int(nonce.quantity)
@@ -726,6 +734,7 @@ extension EditingRedPacketViewController {
                 })
                 .flatMap { nonce -> Observable<TransactionHash> in
                     return RedPacketService.shared.create(for: redPacket, use: selectWalletValue, nonce: nonce)
+                        .trackActivity(self.viewModel.busyActivityIndicator)
                         .trackActivity(self.viewModel.createActivityIndicator)
                 }
                 .observeOn(MainScheduler.instance)
@@ -771,6 +780,7 @@ extension EditingRedPacketViewController {
             redPacket.erc20_token = token
             
             WalletService.getTransactionCount(address: walletAddress, web3: web3).asObservable()
+                .trackActivity(viewModel.busyActivityIndicator)
                 .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
                 .retry(3)
                 .do(onNext: { nonce in
@@ -784,6 +794,7 @@ extension EditingRedPacketViewController {
                             return Observable.error(RedPacketService.Error.internal("cannot retrieve token"))
                         }
                         return RedPacketService.approve(for: redPacket, use: selectWalletModel, on: token, nonce: nonce)
+                            .trackActivity(self.viewModel.busyActivityIndicator)
                             .trackActivity(self.viewModel.createActivityIndicator)
                     } catch {
                         return Observable.error(error)

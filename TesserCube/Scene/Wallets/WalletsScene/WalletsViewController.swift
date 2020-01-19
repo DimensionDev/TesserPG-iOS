@@ -394,18 +394,13 @@ extension WalletsViewController {
     
     @objc private func networkBarButtonItemPressed(_ sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: "Select Ethereum Network", message: nil, preferredStyle: .actionSheet)
-        let mainnetAction = UIAlertAction(title: "Mainnet", style: .default) { _ in
-            self.viewModel.currentNetwork.accept(.mainnet)
+        let networks: [EthereumNetwork] = [.mainnet, .ropsten, .rinkeby]
+        for network in networks {
+            let action = UIAlertAction(title: network.rawValue, style: .default) { _ in
+                self.viewModel.currentNetwork.accept(network)
+            }
+            alertController.addAction(action)
         }
-        alertController.addAction(mainnetAction)
-        let ropstenAction = UIAlertAction(title: "Ropsten", style: .default) { _ in
-            self.viewModel.currentNetwork.accept(.ropsten)
-        }
-        alertController.addAction(ropstenAction)
-        let rinkebyAction = UIAlertAction(title: "Rinkeby", style: .default) { _ in
-            self.viewModel.currentNetwork.accept(.rinkeby)
-        }
-        alertController.addAction(rinkebyAction)
         let cancelAction = UIAlertAction(title: L10n.Common.Button.cancel, style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
         if let popoverPresentationController = alertController.popoverPresentationController {
