@@ -93,6 +93,14 @@ final class RedPacketService {
         return tokens ?? []
     }()
     
+    public static var preloadRopstenERC20Token: [PreloadERC20Token] = {
+        let path = Bundle(for: RedPacketService.self).path(forResource: "ropsten-erc20", ofType: "json")
+        let jsonData = try! Data(contentsOf: URL(fileURLWithPath: path!))
+        let decoder = JSONDecoder()
+        let tokens = try? decoder.decode([PreloadERC20Token].self, from: jsonData)
+        return tokens ?? []
+    }()
+    
     public static var preloadRinkebyERC20Token: [PreloadERC20Token] = {
         let path = Bundle(for: RedPacketService.self).path(forResource: "rinkeby-erc20", ofType: "json")
         let jsonData = try! Data(contentsOf: URL(fileURLWithPath: path!))
@@ -100,6 +108,7 @@ final class RedPacketService {
         let tokens = try? decoder.decode([PreloadERC20Token].self, from: jsonData)
         return tokens ?? []
     }()
+    
 
     public static func redPacketContract(for address: EthereumAddress?, web3: Web3) throws -> DynamicContract {
         let contractABIData = redPacketContractABIData
@@ -118,134 +127,69 @@ final class RedPacketService {
     public static let shared = RedPacketService()
     
     private init() {
-        guard let realm = try? RedPacketService.realm() else {
-
+        guard let _ = try? RedPacketService.realm() else {
             assertionFailure()
             return
         }
         
-        let tokens = realm.objects(ERC20Token.self)
-        guard tokens.isEmpty else {
-            return
-        }
+        DispatchQueue.global().async {
+            guard let realm = try? RedPacketService.realm() else {
+                return
+            }
+            
+            let tokens = realm.objects(ERC20Token.self)
+            guard tokens.isEmpty else {
+                return
+            }
+            
+            var preloadTokens: [ERC20Token] = []
+            let preloadMainnetTokens: [ERC20Token] = RedPacketService.preloadMainnetERC20Token.map { preloadToken in
+                let token = ERC20Token()
+                token.id = preloadToken.address
+                token.address = preloadToken.address
+                token.name = preloadToken.name
+                token.symbol = preloadToken.symbol
+                token.decimals = preloadToken.decimals
+                token.network = .mainnet
+                token.is_user_defind = false
+                return token
+            }
+            preloadTokens.append(contentsOf: preloadMainnetTokens)
+            
+            let preloadRopstenTokens: [ERC20Token] = RedPacketService.preloadRopstenERC20Token.map { preloadToken in
+                let token = ERC20Token()
+                token.id = preloadToken.address
+                token.address = preloadToken.address
+                token.name = preloadToken.name
+                token.symbol = preloadToken.symbol
+                token.decimals = preloadToken.decimals
+                token.network = .ropsten
+                token.is_user_defind = false
+                return token
+            }.filter { token in
+                return preloadTokens.contains(where: { $0.address != token.address })
+            }
+            preloadTokens.append(contentsOf: preloadRopstenTokens)
+            
+            let preloadRinkebyTokens: [ERC20Token] = RedPacketService.preloadRinkebyERC20Token.map { preloadToken in
+                let token = ERC20Token()
+                token.id = preloadToken.address
+                token.address = preloadToken.address
+                token.name = preloadToken.name
+                token.symbol = preloadToken.symbol
+                token.decimals = preloadToken.decimals
+                token.network = .rinkeby
+                token.is_user_defind = false
+                return token
+            }.filter { token in
+                return preloadTokens.contains(where: { $0.address != token.address })
+            }
+            preloadTokens.append(contentsOf: preloadRinkebyTokens)
         
-        let preloadMainnetTokens: [ERC20Token] = RedPacketService.preloadMainnetERC20Token.map { preloadToken in
-            let token = ERC20Token()
-            token.id = preloadToken.address
-            token.address = preloadToken.address
-            token.name = preloadToken.name
-            token.symbol = preloadToken.symbol
-            token.decimals = preloadToken.decimals
-            token.network = .mainnet
-            token.is_user_defind = false
-            return token
-        }
-        
-        let preloadRinkebyTokens: [ERC20Token] = RedPacketService.preloadRinkebyERC20Token.map { preloadToken in
-            let token = ERC20Token()
-            token.id = preloadToken.address
-            token.address = preloadToken.address
-            token.name = preloadToken.name
-            token.symbol = preloadToken.symbol
-            token.decimals = preloadToken.decimals
-            token.network = .rinkeby
-            token.is_user_defind = false
-            return token
-        }.filter { token in
-            return preloadMainnetTokens.contains(where: { $0.address != token.address })
-        }
-        
-        try? realm.write {
-            realm.add(preloadMainnetTokens)
-            realm.add(preloadRinkebyTokens)
+            try? realm.write {
+                realm.add(preloadTokens)
+            }
         }
     }
 
-}
-
-extension RedPacketService {
-    
-    /*
-    static func validate(message: Message) -> Bool {
-        let rawMessage = message.rawMessage.trimmingCharacters(in: .whitespacesAndNewlines)
-        return rawMessage.hasPrefix("-----BEGIN RED PACKET-----") && rawMessage.hasSuffix("-----END RED PACKET-----")
-    }
-     */
-    
-    /*
-    static func contractAddress(for message: Message) -> String? {
-        guard validate(message: message) else {
-            return nil
-        }
-        
-        let scanner = Scanner(string: message.rawMessage.trimmingCharacters(in: .whitespacesAndNewlines))
-        scanner.charactersToBeSkipped = nil
-        // Jump to begin
-        scanner.scanUpTo("-----BEGIN RED PACKET-----", into: nil)
-        // Read -----BEGIN RED PACKET-----\r\n
-        scanner.scanUpToCharacters(from: .newlines, into: nil)
-        scanner.scanCharacters(from: .newlines, into: nil)
-        // Read [fingerprint]:[userID]
-        scanner.scanUpToCharacters(from: .newlines, into: nil)
-        scanner.scanCharacters(from: .newlines, into: nil)
-        
-        var contractAddress: NSString?
-        scanner.scanUpToCharacters(from: .newlines, into: &contractAddress)
-        
-        return contractAddress as String?
-    }
-     */
-    
-    /*
-    static func userID(for message: Message) -> String? {
-        guard validate(message: message) else {
-            return nil
-        }
-        
-        let scanner = Scanner(string: message.rawMessage.trimmingCharacters(in: .whitespacesAndNewlines))
-        scanner.charactersToBeSkipped = nil
-        scanner.scanUpTo(":", into: nil)
-        // Read user id
-        var userID: NSString?
-        scanner.scanUpToCharacters(from: .newlines, into: &userID)
-        
-        return userID as String?
-    }
-     */
-    
-    /*
-    static func uuids(for message: Message) -> [String] {
-        guard validate(message: message) else {
-            return []
-        }
-        
-        let scanner = Scanner(string: message.rawMessage.trimmingCharacters(in: .whitespacesAndNewlines))
-        scanner.charactersToBeSkipped = nil
-        // Jump to begin
-        scanner.scanUpTo("-----BEGIN RED PACKET-----", into: nil)
-        // Read -----BEGIN RED PACKET-----\r\n
-        scanner.scanUpToCharacters(from: .newlines, into: nil)
-        scanner.scanCharacters(from: .newlines, into: nil)
-        // Read [fingerprint]:[userID]
-        scanner.scanUpToCharacters(from: .newlines, into: nil)
-        scanner.scanCharacters(from: .newlines, into: nil)
-        // Read contract address
-        scanner.scanUpToCharacters(from: .newlines, into: nil)
-        scanner.scanCharacters(from: .newlines, into: nil)
-        
-        var uuids: NSString?
-        scanner.scanUpTo("-----END RED PACKET-----", into: &uuids)
-        
-        guard let uuidsString = uuids?.trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: "\n") else {
-            return []
-        }
-        
-        return uuidsString as [String]
-    }
-     */
-    
-}
-
-extension RedPacketService {
-    
 }

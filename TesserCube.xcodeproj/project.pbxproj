@@ -329,6 +329,10 @@
 		DB375FF423D322D20041A993 /* UserDefaults+AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D21221CEB9800F556C0 /* UserDefaults+AppGroup.swift */; };
 		DB375FF523D3F2BF0041A993 /* MessageDigitalSignatureSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB44998F228C13CA000B7E8A /* MessageDigitalSignatureSettings.swift */; };
 		DB375FF623D3F2C00041A993 /* MessageDigitalSignatureSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB44998F228C13CA000B7E8A /* MessageDigitalSignatureSettings.swift */; };
+		DB375FF823D43DEA0041A993 /* ropsten-erc20.json in Resources */ = {isa = PBXBuildFile; fileRef = DB375FF723D43DEA0041A993 /* ropsten-erc20.json */; };
+		DB375FF923D43DEA0041A993 /* ropsten-erc20.json in Resources */ = {isa = PBXBuildFile; fileRef = DB375FF723D43DEA0041A993 /* ropsten-erc20.json */; };
+		DB375FFA23D43DEA0041A993 /* ropsten-erc20.json in Resources */ = {isa = PBXBuildFile; fileRef = DB375FF723D43DEA0041A993 /* ropsten-erc20.json */; };
+		DB375FFB23D43DEA0041A993 /* ropsten-erc20.json in Resources */ = {isa = PBXBuildFile; fileRef = DB375FF723D43DEA0041A993 /* ropsten-erc20.json */; };
 		DB3B58E22282929700879834 /* WormholdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3B58E12282929700879834 /* WormholdService.swift */; };
 		DB3B58E52282930600879834 /* WormholdService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB3B58E12282929700879834 /* WormholdService.swift */; };
 		DB415E80238BB6AF0090C28F /* RedPacketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB415E7F238BB6AF0090C28F /* RedPacketService.swift */; };
@@ -995,6 +999,7 @@
 		DB32517F23B9C66000A4DDD8 /* RefundRedPacketViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefundRedPacketViewController.swift; sourceTree = "<group>"; };
 		DB32518123B9DAD400A4DDD8 /* RedPacketService+Refund.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RedPacketService+Refund.swift"; sourceTree = "<group>"; };
 		DB32518623BA198100A4DDD8 /* RedPacketValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedPacketValue.swift; sourceTree = "<group>"; };
+		DB375FF723D43DEA0041A993 /* ropsten-erc20.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "ropsten-erc20.json"; sourceTree = "<group>"; };
 		DB3B58E12282929700879834 /* WormholdService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WormholdService.swift; sourceTree = "<group>"; };
 		DB415E7F238BB6AF0090C28F /* RedPacketService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedPacketService.swift; sourceTree = "<group>"; };
 		DB415E82238BB7370090C28F /* RedPacket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedPacket.swift; sourceTree = "<group>"; };
@@ -2235,6 +2240,7 @@
 			children = (
 				DB4A6FF023C5D84600C2349C /* mainnet-erc20.json */,
 				DB4A6FEF23C5D84600C2349C /* rinkeby-erc20.json */,
+				DB375FF723D43DEA0041A993 /* ropsten-erc20.json */,
 				DBC9CEE42387896B009E13C5 /* redpacket.bin */,
 				DBC9CEE52387896C009E13C5 /* redpacket.json */,
 				DB0EC52523ACA32D00BDA2B5 /* Web3Secret.swift */,
@@ -2710,6 +2716,7 @@
 				83214696223F4E31008ECC22 /* Localizable.strings in Resources */,
 				83783372224B384000F2C0BF /* ContactCell.xib in Resources */,
 				8304E99C221BF10100122637 /* Assets.xcassets in Resources */,
+				DB375FF823D43DEA0041A993 /* ropsten-erc20.json in Resources */,
 				8304E99A221BF10000122637 /* Main.storyboard in Resources */,
 				8378338D224DFED100F2C0BF /* SubKeyCardCell.xib in Resources */,
 				DB4A6FF523C5D84600C2349C /* mainnet-erc20.json in Resources */,
@@ -2752,6 +2759,7 @@
 				DB7ECDF3238A88A600CF1E82 /* redpacket.bin in Resources */,
 				8325E49E222F8FBD00EE9B83 /* SF-Pro-Text-Semibold.otf in Resources */,
 				DBF6B2D5232F9113008F83AE /* SF-Pro-Text-Light.otf in Resources */,
+				DB375FF923D43DEA0041A993 /* ropsten-erc20.json in Resources */,
 				DB7ECDF4238A88A600CF1E82 /* redpacket.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2785,6 +2793,7 @@
 				DB63A11222DF2CBB00C2DDA6 /* Menlo.ttc in Resources */,
 				DB63A0EB22DDA2AF00C2DDA6 /* SF-Pro-Text-Regular.otf in Resources */,
 				DB63A0D522DD82EE00C2DDA6 /* MainInterface.storyboard in Resources */,
+				DB375FFA23D43DEA0041A993 /* ropsten-erc20.json in Resources */,
 				DBF6B2D6232F9113008F83AE /* SF-Pro-Text-Light.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2809,6 +2818,7 @@
 				DB1169AB22E1827B0099BA25 /* Menlo.ttc in Resources */,
 				DB1169A722E1827B0099BA25 /* SF-Pro-Display-Regular.otf in Resources */,
 				DB63A13E22E17D3300C2DDA6 /* MainInterface.storyboard in Resources */,
+				DB375FFB23D43DEA0041A993 /* ropsten-erc20.json in Resources */,
 				DBF6B2D7232F9113008F83AE /* SF-Pro-Text-Light.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
