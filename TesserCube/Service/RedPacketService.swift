@@ -199,6 +199,11 @@ final class RedPacketService {
         try? realm.write {
             realm.add(preloadTokens)
         }
+        
+        #if !TARGET_IS_KEYBOARD
+        // Do not set listener in keyboard
+        setupRedPacketTrigger()
+        #endif
     }
     
     private func setupRedPacketTrigger() {

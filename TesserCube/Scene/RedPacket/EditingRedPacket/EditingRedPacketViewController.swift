@@ -833,6 +833,7 @@ extension EditingRedPacketViewController {
                 }
                 .observeOn(MainScheduler.instance)
                 .subscribe(onNext: { [weak self] transactionHash in
+                    guard let `self` = self else { return }
                     do {
                         // red packet token approve success
                         let realm = try RedPacketService.realm()
@@ -842,9 +843,17 @@ extension EditingRedPacketViewController {
                             realm.add(redPacket)
                         }
             
+                        #if TARGET_IS_KEYBOARD
+                        // open app if in the keyboard
+                        // Delay for realm database write finish
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            UIApplication.sharedApplication().openCreatedRedPacketView(redpacket: redPacket)
+                        }
+                        #else
                         let createdRedPacketViewController = CreatedRedPacketViewController()
                         createdRedPacketViewController.viewModel = CreatedRedPacketViewModel(redPacket: redPacket, walletModel: selectWalletModel)
-                        self?.navigationController?.pushViewController(createdRedPacketViewController, animated: true)
+                        self.navigationController?.pushViewController(createdRedPacketViewController, animated: true)
+                        #endif
                         
                     } catch {
                         self?.showSendRedPacketErrorAlert(message: error.localizedDescription)

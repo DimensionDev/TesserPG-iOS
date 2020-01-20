@@ -80,17 +80,7 @@ extension CreatedRedPacketViewModel {
         RedPacketService.shared.updateApproveResult(for: redPacket)
             .trackActivity(activityIndicator)
             .subscribe(onNext: { [weak self] approveEvent in
-                // fetch create in realm listener in app: do nothing here
-                
-                #if TARGET_IS_KEYBOARD
-                // and open app if in the keyboard
-                guard let `self` = self else { return }
-                // Delay for realm database write finish
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    UIApplication.sharedApplication().openCreatedRedPacketView(redpacket: self.redPacket)
-                }
-                #endif
-                
+                // delegate fetch create action to realm listener
             }, onError: { [weak self] error in
                 self?.error.accept(error)
             })
