@@ -158,7 +158,7 @@ class KeyboardInputView: UIView, Thematic {
         
         inputTextField = KeyboardInputTextField(frame: CGRect(x: 0, y: 0, width: KeyboardInputView.minimumWidth, height: KeyboardInputView.minimumHeight))
         inputTextField.borderStyle = .none
-        inputTextField.backgroundColor = .white
+        inputTextField.backgroundColor = .clear
         inputTextField.returnKeyType = .next
 //        inputTextField.layer.cornerRadius = 16
 //        inputTextField.layer.masksToBounds = true
@@ -188,10 +188,8 @@ class KeyboardInputView: UIView, Thematic {
     func updateColor(theme: Theme) {
         switch theme {
         case .light:
-            inputTextField.backgroundColor = .white
             inputTextField.textColor = .black
         case .dark:
-            inputTextField.backgroundColor = .keyboardCharKeyBackgroundDark
             inputTextField.textColor = .white
         }
         

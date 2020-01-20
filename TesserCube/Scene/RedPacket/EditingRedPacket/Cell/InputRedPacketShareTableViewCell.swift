@@ -27,6 +27,10 @@ final class InputRedPacketShareTableViewCell: UITableViewCell {
         textField.text = "1"
         textField.placeholder = "1"
         textField.keyboardType = .numberPad
+        #if TARGET_IS_KEYBOARD
+        // User touching UITextField will trigger `textDidChange` callback, which makes our keyboard reset all the custom views
+        textField.isUserInteractionEnabled = false
+        #endif
         return textField
     }()
     
