@@ -816,7 +816,7 @@ extension EditingRedPacketViewController {
                 .retry(3)
                 .do(onNext: { nonce in
                     let nonce = Int(nonce.quantity)
-                    redPacket.create_nonce.value = nonce
+                    redPacket.erc20_approve_transaction_nonce.value = nonce
                 })
                 .flatMap { nonce -> Observable<TransactionHash> in
                     do {
@@ -856,7 +856,7 @@ extension EditingRedPacketViewController {
                         #endif
                         
                     } catch {
-                        self?.showSendRedPacketErrorAlert(message: error.localizedDescription)
+                        self.showSendRedPacketErrorAlert(message: error.localizedDescription)
                     }
                 }, onError: { [weak self] error in
                     // red packet create transaction fail
