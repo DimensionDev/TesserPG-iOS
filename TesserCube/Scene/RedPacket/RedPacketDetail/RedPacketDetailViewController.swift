@@ -41,7 +41,7 @@ final class RedPacketDetailViewModel: NSObject {
         
         // Use contract claimer to indicate fetching status
         if let contractEthereumAddress = try? EthereumAddress(hex: redPacket.contract_address, eip55: false) {
-            let record = RedPacketService.RedPacketClaimedRecord(claimed: 0, claimer: contractEthereumAddress)
+            let record = RedPacketService.RedPacketClaimedRecord(claimer: contractEthereumAddress)
             claimedRecord.accept([record])
             _claimedRecord = [record]
         }
@@ -81,7 +81,7 @@ extension RedPacketDetailViewModel: UITableViewDataSource {
         // Section
         // - 0: red packet cell
         // - 1: message cell
-        // - 2: claimer list cell section
+        // - 2: claimer list cell section (not use)
         return Section.allCases.count
     }
     
@@ -91,8 +91,8 @@ extension RedPacketDetailViewModel: UITableViewDataSource {
             return 1
         case .message:
             return 1
-        case .claimer:
-            return _claimedRecord.count
+         case .claimer:
+             return _claimedRecord.count
         }
     }
     
@@ -128,38 +128,33 @@ extension RedPacketDetailViewModel: UITableViewDataSource {
                 guard let contractEthereumAddress = contractEthereumAddress else {
                     return false
                 }
-                
+
                 return record.claimer == contractEthereumAddress
             }()
-            
-            let helper = RedPacketHelper(for: redPacket)
-            
+
+            // let helper = RedPacketHelper(for: redPacket)
+
             if isStubRecord {
                 let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RedPacketClaimerFetchActivityIndicatorTableViewCell.self), for: indexPath) as! RedPacketClaimerFetchActivityIndicatorTableViewCell
                 cell = _cell
             } else {
                 let _cell = tableView.dequeueReusableCell(withIdentifier: String(describing: RedPacketClaimerTableViewCell.self), for: indexPath) as! RedPacketClaimerTableViewCell
-                
+
                 let address = record.claimer.hex(eip55: false)
                 _cell.nameLabel.text = String(address.prefix(6))
                 _cell.addressLabel.text = address
-                _cell.amountLabel.text = {
-                    let claimedAmountInDecimal = (Decimal(string: String(record.claimed)) ?? Decimal(0)) / helper.exponent
-                    let formatter = helper.formatter
-                    let ethDecimalString = formatter.string(from: claimedAmountInDecimal as NSNumber)
-                    return ethDecimalString.flatMap { $0 + " \(helper.symbol)" } ?? "- \(helper.symbol)"
-                }()
-                
+                _cell.amountLabel.text = ""
+
                 cell = _cell
             }
-            
+
             UITableView.removeSeparatorLine(for: cell)
-            
+
             let isFirst = indexPath.row == 0
             if isFirst {
                 UITableView.setupTopSectionSeparatorLine(for: cell)
             }
-            
+
             let isLast = indexPath.row == _claimedRecord.count - 1
             if isLast {
                 UITableView.setupBottomSectionSeparatorLine(for: cell)

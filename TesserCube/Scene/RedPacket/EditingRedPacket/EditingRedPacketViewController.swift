@@ -8,6 +8,7 @@
 
 import os
 import UIKit
+import LocalAuthentication
 import RxSwift
 import RxCocoa
 import Web3
@@ -16,6 +17,7 @@ import RxSwiftUtilities
 final class EditingRedPacketViewModel: NSObject {
     
     let disposeBag = DisposeBag()
+    let busyActivityIndicator = ActivityIndicator()
     let createActivityIndicator = ActivityIndicator()
     
     // Input
@@ -24,6 +26,7 @@ final class EditingRedPacketViewModel: NSObject {
     let walletModels = BehaviorRelay<[WalletModel]>(value: [])
     let selectWalletModel = BehaviorRelay<WalletModel?>(value: nil)
     let selectTokenType = BehaviorRelay(value: RedPacketTokenSelectViewModel.SelectTokenType.eth)
+    let selectWalletNetwork = BehaviorRelay<EthereumNetwork?>(value: nil)
     
     let amount = BehaviorRelay(value: Decimal(0))       // user input value. default 0
     let share = BehaviorRelay(value: 1)
@@ -32,16 +35,18 @@ final class EditingRedPacketViewModel: NSObject {
     let message = BehaviorRelay(value: "")
     
     // Output
+    let isBusy = BehaviorRelay(value: false)
     let isCreating = BehaviorRelay(value: false)
     let canDismiss = BehaviorRelay(value: true)
     
-    let minimalAmount = BehaviorRelay(value: RedPacketService.redPacketMinAmount)
+    let minimalUnitAmount = BehaviorRelay(value: RedPacketService.redPacketMinAmount)
+    let minimalTotalAmount = BehaviorRelay(value: RedPacketService.redPacketMinAmount)
     let totalInDecimal = BehaviorRelay(value: Decimal(0))     // should not 0 after user input amount
     let selectTokenDecimal = BehaviorRelay(value: 18)         // default 18 for ETH
     let walletBalanceForSelectToken = BehaviorRelay<BigUInt?>(value: nil)
     
-    // "Current balance: <token_in_decimal> <token_symbol>"
-    // Combine `walletBalanceForSelectToken` and `selectTokenType` to drive
+    // "Current balance: <token_in_decimal> <token_symbol> (<netowrk>)"
+    // Combine `walletBalanceForSelectToken` and `selectTokenType` and `selectWalletNetwork` to drive
     let walletSectionFooterViewText: Driver<String>
     
     // "<token_symbol> per share" or "<token_symbol>"
@@ -77,6 +82,9 @@ final class EditingRedPacketViewModel: NSObject {
     ]
     
     override init() {
+        busyActivityIndicator.asDriver()
+            .drive(isBusy)
+            .disposed(by: disposeBag)
         createActivityIndicator
             .asDriver()
             .drive(isCreating)
@@ -131,9 +139,9 @@ final class EditingRedPacketViewModel: NSObject {
                     return 1 / pow(10, (decimals + 1) / 2)
                 }
         }
-        .drive(minimalAmount)
+        .drive(minimalUnitAmount)
         .disposed(by: disposeBag)
-        walletSectionFooterViewText = Driver.combineLatest(walletBalanceForSelectToken.asDriver(), selectTokenType.asDriver()) { (walletBalanceForSelectToken, selectTokenType) -> String in
+        walletSectionFooterViewText = Driver.combineLatest(walletBalanceForSelectToken.asDriver(), selectTokenType.asDriver(), selectWalletNetwork.asDriver()) { (walletBalanceForSelectToken, selectTokenType, selectWalletNetwork) -> String in
             let placeholder = "Current balance: - "
             
             let decimals: Int
@@ -165,8 +173,15 @@ final class EditingRedPacketViewModel: NSObject {
             formatter.maximumFractionDigits = (decimals + 1) / 2
             formatter.groupingSeparator = ""
             
+            let network: String = {
+                guard let network = selectWalletNetwork else {
+                    return ""
+                }
+                return "(\(network.rawValue))"
+            }()
+            
             return formatter.string(from: balanceInDecimal as NSNumber).flatMap { decimalString in
-                return "Current balance: \(decimalString) \(symbol)"
+                return "Current balance: \(decimalString) \(symbol)  \(network)"
                 } ?? placeholder
         }
         sendRedPacketButtonText = Driver.combineLatest(totalInDecimal.asDriver(), selectTokenType.asDriver()) { (totalInDecimal, selectTokenType) -> String in
@@ -199,15 +214,28 @@ final class EditingRedPacketViewModel: NSObject {
             .drive(selectWalletModel)
             .disposed(by: disposeBag)
         
-        Driver.combineLatest(share.asDriver(), redPacketSplitType.asDriver()) { share, splitType -> Decimal in
+        selectWalletModel.asDriver()
+            .asDriver()
+            .flatMapLatest { walletModel -> Driver<EthereumNetwork?> in
+                guard let walletModel = walletModel else {
+                    return Driver.just(nil)
+                }
+                return walletModel.currentEthereumNetwork
+                    .asDriver()
+                    .map { $0 as EthereumNetwork? }
+            }
+            .drive(selectWalletNetwork)
+            .disposed(by: disposeBag)
+        
+        Driver.combineLatest(minimalUnitAmount.asDriver(), share.asDriver(), redPacketSplitType.asDriver()) { unit, share, splitType -> Decimal in
             switch splitType {
             case .average:
-                return RedPacketService.redPacketMinAmount
+                return unit
             case .random:
-                return Decimal(share) * RedPacketService.redPacketMinAmount
+                return Decimal(share) * unit
             }
         }
-        .drive(minimalAmount)
+        .drive(minimalTotalAmount)
         .disposed(by: disposeBag)
         
         Driver.combineLatest(redPacketSplitType.asDriver(), amount.asDriver(), share.asDriver()) { splitType, amount, share -> Decimal in
@@ -341,7 +369,7 @@ extension EditingRedPacketViewModel: UITableViewDataSource {
                 .drive(amount)
                 .disposed(by: _cell.disposeBag)
             
-            minimalAmount.asDriver()
+            minimalTotalAmount.asDriver()
                 .drive(_cell.minimalAmount)
                 .disposed(by: _cell.disposeBag)
             
@@ -438,7 +466,6 @@ class EditingRedPacketViewController: UIViewController {
         tableView.register(SelectTokenTableViewCell.self, forCellReuseIdentifier: String(describing: SelectTokenTableViewCell.self))
         
         tableView.register(InputRedPacketShareTableViewCell.self, forCellReuseIdentifier: String(describing: InputRedPacketShareTableViewCell.self))
-        
         
         #if TARGET_IS_KEYBOARD
         tableView.register(KeyboardInputRedPacketAmoutCell.self, forCellReuseIdentifier: String(describing: KeyboardInputRedPacketAmoutCell.self))
@@ -570,20 +597,20 @@ class EditingRedPacketViewController: UIViewController {
             .drive(sendRedPacketButton.rx.title(for: .normal))
             .disposed(by: disposeBag)
         
-        viewModel.isCreating.asDriver()
-            .drive(onNext: { [weak self] isCreating in
-                self?.tableView.isUserInteractionEnabled = !isCreating
+        viewModel.isBusy.asDriver()
+            .drive(onNext: { [weak self] isBusy in
+                self?.tableView.isUserInteractionEnabled = !isBusy
                 
                 #if TARGET_IS_KEYBOARD
-                self?.navigationItem.rightBarButtonItem = isCreating ? self?.activityIndicatorBarButtonItem : self?.nextBarButtonItem
+                self?.navigationItem.rightBarButtonItem = isBusy ? self?.activityIndicatorBarButtonItem : self?.nextBarButtonItem
                 #else
-                self?.navigationItem.leftBarButtonItem = isCreating ? nil : self?.closeBarButtonItem
-                self?.sendRedPacketButton.isUserInteractionEnabled = !isCreating
-
-                let buttonTitle = isCreating ? "" : "Send"
+                self?.navigationItem.leftBarButtonItem = isBusy ? nil : self?.closeBarButtonItem
+                self?.sendRedPacketButton.isUserInteractionEnabled = !isBusy
+                
+                let buttonTitle = isBusy ? "" : "Send"
                 self?.sendRedPacketButton.setTitle(buttonTitle, for: .normal)
                 
-                isCreating ? self?.sendRedPacketActivityIndicatorView.startAnimating() : self?.sendRedPacketActivityIndicatorView.stopAnimating()
+                isBusy ? self?.sendRedPacketActivityIndicatorView.startAnimating() : self?.sendRedPacketActivityIndicatorView.stopAnimating()
                 #endif
             })
             .disposed(by: disposeBag)
@@ -608,9 +635,47 @@ class EditingRedPacketViewController: UIViewController {
 }
 
 extension EditingRedPacketViewController {
+    
+    private func authToSendRedPacket() {
+        let authContext = LAContext()
+        var authError: NSError?
+        
+        if viewModel.selectWalletNetwork.value == .mainnet, authContext.canEvaluatePolicy(.deviceOwnerAuthentication, error: &authError) {
+            authContext.evaluatePolicy(.deviceOwnerAuthentication, localizedReason: "Tessercube will use selected wallet to send red packet") { (isAuth, error) in
+                DispatchQueue.main.async { [weak self] in
+                    guard let `self` = self else { return }
+                    
+                    guard error == nil, isAuth else {
+                        switch error! {
+                        case LAError.userCancel:
+                            break
+                        default:
+                            self.showSendRedPacketErrorAlert(message: error?.localizedDescription ?? "Authentication Fail")
+                        }
+                        
+                        return // return here to break
+                    }
+                    
+                    // Break if busy
+                    guard !self.viewModel.isBusy.value else {
+                        return
+                    }
+                    
+                    self.sendRedPacket()
+                }
+            }   // end authContent.evaluatePolicy
+        } else {
+            self.sendRedPacket()
+        }   // end authContext.canEvaluatePolicy
+    }
  
     private func sendRedPacket() {
         view.endEditing(true)
+        
+        // Break if busy
+        guard !viewModel.isBusy.value else {
+            return
+        }
         
         guard let selectWalletModel = viewModel.selectWalletModel.value else {
             showSendRedPacketErrorAlert(message: "Please select valid wallet")
@@ -665,14 +730,12 @@ extension EditingRedPacketViewController {
         }
         // Verify finish
         
-        let uuids = (0..<viewModel.share.value).map { _ in
-            return UUID().uuidString
-        }
-        assert(uuids.count == viewModel.share.value)
+        let password = UUID().uuidString
         let isRandom = viewModel.redPacketSplitType.value == .random
         
-        let redPacket = RedPacket.v1()
-        redPacket.uuids.append(objectsIn: uuids)
+        let redPacket = RedPacket.v1(for: EthereumPreference.ethereumNetwork)
+        redPacket.password = password
+        redPacket.shares = viewModel.share.value
         redPacket.is_random = isRandom
         redPacket.sender_address = senderAddress
         redPacket.sender_name = senderName
@@ -682,17 +745,19 @@ extension EditingRedPacketViewController {
         
         let selectWalletValue = WalletValue(from: selectWalletModel)
         
+        // Init web3
+        let network = redPacket.network
+        let web3 = Web3Secret.web3(for: network)
+        
         let tokenType = viewModel.selectTokenType.value
         switch tokenType {
         case .eth:
             // get nonce -> call create transaction
             // success: push to CreatedRedPacketViewController
             // failure: stand in same place and just alert user error
-            WalletService.getTransactionCount(address: walletAddress).asObservable()
-                .withLatestFrom(viewModel.isCreating) { ($0, $1) }     // (nonce, isCreating)
+            WalletService.getTransactionCount(address: walletAddress, web3: web3).asObservable()
+                .trackActivity(viewModel.busyActivityIndicator)
                 .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
-                .filter { $0.1 == false }                               // not creating
-                .map { $0.0 }                                           // nonce
                 .retry(3)
                 .do(onNext: { nonce in
                     let nonce = Int(nonce.quantity)
@@ -700,6 +765,7 @@ extension EditingRedPacketViewController {
                 })
                 .flatMap { nonce -> Observable<TransactionHash> in
                     return RedPacketService.shared.create(for: redPacket, use: selectWalletValue, nonce: nonce)
+                        .trackActivity(self.viewModel.busyActivityIndicator)
                         .trackActivity(self.viewModel.createActivityIndicator)
                 }
                 .observeOn(MainScheduler.instance)
@@ -744,12 +810,13 @@ extension EditingRedPacketViewController {
             redPacket.token_type = .erc20
             redPacket.erc20_token = token
             
-            WalletService.getTransactionCount(address: walletAddress).asObservable()
+            WalletService.getTransactionCount(address: walletAddress, web3: web3).asObservable()
+                .trackActivity(viewModel.busyActivityIndicator)
                 .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
                 .retry(3)
                 .do(onNext: { nonce in
                     let nonce = Int(nonce.quantity)
-                    redPacket.create_nonce.value = nonce
+                    redPacket.erc20_approve_transaction_nonce.value = nonce
                 })
                 .flatMap { nonce -> Observable<TransactionHash> in
                     do {
@@ -758,6 +825,7 @@ extension EditingRedPacketViewController {
                             return Observable.error(RedPacketService.Error.internal("cannot retrieve token"))
                         }
                         return RedPacketService.approve(for: redPacket, use: selectWalletModel, on: token, nonce: nonce)
+                            .trackActivity(self.viewModel.busyActivityIndicator)
                             .trackActivity(self.viewModel.createActivityIndicator)
                     } catch {
                         return Observable.error(error)
@@ -765,6 +833,7 @@ extension EditingRedPacketViewController {
                 }
                 .observeOn(MainScheduler.instance)
                 .subscribe(onNext: { [weak self] transactionHash in
+                    guard let `self` = self else { return }
                     do {
                         // red packet token approve success
                         let realm = try RedPacketService.realm()
@@ -774,12 +843,20 @@ extension EditingRedPacketViewController {
                             realm.add(redPacket)
                         }
             
+                        #if TARGET_IS_KEYBOARD
+                        // open app if in the keyboard
+                        // Delay for realm database write finish
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            UIApplication.sharedApplication().openCreatedRedPacketView(redpacket: redPacket)
+                        }
+                        #else
                         let createdRedPacketViewController = CreatedRedPacketViewController()
                         createdRedPacketViewController.viewModel = CreatedRedPacketViewModel(redPacket: redPacket, walletModel: selectWalletModel)
-                        self?.navigationController?.pushViewController(createdRedPacketViewController, animated: true)
+                        self.navigationController?.pushViewController(createdRedPacketViewController, animated: true)
+                        #endif
                         
                     } catch {
-                        self?.showSendRedPacketErrorAlert(message: error.localizedDescription)
+                        self.showSendRedPacketErrorAlert(message: error.localizedDescription)
                     }
                 }, onError: { [weak self] error in
                     // red packet create transaction fail
@@ -812,11 +889,11 @@ extension EditingRedPacketViewController {
     }
     
     @objc private func nextBarButtonItemClicked(_ sender: UIBarButtonItem) {
-        sendRedPacket()
+        authToSendRedPacket()
     }
     
     @objc private func sendRedPacketButtonPressed(_ sender: UIButton) {
-        sendRedPacket()
+        authToSendRedPacket()
     }
     
 }

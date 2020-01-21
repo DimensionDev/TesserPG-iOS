@@ -21,13 +21,7 @@ extension RedPacketService {
 
         // Only for contract v1
         assert(redPacket.contract_version == 1)
-        
-        do {
-            try checkNetwork(for: redPacket)
-        } catch {
-            return Single.error(error)
-        }
-        
+     
         // Only normal || incoming statuc red packet can process `claim` on the contract
         guard redPacket.status == .normal || redPacket.status == .incoming else {
             return Single.error(Error.internal("cannot claim unacceptable status red packet"))
@@ -45,8 +39,9 @@ extension RedPacketService {
         }
         
         // Init web3
-        let web3 = WalletService.web3
-        let chainID = WalletService.chainID
+        let network = redPacket.network
+        let web3 = Web3Secret.web3(for: network)
+        let chainID = Web3Secret.chainID(for: network)
         
         // Init contract
         let contract: DynamicContract
@@ -92,7 +87,7 @@ extension RedPacketService {
                     return Single.error(Error.internal("cannot reslove red packet to check availablity"))
                 }
             
-                guard availability.claimed < availability.total, availability.claimed < redPacket.uuids.count else {
+                guard availability.claimed < availability.total, availability.claimed < redPacket.shares else {
                     return Single.error(Error.noAvailableShareForClaim)
                 }
                 
@@ -100,7 +95,7 @@ extension RedPacketService {
                     return Single.error(Error.claimAfterExpired)
                 }
                 
-                let password = redPacket.uuids[availability.claimed]
+                let password = redPacket.password
                 let claimInvocation = claimCall(redPacketID, password, recipient, validation)
                 let gasLimit = EthereumQuantity(integerLiteral: 1000000)
                 let gasPrice = EthereumQuantity(quantity: 10.gwei)
@@ -122,11 +117,7 @@ extension RedPacketService {
                         case let .success(transactionHash):
                             single(.success(transactionHash))
                         case let .failure(error):
-                            if let rpcError = error as? RPCResponse<EthereumData>.Error {
-                                single(.error(Error.internal(rpcError.message)))
-                            } else {
-                                single(.error(error))
-                            }
+                            single(.error(unwrapRPCResponseError(for: error, of: EthereumData.self)))
                         }
                     }
                     
@@ -141,12 +132,6 @@ extension RedPacketService {
         // Only for contract v1
         assert(redPacket.contract_version == 1)
         
-        do {
-            try checkNetwork(for: redPacket)
-        } catch {
-            return Single.error(error)
-        }
-        
         guard let claimTransactionHashHex = redPacket.claim_transaction_hash else {
             return Single.error(Error.internal("cannot read claim transaction hash"))
         }
@@ -160,7 +145,8 @@ extension RedPacketService {
         }
         
         // Init web3
-        let web3 = WalletService.web3
+        let network = redPacket.network
+        let web3 = Web3Secret.web3(for: network)
         
         // Init contract
         let contract: DynamicContract

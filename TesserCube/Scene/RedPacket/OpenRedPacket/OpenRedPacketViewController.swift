@@ -29,7 +29,8 @@ extension OpenRedPacketViewModel {
             let redPacket = RedPacket()
             redPacket.contract_version = Int(rawPayload.contract_version)
             redPacket.contract_address = rawPayload.contract_address
-            redPacket.uuids.append(objectsIn: rawPayload.passwords)
+            redPacket.password = rawPayload.password
+            redPacket.shares = rawPayload.shares
             redPacket.is_random = rawPayload.is_random
             redPacket.block_creation_time.value = Int(rawPayload.creation_time)
             redPacket.duration = Int(rawPayload.duration)
@@ -184,6 +185,7 @@ extension OpenRedPacketViewController {
                 guard let `self` = self else { return }
                 
                 do {
+                    // FIXME: duplicated red packet insert issue
                     let realm = try RedPacketService.realm()
                     guard realm.objects(RedPacket.self).filter("red_packet_id == %@", redPacket.red_packet_id ?? "").isEmpty else {
                         throw RedPacketService.Error.openRedPacketFail("This red packet has been opened by Tessercube")

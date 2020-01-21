@@ -18,12 +18,6 @@ extension RedPacketService {
         // Only for contract v1
         assert(redPacket.contract_version == 1)
         
-        do {
-            try checkNetwork(for: redPacket)
-        } catch {
-            return Single.error(error)
-        }
-        
         // Only initial red packet can process `create` on the contract
         guard redPacket.status == .initial else {
             assertionFailure()
@@ -46,8 +40,9 @@ extension RedPacketService {
         }
         
         // Init web3
-        let web3 = WalletService.web3
-        let chainID = WalletService.chainID
+        let network = redPacket.network
+        let web3 = Web3Secret.web3(for: network)
+        let chainID = Web3Secret.chainID(for: network)
         
         // Init erc20 contract
         guard let erc20ContractAddress = try? EthereumAddress(hex: erc20Token.address, eip55: false) else {
@@ -81,7 +76,7 @@ extension RedPacketService {
                 case .success(let transactionHash):
                     single(.success(transactionHash))
                 case .failure(let error):
-                    single(.error(error))
+                    single(.error(unwrapRPCResponseError(for: error, of: EthereumData.self)))
                 }
             }
             
@@ -106,7 +101,8 @@ extension RedPacketService {
         }
         
         // Init web3
-        let web3 = WalletService.web3
+        let network = redPacket.network
+        let web3 = Web3Secret.web3(for: network)
         
         // Prepare decoder
         

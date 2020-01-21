@@ -18,6 +18,10 @@ class WalletsViewController: TCBaseViewController {
     private(set) lazy var viewModel = WalletsViewModel()
     private let disposeBag = DisposeBag()
     
+    private(set) lazy var networkBarButtonItem: UIBarButtonItem = {
+        let barButtonItem = UIBarButtonItem(title: viewModel.currentNetwork.value.rawValue, style: .plain, target: self, action: #selector(WalletsViewController.networkBarButtonItemPressed(_:)))
+        return barButtonItem
+    }()
     private let longPressGestureRecognizer = UILongPressGestureRecognizer()
 
     private let tableView: UITableView = {
@@ -45,7 +49,14 @@ class WalletsViewController: TCBaseViewController {
         super.configUI()
 
         title = L10n.MainTabbarViewController.TabBarItem.Wallets.title
+        
+        navigationItem.leftBarButtonItem = networkBarButtonItem
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(WalletsViewController.addBarButtonItemPressed(_:)))
+        
+        viewModel.currentNetwork.asDriver()
+            .map { $0.rawValue }
+            .drive(networkBarButtonItem.rx.title)
+            .disposed(by: disposeBag)
 
         // Layout tableView
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -87,52 +98,6 @@ class WalletsViewController: TCBaseViewController {
                     
                     // update view model data source
                     self.viewModel.redPackets.accept(redPackets.reversed())
-                    
-                    let pendingCreateAfterApproveRedPackets = redPackets.filter { redPacket in
-                        guard redPacket.status == .pending && redPacket.create_transaction_hash == nil, redPacket.erc20_approve_value != nil else {
-                            return false
-                        }
-                        
-                        return true
-                    }
-                    for redPacket in pendingCreateAfterApproveRedPackets {
-                        guard let walletModel = WalletService.default.walletModels.value.first(where: { $0.address == redPacket.sender_address }) else {
-                            continue
-                        }
-
-                        os_log("%{public}s[%{public}ld], %{public}s: createAfterApprove %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.id)
-                        let walletValue = WalletValue(from: walletModel)
-                        RedPacketService.shared.createAfterApprove(for: redPacket, use: walletValue)
-                            .subscribe()
-                            .disposed(by: self.disposeBag)
-                    }
-                    
-                    // fetch create result
-                    let pendingRedPackets = redPackets.filter { $0.status == .pending }
-                    for redPacket in pendingRedPackets where redPacket.create_transaction_hash != nil {
-                        os_log("%{public}s[%{public}ld], %{public}s: updateCreateResult %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.id)
-                        RedPacketService.shared.updateCreateResult(for: redPacket)
-                            .subscribe()
-                            .disposed(by: self.disposeBag)
-                    }
-                    
-                    // fetch claim result
-                    let claimPendingRedPackets = redPackets.filter { $0.status == .claim_pending }
-                    for redPacket in claimPendingRedPackets {
-                        os_log("%{public}s[%{public}ld], %{public}s: updateClaimResult %s", ((#file as NSString).lastPathComponent), #line, #function, redPacket.id)
-                        RedPacketService.shared.updateClaimResult(for: redPacket)
-                            .subscribe()
-                            .disposed(by: self.disposeBag)
-                    }
-                    
-                    // fetch refund result
-                    let refundPendingRedPackets = redPackets.filter { $0.status == .refund_pending }
-                    for redPacket in refundPendingRedPackets {
-                        RedPacketService.shared.updateRefundResult(for: redPacket)
-                            .subscribe()
-                            .disposed(by: self.disposeBag)
-                    }
-                    
                 })
                 .disposed(by: disposeBag)
     
@@ -363,6 +328,23 @@ extension WalletsViewController {
 }
 
 extension WalletsViewController {
+    
+    @objc private func networkBarButtonItemPressed(_ sender: UIBarButtonItem) {
+        let alertController = UIAlertController(title: "Select Ethereum Network", message: nil, preferredStyle: .actionSheet)
+        let networks: [EthereumNetwork] = [.mainnet, .ropsten, .rinkeby]
+        for network in networks {
+            let action = UIAlertAction(title: network.rawValue, style: .default) { _ in
+                self.viewModel.currentNetwork.accept(network)
+            }
+            alertController.addAction(action)
+        }
+        let cancelAction = UIAlertAction(title: L10n.Common.Button.cancel, style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        if let popoverPresentationController = alertController.popoverPresentationController {
+            popoverPresentationController.barButtonItem = sender
+        }
+        present(alertController, animated: true, completion: nil)
+    }
 
     @objc private func addBarButtonItemPressed(_ sender: UIBarButtonItem) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)

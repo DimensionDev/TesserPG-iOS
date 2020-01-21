@@ -19,14 +19,20 @@ final class WalletDetailViewModel: NSObject {
     
     // Input
     let walletModel: WalletModel
+    let walletNetwork: BehaviorRelay<EthereumNetwork>
     
     // Output
     let tokens = BehaviorRelay<[WalletToken]>(value: [])
     
     init(walletModel: WalletModel) {
         self.walletModel = walletModel
+        self.walletNetwork = BehaviorRelay(value: walletModel.currentEthereumNetwork.value)
         
         super.init()
+        
+        self.walletModel.currentEthereumNetwork.asDriver()
+            .drive(walletNetwork)
+            .disposed(by: disposeBag)
         
         // Setup tokens data
         do {
@@ -34,15 +40,24 @@ final class WalletDetailViewModel: NSObject {
             let tokens = realm.objects(WalletToken.self)
                 .filter("wallet.address == %@", walletModel.address)
                 .sorted(byKeyPath: "index", ascending: true)
-            Observable.array(from: tokens)
-                .subscribe(onNext: { [weak self] tokens in
-                    guard let `self` = self else { return }
-                    self.tokens.accept(tokens)
-                })
-                .disposed(by: disposeBag)
+            let tokenArray = Observable.array(from: tokens).asDriver(onErrorJustReturn: [])
+            
+            Driver.combineLatest(tokenArray, walletNetwork.asDriver()) { tokens, network in
+                return tokens.filter { $0.token?.network == network }
+            }
+            .drive(onNext: { [weak self] tokens in
+                guard let `self` = self else { return }
+                self.tokens.accept(tokens)
+            })
+            .disposed(by: disposeBag)
+        
         } catch {
             os_log("%{public}s[%{public}ld], %{public}s: WalletDetailViewModel.init error: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
         }
+    }
+    
+    deinit {
+        os_log("%{public}s[%{public}ld], %{public}s", ((#file as NSString).lastPathComponent), #line, #function)
     }
     
 }

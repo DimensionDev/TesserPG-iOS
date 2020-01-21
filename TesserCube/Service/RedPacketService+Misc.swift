@@ -41,18 +41,14 @@ extension RedPacketService {
         return contract
     }
     
-    static func checkNetwork(for redPacket: RedPacket) throws {
-        #if MAINNET
-        let currentNetwork: EthereumNetwork = .mainnet
-        #else
-        let currentNetwork: EthereumNetwork = .rinkeby
-        #endif
-        
-        guard currentNetwork == redPacket.network else {
-            throw Error.internal("current network is \(currentNetwork.rawValue). cannot send request on \(redPacket.network.rawValue)")
+    static func unwrapRPCResponseError<T: Codable>(for error: Swift.Error, of type: T.Type) -> Swift.Error {
+        if let rpcError = error as? RPCResponse<T>.Error {
+            return Error.internal(rpcError.message)
+        } else {
+            return error
         }
     }
-        
+    
 }
 
 extension RedPacketService {

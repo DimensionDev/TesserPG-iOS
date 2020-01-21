@@ -24,6 +24,7 @@ final class RedPacketTokenSelectViewModel: NSObject {
 
     // Input
     let walletModel: WalletModel
+    var walletNetwork: BehaviorRelay<EthereumNetwork>
     
     // Output
     let lastTokensCount = BehaviorRelay(value: 0)
@@ -31,8 +32,13 @@ final class RedPacketTokenSelectViewModel: NSObject {
     
     init(walletModel: WalletModel) {
         self.walletModel = walletModel
-        
+        self.walletNetwork = BehaviorRelay<EthereumNetwork>(value: walletModel.currentEthereumNetwork.value)
+
         super.init()
+        
+        walletModel.currentEthereumNetwork.asDriver()
+            .drive(walletNetwork)
+            .disposed(by: disposeBag)
         
         // Setup tokens data
         do {
@@ -40,12 +46,17 @@ final class RedPacketTokenSelectViewModel: NSObject {
             let tokens = realm.objects(WalletToken.self)
                 .filter("wallet.address == %@", walletModel.address)
                 .sorted(byKeyPath: "index", ascending: true)
-            Observable.array(from: tokens)
-                .subscribe(onNext: { [weak self] tokens in
-                    guard let `self` = self else { return }
-                    self.tokens.accept(tokens)
-                })
-                .disposed(by: disposeBag)
+            let tokenArray = Observable.array(from: tokens)
+                
+            Driver.combineLatest(tokenArray.asDriver(onErrorJustReturn: []), walletNetwork.asDriver()) { token, network in
+                return token.filter { $0.token?.network == network }
+            }
+            .drive(onNext: { [weak self] tokens in
+                guard let `self` = self else { return }
+                self.tokens.accept(tokens)
+            })
+            .disposed(by: disposeBag)
+            
         } catch {
             os_log("%{public}s[%{public}ld], %{public}s: RedPacketTokenSelectViewModel.init error: %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
         }

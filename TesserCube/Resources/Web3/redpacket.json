@@ -84,31 +84,6 @@
         },
         {
           "indexed": false,
-          "internalType": "bytes32",
-          "name": "hash1",
-          "type": "bytes32"
-        },
-        {
-          "indexed": false,
-          "internalType": "bytes32",
-          "name": "hash2",
-          "type": "bytes32"
-        }
-      ],
-      "name": "Failure",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "bytes32",
-          "name": "id",
-          "type": "bytes32"
-        },
-        {
-          "indexed": false,
           "internalType": "address",
           "name": "token_address",
           "type": "address"
@@ -124,12 +99,32 @@
       "type": "event"
     },
     {
+      "constant": true,
+      "inputs": [],
+      "name": "contract_creator",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "constant": false,
       "inputs": [
         {
-          "internalType": "bytes32[]",
-          "name": "_hashes",
-          "type": "bytes32[]"
+          "internalType": "bytes32",
+          "name": "_hash",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint8",
+          "name": "_number",
+          "type": "uint8"
         },
         {
           "internalType": "bool",
@@ -305,6 +300,11 @@
           "internalType": "bool",
           "name": "expired",
           "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "ifclaimed",
+          "type": "bool"
         }
       ],
       "payable": false,
@@ -322,11 +322,6 @@
       ],
       "name": "check_claimed_list",
       "outputs": [
-        {
-          "internalType": "uint256[]",
-          "name": "claimed_list",
-          "type": "uint256[]"
-        },
         {
           "internalType": "address[]",
           "name": "claimer_addrs",

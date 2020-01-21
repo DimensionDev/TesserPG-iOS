@@ -34,18 +34,18 @@ class Web3Tests: XCTestCase {
     let erc20ContractAddressHex = "0x1f9061b953bba0e36bf50f21876132dcf276fc6e"
 
     override func setUp() {
-        // mainnet
-        web3 = Web3Secret.web3
-        chainID = Web3Secret.chainID
-        contractAddress = Web3Secret.contractAddressV1
-        
-        // rinkeby
-        // web3 = Web3(rpcURL: "https://rinkeby.infura.io/v3/823d2b1356e24d7fbd3b1ae954c6db19")
-        // chainID = 4   // rinkeby
+        let network = EthereumNetwork.ropsten
+        web3 = Web3Secret.web3(for: network)
+        chainID = Web3Secret.chainID(for: network)
+        contractAddress = Web3Secret.contractAddressV1(for: network)
         
         // local
         // let web3 = Web3(rpcURL: "HTTP://127.0.0.1:7545")
         // web3 = Web3(rpcURL: "HTTP://127.0.0.1:8545")
+        
+        if network == .mainnet {
+            fatalError()
+        }
     }
 
     func testSmoke() {
@@ -194,7 +194,7 @@ extension Web3Tests {
 
 extension Web3Tests {
     
-    func testDeoplyContact() {
+    func testDeployContact() {
         let contract = try! web3.eth.Contract(json: contractABIData, abiKey: nil, address: nil)
         
         // Check contract 
@@ -261,7 +261,7 @@ extension Web3Tests {
     }
     
     func testDelpoyTransactionResult() {
-        let transactionHashHex = "0x8e4dda7b47479d437061ef2cf2d23b4fd966ab6b36bb1d1f706de52e1c513c9b"
+        let transactionHashHex = "0xa612479f35aa34b5bb34c77f3b2d8810182596cb96f61f192aed920e418a5afb"
         let transactionHash = EthereumData(Bytes(hex: transactionHashHex))
         
         var contractAddress: EthereumData?

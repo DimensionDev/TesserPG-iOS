@@ -22,12 +22,6 @@ extension RedPacketService {
         // Only for contract v1
         assert(redPacket.contract_version == 1)
         
-        do {
-            try checkNetwork(for: redPacket)
-        } catch {
-            return Single.error(error)
-        }
-        
         // Init wallet
         let walletAddress: EthereumAddress
         let walletPrivateKey: EthereumPrivateKey
@@ -40,8 +34,9 @@ extension RedPacketService {
         }
         
         // Init web3
-        let web3 = WalletService.web3
-        let chainID = WalletService.chainID
+        let network = redPacket.network
+        let web3 = Web3Secret.web3(for: network)
+        let chainID = Web3Secret.chainID(for: network)
         
         // Init contract
         let contract: DynamicContract
@@ -111,11 +106,7 @@ extension RedPacketService {
                         case let .success(transactionHash):
                             single(.success(transactionHash))
                         case let .failure(error):
-                            if let rpcError = error as? RPCResponse<EthereumData>.Error {
-                                single(.error(Error.internal(rpcError.message)))
-                            } else {
-                                single(.error(error))
-                            }
+                            single(.error(unwrapRPCResponseError(for: error, of: EthereumData.self)))
                         }
                     }
                     
@@ -130,13 +121,7 @@ extension RedPacketService {
         
         // Only for contract v1
         assert(redPacket.contract_version == 1)
-        
-        do {
-            try checkNetwork(for: redPacket)
-        } catch {
-            return Single.error(error)
-        }
-        
+
         guard let refundTransactionHashHex = redPacket.refund_transaction_hash else {
             return Single.error(Error.internal("cannot read refund transaction hash"))
         }
@@ -150,7 +135,8 @@ extension RedPacketService {
         }
         
         // Init web3
-        let web3 = WalletService.web3
+        let network = redPacket.network
+        let web3 = Web3Secret.web3(for: network)
         
         // Init contract
         let contract: DynamicContract

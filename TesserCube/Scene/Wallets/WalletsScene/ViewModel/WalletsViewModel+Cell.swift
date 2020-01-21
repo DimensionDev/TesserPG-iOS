@@ -35,23 +35,13 @@ extension WalletsViewModel {
     
     // For WalletCardCollectionViewCell
     static func configure(cell: WalletCardCollectionViewCell, with model: WalletModel) {
-        let address = model.address
-        #if DEBUG
-            #if MAINNET
-            cell.walletCardView.headerLabel.text = String(address.prefix(6)) + " - Mainnet"
-            #else
-            cell.walletCardView.headerLabel.text = String(address.prefix(6)) + " - Rinkeby"
-            #endif
-        #else
-        cell.walletCardView.headerLabel.text = String(address.prefix(6))
-        #endif
+        let walletAddress = model.address
+        let walletObject = model.walletObject
+        let walletName = walletObject.name
         
-        cell.walletCardView.captionLabel.text = address
-        // cell.captionLabel.text = {
-        //     guard let address = address else { return nil }
-        //     let raw = address.removingPrefix("0x")
-        //     return "0x" + raw.prefix(20) + "\n" + raw.suffix(20)
-        // }()
+        cell.walletCardView.headerLabel.text = walletName
+        cell.walletCardView.captionLabel.text = walletAddress
+        
         model.balanceInDecimal.asDriver()
             .map { decimal in
                 guard let decimal = decimal,

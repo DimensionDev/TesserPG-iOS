@@ -13,7 +13,8 @@ public struct RedPacketRawPayLoad: Codable {
     let contract_version: UInt8
     let contract_address: String
     let rpid: String
-    let passwords: [String]     // uuids
+    let password: String
+    let shares: Int
     let sender: Sender
     let is_random: Bool
     let total: String           // BigUInt

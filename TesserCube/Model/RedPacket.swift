@@ -22,7 +22,8 @@ public class RedPacket: Object {
     @objc public dynamic var contract_address: String = ""
     @objc private dynamic var _network = EthereumNetwork.rinkeby.rawValue
 
-    let uuids = List<String>()
+    @objc public dynamic var password: String = ""
+    @objc public dynamic var shares: Int = 0
     @objc public dynamic var is_random = false
 
     let create_nonce = RealmOptional<Int>()
@@ -122,7 +123,8 @@ public enum RedPacketTokenType: String, Codable {
     }
 }
 
-public enum EthereumNetwork: String, Codable {
+public enum EthereumNetwork: String, Codable, CaseIterable {
     case mainnet = "Mainnet"
     case rinkeby = "Rinkeby"
+    case ropsten = "Ropsten"
 }

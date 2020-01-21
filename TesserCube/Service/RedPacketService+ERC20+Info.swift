@@ -16,10 +16,7 @@ extension RedPacketService {
     
     enum ERC20 {
     
-        static func name(for tokenAddress: String) -> Single<String> {
-            // Init web3
-            let web3 = WalletService.web3
-            
+        static func name(for tokenAddress: String, web3: Web3) -> Single<String> {
             let erc20Contract: GenericERC20Contract
             do {
                 let address = try EthereumAddress(hex: tokenAddress, eip55: false)
@@ -41,10 +38,7 @@ extension RedPacketService {
             }
         }
         
-        static func symbol(for tokenAddress: String) -> Single<String> {
-            // Init web3
-            let web3 = WalletService.web3
-            
+        static func symbol(for tokenAddress: String, web3: Web3) -> Single<String> {
             let erc20Contract: GenericERC20Contract
             do {
                 let address = try EthereumAddress(hex: tokenAddress, eip55: false)
@@ -66,10 +60,7 @@ extension RedPacketService {
             }
         }
         
-        static func decimals(for tokenAddress: String) -> Single<Int> {
-            // Init web3
-            let web3 = WalletService.web3
-            
+        static func decimals(for tokenAddress: String, web3: Web3) -> Single<Int> {
             let erc20Contract: GenericERC20Contract
             do {
                 let address = try EthereumAddress(hex: tokenAddress, eip55: false)

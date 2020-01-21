@@ -24,12 +24,6 @@ extension RedPacketService {
     private static func create(for redPacket: RedPacket, use walletValue: WalletValue, nonce: EthereumQuantity) -> Single<TransactionHash> {
         // Only for contract v1
         assert(redPacket.contract_version == 1)
-        
-        do {
-            try checkNetwork(for: redPacket)
-        } catch {
-            return Single.error(error)
-        }
 
         // Only initial red packet can process `create` on the contract
         guard (redPacket.status == .initial && redPacket.token_type == .eth) ||
@@ -55,8 +49,9 @@ extension RedPacketService {
         }
 
         // Init web3
-        let web3 = WalletService.web3
-        let chainID = WalletService.chainID
+        let network = redPacket.network
+        let web3 = Web3Secret.web3(for: network)
+        let chainID = Web3Secret.chainID(for: network)
         
         // Init contract
         let contract: DynamicContract
@@ -67,11 +62,12 @@ extension RedPacketService {
         }
         
         // Prepare parameters
-        let uuids = Array(redPacket.uuids)
-        let hashes: [BigUInt] = uuids.map { uuid in
-            let hash = SHA3(variant: .keccak256).calculate(for: uuid.bytes)
+        let hash: BigUInt = {
+            let password = redPacket.password
+            let hash = SHA3(variant: .keccak256).calculate(for: password.bytes)
             return BigUInt(hash)
-        }
+        }()
+        let number: UInt8 = UInt8(redPacket.shares)
         let ifRandom = redPacket.is_random
         let duration = redPacket.duration
         let seed = BigUInt.randomInteger(withMaximumWidth: 32)
@@ -104,7 +100,7 @@ extension RedPacketService {
         let gasLimit = EthereumQuantity(integerLiteral: 5000000)
         let gasPrice = EthereumQuantity(quantity: 10.gwei)
         
-        let createInvocation = createCall(hashes, ifRandom, duration, seed, message, name, tokenType, tokenAddr, totalTokens)
+        let createInvocation = createCall(hash, number, ifRandom, duration, seed, message, name, tokenType, tokenAddr, totalTokens)
         guard let createTransaction = createInvocation.createTransaction(nonce: nonce, from: walletAddress, value: value, gas: gasLimit, gasPrice: gasPrice) else {
             return Single.error(Error.internal("cannot construct transaction to send red packet"))
         }
@@ -122,11 +118,7 @@ extension RedPacketService {
                 case let .success(transactionHash):
                     single(.success(transactionHash))
                 case let .failure(error):
-                    if let rpcError = error as? RPCResponse<EthereumData>.Error {
-                        single(.error(Error.internal(rpcError.message)))
-                    } else {
-                        single(.error(error))
-                    }
+                    single(.error(unwrapRPCResponseError(for: error, of: EthereumData.self)))
                 }
             }
             
@@ -153,7 +145,8 @@ extension RedPacketService {
         }
         
         // Init web3
-        let web3 = WalletService.web3
+        let network = redPacket.network
+        let web3 = Web3Secret.web3(for: network)
         
         // Init contract
         let contract: DynamicContract
@@ -275,28 +268,15 @@ extension RedPacketService {
         return observable
     }
     
-    func createAfterApprove(for redPacket: RedPacket, use walletValue: WalletValue) -> Observable<TransactionHash> {
-        os_log("%{public}s[%{public}ld], %{public}s", ((#file as NSString).lastPathComponent), #line, #function)
+    func createAfterApprove(for redPacket: RedPacket, use walletValue: WalletValue, nonce: EthereumQuantity) -> Observable<TransactionHash> {
+        os_log("%{public}s[%{public}ld], %{public}s: createAfterApprove", ((#file as NSString).lastPathComponent), #line, #function)
 
         let id = redPacket.id
         var queue = createQueue
         
         guard let observable = queue[id] else {
-            let walletAddress: EthereumAddress
-            do {
-                walletAddress = try EthereumAddress(hex: walletValue.address, eip55: false)
-            } catch {
-                return Observable.error(error)
-            }
-             
-            let single = WalletService.getTransactionCount(address: walletAddress)
-                .subscribeOn(ConcurrentMainScheduler.instance)
-                .observeOn(MainScheduler.instance)
-                .retry(3)
-                .flatMap { nonce -> Single<TransactionHash> in
-                    return RedPacketService.create(for: redPacket, use: walletValue, nonce: nonce)
-                }
             
+            let single = RedPacketService.create(for: redPacket, use: walletValue, nonce: nonce)
             let shared = single.asObservable().share()
             queue[id] = shared
             
@@ -310,35 +290,37 @@ extension RedPacketService {
                     }
                     
                     guard redPacket.status == .pending else {
-                        os_log("%{public}s[%{public}ld], %{public}s: discard change due to red packet status already %s.", ((#file as NSString).lastPathComponent), #line, #function, redPacket.status.rawValue)
+                        os_log("%{public}s[%{public}ld], %{public}s: createAfterApprove - discard change due to red packet status already %s.", ((#file as NSString).lastPathComponent), #line, #function, redPacket.status.rawValue)
                         return
                     }
                     
                     try realm.write {
+                        redPacket.create_nonce.value = Int(nonce.quantity)
                         redPacket.create_transaction_hash = transactionHash.hex()
                     }
                     
                 }, afterSuccess: { _ in
-                    os_log("%{public}s[%{public}ld], %{public}s: afterSuccess create", ((#file as NSString).lastPathComponent), #line, #function)
+                    os_log("%{public}s[%{public}ld], %{public}s: createAfterApprove - afterSuccess create", ((#file as NSString).lastPathComponent), #line, #function)
                     queue[id] = nil
 
-                }, onError: { _ in
+                }, onError: { error in
                     let realm = try RedPacketService.realm()
                     guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
                         return
                     }
                     
                     guard redPacket.status == .pending else {
-                        os_log("%{public}s[%{public}ld], %{public}s: discard change due to red packet status already %s.", ((#file as NSString).lastPathComponent), #line, #function, redPacket.status.rawValue)
+                        os_log("%{public}s[%{public}ld], %{public}s: createAfterApprove - discard change due to red packet status already %s.", ((#file as NSString).lastPathComponent), #line, #function, redPacket.status.rawValue)
                         return
                     }
                     
                     try realm.write {
                         redPacket.status = .fail
                     }
-                    
+                    os_log("%{public}s[%{public}ld], %{public}s: createAfterApprove - error %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
+
                 }, afterError: { _ in
-                    os_log("%{public}s[%{public}ld], %{public}s: afterError create", ((#file as NSString).lastPathComponent), #line, #function)
+                    os_log("%{public}s[%{public}ld], %{public}s: createAfterApprove - afterError create", ((#file as NSString).lastPathComponent), #line, #function)
                     queue[id] = nil
                 })
                 .subscribe()
@@ -347,7 +329,7 @@ extension RedPacketService {
             return shared
         }
         
-        os_log("%{public}s[%{public}ld], %{public}s: use create in queue", ((#file as NSString).lastPathComponent), #line, #function)
+        os_log("%{public}s[%{public}ld], %{public}s: createAfterApproveuse create in queue", ((#file as NSString).lastPathComponent), #line, #function)
         return observable
     }
     
@@ -422,7 +404,8 @@ extension RedPacketService {
                             contract_version: UInt8(redPacket.contract_version),
                             contract_address: redPacket.contract_address,
                             rpid: creationSuccess.id,
-                            passwords: Array(redPacket.uuids),
+                            password: redPacket.password,
+                            shares: redPacket.shares,
                             sender: RedPacketRawPayLoad.Sender(
                                 address: redPacket.sender_address,
                                 name: redPacket.sender_name,

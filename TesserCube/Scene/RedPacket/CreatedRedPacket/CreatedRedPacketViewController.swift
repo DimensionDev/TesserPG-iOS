@@ -80,17 +80,7 @@ extension CreatedRedPacketViewModel {
         RedPacketService.shared.updateApproveResult(for: redPacket)
             .trackActivity(activityIndicator)
             .subscribe(onNext: { [weak self] approveEvent in
-                // fetch create in realm listener in app: do nothing here
-                
-                #if TARGET_IS_KEYBOARD
-                // and open app if in the keyboard
-                guard let `self` = self else { return }
-                // Delay for realm database write finish
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    UIApplication.sharedApplication().openCreatedRedPacketView(redpacket: self.redPacket)
-                }
-                #endif
-                
+                // delegate fetch create action to realm listener
             }, onError: { [weak self] error in
                 self?.error.accept(error)
             })
@@ -99,9 +89,27 @@ extension CreatedRedPacketViewModel {
     
     func createAfterApprove() {
         let walletValue = WalletValue(from: self.walletModel)
-        RedPacketService.shared.createAfterApprove(for: self.redPacket, use: walletValue)
+        // Init web3
+        let network = redPacket.network
+        let web3 = Web3Secret.web3(for: network)
+        
+        let walletAddress: EthereumAddress
+        do {
+            walletAddress = try EthereumAddress(hex: walletValue.address, eip55: false)
+        } catch {
+            self.error.accept(error)
+            return
+        }
+        
+        WalletService.getTransactionCount(address: walletAddress, web3: web3)
             .trackActivity(activityIndicator)
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .userInitiated))
+            .subscribeOn(ConcurrentMainScheduler.instance)
+            .observeOn(MainScheduler.instance)
+            .retry(3)
+            .flatMap { nonce -> Observable<TransactionHash> in
+                return RedPacketService.shared.createAfterApprove(for: self.redPacket, use: walletValue, nonce: nonce)
+                    .trackActivity(self.activityIndicator)
+            }
             .subscribe(onNext: { transactionHash in
                 // do nothing
             }, onError: { [weak self] error in
@@ -109,7 +117,6 @@ extension CreatedRedPacketViewModel {
             })
             .disposed(by: disposeBag)
     }
-    
     
 }
 
@@ -136,11 +143,7 @@ extension CreatedRedPacketViewModel {
     
     static func configure(cell: RedPacketCardTableViewCell, with redPacket: RedPacket) {
         // Set name
-        #if !MAINNET
-        let name = "From: " + redPacket.sender_name + " (Rinkeby)"
-        #else
-        let name = "From: " + redPacket.sender_name
-        #endif
+        let name = "From: " + redPacket.sender_name + " (\(redPacket.network.rawValue))"
         cell.nameLabel.text = name
         
         // Set image
@@ -167,7 +170,7 @@ extension CreatedRedPacketViewModel {
                           options: [
                             .processor(processor),
                             .scaleFactor(UIScreen.main.scale),
-                            .transition(.fade(1)),
+                            .transition(.fade(0.33)),
                             .cacheOriginalImage
                     ]
                 )
@@ -187,7 +190,7 @@ extension CreatedRedPacketViewModel {
         let symbol = helper.symbol
         
         // Set detail
-        let share = redPacket.uuids.count
+        let share = redPacket.shares
         let unit = share > 1 ? "shares" : "share"
         cell.detailLabel.text = "\(totalAmountInDecimalString) \(symbol) / \(share) \(unit)"
         
@@ -261,7 +264,7 @@ extension CreatedRedPacketViewModel {
             cell.statusLabel.text = "Refunding…"
         case .refunded:
             if let refundAmountInDecimalString = helper.refundAmountInDecimalString {
-                cell.statusLabel.text = "Refund \(refundAmountInDecimalString)"
+                cell.statusLabel.text = "Refunded \(refundAmountInDecimalString) \(symbol)"
             } else {
                 cell.statusLabel.text = "Refunded"
             }

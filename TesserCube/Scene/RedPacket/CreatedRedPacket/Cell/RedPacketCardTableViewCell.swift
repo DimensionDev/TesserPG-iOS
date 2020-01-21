@@ -43,7 +43,7 @@ final class RedPacketCardTableViewCell: UITableViewCell {
         
         let effect: UIBlurEffect
         if #available(iOS 13.0, *) {
-            effect = UIBlurEffect(style: .systemMaterial)
+            effect = UIBlurEffect(style: .systemMaterialLight)      // use light mode sytle effect
         } else {
             effect = UIBlurEffect(style: .regular)
         }
@@ -55,6 +55,7 @@ final class RedPacketCardTableViewCell: UITableViewCell {
         view.backgroundColor = Asset.redPacketCardHeaderBackground.color
         view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         view.layer.cornerRadius = 10
+        view.layer.masksToBounds = true
         return view
     }()
     let nameLabel: UILabel = {

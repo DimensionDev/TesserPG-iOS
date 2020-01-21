@@ -18,6 +18,7 @@ class WalletsViewModel: NSObject {
     var diffableDataSource: UITableViewDataSource!
 
     // Input
+    let currentNetwork = BehaviorRelay(value: EthereumPreference.ethereumNetwork)
     let walletModels = BehaviorRelay<[WalletModel]>(value: [])
     let redPackets = BehaviorRelay<[RedPacket]>(value: [])
 
@@ -39,6 +40,12 @@ class WalletsViewModel: NSObject {
     override init() {
         super.init()
         
+        currentNetwork.asDriver()
+            .drive(onNext: { network in
+                EthereumPreference.ethereumNetwork = network
+            })
+            .disposed(by: disposeBag)
+        
         // Debug
         currentWalletModel.asDriver()
             .drive(onNext: { walletModel in
@@ -46,6 +53,7 @@ class WalletsViewModel: NSObject {
             })
             .disposed(by: disposeBag)
         
+        // Debug
         currentWalletPageIndex.asDriver()
             .drive(onNext: { index in
                 os_log("%{public}s[%{public}ld], %{public}s: currentWalletPageIndex update to %s", ((#file as NSString).lastPathComponent), #line, #function, String(index))
@@ -184,53 +192,6 @@ extension WalletsViewModel: UITableViewDataSource {
         return constructTableViewCell(for: tableView, atIndexPath: indexPath, with: model)
     }
 
-}
-
-// MAKR: - UIPageViewControllerDataSource
-extension WalletsViewModel: UIPageViewControllerDataSource {
-    
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard !walletModels.value.isEmpty else {
-            return nil
-        }
-        
-        guard let walletCardViewController = viewController as? WalletCardViewController else {
-            return nil
-        }
-        
-        let index = walletCardViewController.index
-        guard index > 0 else {
-            return nil
-        }
-        
-        let viewController = WalletCardViewController()
-        viewController.index = index - 1
-        viewController.walletModel = walletModels.value[index - 1]
-        
-        return viewController
-    }
-    
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard !walletModels.value.isEmpty else {
-            return nil
-        }
-        
-        guard let walletCardViewController = viewController as? WalletCardViewController else {
-            return nil
-        }
-        
-        let index = walletCardViewController.index
-        guard index + 1 < walletModels.value.count else {
-            return nil
-        }
-        
-        let viewController = WalletCardViewController()
-        viewController.index = index + 1
-        viewController.walletModel = walletModels.value[index + 1]
-        
-        return viewController
-    }
-    
 }
 
 // MARK: - UICollectionViewDataSource

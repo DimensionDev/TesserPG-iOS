@@ -51,9 +51,14 @@ final class CustomTokenViewModel: NSObject {
                     return Observable.just(nil)
                 }
                 
-                let name = RedPacketService.ERC20.name(for: contractAddress).asObservable()
-                let symbol = RedPacketService.ERC20.symbol(for: contractAddress).asObservable()
-                let decimals = RedPacketService.ERC20.decimals(for: contractAddress).asObservable()
+                // Init web3
+                // use current network for custom token
+                let network = EthereumPreference.ethereumNetwork
+                let web3 = Web3Secret.web3(for: network)
+                
+                let name = RedPacketService.ERC20.name(for: contractAddress, web3: web3).asObservable()
+                let symbol = RedPacketService.ERC20.symbol(for: contractAddress, web3: web3).asObservable()
+                let decimals = RedPacketService.ERC20.decimals(for: contractAddress, web3: web3).asObservable()
                 return Observable.combineLatest(name, symbol, decimals)
                     .retry(3)
                     .map { name, symbol, decimals in

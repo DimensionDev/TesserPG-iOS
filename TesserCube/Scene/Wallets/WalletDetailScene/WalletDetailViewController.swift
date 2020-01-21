@@ -56,7 +56,11 @@ final class WalletDetailViewController: TCBaseViewController {
             button.setTitle("Add Token", for: .normal)
             button.rx.tap.bind { [weak self] in
                 guard let `self` = self else { return }
-                let viewModel = AddTokenViewModel(customTokenViewControllerDelegate: self)
+                let currentEthereumNetwork = self.viewModel.walletModel.currentEthereumNetwork
+                let viewModel = AddTokenViewModel(network: currentEthereumNetwork.value, customTokenViewControllerDelegate: self)
+                currentEthereumNetwork.asDriver()
+                    .drive(viewModel.network)
+                    .disposed(by: viewModel.disposeBag)
                 Coordinator.main.present(scene: .addToken(viewModel: viewModel, delegate: self), from: self, transition: .modal, completion: nil)
             }
             .disposed(by: disposeBag)
