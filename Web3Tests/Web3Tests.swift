@@ -42,6 +42,10 @@ class Web3Tests: XCTestCase {
         // local
         // let web3 = Web3(rpcURL: "HTTP://127.0.0.1:7545")
         // web3 = Web3(rpcURL: "HTTP://127.0.0.1:8545")
+        
+        if network == .mainnet {
+            fatalError()
+        }
     }
 
     func testSmoke() {
@@ -257,7 +261,7 @@ extension Web3Tests {
     }
     
     func testDelpoyTransactionResult() {
-        let transactionHashHex = "0x78166104d54a674c70dc87167d1657f1f36a0766a1035fd57a7bf2119cde262b"
+        let transactionHashHex = "0xa612479f35aa34b5bb34c77f3b2d8810182596cb96f61f192aed920e418a5afb"
         let transactionHash = EthereumData(Bytes(hex: transactionHashHex))
         
         var contractAddress: EthereumData?
