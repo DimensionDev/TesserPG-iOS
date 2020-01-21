@@ -84,31 +84,6 @@
         },
         {
           "indexed": false,
-          "internalType": "bytes32",
-          "name": "hash1",
-          "type": "bytes32"
-        },
-        {
-          "indexed": false,
-          "internalType": "bytes32",
-          "name": "hash2",
-          "type": "bytes32"
-        }
-      ],
-      "name": "Failure",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "bytes32",
-          "name": "id",
-          "type": "bytes32"
-        },
-        {
-          "indexed": false,
           "internalType": "address",
           "name": "token_address",
           "type": "address"
@@ -122,6 +97,21 @@
       ],
       "name": "RefundSuccess",
       "type": "event"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "contract_creator",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
     },
     {
       "constant": false,
@@ -310,6 +300,32 @@
           "internalType": "bool",
           "name": "expired",
           "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "ifclaimed",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "id",
+          "type": "bytes32"
+        }
+      ],
+      "name": "check_claimed_list",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "claimer_addrs",
+          "type": "address[]"
         }
       ],
       "payable": false,

@@ -55,6 +55,27 @@ public class WalletModel {
             try realm.write {
                 realm.add(walletObject)
             }
+            
+            let preloadTokenAddress = "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+            let _preloadToken = realm.objects(ERC20Token.self).filter("address == %@", preloadTokenAddress).first
+            let _walletToken = realm.objects(WalletToken.self).filter("wallet.address == %@ && token.address == %@", _address, preloadTokenAddress).first
+            
+            if let preloadToken = _preloadToken, _walletToken == nil {
+                let index: Int = {
+                    let tokens = realm.objects(WalletToken.self).filter("wallet.address == %@", _address)
+                    let maxIndex = tokens.max(ofProperty: "index") as Int?
+                    return maxIndex.flatMap { $0 + 1 } ?? 0
+                }()
+                let preloadWalletToken = WalletToken()
+                preloadWalletToken.wallet = walletObject
+                preloadWalletToken.token = preloadToken
+                preloadWalletToken.index = index
+                
+                try? realm.write {
+                    realm.add(preloadWalletToken)
+                }
+            }
+            
             self.walletObject = walletObject
         }
 

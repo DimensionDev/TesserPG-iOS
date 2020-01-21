@@ -41,6 +41,14 @@ extension RedPacketService {
         return contract
     }
     
+    static func unwrapRPCResponseError<T: Codable>(for error: Swift.Error, of type: T.Type) -> Swift.Error {
+        if let rpcError = error as? RPCResponse<T>.Error {
+            return Error.internal(rpcError.message)
+        } else {
+            return error
+        }
+    }
+    
 }
 
 extension RedPacketService {

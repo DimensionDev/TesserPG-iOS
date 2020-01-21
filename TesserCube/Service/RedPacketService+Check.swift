@@ -66,10 +66,12 @@ extension RedPacketService {
                     return
                 }
                 
+                let ifclaimed = dict["ifclaimed"] as? Bool ?? false
                 let availability = RedPacketAvailability(balance: balance,
                                                          total: Int(total),
                                                          claimed: Int(claimed),
-                                                         expired: expired)
+                                                         expired: expired,
+                                                         ifclaimed: ifclaimed)
                 single(.success(availability))
             }
             
@@ -191,17 +193,15 @@ extension RedPacketService {
                     return
                 }
                 
-                guard let claimed_list = dict["claimed_list"] as? [BigUInt],
-                let claimer_addrs = dict["claimer_addrs"] as? [EthereumAddress],
-                claimed_list.count == claimer_addrs.count else {
+                guard let claimer_addrs = dict["claimer_addrs"] as? [EthereumAddress] else {
                     single(.error(Error.checkAvailabilityFail))
                     return
                 }
                 
                 os_log("%{public}s[%{public}ld], %{public}s: %s claimer(s)", ((#file as NSString).lastPathComponent), #line, #function, String(claimer_addrs.count))
 
-                let records = zip(claimed_list, claimer_addrs).map { claimed, claimer in
-                    return RedPacketClaimedRecord(claimed: claimed, claimer: claimer)
+                let records = claimer_addrs.map { claimer in
+                    return RedPacketClaimedRecord(claimer: claimer)
                 }
                 
                 single(.success(records))
@@ -220,10 +220,11 @@ extension RedPacketService {
         let total: Int              // total share count
         let claimed: Int            // claimed share count
         let expired: Bool           // is expired
+        let ifclaimed: Bool         // is self claimed
     }
     
     struct RedPacketClaimedRecord {
-        let claimed: BigUInt
+        // let claimed: BigUInt
         let claimer: EthereumAddress
     }
     
@@ -239,6 +240,6 @@ extension RedPacketService.RedPacketClaimedRecord: DiffAware {
     }
 
     static func compareContent(_ a: RedPacketService.RedPacketClaimedRecord, _ b: RedPacketService.RedPacketClaimedRecord) -> Bool {
-        return a.claimed == b.claimed && a.claimer == b.claimer
+        return a.claimer == b.claimer
     }
 }
