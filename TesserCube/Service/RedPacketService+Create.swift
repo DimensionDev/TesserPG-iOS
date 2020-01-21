@@ -118,11 +118,7 @@ extension RedPacketService {
                 case let .success(transactionHash):
                     single(.success(transactionHash))
                 case let .failure(error):
-                    if let rpcError = error as? RPCResponse<EthereumData>.Error {
-                        single(.error(Error.internal(rpcError.message)))
-                    } else {
-                        single(.error(error))
-                    }
+                    single(.error(unwrapRPCResponseError(for: error, of: EthereumData.self)))
                 }
             }
             
