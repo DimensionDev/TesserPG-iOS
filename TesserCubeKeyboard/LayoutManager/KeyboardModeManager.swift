@@ -249,12 +249,16 @@ class KeyboardModeManager: NSObject {
                         if let senderCell = cell as? KeyboardInputRedPacketSenderCell,
                             senderCell.nameTextField.inputTextField.textFieldIsSelected {
                             let tempText = senderCell.nameTextField.inputTextField.text ?? ""
-                            senderCell.nameTextField.inputTextField.text = String(tempText[tempText.startIndex ..< tempText.index(before: tempText.endIndex)])
+                            if !tempText.isEmpty {
+                                senderCell.nameTextField.inputTextField.text = String(tempText[tempText.startIndex ..< tempText.index(before: tempText.endIndex)])
+                            }
                             senderCell.nameTextField.inputTextField.repositionCursor()
                         }
                         if let messageCell = cell as? KeyboardInputRedPacketMessageCell, messageCell.messageTextField.inputTextField.textFieldIsSelected {
                             let tempText = messageCell.messageTextField.inputTextField.text ?? ""
-                            messageCell.messageTextField.inputTextField.text = String(tempText[tempText.startIndex ..< tempText.index(before: tempText.endIndex)])
+                            if !tempText.isEmpty {
+                                messageCell.messageTextField.inputTextField.text = String(tempText[tempText.startIndex ..< tempText.index(before: tempText.endIndex)])
+                            }
                             messageCell.messageTextField.inputTextField.repositionCursor()
                         }
                     }
