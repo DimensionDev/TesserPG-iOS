@@ -224,7 +224,7 @@ final class RedPacketService {
                     //      RedPacket erc20_approve_value is empty
                     //      WalletModel at sender_address is avaliable
                     let pendingApproveResultRedPackets = redPackets.filter { redPacket in
-                        guard redPacket.status == .pending, redPacket.erc20_approve_value == nil else { return false }
+                        guard redPacket.status == .pending, redPacket.erc20_approve_transaction_hash != nil, redPacket.erc20_approve_value == nil else { return false }
                         return true
                     }
                     for redPacket in pendingApproveResultRedPackets {
