@@ -79,7 +79,13 @@ class TCKeyboardModeContainer {
     private func createNavigationViewController(for rootViewController: UIViewController) -> UINavigationController {
         let naviVC = UINavigationController(rootViewController: rootViewController)
         naviVC.navigationBar.isTranslucent = false
-        naviVC.navigationBar.barTintColor = UIColor.keyboardBackgroundLight
+        switch KeyboardModeManager.shared.currentTheme {
+        case .light:
+            naviVC.navigationBar.barTintColor = UIColor.keyboardBackgroundLight
+        case .dark:
+            naviVC.navigationBar.barTintColor = UIColor.keyboardBackgroundDark
+        }
+
         naviVC.navigationBar.tintColor = UIColor._label
         return naviVC
     }

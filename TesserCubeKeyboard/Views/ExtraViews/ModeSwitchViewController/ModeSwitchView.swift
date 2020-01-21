@@ -90,9 +90,11 @@ class ModeSwitchActionButton: UIButton, Thematic {
         
         switch theme {
         case .light:
+            setBackgroundImage(UIImage.placeholder(color: UIColor.clear), for: .normal)
             setTitleColor(.black, for: .normal)
             setTitleColor(.lightGray, for: .disabled)
         case .dark:
+            setBackgroundImage(UIImage.placeholder(color: .keyboardCharKeyBackgroundDark), for: .normal)
             setTitleColor(.white, for: .normal)
             setTitleColor(.lightGray, for: .disabled)
         }
@@ -131,7 +133,6 @@ class ModeSwitchView: UIView, Thematic {
     }
     
     private func setupSubviews() {
-        updateColor(theme: .light)
         encryptModeButton.action = .encrypt
         
         signModeButton.action = .sign
@@ -155,6 +156,7 @@ class ModeSwitchView: UIView, Thematic {
         encryptModeButton.addTarget(self, action: #selector(modeActionButtonDidClicked(_:)), for: .touchUpInside)
         signModeButton.addTarget(self, action: #selector(modeActionButtonDidClicked(_:)), for: .touchUpInside)
         redpacketModeButton.addTarget(self, action: #selector(modeActionButtonDidClicked(_:)), for: .touchUpInside)
+        updateColor(theme: KeyboardModeManager.shared.currentTheme)
     }
     
     @objc
@@ -181,7 +183,7 @@ class ModeSwitchView: UIView, Thematic {
         case .light:
             backgroundColor = UIColor.keyboardBackgroundLight
         case .dark:
-            backgroundColor = UIColor.keyboardBackgroundDark
+            backgroundColor = UIColor.keyboardCharKeyBackgroundDark
         }
     }
     
