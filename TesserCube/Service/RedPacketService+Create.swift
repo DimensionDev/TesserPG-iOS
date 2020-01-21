@@ -273,7 +273,7 @@ extension RedPacketService {
     }
     
     func createAfterApprove(for redPacket: RedPacket, use walletValue: WalletValue, nonce: EthereumQuantity) -> Observable<TransactionHash> {
-        os_log("%{public}s[%{public}ld], %{public}s", ((#file as NSString).lastPathComponent), #line, #function)
+        os_log("%{public}s[%{public}ld], %{public}s: createAfterApprove", ((#file as NSString).lastPathComponent), #line, #function)
 
         let id = redPacket.id
         var queue = createQueue
@@ -294,35 +294,37 @@ extension RedPacketService {
                     }
                     
                     guard redPacket.status == .pending else {
-                        os_log("%{public}s[%{public}ld], %{public}s: discard change due to red packet status already %s.", ((#file as NSString).lastPathComponent), #line, #function, redPacket.status.rawValue)
+                        os_log("%{public}s[%{public}ld], %{public}s: createAfterApprove - discard change due to red packet status already %s.", ((#file as NSString).lastPathComponent), #line, #function, redPacket.status.rawValue)
                         return
                     }
                     
                     try realm.write {
+                        redPacket.create_nonce.value = Int(nonce.quantity)
                         redPacket.create_transaction_hash = transactionHash.hex()
                     }
                     
                 }, afterSuccess: { _ in
-                    os_log("%{public}s[%{public}ld], %{public}s: afterSuccess create", ((#file as NSString).lastPathComponent), #line, #function)
+                    os_log("%{public}s[%{public}ld], %{public}s: createAfterApprove - afterSuccess create", ((#file as NSString).lastPathComponent), #line, #function)
                     queue[id] = nil
 
-                }, onError: { _ in
+                }, onError: { error in
                     let realm = try RedPacketService.realm()
                     guard let redPacket = realm.object(ofType: RedPacket.self, forPrimaryKey: id) else {
                         return
                     }
                     
                     guard redPacket.status == .pending else {
-                        os_log("%{public}s[%{public}ld], %{public}s: discard change due to red packet status already %s.", ((#file as NSString).lastPathComponent), #line, #function, redPacket.status.rawValue)
+                        os_log("%{public}s[%{public}ld], %{public}s: createAfterApprove - discard change due to red packet status already %s.", ((#file as NSString).lastPathComponent), #line, #function, redPacket.status.rawValue)
                         return
                     }
                     
                     try realm.write {
                         redPacket.status = .fail
                     }
-                    
+                    os_log("%{public}s[%{public}ld], %{public}s: createAfterApprove - error %s", ((#file as NSString).lastPathComponent), #line, #function, error.localizedDescription)
+
                 }, afterError: { _ in
-                    os_log("%{public}s[%{public}ld], %{public}s: afterError create", ((#file as NSString).lastPathComponent), #line, #function)
+                    os_log("%{public}s[%{public}ld], %{public}s: createAfterApprove - afterError create", ((#file as NSString).lastPathComponent), #line, #function)
                     queue[id] = nil
                 })
                 .subscribe()
@@ -331,7 +333,7 @@ extension RedPacketService {
             return shared
         }
         
-        os_log("%{public}s[%{public}ld], %{public}s: use create in queue", ((#file as NSString).lastPathComponent), #line, #function)
+        os_log("%{public}s[%{public}ld], %{public}s: createAfterApproveuse create in queue", ((#file as NSString).lastPathComponent), #line, #function)
         return observable
     }
     

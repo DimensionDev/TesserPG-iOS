@@ -25,10 +25,15 @@ final class RedPacketService {
     
     let disposeBag = DisposeBag()
     
+    let threadSafeQueue = DispatchQueue(label: "TreadSafeQueue", attributes: .concurrent)
+
     // Global observable queue:
     // Reuse sequence if shared observable object if already in queue
     // And also subscribe in service when observable created to prevent task canceled
     var approveResultQueue: [RedPacket.ID: Observable<ApproveEvent>] = [:] {
+        didSet { isQueueChanged.onNext(()) }
+    }
+    var createAfterApproveQueue: [RedPacket.ID: Observable<TransactionHash>] = [:] {
         didSet { isQueueChanged.onNext(()) }
     }
     var createQueue: [RedPacket.ID: Observable<TransactionHash>] = [:] {
@@ -211,6 +216,7 @@ final class RedPacketService {
             let realm = try RedPacketService.realm()
             let redPacketResults = realm.objects(RedPacket.self)
             Observable.array(from: redPacketResults, synchronousStart: false)
+                .debounce(.milliseconds(300), scheduler: MainScheduler.instance)        // prevent task queue race issue
                 .subscribe(onNext: { [weak self] redPackets in
                     guard let `self` = self else { return }
                     
@@ -280,6 +286,7 @@ final class RedPacketService {
                             .retry(3)
                             .observeOn(MainScheduler.instance)
                             .flatMap { nonce -> Observable<TransactionHash> in
+                                os_log("%{public}s[%{public}ld], %{public}s: BG#2 - send createAfterApprove for RP - %s with nonce: %d", ((#file as NSString).lastPathComponent), #line, #function, id, Int(nonce.quantity))
                                 return RedPacketService.shared.createAfterApprove(for: redPacket, use: walletValue, nonce: nonce)
                             }
                             .subscribe(onNext: { transactionHash in
