@@ -11,7 +11,16 @@ import UIKit
 extension UILabel {
     var maxNumberOfLines: Int {
         assert(font != nil)
-        let maxSize = CGSize(width: bounds.size.width, height: .greatestFiniteMagnitude)
+        let maxSize = CGSize(width: frame.size.width, height: .greatestFiniteMagnitude)
+        let text = (self.text ?? "") as NSString
+        let textHeight = text.boundingRect(with: maxSize, options: .usesLineFragmentOrigin, attributes: [.font: font!], context: nil).height
+        let lineHeight = font.lineHeight
+        return Int(ceil(textHeight / lineHeight))
+    }
+    
+    func getMaxNumberOfLines(in width: CGFloat) -> Int {
+        assert(font != nil)
+        let maxSize = CGSize(width: width, height: .greatestFiniteMagnitude)
         let text = (self.text ?? "") as NSString
         let textHeight = text.boundingRect(with: maxSize, options: .usesLineFragmentOrigin, attributes: [.font: font!], context: nil).height
         let lineHeight = font.lineHeight

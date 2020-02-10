@@ -223,22 +223,82 @@ extension MessagesViewModel {
         MessagesViewModel.configure(messageCardCell: cell, with: message)
         
         // cell expand logic
-        if let isExpand = messageExpandedDict[indexPath],
-            let maxNumberOfLines = messageMaxNumberOfLinesDict[indexPath] {
+        var isExpand = false
+        var maxNumberOfLines = 0
+        
+        // max number of lines calculation happens before autolayout process completed, thus here we
+        // use specific width instead
+        let frame = cell.contentView.layoutMarginsGuide.layoutFrame
+        let width = UIScreen.main.bounds.width - 2.0 * frame.origin.x - 12 * 4
+        if #available(iOS 13.0, *) {
+            isExpand = messageExpandedIDDict[message.id!] ?? false
+            maxNumberOfLines = messageMaxNumberOfLinesIDDict[message.id!] ?? 0
+            if !isExpand {
+                cell.messageLabel.layoutIfNeeded()
+                maxNumberOfLines = cell.messageLabel.getMaxNumberOfLines(in: width)
+                messageExpandedIDDict[message.id!] = false
+                messageMaxNumberOfLinesIDDict[message.id!] = maxNumberOfLines
+            }
+        } else {
+            isExpand = messageExpandedDict[indexPath] ?? false
+            maxNumberOfLines = messageMaxNumberOfLinesIDDict[message.id!] ?? 0
+            if !isExpand {
+                cell.messageLabel.layoutIfNeeded()
+                maxNumberOfLines = cell.messageLabel.maxNumberOfLines
+                messageExpandedDict[indexPath] = false
+                messageMaxNumberOfLinesDict[indexPath] = maxNumberOfLines
+            }
+        }
+        if isExpand {
             cell.messageLabel.numberOfLines = isExpand ? 0 : 4
             cell.extraBackgroundViewHeightConstraint.constant = maxNumberOfLines > 4 ? 44 : 0
             let title = isExpand ? L10n.MessageCardCell.Button.Expand.collapse : L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
             cell.expandButton.setTitle(title, for: .normal)
         } else {
-            cell.messageLabel.layoutIfNeeded()
-            let maxNumberOfLines = cell.messageLabel.maxNumberOfLines
-            messageExpandedDict[indexPath] = false
-            messageMaxNumberOfLinesDict[indexPath] = maxNumberOfLines
             cell.messageLabel.numberOfLines = 4
             cell.extraBackgroundViewHeightConstraint.constant = maxNumberOfLines > 4 ? 44 : 0
             let title = L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
             cell.expandButton.setTitle(title, for: .normal)
         }
+//        if #available(iOS 13.0, *) {
+//            isExpand = messageExpandedIDDict[message.id!] ?? false
+//            maxNumberOfLines = messageMaxNumberOfLinesIDDict[message.id!] ?? 0
+//
+//            if let isExpand = messageExpandedIDDict[message.id!],
+//                let maxNumberOfLines = messageMaxNumberOfLinesIDDict[message.id!] {
+//                cell.messageLabel.numberOfLines = isExpand ? 0 : 4
+//                cell.extraBackgroundViewHeightConstraint.constant = maxNumberOfLines > 4 ? 44 : 0
+//                let title = isExpand ? L10n.MessageCardCell.Button.Expand.collapse : L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
+//                cell.expandButton.setTitle(title, for: .normal)
+//            } else {
+//                cell.messageLabel.layoutIfNeeded()
+//                let maxNumberOfLines = cell.messageLabel.maxNumberOfLines
+//                messageExpandedIDDict[message.id!] = false
+//                messageMaxNumberOfLinesIDDict[message.id!] = maxNumberOfLines
+//                cell.messageLabel.numberOfLines = 4
+//                cell.extraBackgroundViewHeightConstraint.constant = maxNumberOfLines > 4 ? 44 : 0
+//                let title = L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
+//                cell.expandButton.setTitle(title, for: .normal)
+//            }
+//        } else {
+//            if let isExpand = messageExpandedDict[indexPath],
+//                let maxNumberOfLines = messageMaxNumberOfLinesDict[indexPath] {
+//                cell.messageLabel.numberOfLines = isExpand ? 0 : 4
+//                cell.extraBackgroundViewHeightConstraint.constant = maxNumberOfLines > 4 ? 44 : 0
+//                let title = isExpand ? L10n.MessageCardCell.Button.Expand.collapse : L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
+//                cell.expandButton.setTitle(title, for: .normal)
+//            } else {
+//                cell.messageLabel.layoutIfNeeded()
+//                let maxNumberOfLines = cell.messageLabel.maxNumberOfLines
+//                messageExpandedDict[indexPath] = false
+//                messageMaxNumberOfLinesDict[indexPath] = maxNumberOfLines
+//                cell.messageLabel.numberOfLines = 4
+//                cell.extraBackgroundViewHeightConstraint.constant = maxNumberOfLines > 4 ? 44 : 0
+//                let title = L10n.MessageCardCell.Button.Expand.expand(maxNumberOfLines)
+//                cell.expandButton.setTitle(title, for: .normal)
+//            }
+//        }
+        
         
         cell.setNeedsLayout()
         cell.layoutIfNeeded()
