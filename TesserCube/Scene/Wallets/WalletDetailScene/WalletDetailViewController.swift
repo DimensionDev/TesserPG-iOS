@@ -23,6 +23,7 @@ final class WalletDetailViewController: TCBaseViewController {
         tableView.register(WalletCardTableViewCell.self, forCellReuseIdentifier: String(describing: WalletCardTableViewCell.self))
         tableView.register(TokenTableViewCell.self, forCellReuseIdentifier: String(describing: TokenTableViewCell.self))
         tableView.separatorStyle = .none
+        tableView.delaysContentTouches = false
         return tableView
     }()
     
