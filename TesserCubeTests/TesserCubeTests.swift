@@ -9,10 +9,6 @@
 import XCTest
 @testable import TesserCube
 
-// Note:
-// If Xcode alert error "Expected ';' at end of declaration list" on SIGNATURE symbol
-// In PacketTags.h file. Insert "#undef SIGNATURE" below #include "J2ObjC_header.h"
-
 class TesserCubeTests: XCTestCase {
 
 }
