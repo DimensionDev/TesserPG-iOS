@@ -83,7 +83,7 @@ DEPENDENCIES:
   - WordSuggestion (~> 0.2.1)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - AlignedCollectionViewFlowLayout
     - ConsolePrint
     - DateToolsSwift
@@ -150,6 +150,6 @@ SPEC CHECKSUMS:
   "UITextView+Placeholder": c407b27599ea23cca425946fee3cf1db5d547008
   WordSuggestion: 424d96dd2cfe4259c72959f9bdcffc864f0e65d4
 
-PODFILE CHECKSUM: 77cfecf4c0b927d8ea2b0b9b49fe006c95c9bf77
+PODFILE CHECKSUM: 40ead262dbce42403d2aa7d349f0a826203a06a3
 
 COCOAPODS: 1.8.4
