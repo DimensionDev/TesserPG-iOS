@@ -143,6 +143,8 @@ class MessagesViewController: TCBaseViewController {
 
         reloadActionsView()
 
+        tableViewEditToolbar.delegate = self
+        
         if let tabBar = tabBarController?.tabBar {
             tableViewEditToolbar.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(tableViewEditToolbar)
@@ -153,7 +155,6 @@ class MessagesViewController: TCBaseViewController {
                 tableViewEditToolbar.bottomAnchor.constraint(equalTo: tabBar.layoutMarginsGuide.bottomAnchor),
             ])  // active in viewDidAppear
 
-            tableViewEditToolbar.delegate = self
         } else {
             assertionFailure()
         }
@@ -328,29 +329,32 @@ extension MessagesViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        viewModel.messages.asDriver()
-            .drive(onNext: { [weak self] messages in
-                if #available(iOS 13.0, *) {
-                    guard let dataSource = self?.viewModel.diffableDataSource as? UITableViewDiffableDataSource<MessagesViewModel.Section, Message> else {
-                        assertionFailure()
-                        return
+        
+        DispatchQueue.once {
+            viewModel.messages.asDriver()
+                .drive(onNext: { [weak self] messages in
+                    if #available(iOS 13.0, *) {
+                        guard let dataSource = self?.viewModel.diffableDataSource as? UITableViewDiffableDataSource<MessagesViewModel.Section, Message> else {
+                            assertionFailure()
+                            return
+                        }
+                        
+                        var snapsot = NSDiffableDataSourceSnapshot<MessagesViewModel.Section, Message>()
+                        snapsot.appendSections([.main])
+                        snapsot.appendItems(messages)
+                        dataSource.apply(snapsot)
+                        
+                    } else {
+                        // clear cache data when data source changed
+                        self?.viewModel.messageExpandedDict = [:]
+                        self?.viewModel.messageMaxNumberOfLinesDict = [:]
+                        self?.tableView.reloadData()
                     }
-
-                    var snapsot = NSDiffableDataSourceSnapshot<MessagesViewModel.Section, Message>()
-                    snapsot.appendSections([.main])
-                    snapsot.appendItems(messages)
-                    dataSource.apply(snapsot)
-
-                } else {
-                    // clear cache data when data source changed
-                    self?.viewModel.messageExpandedDict = [:]
-                    self?.viewModel.messageMaxNumberOfLinesDict = [:]
-                    self?.tableView.reloadData()
-                }
-            })
-            .disposed(by: disposeBag)
-
+                })
+                .disposed(by: disposeBag)
+        }
+        
+        // Should always active constraints to fix toolbar disappear issue
         NSLayoutConstraint.activate(tableViewEditToolbarConstraints)
     }
 
@@ -486,9 +490,17 @@ extension MessagesViewController: UITableViewDelegate {
             return nil
         }
 
-        let center = CGPoint(x: cell.bounds.midX, y: cell.bounds.midY)
-        let previewTarget = UIPreviewTarget(container: cell, center: center)
-        return UITargetedPreview(view: cell.cardView, parameters: UIPreviewParameters(), target: previewTarget)
+        return UITargetedPreview(view: cell.cardView, parameters: UIPreviewParameters())
+    }
+    
+    @available(iOS 13.0, *)
+    func tableView(_ tableView: UITableView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+        guard let indexPath = configuration.identifier as? IndexPath,
+            let cell = tableView.cellForRow(at: indexPath) as? MessageCardCell else {
+                return nil
+        }
+        
+        return UITargetedPreview(view: cell.cardView, parameters: UIPreviewParameters())
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
