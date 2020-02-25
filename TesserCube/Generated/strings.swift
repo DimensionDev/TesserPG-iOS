@@ -596,6 +596,20 @@ internal enum L10n {
   }
 
   internal enum PasteKeyViewController {
+    internal enum Alert {
+      internal enum Button {
+        /// Continue
+        internal static let `continue` = L10n.tr("Localizable", "PasteKeyViewController.Alert.Button.Continue")
+      }
+      internal enum Message {
+        /// This keypair contains private key part. Continue importing will only import the public key part
+        internal static let importAsPublicKey = L10n.tr("Localizable", "PasteKeyViewController.Alert.Message.ImportAsPublicKey")
+      }
+      internal enum Title {
+        /// Notice
+        internal static let notice = L10n.tr("Localizable", "PasteKeyViewController.Alert.Title.Notice")
+      }
+    }
     internal enum Placeholder {
       /// Password
       internal static let password = L10n.tr("Localizable", "PasteKeyViewController.Placeholder.Password")

@@ -143,6 +143,9 @@
 "PasteKeyViewController.Title.PastePrivateKey" = "粘贴密钥";
 "PasteKeyViewController.Title.ImportPublicKey" = "导入公钥";
 "PasteKeyViewController.Placeholder.Password" = "密码";
+"PasteKeyViewController.Alert.Title.Notice" = "提示";
+"PasteKeyViewController.Alert.Message.ImportAsPublicKey" = "该密钥对含有私钥部分，继续导入则仅会导入其公钥部分";
+"PasteKeyViewController.Alert.Button.Continue" = "继续";
 
 "MeViewController.Action.Button.Export" = "导出密钥";
 "MeViewController.Action.Button.Share" = "分享公钥";
