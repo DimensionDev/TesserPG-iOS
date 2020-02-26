@@ -28,7 +28,7 @@ class ProfileService {
     private var contactsObervation: TransactionObserver?
     private var messagesObervation: TransactionObserver?
 
-    #if XCTEST
+    #if XCTEST || targetEnvironment(simulator)
     // For simulator
     let keyChain = Keychain(service: "com.Sujitech.TesserCube", accessGroup: "7LFDZ96332.com.Sujitech.TesserCube")
     #else
