@@ -174,10 +174,12 @@
 
 "ImportPrivateKeyConfirmViewController.Title.NewPrivateKey" = "新密鑰";
 "ImportPrivateKeyConfirmViewController.Label.Availability" = "是否已導入";
-"ImportPrivateKeyConfirmViewController.Label.IsAvailable" = "未導入";
-"ImportPrivateKeyConfirmViewController.Label.IsUnavailable" = "已導入";
+"ImportPrivateKeyConfirmViewController.Label.NotAdded" = "未導入";
+"ImportPrivateKeyConfirmViewController.Label.IsPartialAdded" = "部分导入";
+"ImportPrivateKeyConfirmViewController.Label.IsAdded" = "已導入";
 "ImportPrivateKeyConfirmViewController.Label.PrivateKeyAddedSuccessfully" = "密鑰導入成功";
-"ImportPrivateKeyConfirmViewController.Button.ImportPrivateKey" = "導入迷藥";
+"ImportPrivateKeyConfirmViewController.Button.ImportPrivateKey" = "導入密鑰";
+"ImportPrivateKeyConfirmViewController.Button.UpdateKeypair" = "更新密鑰";
 "ImportPrivateKeyConfirmViewController.Button.Close" = "關閉";
 
 "SharePosterController.Title" = "分享公鑰";

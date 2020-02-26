@@ -6,16 +6,61 @@
 //  Copyright © 2019 Sujitech. All rights reserved.
 //
 
+import UIKit
 import SnapKit
 import SwifterSwift
 import RxCocoa
 import RxSwift
-import ConsolePrint
+
+final class ImportPrivateKeyConfirmViewModel {
+    
+    let disposeBag = DisposeBag()
+    
+    // Input
+    let tcKey: TCKey
+    let passphrase: String
+    
+    // Output
+    let isKeyValid: BehaviorRelay<Bool>
+    let keyStatus = BehaviorRelay<KeyStatus>(value: .new)   // default set to .new status
+    
+    init(tcKey: TCKey, passphrase: String) {
+        self.tcKey = tcKey
+        self.passphrase = passphrase
+        self.isKeyValid = BehaviorRelay(value: tcKey.isValid)
+        
+        // Setup status driver
+        ProfileService.default.keys.asDriver()
+            .map { keys -> TCKey? in
+                return keys.first(where: { $0.longIdentifier == tcKey.longIdentifier })
+            }
+            .map { existedKey -> KeyStatus in
+                guard let existedKey = existedKey else {
+                    return .new
+                }
+                
+                // Only check if not has private part due to this scene is importing private key
+                return existedKey.hasSecretKey ? .existed : .partial
+            }
+            .drive(keyStatus)
+            .disposed(by: disposeBag)
+    }
+    
+}
+
+extension ImportPrivateKeyConfirmViewModel {
+    
+    enum KeyStatus {
+        case new
+        case partial    // exist public part
+        case existed
+    }
+}
 
 class ImportPrivateKeyConfirmViewController: TCBaseViewController {
     
-    var tcKey: TCKey?
-    var passphrase: String?
+    let disposeBag = DisposeBag()
+    var viewModel: ImportPrivateKeyConfirmViewModel!
     
     let cardHeight: CGFloat = 106
     
@@ -92,10 +137,6 @@ class ImportPrivateKeyConfirmViewController: TCBaseViewController {
         cardCollectionView.delegate = self
         cardCollectionView.dataSource = self
         
-//        let integrityTitleLabel = createTitleLabel(title: "Integritiy")
-//        view.addSubview(integrityTitleLabel)
-//        view.addSubview(integritylabel)
-        
         let validityTitleLabel = createTitleLabel(title: L10n.ContactDetailViewController.Label.validity)
         view.addSubview(validityTitleLabel)
         view.addSubview(validitylabel)
@@ -115,20 +156,7 @@ class ImportPrivateKeyConfirmViewController: TCBaseViewController {
             maker.height.equalTo(106)
         }
         
-//        integrityTitleLabel.snp.makeConstraints { maker in
-//            maker.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
-//            maker.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
-//            maker.top.equalTo(cardCollectionView.snp.bottom).offset(30)
-//        }
-//
-//        integritylabel.snp.makeConstraints { maker in
-//            maker.leading.trailing.equalTo(integrityTitleLabel)
-//            maker.top.equalTo(integrityTitleLabel.snp.bottom).offset(2)
-//        }
-        
         validityTitleLabel.snp.makeConstraints { maker in
-//            maker.leading.trailing.equalTo(integrityTitleLabel)
-//            maker.top.equalTo(integritylabel.snp.bottom).offset(17)
             maker.top.equalTo(cardCollectionView.snp.bottom).offset(30)
             maker.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
             maker.trailing.equalTo(view.safeAreaLayoutGuide).offset(-16)
@@ -165,75 +193,89 @@ class ImportPrivateKeyConfirmViewController: TCBaseViewController {
             maker.bottom.equalTo(successlabel.snp.top).offset(-10)
         }
         
-        updateStatus()
-    }
-    
-    func updateStatus() {
-        let isValid = tcKey?.isValid ?? false
-        validitylabel.text = isValid ? L10n.ContactDetailViewController.Label.valid : L10n.ContactDetailViewController.Label.invalid
-        validitylabel.textColor = isValid ? .systemGreen : .systemRed
+        viewModel.isKeyValid.asDriver()
+            .drive(onNext: { [weak self] isValid in
+                guard let `self` = self else { return }
 
-        let isAvailable = isKeyAvailable()
-        availabilitylabel.text = isAvailable ? L10n.ImportPrivateKeyConfirmViewController.Label.isAvailable : L10n.ImportPrivateKeyConfirmViewController.Label.isUnavailable
+                self.validitylabel.text = isValid ? L10n.ContactDetailViewController.Label.valid : L10n.ContactDetailViewController.Label.invalid
+                self.validitylabel.textColor = isValid ? .systemGreen : .systemRed
+                
+            })
+            .disposed(by: disposeBag)
         
-        iconlabel.isHidden = isAvailable
-        successlabel.isHidden = isAvailable
-        
-        if !isAvailable {
-            if #available(iOS 13, *) {
-                importButton.color = .secondarySystemBackground
-                importButton.setTitleColor(.label, for: .normal)
-            } else {
-                importButton.color = .white
-                importButton.setTitleColor(.black, for: .normal)
-            }
-            importButton.setTitle(L10n.ImportPrivateKeyConfirmViewController.Button.close, for: .normal)
-            
-            importButton.removeTarget(self, action: #selector(importButtonDidClicked), for: .touchUpInside)
-            importButton.addTarget(self, action: #selector(dismissToRoot), for: .touchUpInside)
-        }
-    }
-    
-    func isKeyAvailable() -> Bool {
-        var isAvailable = true
-        if ProfileService.default.keys.value.contains(where: { $0.longIdentifier == tcKey?.longIdentifier }) {
-            isAvailable = false
-        }
-        return isAvailable
+        viewModel.keyStatus.asDriver()
+            .drive(onNext: { [weak self] keyStatus in
+                guard let `self` = self else { return }
+                
+                switch keyStatus {
+                case .new:
+                    self.iconlabel.isHidden = true
+                    self.successlabel.isHidden = true
+                    self.importButton.color = .systemBlue
+                    self.importButton.setTitleColor(.white, for: .normal)
+                    self.importButton.setTitle(L10n.MeViewController.Action.Button.importKey, for: .normal)
+                    self.availabilitylabel.text = L10n.ImportPrivateKeyConfirmViewController.Label.notAdded
+
+                case .partial:
+                    self.iconlabel.isHidden = true
+                    self.successlabel.isHidden = true
+                    self.importButton.color = .systemBlue
+                    self.importButton.setTitleColor(.white, for: .normal)
+                    self.importButton.setTitle(L10n.ImportPrivateKeyConfirmViewController.Button.updateKeypair, for: .normal)
+                    self.availabilitylabel.text = L10n.ImportPrivateKeyConfirmViewController.Label.isPartialAdded
+                    
+                case .existed:
+                    self.iconlabel.isHidden = false
+                    self.successlabel.isHidden = false
+                    self.importButton.color = ._secondarySystemBackground
+                    self.importButton.setTitleColor(._label, for: .normal)
+                    self.importButton.setTitle(L10n.ImportPrivateKeyConfirmViewController.Button.close, for: .normal)
+                    self.availabilitylabel.text = L10n.ImportPrivateKeyConfirmViewController.Label.isAdded
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     @objc
     func importButtonDidClicked() {
-        if !isKeyAvailable() {
-            updateStatus()
-        } else {
-            ProfileService.default.addKey(tcKey!, passphrase: passphrase) { [weak self] error in
+        switch viewModel.keyStatus.value {
+        case .new:
+            ProfileService.default.addKey(viewModel.tcKey, passphrase: viewModel.passphrase) { [weak self] error in
                 DispatchQueue.main.async {
                     if let error = error {
                         self?.showSimpleAlert(title: L10n.Common.Alert.error, message: error.localizedDescription)
                     } else {
-                        self?.updateStatus()
+                        // do nothing
                     }
                 }
             }
+            
+        case .partial:
+            ProfileService.default.updateKey(viewModel.tcKey, passphrase: viewModel.passphrase) { [weak self] error in
+                if let error = error {
+                    self?.showSimpleAlert(title: L10n.Common.Alert.error, message: error.localizedDescription)
+                } else {
+                    // do nothing
+                }
+            }
+            
+        case .existed:
+            // dismissToRoot
+            navigationController?.dismiss(animated: true, completion: nil)
         }
     }
     
-    @objc
-    func dismissToRoot() {
-        navigationController?.dismiss(animated: true, completion: nil)
-    }
 }
 
 extension ImportPrivateKeyConfirmViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return tcKey?.userID != nil ? 1 : 0
+        return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withClass: ConfirmContactCell.self, for: indexPath)
-        cell.keyValue = .TCKey(value: tcKey!)
-        cell.userID = tcKey?.userID
+        cell.keyValue = .TCKey(value: viewModel.tcKey)
+        cell.userID = viewModel.tcKey.userID
         cell.cardView.cardBackgroundColor = .systemBlue
         return cell
     }
