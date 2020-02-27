@@ -78,4 +78,3 @@ struct MessagesViewController_Previews: PreviewProvider {
 }
 
 #endif
-

@@ -388,6 +388,10 @@
 		DB4A6FF223C5D84600C2349C /* rinkeby-erc20.json in Resources */ = {isa = PBXBuildFile; fileRef = DB4A6FEF23C5D84600C2349C /* rinkeby-erc20.json */; };
 		DB4A6FF323C5D84600C2349C /* rinkeby-erc20.json in Resources */ = {isa = PBXBuildFile; fileRef = DB4A6FEF23C5D84600C2349C /* rinkeby-erc20.json */; };
 		DB4A6FF423C5D84600C2349C /* rinkeby-erc20.json in Resources */ = {isa = PBXBuildFile; fileRef = DB4A6FEF23C5D84600C2349C /* rinkeby-erc20.json */; };
+		DB4A6FB423C4784700C2349C /* DispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB415EB0238E1E780090C28F /* DispatchQueue.swift */; };
+		DB4A6FB523C4784800C2349C /* DispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB415EB0238E1E780090C28F /* DispatchQueue.swift */; };
+		DB4A6FB623C4784800C2349C /* DispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB415EB0238E1E780090C28F /* DispatchQueue.swift */; };
+		DB4A6FB723C4784900C2349C /* DispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB415EB0238E1E780090C28F /* DispatchQueue.swift */; };
 		DB4A6FFA23C5D90500C2349C /* ERC20Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A6FF923C5D90500C2349C /* ERC20Token.swift */; };
 		DB4A6FFB23C5D90500C2349C /* ERC20Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A6FF923C5D90500C2349C /* ERC20Token.swift */; };
 		DB4A6FFC23C5D90500C2349C /* ERC20Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4A6FF923C5D90500C2349C /* ERC20Token.swift */; };
@@ -502,6 +506,10 @@
 		DB6AA3ED2273247C00A7ADDF /* KeyFactory+BCOpenPGP.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6AA3E92273218C00A7ADDF /* KeyFactory+BCOpenPGP.swift */; };
 		DB6AA3F42275B69C00A7ADDF /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE69224A330D00D82704 /* String.swift */; };
 		DB75454B2296A7C400B4E1EF /* CreateKeyOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB75454A2296A7C400B4E1EF /* CreateKeyOption.swift */; };
+		DB874AD32404F47E009CE47C /* MessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB874AD22404F47E009CE47C /* MessageService.swift */; };
+		DB874AD42404F47E009CE47C /* MessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB874AD22404F47E009CE47C /* MessageService.swift */; };
+		DB874AD52404F47E009CE47C /* MessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB874AD22404F47E009CE47C /* MessageService.swift */; };
+		DB874AD62404F47E009CE47C /* MessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB874AD22404F47E009CE47C /* MessageService.swift */; };
 		DB7ECDF1238A88A600CF1E82 /* redpacket.bin in Resources */ = {isa = PBXBuildFile; fileRef = DBC9CEE42387896B009E13C5 /* redpacket.bin */; };
 		DB7ECDF2238A88A600CF1E82 /* redpacket.json in Resources */ = {isa = PBXBuildFile; fileRef = DBC9CEE52387896C009E13C5 /* redpacket.json */; };
 		DB7ECDF3238A88A600CF1E82 /* redpacket.bin in Resources */ = {isa = PBXBuildFile; fileRef = DBC9CEE42387896B009E13C5 /* redpacket.bin */; };
@@ -1055,6 +1063,7 @@
 		DB6882D323D59EF000D22CB4 /* mainnet-erc20.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "mainnet-erc20.json"; sourceTree = "<group>"; };
 		DB6AA3E92273218C00A7ADDF /* KeyFactory+BCOpenPGP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyFactory+BCOpenPGP.swift"; sourceTree = "<group>"; };
 		DB75454A2296A7C400B4E1EF /* CreateKeyOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateKeyOption.swift; sourceTree = "<group>"; };
+		DB874AD22404F47E009CE47C /* MessageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageService.swift; sourceTree = "<group>"; };
 		DB8D730E231E0EF0005D15DD /* MeViewModel+ContextMenuActionTableViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MeViewModel+ContextMenuActionTableViewDelegate.swift"; sourceTree = "<group>"; };
 		DB8D7310231E2791005D15DD /* ProfileService+KeyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileService+KeyRecord.swift"; sourceTree = "<group>"; };
 		DB8D7312231E38FD005D15DD /* KeyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyRecord.swift; sourceTree = "<group>"; };
@@ -1427,6 +1436,7 @@
 				DB15695823277FD900220926 /* ProfileService+Contact.swift */,
 				DB8D7310231E2791005D15DD /* ProfileService+KeyRecord.swift */,
 				833FF38C224F97BD00EFE0A9 /* ProfileService+Message.swift */,
+				DB874AD22404F47E009CE47C /* MessageService.swift */,
 				DBC24B1323026BA800A4AE8D /* WordSuggestionService.swift */,
 				DB3B58E12282929700879834 /* WormholdService.swift */,
 				DB4A700C23C6F44100C2349C /* RealmService.swift */,
@@ -3076,6 +3086,7 @@
 				8335283322C6FF1E006E19BC /* ImportPrivateKeyConfirmViewController.swift in Sources */,
 				DBC19D872375059500170151 /* ConfirmMnemonicCollectionViewModel.swift in Sources */,
 				83783379224BA43700F2C0BF /* ContactDBAction.swift in Sources */,
+				DB4A6FB423C4784700C2349C /* DispatchQueue.swift in Sources */,
 				DB03DD63237C104F00D96201 /* Wallet.swift in Sources */,
 				832146FC2244CD43008ECC22 /* MessagesViewModel.swift in Sources */,
 				832146E7224339EB008ECC22 /* CreateNewKeyViewController.swift in Sources */,
@@ -3175,6 +3186,7 @@
 				DBC9CEFD2387B8E2009E13C5 /* UIView+blinking.swift in Sources */,
 				DB4A6FFA23C5D90500C2349C /* ERC20Token.swift in Sources */,
 				DBB933D6239E7062003236EB /* WalletSectionFooterView.swift in Sources */,
+				DB874AD32404F47E009CE47C /* MessageService.swift in Sources */,
 				DBB64C9023CC93DA0099BE09 /* RedPacketHelper.swift in Sources */,
 				DB449995228C1CEF000B7E8A /* SettingsTableViewCell.swift in Sources */,
 				DB1169D722E19B100099BA25 /* MessageCardViewController.swift in Sources */,
@@ -3325,6 +3337,7 @@
 				83DFC73B22578ED800993160 /* InterpretFailView.swift in Sources */,
 				833FF389224E3CBC00EFE0A9 /* ToastAlerter.swift in Sources */,
 				83B93D61221E710300F556C0 /* UIColor+SwifterSwift.swift in Sources */,
+				DB4A6FB523C4784800C2349C /* DispatchQueue.swift in Sources */,
 				83B93D3C221D4AC900F556C0 /* DefaultKeyboard.swift in Sources */,
 				83D8451123AB484C00AA6B36 /* SignViewController.swift in Sources */,
 				83B93D4D221D844900F556C0 /* LayoutMetrics.swift in Sources */,
@@ -3424,6 +3437,7 @@
 				DBB64C6723C869A10099BE09 /* RealOnlyTextField.swift in Sources */,
 				83B93D58221E570200F556C0 /* RecipientButton.swift in Sources */,
 				837833592248898A00F2C0BF /* TCErrors.swift in Sources */,
+				DB874AD42404F47E009CE47C /* MessageService.swift in Sources */,
 				DB8D7319231E394E005D15DD /* KeyRecord.swift in Sources */,
 				8325E46D222CBFBC00EE9B83 /* KeyboardLayoutManager.swift in Sources */,
 				DB9FE9ED23A8B6A700499632 /* RedPacket+V1.swift in Sources */,
@@ -3505,6 +3519,7 @@
 				DB63A10522DDCF1600C2DDA6 /* UILabel.swift in Sources */,
 				DBB64C7623C874D10099BE09 /* WalletCardView.swift in Sources */,
 				835294B923279F40000E6170 /* DMSReceipientKeyIDUtil.swift in Sources */,
+				DB874AD52404F47E009CE47C /* MessageService.swift in Sources */,
 				DB63A12522E06E0900C2DDA6 /* String+Localization.swift in Sources */,
 				DB32518923BA198100A4DDD8 /* RedPacketValue.swift in Sources */,
 				DB4A701423C7006C00C2349C /* WalletObject.swift in Sources */,
@@ -3519,6 +3534,7 @@
 				DB415E8B238BF0980090C28F /* UIViewPreview.swift in Sources */,
 				DB1169DE22E19CA00099BA25 /* MessageCardTableViewController.swift in Sources */,
 				DBC9BD4F23B46CC300252437 /* EncPayloadDecryptResult.swift in Sources */,
+				DB4A6FB623C4784800C2349C /* DispatchQueue.swift in Sources */,
 				DB415EA1238CBEB20090C28F /* WalletService+Web3.swift in Sources */,
 				DB63A11F22E0688C00C2DDA6 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */,
 				DB63A11D22E0672400C2DDA6 /* SenderContactPickerView.swift in Sources */,
@@ -3588,6 +3604,7 @@
 				DB1169D922E19C0F0099BA25 /* MessageCardCell.swift in Sources */,
 				DB1169DF22E19CA00099BA25 /* MessageCardTableViewController.swift in Sources */,
 				DBF6B2AC232F5479008F83AE /* UIColor.swift in Sources */,
+				DB4A6FB723C4784900C2349C /* DispatchQueue.swift in Sources */,
 				DB1169B122E183390099BA25 /* ContactMappable.swift in Sources */,
 				DB415E96238BFB330090C28F /* WalletService.swift in Sources */,
 				DBD98FDE2334B7B7003A952B /* CryptoPublicKey.swift in Sources */,
@@ -3618,6 +3635,7 @@
 				DB9FEA1C23AB727F00499632 /* RedPacketService+Check.swift in Sources */,
 				DB1169BB22E183C80099BA25 /* KeyFactory.swift in Sources */,
 				DB1169DB22E19C7D0099BA25 /* TCCardView.swift in Sources */,
+				DB874AD62404F47E009CE47C /* MessageService.swift in Sources */,
 				DB1169B522E183800099BA25 /* ProfileService.swift in Sources */,
 				DB1169AE22E183050099BA25 /* KeyBridge.swift in Sources */,
 				DB32518A23BA198100A4DDD8 /* RedPacketValue.swift in Sources */,
