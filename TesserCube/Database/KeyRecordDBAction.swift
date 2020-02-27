@@ -97,3 +97,30 @@ extension KeyRecord {
     }
 
 }
+
+extension KeyRecord {
+    
+    /// Update partial key
+    /// - Parameters:
+    ///   - tcKey: the secret key for update
+    ///   - passphrase: passphrase for key
+    mutating func updateKey(_ tcKey: TCKey, passphrase: String) throws {
+        assert(tcKey.hasSecretKey)
+        
+        // 1. update keychain. Auth needs and should not in main thread
+        assert(!Thread.isMainThread)
+        let keychain = ProfileService.default.keyChain
+        try keychain
+            .authenticationPrompt("Authenticate to update your password")
+            .set(passphrase, key: tcKey.longIdentifier)
+
+        // 2. update keyRecord
+        let privateArmored = try tcKey.getPrivateArmored(passprahse: passphrase)
+        _ = try TCDBManager.default.dbQueue.write { db in
+            self.hasSecretKey = true
+            self.armored = privateArmored
+            try update(db)
+        }   // end let _ = try …
+    }
+    
+}

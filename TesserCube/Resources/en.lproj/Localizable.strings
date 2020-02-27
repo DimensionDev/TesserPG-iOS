@@ -123,14 +123,6 @@
 "MeViewController.Action.Button.Settings" = "Settings";
 "MeViewController.Action.Button.ConfirmDeleteKey" = "Yes, Delete ";
 
-"CreateNewKeyViewController.Alert.NameRequired" = "Name is required to create a key";
-"CreateNewKeyViewController.Alert.EmailRequired" = "Email is required to create a key";
-"CreateNewKeyViewController.Alert.EmailInvalid" = "Please input a valid email address";
-"CreateNewKeyViewController.Alert.ConfirmPasswordNotSame" = "Confirm password should be same as password";
-
-"CreateNewKeyViewController.Alert.ConfirmPasswordNotSame" = "Confirm password should be same as password";
-
-"ImportKeyController.Prompt.FromPGP" = "From another openPGP app...";
 "SettingsViewController.Title" = "Settings";
 "SettingsViewController.TableView.Header.Keyboard" = "Keyboard";
 "SettingsViewController.Settings.MessageDigitalSignature" = "Message Digital Signature";
@@ -151,6 +143,9 @@
 "PasteKeyViewController.Title.PastePrivateKey" = "Paste Private Key";
 "PasteKeyViewController.Title.ImportPublicKey" = "Import Public Key";
 "PasteKeyViewController.Placeholder.Password" = "Password";
+"PasteKeyViewController.Alert.Title.Notice" = "Notice";
+"PasteKeyViewController.Alert.Message.ImportAsPublicKey" = "This keypair contains private key part. Continue importing will only import the public key part";
+"PasteKeyViewController.Alert.Button.Continue" = "Continue";
 
 "MeViewController.Action.Button.Export" = "Export Private Key";
 "MeViewController.Action.Button.Share" = "Share Public Key";
@@ -179,10 +174,12 @@
 
 "ImportPrivateKeyConfirmViewController.Title.NewPrivateKey" = "New Private Key";
 "ImportPrivateKeyConfirmViewController.Label.Availability" = "Availability";
-"ImportPrivateKeyConfirmViewController.Label.IsAvailable" = "Not Added Yet";
-"ImportPrivateKeyConfirmViewController.Label.IsUnavailable" = "Already Added";
+"ImportPrivateKeyConfirmViewController.Label.NotAdded" = "Not Added Yet";
+"ImportPrivateKeyConfirmViewController.Label.IsPartialAdded" = "Partial Added";
+"ImportPrivateKeyConfirmViewController.Label.IsAdded" = "Already Added";
 "ImportPrivateKeyConfirmViewController.Label.PrivateKeyAddedSuccessfully" = "Private Keys Imported Successfully";
 "ImportPrivateKeyConfirmViewController.Button.ImportPrivateKey" = "Import Private Key";
+"ImportPrivateKeyConfirmViewController.Button.UpdateKeypair" = "Update Keypair";
 "ImportPrivateKeyConfirmViewController.Button.Close" = "Close";
 
 "SharePosterController.Title" = "Share Public Key";

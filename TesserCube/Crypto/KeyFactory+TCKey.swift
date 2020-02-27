@@ -14,42 +14,15 @@ extension KeyFactory {
 
     static func key(from armoredKey: String, passphrase: String?) throws -> TCKey {
         do {
-//<<<<<<< HEAD
-//            guard let keyRing = try? DMSPGPKeyRing(armoredKey: armoredKey, password: passphrase) else {
-//                throw TCError.pgpKeyError(reason: .invalidKeyFormat)
-//            }
-//            let key = TCKey(keyRing: keyRing)
+
             guard let key = TCKey(armored: armoredKey), try key.goKeyRing?.getEncryptionKey() != nil else {
                 throw TCError.pgpKeyError(reason: .invalidPassword)
             }
             if let passphrase = passphrase {
                 try key.unlock(passphrase: passphrase)
-//=======
-//            let keyRing = try DMSPGPKeyRing(armoredKey: armoredKey, password: passphrase)
-//            let key = TCKey(keyRing: keyRing, from: nil)
-//
-//            // Check passphrase if there is secret key within
-//            if let secretKeyRing = key.keyRing.secretKeyRing {
-//                guard let password = passphrase, secretKeyRing.verify(password: password) else {
-//                    throw TCError.pgpKeyError(reason: .invalidPassword)
-//                }
-//
-//                // passphrase is correct
-//>>>>>>> 949ca18... fix: not prompt "invalid password" when import private key with wrong passphrase issue
             }
             
             return key
-            // Check passphrase if there is secret key within
-//            if let secretKeyRing = key.keyRing.secretKeyRing {
-//                guard let password = passphrase, secretKeyRing.verify(password: password) else {
-//                    throw TCError.pgpKeyError(reason: .invalidPassword)
-//                }
-//
-//                // passphrase is correct
-//            }
-//
-//            return key
-
         } catch DMSPGPError.invalidSecrectKeyPassword {
             throw TCError.pgpKeyError(reason: .invalidPassword)
         } catch let error as DMSPGPError {
