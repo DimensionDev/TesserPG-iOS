@@ -143,6 +143,9 @@
 "PasteKeyViewController.Title.PastePrivateKey" = "粘貼密鑰";
 "PasteKeyViewController.Title.ImportPublicKey" = "導入公鑰";
 "PasteKeyViewController.Placeholder.Password" = "密碼";
+"PasteKeyViewController.Alert.Title.Notice" = "提示";
+"PasteKeyViewController.Alert.Message.ImportAsPublicKey" = "該密鑰對含有私鑰部分，繼續導入則僅會導入其公鑰部分";
+"PasteKeyViewController.Alert.Button.Continue" = "繼續";
 
 "MeViewController.Action.Button.Export" = "導出密鑰";
 "MeViewController.Action.Button.Share" = "分享公鑰";
@@ -171,10 +174,12 @@
 
 "ImportPrivateKeyConfirmViewController.Title.NewPrivateKey" = "新密鑰";
 "ImportPrivateKeyConfirmViewController.Label.Availability" = "是否已導入";
-"ImportPrivateKeyConfirmViewController.Label.IsAvailable" = "未導入";
-"ImportPrivateKeyConfirmViewController.Label.IsUnavailable" = "已導入";
+"ImportPrivateKeyConfirmViewController.Label.NotAdded" = "未導入";
+"ImportPrivateKeyConfirmViewController.Label.IsPartialAdded" = "部分导入";
+"ImportPrivateKeyConfirmViewController.Label.IsAdded" = "已導入";
 "ImportPrivateKeyConfirmViewController.Label.PrivateKeyAddedSuccessfully" = "密鑰導入成功";
-"ImportPrivateKeyConfirmViewController.Button.ImportPrivateKey" = "導入迷藥";
+"ImportPrivateKeyConfirmViewController.Button.ImportPrivateKey" = "導入密鑰";
+"ImportPrivateKeyConfirmViewController.Button.UpdateKeypair" = "更新密鑰";
 "ImportPrivateKeyConfirmViewController.Button.Close" = "關閉";
 
 "SharePosterController.Title" = "分享公鑰";

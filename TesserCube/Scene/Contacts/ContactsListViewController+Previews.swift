@@ -30,7 +30,6 @@ struct ContactsListViewControllerRepresentable: UIViewControllerRepresentable {
 @available(iOS 13.0, *)
 struct ContactsListViewController_Previews: PreviewProvider {
 
-
     static let English = [
         "Daniel Parry",
         "Rory Grant",

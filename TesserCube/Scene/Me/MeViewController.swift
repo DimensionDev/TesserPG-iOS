@@ -273,10 +273,18 @@ extension MeViewController: UITableViewDelegate {
         let cell = tableView.cellForRow(at: indexPath) as? KeyCardCell else {
             return nil
         }
-
-        let center = CGPoint(x: cell.bounds.midX, y: cell.bounds.midY)
-        let previewTarget = UIPreviewTarget(container: cell, center: center)
-        return UITargetedPreview(view: cell.cardView, parameters: UIPreviewParameters(), target: previewTarget)
+        
+        return UITargetedPreview(view: cell.cardView, parameters: UIPreviewParameters())
+    }
+    
+    @available(iOS 13.0, *)
+    func tableView(_ tableView: UITableView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+        guard let indexPath = configuration.identifier as? IndexPath,
+            let cell = tableView.cellForRow(at: indexPath) as? KeyCardCell else {
+                return nil
+        }
+        
+        return UITargetedPreview(view: cell.cardView, parameters: UIPreviewParameters())
     }
 
 }

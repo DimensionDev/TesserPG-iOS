@@ -16,10 +16,10 @@ pod install
 
 ## Acknowledgements
 - [AlignedCollectionViewFlowLayout](https://github.com/mischa-hildebrand/AlignedCollectionViewFlowLayout)
-- [DMSOpenPGP](https://github.com/DimensionDev/DMSOpenPGP)
 - [DateToolsSwift](https://github.com/MatthewYork/DateTools)
 - [DeepDiff](https://github.com/onmyway133/DeepDiff)
 - [DeviceKit](https://github.com/devicekit/DeviceKit)
+- [DMSGoPGP](https://github.com/DimensionDev/gopenpgp)
 - [Eureka](https://github.com/xmartlabs/Eureka)
 - [FLEX](https://github.com/Flipboard/FLEX)
 - [GRDB.swift](https://github.com/groue/GRDB.swift)
@@ -38,7 +38,7 @@ pod install
 - [UITextView+Placeholder](https://github.com/devxoul/UITextView-Placeholder)
 
 ## Notes
-This project OpenPGP implement open sourced in [DMSOpenPGP](https://github.com/DimensionDev/DMSOpenPGP). First time install this pod require download J2ObjC which needs 3~15 mins.
+This project OpenPGP implementation open source in [DMSGoPGP](https://github.com/DimensionDev/gopenpgp).
 
 ## License
 Tessercube is released under the [AGPL](./LICENSE) License.

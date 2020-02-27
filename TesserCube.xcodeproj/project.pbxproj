@@ -262,6 +262,10 @@
 		DB44999A228C244F000B7E8A /* MessageDigitalSignatureSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB449999228C244F000B7E8A /* MessageDigitalSignatureSettingsViewController.swift */; };
 		DB44999C228C248D000B7E8A /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB44999B228C248D000B7E8A /* SettingsViewModel.swift */; };
 		DB44999E228D3353000B7E8A /* MessageDigitalSignatureSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB44999D228D3353000B7E8A /* MessageDigitalSignatureSettingsViewModel.swift */; };
+		DB4A6FB423C4784700C2349C /* DispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB415EB0238E1E780090C28F /* DispatchQueue.swift */; };
+		DB4A6FB523C4784800C2349C /* DispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB415EB0238E1E780090C28F /* DispatchQueue.swift */; };
+		DB4A6FB623C4784800C2349C /* DispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB415EB0238E1E780090C28F /* DispatchQueue.swift */; };
+		DB4A6FB723C4784900C2349C /* DispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB415EB0238E1E780090C28F /* DispatchQueue.swift */; };
 		DB4CBCA8224F932B00ED6BF0 /* InterpretMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4CBCA7224F932B00ED6BF0 /* InterpretMessageViewController.swift */; };
 		DB4CBCAA224F962A00ED6BF0 /* InterpretMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB4CBCA9224F962A00ED6BF0 /* InterpretMessageViewModel.swift */; };
 		DB4F300122A11F820003804B /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 832146DF22421F93008ECC22 /* Contact.swift */; };
@@ -347,6 +351,10 @@
 		DB6AA3ED2273247C00A7ADDF /* KeyFactory+BCOpenPGP.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6AA3E92273218C00A7ADDF /* KeyFactory+BCOpenPGP.swift */; };
 		DB6AA3F42275B69C00A7ADDF /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB66FE69224A330D00D82704 /* String.swift */; };
 		DB75454B2296A7C400B4E1EF /* CreateKeyOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB75454A2296A7C400B4E1EF /* CreateKeyOption.swift */; };
+		DB874AD32404F47E009CE47C /* MessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB874AD22404F47E009CE47C /* MessageService.swift */; };
+		DB874AD42404F47E009CE47C /* MessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB874AD22404F47E009CE47C /* MessageService.swift */; };
+		DB874AD52404F47E009CE47C /* MessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB874AD22404F47E009CE47C /* MessageService.swift */; };
+		DB874AD62404F47E009CE47C /* MessageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB874AD22404F47E009CE47C /* MessageService.swift */; };
 		DB8D730F231E0EF0005D15DD /* MeViewModel+ContextMenuActionTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D730E231E0EF0005D15DD /* MeViewModel+ContextMenuActionTableViewDelegate.swift */; };
 		DB8D7311231E2791005D15DD /* ProfileService+KeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D7310231E2791005D15DD /* ProfileService+KeyRecord.swift */; };
 		DB8D7313231E38FD005D15DD /* KeyRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB8D7312231E38FD005D15DD /* KeyRecord.swift */; };
@@ -592,7 +600,6 @@
 		83B93E89222411C300F556C0 /* UIView+blinking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+blinking.swift"; sourceTree = "<group>"; };
 		83B93ED8222528AD00F556C0 /* RecommendRecipientsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendRecipientsView.swift; sourceTree = "<group>"; };
 		83C12EDF2332209D009DB359 /* DMSPGPUserIDTranslator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMSPGPUserIDTranslator.swift; sourceTree = "<group>"; };
-		83C12EE42332244D009DB359 /* MeViewModel+ContextMenuActionTableViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MeViewModel+ContextMenuActionTableViewDelegate.swift"; sourceTree = "<group>"; };
 		83C90B42231678B90048743A /* GenerateKeyData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateKeyData.swift; sourceTree = "<group>"; };
 		83DFC72B2252EF3100993160 /* KeyRecordDBAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyRecordDBAction.swift; sourceTree = "<group>"; };
 		83DFC73622577B9800993160 /* WormHole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WormHole.swift; sourceTree = "<group>"; };
@@ -627,6 +634,7 @@
 		DB15695823277FD900220926 /* ProfileService+Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileService+Contact.swift"; sourceTree = "<group>"; };
 		DB15695D23278EA200220926 /* FetchableRecord+all.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FetchableRecord+all.swift"; sourceTree = "<group>"; };
 		DB3B58E12282929700879834 /* WormholdService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WormholdService.swift; sourceTree = "<group>"; };
+		DB415EB0238E1E780090C28F /* DispatchQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchQueue.swift; sourceTree = "<group>"; };
 		DB449988228C038E000B7E8A /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		DB44998F228C13CA000B7E8A /* MessageDigitalSignatureSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDigitalSignatureSettings.swift; sourceTree = "<group>"; };
 		DB449994228C1CEF000B7E8A /* SettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableViewCell.swift; sourceTree = "<group>"; };
@@ -660,6 +668,7 @@
 		DB66FE6E224A3CD600D82704 /* SenderContactPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SenderContactPickerView.swift; sourceTree = "<group>"; };
 		DB6AA3E92273218C00A7ADDF /* KeyFactory+BCOpenPGP.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyFactory+BCOpenPGP.swift"; sourceTree = "<group>"; };
 		DB75454A2296A7C400B4E1EF /* CreateKeyOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateKeyOption.swift; sourceTree = "<group>"; };
+		DB874AD22404F47E009CE47C /* MessageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageService.swift; sourceTree = "<group>"; };
 		DB8D730E231E0EF0005D15DD /* MeViewModel+ContextMenuActionTableViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MeViewModel+ContextMenuActionTableViewDelegate.swift"; sourceTree = "<group>"; };
 		DB8D7310231E2791005D15DD /* ProfileService+KeyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileService+KeyRecord.swift"; sourceTree = "<group>"; };
 		DB8D7312231E38FD005D15DD /* KeyRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyRecord.swift; sourceTree = "<group>"; };
@@ -958,6 +967,7 @@
 				DB15695823277FD900220926 /* ProfileService+Contact.swift */,
 				DB8D7310231E2791005D15DD /* ProfileService+KeyRecord.swift */,
 				833FF38C224F97BD00EFE0A9 /* ProfileService+Message.swift */,
+				DB874AD22404F47E009CE47C /* MessageService.swift */,
 				DBC24B1323026BA800A4AE8D /* WordSuggestionService.swift */,
 				DB3B58E12282929700879834 /* WormholdService.swift */,
 			);
@@ -980,7 +990,6 @@
 		832146BC223F955D008ECC22 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				83C12EE42332244D009DB359 /* MeViewModel+ContextMenuActionTableViewDelegate.swift */,
 				8378336A224B352500F2C0BF /* ContactListViewModel.swift */,
 				832146FB2244CD43008ECC22 /* MessagesViewModel.swift */,
 				DB97AD152317BCD9007594E9 /* MessagesViewModel+ContextMenuActionTableViewDelegate.swift */,
@@ -1189,6 +1198,7 @@
 				8313F69C22477CA000C09C2D /* UIViewController+Alert.swift */,
 				83B93D21221CEB9800F556C0 /* UserDefaults+AppGroup.swift */,
 				DB1169CA22E185640099BA25 /* NotificationName.swift */,
+				DB415EB0238E1E780090C28F /* DispatchQueue.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -2027,6 +2037,7 @@
 				8378338C224DFED100F2C0BF /* SubKeyCardCell.swift in Sources */,
 				8335283322C6FF1E006E19BC /* ImportPrivateKeyConfirmViewController.swift in Sources */,
 				83783379224BA43700F2C0BF /* ContactDBAction.swift in Sources */,
+				DB4A6FB423C4784700C2349C /* DispatchQueue.swift in Sources */,
 				832146FC2244CD43008ECC22 /* MessagesViewModel.swift in Sources */,
 				832146E7224339EB008ECC22 /* CreateNewKeyViewController.swift in Sources */,
 				DBC24B1423026BA800A4AE8D /* WordSuggestionService.swift in Sources */,
@@ -2080,6 +2091,7 @@
 				832146BA223F8AA1008ECC22 /* KeyCardCell.swift in Sources */,
 				8313F69D22477CA000C09C2D /* UIViewController+Alert.swift in Sources */,
 				832146FA2244CCF4008ECC22 /* MessagesViewController.swift in Sources */,
+				DB874AD32404F47E009CE47C /* MessageService.swift in Sources */,
 				DB449995228C1CEF000B7E8A /* SettingsTableViewCell.swift in Sources */,
 				DB1169D722E19B100099BA25 /* MessageCardViewController.swift in Sources */,
 				83C12EE02332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */,
@@ -2171,6 +2183,7 @@
 				83DFC73B22578ED800993160 /* InterpretFailView.swift in Sources */,
 				833FF389224E3CBC00EFE0A9 /* ToastAlerter.swift in Sources */,
 				83B93D61221E710300F556C0 /* UIColor+SwifterSwift.swift in Sources */,
+				DB4A6FB523C4784800C2349C /* DispatchQueue.swift in Sources */,
 				83B93D3C221D4AC900F556C0 /* DefaultKeyboard.swift in Sources */,
 				83B93D4D221D844900F556C0 /* LayoutMetrics.swift in Sources */,
 				DBBBC199224E29E50080790F /* ContactMappable.swift in Sources */,
@@ -2226,6 +2239,7 @@
 				831EC43222B09AAC0075D8C5 /* DMSReceipientKeyIDUtil.swift in Sources */,
 				83B93D58221E570200F556C0 /* RecipientButton.swift in Sources */,
 				837833592248898A00F2C0BF /* TCErrors.swift in Sources */,
+				DB874AD42404F47E009CE47C /* MessageService.swift in Sources */,
 				DB8D7319231E394E005D15DD /* KeyRecord.swift in Sources */,
 				8325E46D222CBFBC00EE9B83 /* KeyboardLayoutManager.swift in Sources */,
 				83C90B44231678DE0048743A /* GenerateKeyData.swift in Sources */,
@@ -2266,11 +2280,13 @@
 				DB63A10A22DEF4D300C2DDA6 /* ImageUtil.swift in Sources */,
 				DB63A10522DDCF1600C2DDA6 /* UILabel.swift in Sources */,
 				835294B923279F40000E6170 /* DMSReceipientKeyIDUtil.swift in Sources */,
+				DB874AD52404F47E009CE47C /* MessageService.swift in Sources */,
 				DB63A12522E06E0900C2DDA6 /* String+Localization.swift in Sources */,
 				DB63A0E422DD9B5600C2DDA6 /* CALayer+Shadow.swift in Sources */,
 				DB63A11E22E0687C00C2DDA6 /* ContactPickerTagCollectionViewCell.swift in Sources */,
 				DB15696023278EA200220926 /* FetchableRecord+all.swift in Sources */,
 				DB1169DE22E19CA00099BA25 /* MessageCardTableViewController.swift in Sources */,
+				DB4A6FB623C4784800C2349C /* DispatchQueue.swift in Sources */,
 				DB63A11F22E0688C00C2DDA6 /* ContactPickerTextFieldCollectionViewCell.swift in Sources */,
 				DB63A11D22E0672400C2DDA6 /* SenderContactPickerView.swift in Sources */,
 				DB63A10622DDD0EF00C2DDA6 /* InterpretActionViewController.swift in Sources */,
@@ -2317,6 +2333,7 @@
 				DB1169D922E19C0F0099BA25 /* MessageCardCell.swift in Sources */,
 				DB1169DF22E19CA00099BA25 /* MessageCardTableViewController.swift in Sources */,
 				DBF6B2AC232F5479008F83AE /* UIColor.swift in Sources */,
+				DB4A6FB723C4784900C2349C /* DispatchQueue.swift in Sources */,
 				DB1169B122E183390099BA25 /* ContactMappable.swift in Sources */,
 				DBD98FDE2334B7B7003A952B /* CryptoPublicKey.swift in Sources */,
 				DB1169BF22E183F90099BA25 /* KeyRecordDBAction.swift in Sources */,
@@ -2334,6 +2351,7 @@
 				DB1169E122E1A1130099BA25 /* TCActionButton.swift in Sources */,
 				DB1169BB22E183C80099BA25 /* KeyFactory.swift in Sources */,
 				DB1169DB22E19C7D0099BA25 /* TCCardView.swift in Sources */,
+				DB874AD62404F47E009CE47C /* MessageService.swift in Sources */,
 				DB1169B522E183800099BA25 /* ProfileService.swift in Sources */,
 				DB1169AE22E183050099BA25 /* KeyBridge.swift in Sources */,
 				DB63A14F22E180E100C2DDA6 /* TCBaseViewController.swift in Sources */,
@@ -2612,7 +2630,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -2623,7 +2641,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2646,7 +2664,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -2657,7 +2675,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2767,7 +2785,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2777,7 +2795,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2798,7 +2816,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2808,7 +2826,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2828,7 +2846,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeInterpretAction/TesserCubeInterpretAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2837,7 +2855,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeInterpretAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2855,7 +2873,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeInterpretAction/TesserCubeInterpretAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2864,7 +2882,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeInterpretAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2882,7 +2900,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeComposeAction/TesserCubeComposeAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2891,7 +2909,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeComposeAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -2909,7 +2927,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeComposeAction/TesserCubeComposeAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -2918,7 +2936,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeComposeAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -3005,7 +3023,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCube/TesserCube.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				ENABLE_BITCODE = YES;
 				HEADER_SEARCH_PATHS = "$(inherited)";
@@ -3016,7 +3034,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3038,7 +3056,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeKeyboard/TesserCubeKeyboard.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeKeyboard/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3048,7 +3066,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeKeyboard;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -3068,7 +3086,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeInterpretAction/TesserCubeInterpretAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeInterpretAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3077,7 +3095,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeInterpretAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -3095,7 +3113,7 @@
 				CODE_SIGN_ENTITLEMENTS = TesserCubeComposeAction/TesserCubeComposeAction.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 37;
+				CURRENT_PROJECT_VERSION = 38;
 				DEVELOPMENT_TEAM = 7LFDZ96332;
 				INFOPLIST_FILE = TesserCubeComposeAction/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -3104,7 +3122,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.2;
+				MARKETING_VERSION = 1.3.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Sujitech.TesserCube.TesserCubeComposeAction;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

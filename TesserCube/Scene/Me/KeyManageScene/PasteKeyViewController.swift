@@ -158,9 +158,42 @@ private extension PasteKeyViewController {
         guard let keyString = keyTextView.text else {
             return
         }
-        showHUD(L10n.Common.Hud.importingKey)
+        
+        // let publicKeyBlock = KeyFactory.extractPublicKeyBlock(from: keyString)
+        let privateKeyBlock = KeyFactory.extractSecretKeyBlock(from: keyString)
+        
         let passphrase = needPassphrase ? passwordTextField.text : nil
-        ProfileService.default.decryptKey(armoredKey: keyString, passphrase: passphrase) { [weak self] (tckey, error) in
+        
+        if privateKeyBlock != nil && !needPassphrase {
+            // Alert user: continue importing will only import the public part of keypair
+            let title = L10n.PasteKeyViewController.Alert.Title.notice
+            let message = L10n.PasteKeyViewController.Alert.Message.importAsPublicKey
+            let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            
+            let continueAction = UIAlertAction(title: L10n.PasteKeyViewController.Alert.Button.continue, style: .default) { [weak self] _ in
+                self?.importKey(armoredKey: keyString, passphrase: passphrase)
+            }
+            alertController.addAction(continueAction)
+            
+            let cancelAction = UIAlertAction(title: L10n.Common.Button.cancel, style: .cancel) { _ in
+                // Do nothing
+            }
+            alertController.addAction(cancelAction)
+            
+            present(alertController, animated: true, completion: nil)
+            
+        } else if privateKeyBlock == nil && needPassphrase {
+            let error = DMSPGPError.invalidPrivateKey
+            showSimpleAlert(title: L10n.Common.Alert.error, message: error.localizedDescription)
+            
+        } else {
+            importKey(armoredKey: keyString, passphrase: passphrase)
+        }
+    }
+    
+    func importKey(armoredKey: String, passphrase: String?) {
+        showHUD(L10n.Common.Hud.importingKey)
+        ProfileService.default.decryptKey(armoredKey: armoredKey, passphrase: passphrase) { [weak self] (tckey, error) in
             DispatchQueue.main.async {
                 self?.hideHUD()
                 if let error = error {
@@ -170,23 +203,6 @@ private extension PasteKeyViewController {
                 }
             }
         }
-//        Coordinator.main.present(scene: .importKeyConfirm, from: self)
-//        return
-//        guard let keyString = keyTextView.text else {
-//            return
-//        }
-//        showHUD(L10n.Common.Hud.importingKey)
-//        let passphrase = needPassphrase ? passwordTextField.text : nil
-//        ProfileService.default.addNewKey(armoredKey: keyString, passphrase: passphrase) { [weak self] error in
-//            DispatchQueue.main.async {
-//                self?.hideHUD()
-//                if let error = error {
-//                    self?.showSimpleAlert(title: L10n.Common.Alert.error, message: error.localizedDescription)
-//                } else {
-//                    self?.dismiss(animated: true, completion: nil)
-//                }
-//            }
-//        }   // end addNewKeys
     }
 
 }
