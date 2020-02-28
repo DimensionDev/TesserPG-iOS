@@ -42,7 +42,7 @@ extension ProfileService {
                     }
                     // Only create one Contact from key's primary userID
                     let userID = key.userID
-    //                let userID = key.keyRing.publicKeyRing.primaryKey.primaryUserID ?? ""
+
                     // TODO: KeyRecord insert here. Should Refactoring here when we support sub-key feature
                     try self.addNewContact(keyUserID: userID, key: key, passphrase: passphrase)
 
@@ -92,8 +92,27 @@ extension ProfileService {
         }
     }
     
-    func deleteKey() {
-        
+    /// Update partial public keypair to secret key pair
+    /// - Parameters:
+    ///   - tcKey: secret keypair for updaate
+    ///   - passphrase: passphrase for tcKey
+    ///   - completion: error callback
+    func updateKey(_ tcKey: TCKey, passphrase: String, _ completion: @escaping (Error?) -> Void) {
+        DispatchQueue.global().async {
+            do {
+                // keyRecordsObervation will handle database update
+                guard var keyRecord = KeyRecord.all().first(where: { $0.longIdentifier == tcKey.longIdentifier }) else {
+                    completion(nil)
+                    return
+                }
+                try keyRecord.updateKey(tcKey, passphrase: passphrase)
+                
+                completion(nil)
+                
+            } catch {
+                completion(error)
+            }
+        }
     }
     
 }

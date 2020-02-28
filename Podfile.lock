@@ -18,20 +18,20 @@ PODS:
   - GRDB.swift (3.7.0)
   - GRDBCipher (3.7.0):
     - SQLCipher (~> 3.4.1)
-  - IQKeyboardManagerSwift (6.5.4)
+  - IQKeyboardManagerSwift (6.5.5)
   - KeychainAccess (3.2.1)
-  - Kingfisher (5.12.0):
-    - Kingfisher/Core (= 5.12.0)
-  - Kingfisher/Core (5.12.0)
+  - Kingfisher (5.13.1):
+    - Kingfisher/Core (= 5.13.1)
+  - Kingfisher/Core (5.13.1)
   - MMWormhole (2.0.0):
     - MMWormhole/Core (= 2.0.0)
   - MMWormhole/Core (2.0.0)
-  - PromiseKit/CorePromise (6.12.0)
-  - Realm (4.3.0):
-    - Realm/Headers (= 4.3.0)
-  - Realm/Headers (4.3.0)
-  - RealmSwift (4.3.0):
-    - Realm (= 4.3.0)
+  - PromiseKit/CorePromise (6.13.1)
+  - Realm (4.3.2):
+    - Realm/Headers (= 4.3.2)
+  - Realm/Headers (4.3.2)
+  - RealmSwift (4.3.2):
+    - Realm (= 4.3.2)
   - RxBlocking (5.0.1):
     - RxSwift (~> 5)
   - RxCocoa (5.0.1):
@@ -75,15 +75,15 @@ PODS:
   - SwiftGen (6.1.0)
   - SwiftLint (0.30.1)
   - "UITextView+Placeholder (1.3.3)"
-  - Web3/ContractABI (0.4.1):
+  - Web3/ContractABI (0.4.2):
     - Web3/Core
-  - Web3/Core (0.4.1):
+  - Web3/Core (0.4.2):
     - BigInt (~> 4.0)
     - CryptoSwift (~> 1.0)
     - secp256k1.swift (~> 0.1)
-  - Web3/HTTPExtension (0.4.1):
+  - Web3/HTTPExtension (0.4.2):
     - Web3/Core
-  - Web3/PromiseKit (0.4.1):
+  - Web3/PromiseKit (0.4.2):
     - PromiseKit/CorePromise (~> 6.0)
     - Web3/Core
   - WordSuggestion (0.2.1):
@@ -193,13 +193,13 @@ SPEC CHECKSUMS:
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
   GRDB.swift: 51cc9e57ae8ff7083a9d674c97925aa1de06aac5
   GRDBCipher: a3066d2953508039ea8fb423a1ba14c7b6d888be
-  IQKeyboardManagerSwift: 2dde0fc70110e8eac7ccce2a46fdbec6a850b414
+  IQKeyboardManagerSwift: 0fb93310284665245591f50f7a5e38de615960b7
   KeychainAccess: d5470352939ced6d6f7fb51cb2e67aae51fc294f
-  Kingfisher: dc6e0f53bb5b12c3e75bedb0e01bbd7a640eea69
+  Kingfisher: f33a848445e33c543620812158dc5d47f6bf90df
   MMWormhole: 0cd3fd35a9118b2e2d762b499f54eeaace0be791
-  PromiseKit: c06835ba442ce5454ce3cdde470232804a6e4ff8
-  Realm: 9357c3589555793e1860a7104a7412bca4a48d99
-  RealmSwift: 402f1e379a8ef82c635313037b043f0f06de880c
+  PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
+  Realm: 5e92902e2875dff4bb0fd02f67bb737c3d5db2bc
+  RealmSwift: 9a360fc7bae04fc2e308a34fbd899d5faa2d6b22
   RxBlocking: c5e090f42d046df8b0e7752742510f349963710f
   RxCocoa: e741b9749968e8a143e2b787f1dfbff2b63d0a5c
   RxRealm: 900f5c7e6f0a2d6527b56eaf7283f3035ec1e8ba
@@ -215,7 +215,7 @@ SPEC CHECKSUMS:
   SwiftGen: f872ca75cbd17bf7103c17f13dcfa0d9a15667b0
   SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
   "UITextView+Placeholder": c407b27599ea23cca425946fee3cf1db5d547008
-  Web3: a4eb0d0cdedbef3f0e4c97ea83a4232a1b1f952b
+  Web3: 7b2c30f98f24cc290bc671ab525d7a30a2afbc73
   WordSuggestion: 424d96dd2cfe4259c72959f9bdcffc864f0e65d4
 
 PODFILE CHECKSUM: 4966fe9bb1535b49ea2c66a7b7b2896ed0ad93cc

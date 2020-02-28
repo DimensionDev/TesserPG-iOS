@@ -158,14 +158,6 @@ internal enum L10n {
 
   internal enum CreateNewKeyViewController {
     internal enum Alert {
-      /// Confirm password should be same as password
-      internal static let confirmPasswordNotSame = L10n.tr("Localizable", "CreateNewKeyViewController.Alert.ConfirmPasswordNotSame")
-      /// Please input a valid email address
-      internal static let emailInvalid = L10n.tr("Localizable", "CreateNewKeyViewController.Alert.EmailInvalid")
-      /// Email is required to create a key
-      internal static let emailRequired = L10n.tr("Localizable", "CreateNewKeyViewController.Alert.EmailRequired")
-      /// Name is required to create a key
-      internal static let nameRequired = L10n.tr("Localizable", "CreateNewKeyViewController.Alert.NameRequired")
       internal enum Title {
         /// Please input a valid email address
         internal static let emailInvalid = L10n.tr("Localizable", "CreateNewKeyViewController.Alert.Title.EmailInvalid")
@@ -284,14 +276,18 @@ internal enum L10n {
       internal static let close = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Button.Close")
       /// Import Private Key
       internal static let importPrivateKey = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Button.ImportPrivateKey")
+      /// Update Keypair
+      internal static let updateKeypair = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Button.UpdateKeypair")
     }
     internal enum Label {
       /// Availability
       internal static let availability = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Label.Availability")
-      /// Not Added Yet
-      internal static let isAvailable = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Label.IsAvailable")
       /// Already Added
-      internal static let isUnavailable = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Label.IsUnavailable")
+      internal static let isAdded = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Label.IsAdded")
+      /// Partial Added
+      internal static let isPartialAdded = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Label.IsPartialAdded")
+      /// Not Added Yet
+      internal static let notAdded = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Label.NotAdded")
       /// Private Keys Imported Successfully
       internal static let privateKeyAddedSuccessfully = L10n.tr("Localizable", "ImportPrivateKeyConfirmViewController.Label.PrivateKeyAddedSuccessfully")
     }
@@ -606,6 +602,20 @@ internal enum L10n {
   }
 
   internal enum PasteKeyViewController {
+    internal enum Alert {
+      internal enum Button {
+        /// Continue
+        internal static let `continue` = L10n.tr("Localizable", "PasteKeyViewController.Alert.Button.Continue")
+      }
+      internal enum Message {
+        /// This keypair contains private key part. Continue importing will only import the public key part
+        internal static let importAsPublicKey = L10n.tr("Localizable", "PasteKeyViewController.Alert.Message.ImportAsPublicKey")
+      }
+      internal enum Title {
+        /// Notice
+        internal static let notice = L10n.tr("Localizable", "PasteKeyViewController.Alert.Title.Notice")
+      }
+    }
     internal enum Placeholder {
       /// Password
       internal static let password = L10n.tr("Localizable", "PasteKeyViewController.Placeholder.Password")

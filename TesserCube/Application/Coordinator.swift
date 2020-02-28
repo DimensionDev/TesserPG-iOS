@@ -156,9 +156,9 @@ extension Coordinator {
             return vc
         case .importKeyConfirm(let key, let passphrase):
             if let passphrase = passphrase {
+                let viewModel = ImportPrivateKeyConfirmViewModel(tcKey: key, passphrase: passphrase)
                 let vc = ImportPrivateKeyConfirmViewController()
-                vc.tcKey = key
-                vc.passphrase = passphrase
+                vc.viewModel = viewModel
                 vc.hidesBottomBarWhenPushed = true
                 return vc
             } else {

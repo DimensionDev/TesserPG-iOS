@@ -106,9 +106,13 @@ extension ProfileService {
             guard !message.isEmpty else {
                 throw TCError.interpretError(reason: .emptyMessage)
             }
+            
+            guard let messageBlock = MessageService.extractMessageBlock(from: message) else {
+                throw TCError.interpretError(reason: .badPayload)
+            }
                         
             // Check if message already interpreted
-            if var existMessage = interptedMessage(message) {
+            if var existMessage = interptedMessage(messageBlock) {
                 // If yes, just return the message
                 try existMessage.updateInterpretedDate(Date())
                 return existMessage
@@ -116,7 +120,7 @@ extension ProfileService {
 
             var senderKeyID = ""
             var senderKeyUserID = ""
-            let decryptInfo = try KeyFactory.decryptMessage(message)
+            let decryptInfo = try KeyFactory.decryptMessage(messageBlock)
             switch decryptInfo.verifyResult {
             case .noSignature:
                 break
