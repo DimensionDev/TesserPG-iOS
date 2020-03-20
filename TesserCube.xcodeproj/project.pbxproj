@@ -378,6 +378,7 @@
 		DBC24B1523026BA800A4AE8D /* WordSuggestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC24B1323026BA800A4AE8D /* WordSuggestionService.swift */; };
 		DBC7DEBD2248C7F600DA4C3E /* RecipientContactPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC7DEBC2248C7F600DA4C3E /* RecipientContactPickerView.swift */; };
 		DBC7DEC12248D49E00DA4C3E /* ComposeMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC7DEC02248D49E00DA4C3E /* ComposeMessageViewModel.swift */; };
+		DBD256D124249A0C00305720 /* TesserCubeUITests+Issue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD256D024249A0C00305720 /* TesserCubeUITests+Issue.swift */; };
 		DBD63FDD229682E400E46FDC /* KeyFactory+TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */; };
 		DBD63FE02296864200E46FDC /* KeyFactory+TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */; };
 		DBD98FDB2334B7B7003A952B /* CryptoPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD98FDA2334B7B7003A952B /* CryptoPublicKey.swift */; };
@@ -686,6 +687,7 @@
 		DBC7DEC02248D49E00DA4C3E /* ComposeMessageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeMessageViewModel.swift; sourceTree = "<group>"; };
 		DBCE91DE23320EE30000A9F3 /* UnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitTests.xctestplan; sourceTree = "<group>"; };
 		DBCE91DF23320EF30000A9F3 /* UITests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UITests.xctestplan; sourceTree = "<group>"; };
+		DBD256D024249A0C00305720 /* TesserCubeUITests+Issue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TesserCubeUITests+Issue.swift"; sourceTree = "<group>"; };
 		DBD638E5227EDC6B00E10BF2 /* JRE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JRE.framework; path = "../../../Java/j2objc-2.4/frameworks/JRE.framework"; sourceTree = "<group>"; };
 		DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyFactory+TCKey.swift"; sourceTree = "<group>"; };
 		DBD98FDA2334B7B7003A952B /* CryptoPublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoPublicKey.swift; sourceTree = "<group>"; };
@@ -823,6 +825,7 @@
 			children = (
 				8304E9B6221BF10200122637 /* Info.plist */,
 				8304E9B4221BF10200122637 /* TesserCubeUITests.swift */,
+				DBD256D024249A0C00305720 /* TesserCubeUITests+Issue.swift */,
 			);
 			path = TesserCubeUITests;
 			sourceTree = "<group>";
@@ -2158,6 +2161,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBD256D124249A0C00305720 /* TesserCubeUITests+Issue.swift in Sources */,
 				8304E9B5221BF10200122637 /* TesserCubeUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
