@@ -379,6 +379,7 @@
 		DBC7DEBD2248C7F600DA4C3E /* RecipientContactPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC7DEBC2248C7F600DA4C3E /* RecipientContactPickerView.swift */; };
 		DBC7DEC12248D49E00DA4C3E /* ComposeMessageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBC7DEC02248D49E00DA4C3E /* ComposeMessageViewModel.swift */; };
 		DBD256D124249A0C00305720 /* TesserCubeUITests+Issue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD256D024249A0C00305720 /* TesserCubeUITests+Issue.swift */; };
+		DBD256D32424E31200305720 /* ImportPublicKeyConfirmViewController+Previews.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD256D22424E31200305720 /* ImportPublicKeyConfirmViewController+Previews.swift */; };
 		DBD63FDD229682E400E46FDC /* KeyFactory+TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */; };
 		DBD63FE02296864200E46FDC /* KeyFactory+TCKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */; };
 		DBD98FDB2334B7B7003A952B /* CryptoPublicKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD98FDA2334B7B7003A952B /* CryptoPublicKey.swift */; };
@@ -688,6 +689,7 @@
 		DBCE91DE23320EE30000A9F3 /* UnitTests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UnitTests.xctestplan; sourceTree = "<group>"; };
 		DBCE91DF23320EF30000A9F3 /* UITests.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = UITests.xctestplan; sourceTree = "<group>"; };
 		DBD256D024249A0C00305720 /* TesserCubeUITests+Issue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TesserCubeUITests+Issue.swift"; sourceTree = "<group>"; };
+		DBD256D22424E31200305720 /* ImportPublicKeyConfirmViewController+Previews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ImportPublicKeyConfirmViewController+Previews.swift"; sourceTree = "<group>"; };
 		DBD638E5227EDC6B00E10BF2 /* JRE.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JRE.framework; path = "../../../Java/j2objc-2.4/frameworks/JRE.framework"; sourceTree = "<group>"; };
 		DBD63FDC229682E400E46FDC /* KeyFactory+TCKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyFactory+TCKey.swift"; sourceTree = "<group>"; };
 		DBD98FDA2334B7B7003A952B /* CryptoPublicKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoPublicKey.swift; sourceTree = "<group>"; };
@@ -1059,8 +1061,8 @@
 				832146D72241D980008ECC22 /* ImportKeyViewController.swift */,
 				832146D92241FAC6008ECC22 /* PasteKeyViewController.swift */,
 				832146E6224339EB008ECC22 /* CreateNewKeyViewController.swift */,
-				8335283222C6FF1E006E19BC /* ImportPrivateKeyConfirmViewController.swift */,
-				831C831322CC9BEB008DE52C /* ImportPublicKeyConfirmViewController.swift */,
+				DBD256D52425B6CB00305720 /* ImportPrivateKeyConfirm */,
+				DBD256D42425B5E800305720 /* ImportPublicKeyConfirm */,
 			);
 			path = KeyManageScene;
 			sourceTree = "<group>";
@@ -1487,6 +1489,23 @@
 				DB66FE6E224A3CD600D82704 /* SenderContactPickerView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		DBD256D42425B5E800305720 /* ImportPublicKeyConfirm */ = {
+			isa = PBXGroup;
+			children = (
+				831C831322CC9BEB008DE52C /* ImportPublicKeyConfirmViewController.swift */,
+				DBD256D22424E31200305720 /* ImportPublicKeyConfirmViewController+Previews.swift */,
+			);
+			path = ImportPublicKeyConfirm;
+			sourceTree = "<group>";
+		};
+		DBD256D52425B6CB00305720 /* ImportPrivateKeyConfirm */ = {
+			isa = PBXGroup;
+			children = (
+				8335283222C6FF1E006E19BC /* ImportPrivateKeyConfirmViewController.swift */,
+			);
+			path = ImportPrivateKeyConfirm;
 			sourceTree = "<group>";
 		};
 		DBD98FDF2334B7BB003A952B /* DMSGoPGP */ = {
@@ -2031,6 +2050,7 @@
 			files = (
 				DB4F300122A11F820003804B /* Contact.swift in Sources */,
 				8313F6932247165F00C09C2D /* FloatingActionGroup.swift in Sources */,
+				DBD256D32424E31200305720 /* ImportPublicKeyConfirmViewController+Previews.swift in Sources */,
 				DB8D7313231E38FD005D15DD /* KeyRecord.swift in Sources */,
 				832146CD2240B135008ECC22 /* TCBaseViewController.swift in Sources */,
 				DB1449732313F9CF000FA38E /* BrokenMessageViewController.swift in Sources */,

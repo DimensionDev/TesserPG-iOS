@@ -17,14 +17,15 @@ def common_pods
   pod 'RxSwift', '~> 5.1.0'
   pod 'RxCocoa', '~> 5.1.0'
 
-  # pod 'DMSOpenPGP', '~> 0.1.4'
   pod 'KeychainAccess', '~> 3.2.0'
 
   pod 'GRDB.swift', '~> 3.7.0'
   pod 'GRDBCipher', '~> 3.7.0'
   pod 'DeepDiff', '~> 2.0.1'
 
-  pod 'DMSGoPGP', '~> 0.0.17'
+  # GoPGP 
+  pod 'DMSGoPGP', :path => '../gopenpgp'
+  # pod 'DMSGoPGP', '~> 0.0.17'
 
   pod 'WordSuggestion', '~> 0.2.1'
 end

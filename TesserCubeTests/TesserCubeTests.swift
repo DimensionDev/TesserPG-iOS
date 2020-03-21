@@ -10,5 +10,5 @@ import XCTest
 @testable import TesserCube
 
 class TesserCubeTests: XCTestCase {
-
+    
 }

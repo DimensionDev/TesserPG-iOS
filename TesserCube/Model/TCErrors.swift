@@ -61,16 +61,18 @@ enum TCError: Error {
         case failToSave
         case failToGenerate
         case noAvailableDecryptKey
+        case notSupportAddMultiplePrivateKey
         
         var localizedDescription: String {
             switch self {
-            case .invalidPassword:          return L10n.TCError.PGPKeyErrorReason.invalidPassword
-            case .invalidKeyFormat:         return L10n.TCError.PGPKeyErrorReason.invalidKeyFormat
-            case .messageNotSigned:         return L10n.TCError.PGPKeyErrorReason.messageNotSigned
-            case .failToExport:             return L10n.TCError.PGPKeyErrorReason.failToExport
-            case .failToSave:               return L10n.TCError.PGPKeyErrorReason.failToSave
-            case .failToGenerate:           return L10n.TCError.PGPKeyErrorReason.failToGenerate
-            case .noAvailableDecryptKey:    return L10n.TCError.PGPKeyErrorReason.noAvailableDecryptKey
+            case .invalidPassword:                  return L10n.TCError.PGPKeyErrorReason.invalidPassword
+            case .invalidKeyFormat:                 return L10n.TCError.PGPKeyErrorReason.invalidKeyFormat
+            case .messageNotSigned:                 return L10n.TCError.PGPKeyErrorReason.messageNotSigned
+            case .failToExport:                     return L10n.TCError.PGPKeyErrorReason.failToExport
+            case .failToSave:                       return L10n.TCError.PGPKeyErrorReason.failToSave
+            case .failToGenerate:                   return L10n.TCError.PGPKeyErrorReason.failToGenerate
+            case .noAvailableDecryptKey:            return L10n.TCError.PGPKeyErrorReason.noAvailableDecryptKey
+            case .notSupportAddMultiplePrivateKey:  return L10n.TCError.PGPKeyErrorReason.notSupportAddMultiplePrivateKey
             }
         }
     }

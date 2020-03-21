@@ -1,46 +1,49 @@
 //
-//  ImportKeyConfirmViewController.swift
+//  ImportPublicKeyConfirmViewController.swift
 //  TesserCube
 //
-//  Created by jk234ert on 2019/6/29.
+//  Created by jk234ert on 2019/7/3.
 //  Copyright © 2019 Sujitech. All rights reserved.
 //
 
-import UIKit
 import SnapKit
 import SwifterSwift
 import RxCocoa
 import RxSwift
+import ConsolePrint
+import DMSGoPGP
 
-final class ImportPrivateKeyConfirmViewModel {
+final class ImportPublicKeyConfirmViewModel {
     
     let disposeBag = DisposeBag()
     
     // Input
     let tcKey: TCKey
-    let passphrase: String
     
     // Output
     let isKeyValid: BehaviorRelay<Bool>
     let keyStatus = BehaviorRelay<KeyStatus>(value: .new)   // default set to .new status
     
-    init(tcKey: TCKey, passphrase: String) {
+    init(tcKey: TCKey) {
         self.tcKey = tcKey
-        self.passphrase = passphrase
         self.isKeyValid = BehaviorRelay(value: tcKey.isValid)
         
-        // Setup status driver
         ProfileService.default.keys.asDriver()
-            .map { keys -> TCKey? in
-                return keys.first(where: { $0.longIdentifier == tcKey.longIdentifier })
-            }
-            .map { existedKey -> KeyStatus in
-                guard let existedKey = existedKey else {
-                    return .new
-                }
+            .map { keys -> KeyStatus in
+                let existedKeyLongIdentifiers = keys.map { $0.longIdentifier }
+                let newEntities = tcKey.entities
+                let newLongIdentifiers = newEntities.compactMap { $0.primaryKey?.keyIdString() }
+                let filteredLongIdentifiers = newLongIdentifiers.filter { !existedKeyLongIdentifiers.contains($0) }
                 
-                // Only check if not has private part due to this scene is importing private key
-                return existedKey.hasSecretKey ? .existed : .partial
+                if filteredLongIdentifiers.count == 0 {
+                    return .existed
+                } else if newLongIdentifiers.count == filteredLongIdentifiers.count {
+                    return .new
+                } else {
+                    let new = filteredLongIdentifiers.count
+                    let existed = newLongIdentifiers.count - new
+                    return .partial(new: new, existed: existed)
+                }
             }
             .drive(keyStatus)
             .disposed(by: disposeBag)
@@ -48,24 +51,25 @@ final class ImportPrivateKeyConfirmViewModel {
     
 }
 
-extension ImportPrivateKeyConfirmViewModel {
+extension ImportPublicKeyConfirmViewModel {
     
     enum KeyStatus {
         case new
-        case partial    // exist public part
+        case partial(new: Int, existed: Int)
         case existed
     }
+    
 }
 
-class ImportPrivateKeyConfirmViewController: TCBaseViewController {
+class ImportPublicKeyConfirmViewController: TCBaseViewController {
     
     let disposeBag = DisposeBag()
-    var viewModel: ImportPrivateKeyConfirmViewModel!
+    var viewModel: ImportPublicKeyConfirmViewModel!
     
     let cardHeight: CGFloat = 106
     
     var cardCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
+        let layout = CollectionViewFlowLayoutCenterItem()
         layout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
@@ -105,7 +109,7 @@ class ImportPrivateKeyConfirmViewController: TCBaseViewController {
     private lazy var iconlabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.font = UIFont.systemFont(ofSize: 50)
-        label.text = "🔑"
+        label.text = "🎉"
         label.textAlignment = .center
         label.isHidden = true
         return label
@@ -115,7 +119,7 @@ class ImportPrivateKeyConfirmViewController: TCBaseViewController {
         let label = UILabel(frame: .zero)
         label.font = FontFamily.SFProText.regular.font(size: 20)
         label.isHidden = true
-        label.text = L10n.ImportPrivateKeyConfirmViewController.Label.privateKeyAddedSuccessfully
+        label.text = L10n.ImportPublicKeyConfirmViewController.Label.contactsAddedSuccessfully
         label.textAlignment = .center
         return label
     }()
@@ -130,9 +134,9 @@ class ImportPrivateKeyConfirmViewController: TCBaseViewController {
     
     override func configUI() {
         super.configUI()
-        title = L10n.ImportPrivateKeyConfirmViewController.Title.newPrivateKey
+        title = L10n.ImportPublicKeyConfirmViewController.Title.newContact
         importButton.addTarget(self, action: #selector(importButtonDidClicked), for: .touchUpInside)
-            
+        
         view.addSubview(cardCollectionView)
         cardCollectionView.delegate = self
         cardCollectionView.dataSource = self
@@ -141,7 +145,7 @@ class ImportPrivateKeyConfirmViewController: TCBaseViewController {
         view.addSubview(validityTitleLabel)
         view.addSubview(validitylabel)
         
-        let availabilityTitleLabel = createTitleLabel(title: L10n.ImportPrivateKeyConfirmViewController.Label.availability)
+        let availabilityTitleLabel = createTitleLabel(title: L10n.ImportPublicKeyConfirmViewController.Label.availability)
         view.addSubview(availabilityTitleLabel)
         view.addSubview(availabilitylabel)
         
@@ -155,7 +159,7 @@ class ImportPrivateKeyConfirmViewController: TCBaseViewController {
             maker.leading.trailing.equalToSuperview()
             maker.height.equalTo(106)
         }
-        
+    
         validityTitleLabel.snp.makeConstraints { maker in
             maker.top.equalTo(cardCollectionView.snp.bottom).offset(30)
             maker.leading.equalTo(view.safeAreaLayoutGuide).offset(16)
@@ -193,10 +197,11 @@ class ImportPrivateKeyConfirmViewController: TCBaseViewController {
             maker.bottom.equalTo(successlabel.snp.top).offset(-10)
         }
         
+        // Bind viewModel
         viewModel.isKeyValid.asDriver()
             .drive(onNext: { [weak self] isValid in
                 guard let `self` = self else { return }
-
+                
                 self.validitylabel.text = isValid ? L10n.ContactDetailViewController.Label.valid : L10n.ContactDetailViewController.Label.invalid
                 self.validitylabel.textColor = isValid ? .systemGreen : .systemRed
                 
@@ -213,23 +218,27 @@ class ImportPrivateKeyConfirmViewController: TCBaseViewController {
                     self.successlabel.isHidden = true
                     self.importButton.color = .systemBlue
                     self.importButton.setTitleColor(.white, for: .normal)
-                    self.importButton.setTitle(L10n.MeViewController.Action.Button.importKey, for: .normal)
-                    self.availabilitylabel.text = L10n.ImportPrivateKeyConfirmViewController.Label.notAdded
-
-                case .partial:
+                    self.importButton.setTitle(L10n.ImportPublicKeyConfirmViewController.Button.addContact, for: .normal)
+                    self.availabilitylabel.text = L10n.ImportPublicKeyConfirmViewController.Label.notAdded
+                    
+                case let .partial(new, _):
                     self.iconlabel.isHidden = true
                     self.successlabel.isHidden = true
                     self.importButton.color = .systemBlue
                     self.importButton.setTitleColor(.white, for: .normal)
-                    self.importButton.setTitle(L10n.ImportPrivateKeyConfirmViewController.Button.updateKeypair, for: .normal)
-                    self.availabilitylabel.text = L10n.ImportPrivateKeyConfirmViewController.Label.isPartialAdded
+                    self.importButton.setTitle(L10n.ImportPublicKeyConfirmViewController.Button.addContact, for: .normal)
+                    if new == 1 {
+                        self.availabilitylabel.text = L10n.ImportPublicKeyConfirmViewController.Label.isPartialAddedOneKeyNew
+                    } else {
+                        self.availabilitylabel.text = L10n.ImportPublicKeyConfirmViewController.Label.isPartialAddedMultipleKeysNew(new)
+                    }
                     
                 case .existed:
                     self.iconlabel.isHidden = false
                     self.successlabel.isHidden = false
                     self.importButton.color = ._secondarySystemBackground
                     self.importButton.setTitleColor(._label, for: .normal)
-                    self.importButton.setTitle(L10n.ImportPrivateKeyConfirmViewController.Button.close, for: .normal)
+                    self.importButton.setTitle(L10n.ImportPublicKeyConfirmViewController.Button.close, for: .normal)
                     self.availabilitylabel.text = L10n.ImportPrivateKeyConfirmViewController.Label.isAdded
                 }
             })
@@ -239,8 +248,8 @@ class ImportPrivateKeyConfirmViewController: TCBaseViewController {
     @objc
     func importButtonDidClicked() {
         switch viewModel.keyStatus.value {
-        case .new:
-            ProfileService.default.addKey(viewModel.tcKey, passphrase: viewModel.passphrase) { [weak self] error in
+        case .new, .partial:
+            ProfileService.default.addKey(viewModel.tcKey, passphrase: nil) { [weak self] error in
                 DispatchQueue.main.async {
                     if let error = error {
                         self?.showSimpleAlert(title: L10n.Common.Alert.error, message: error.localizedDescription)
@@ -250,38 +259,39 @@ class ImportPrivateKeyConfirmViewController: TCBaseViewController {
                 }
             }
             
-        case .partial:
-            ProfileService.default.updateKey(viewModel.tcKey, passphrase: viewModel.passphrase) { [weak self] error in
-                if let error = error {
-                    self?.showSimpleAlert(title: L10n.Common.Alert.error, message: error.localizedDescription)
-                } else {
-                    // do nothing
-                }
-            }
-            
         case .existed:
             // dismissToRoot
             navigationController?.dismiss(animated: true, completion: nil)
         }
     }
     
+    @objc
+    func dismissToRoot() {
+        navigationController?.dismiss(animated: true, completion: nil)
+    }
 }
 
-extension ImportPrivateKeyConfirmViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension ImportPublicKeyConfirmViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        return viewModel.tcKey.userIDs.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withClass: ConfirmContactCell.self, for: indexPath)
+        
         cell.keyValue = .TCKey(value: viewModel.tcKey)
-        cell.userID = viewModel.tcKey.userID
-        cell.cardView.cardBackgroundColor = .systemBlue
+        cell.userID = viewModel.tcKey.userIDs[indexPath.row].first
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: SwifterSwift.screenWidth - 16 * 2, height: cardHeight)
+        let count = viewModel.tcKey.userIDs.count
+        if count > 1 {
+            return CGSize(width: SwifterSwift.screenWidth - 16 - 66, height: cardHeight)
+        } else {
+            return CGSize(width: SwifterSwift.screenWidth - 16 * 2, height: cardHeight)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -294,5 +304,34 @@ extension ImportPrivateKeyConfirmViewController: UICollectionViewDataSource, UIC
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
+    }
+    
+}
+
+class CollectionViewFlowLayoutCenterItem: UICollectionViewFlowLayout {
+    
+    override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint,
+                                      withScrollingVelocity velocity: CGPoint) -> CGPoint {
+        
+        var result = super.targetContentOffset(forProposedContentOffset: proposedContentOffset, withScrollingVelocity: velocity)
+        
+        guard let collectionView = collectionView else {
+            return result
+        }
+        
+        let halfWidth = 0.5 * collectionView.bounds.size.width
+        let proposedContentCenterX = result.x + halfWidth
+        
+        let targetRect = CGRect(origin: result, size: collectionView.bounds.size)
+        let layoutAttributes = layoutAttributesForElements(in: targetRect)?
+            .filter { $0.representedElementCategory == .cell }
+            .sorted { abs($0.center.x - proposedContentCenterX) < abs($1.center.x - proposedContentCenterX) }
+        
+        guard let closest = layoutAttributes?.first else {
+            return result
+        }
+        
+        result = CGPoint(x: closest.center.x - halfWidth, y: proposedContentOffset.y)
+        return result
     }
 }

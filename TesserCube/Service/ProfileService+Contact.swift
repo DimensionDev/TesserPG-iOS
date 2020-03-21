@@ -9,8 +9,10 @@
 import Foundation
 
 extension ProfileService {
-
+    
     func addNewContact(keyUserID: String, key: TCKey, passphrase: String?) throws {
+        assert(key.goKeyRing?.getEntitiesCount() == 1)
+        
         do {
             let userInfo = DMSPGPUserIDTranslator.extractMeta(from: keyUserID)
             let username = userInfo.name

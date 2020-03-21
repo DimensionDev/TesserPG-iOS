@@ -159,19 +159,32 @@ private extension PasteKeyViewController {
             return
         }
         
-        // let publicKeyBlock = KeyFactory.extractPublicKeyBlock(from: keyString)
-        let privateKeyBlock = KeyFactory.extractSecretKeyBlock(from: keyString)
+        // Check public key block
+        guard let publicKeyBlock = KeyFactory.extractPublicKeyBlock(from: keyString) else {
+            let title = L10n.Common.Alert.error
+            let message = L10n.PasteKeyViewController.Alert.Message.noPublicKey
+            let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: L10n.Common.Button.ok, style: .default) { _ in
+                // do nothing
+            }
+            alertController.addAction(okAction)
+            
+            present(alertController, animated: true, completion: nil)
+            return
+        }
         
+        let privateKeyBlock = KeyFactory.extractSecretKeyBlock(from: keyString)
         let passphrase = needPassphrase ? passwordTextField.text : nil
         
-        if privateKeyBlock != nil && !needPassphrase {
-            // Alert user: continue importing will only import the public part of keypair
+        switch needPassphrase {
+        case false where privateKeyBlock != nil:
+            // alert user continue importing will only import the public part of keypair
             let title = L10n.PasteKeyViewController.Alert.Title.notice
             let message = L10n.PasteKeyViewController.Alert.Message.importAsPublicKey
             let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
             
             let continueAction = UIAlertAction(title: L10n.PasteKeyViewController.Alert.Button.continue, style: .default) { [weak self] _ in
-                self?.importKey(armoredKey: keyString, passphrase: passphrase)
+                self?.importKey(armoredKey: publicKeyBlock, passphrase: passphrase)
             }
             alertController.addAction(continueAction)
             
@@ -182,11 +195,17 @@ private extension PasteKeyViewController {
             
             present(alertController, animated: true, completion: nil)
             
-        } else if privateKeyBlock == nil && needPassphrase {
+        case false:
+            // import public key
+            importKey(armoredKey: publicKeyBlock, passphrase: passphrase)
+
+        case true where privateKeyBlock == nil:
+            // alert user can not find private key block
             let error = DMSPGPError.invalidPrivateKey
             showSimpleAlert(title: L10n.Common.Alert.error, message: error.localizedDescription)
-            
-        } else {
+                
+        case true:
+            // import private key
             importKey(armoredKey: keyString, passphrase: passphrase)
         }
     }
@@ -194,13 +213,24 @@ private extension PasteKeyViewController {
     func importKey(armoredKey: String, passphrase: String?) {
         showHUD(L10n.Common.Hud.importingKey)
         ProfileService.default.decryptKey(armoredKey: armoredKey, passphrase: passphrase) { [weak self] (tckey, error) in
-            DispatchQueue.main.async {
-                self?.hideHUD()
-                if let error = error {
-                    self?.showSimpleAlert(title: L10n.Common.Alert.error, message: error.localizedDescription)
-                } else {
-                    Coordinator.main.present(scene: .importKeyConfirm(key: tckey!, passphrase: passphrase), from: self)
+            guard let `self` = self else { return }
+            self.hideHUD()
+            
+            if let error = error {
+                self.showSimpleAlert(title: L10n.Common.Alert.error, message: error.localizedDescription)
+            } else {
+                guard let tckey = tckey else {
+                    fatalError()
                 }
+                
+                if self.needPassphrase && tckey.entities.count != 1 {
+                    let title = L10n.Common.Alert.error
+                    let message = L10n.TCError.PGPKeyErrorReason.notSupportAddMultiplePrivateKey
+                    self.showSimpleAlert(title: title, message: message)
+                    return
+                }
+                
+                Coordinator.main.present(scene: .importKeyConfirm(key: tckey, passphrase: passphrase), from: self)
             }
         }
     }

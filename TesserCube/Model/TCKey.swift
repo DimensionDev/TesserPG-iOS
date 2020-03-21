@@ -13,21 +13,57 @@ struct TCKey: KeychianMappable, Equatable {
     
     var goKeyRing: CryptoKeyRing?
 
+    /// Primary key userID.
+    /// If multiple key exists in keyRing. Only return the first key userID
     var userID: String {
-        let keyID = try? goKeyRing?.getEntity(0).getIdentity(0).name ?? ""
-        return keyID ?? ""
+        return userIDs.first?.first ?? ""
     }
     
-    var userIDs: [String] {
-        var userIDList = [String]()
-        for i in 0 ..< (goKeyRing?.getEntitiesCount() ?? 0) {
-            let entity = try? goKeyRing?.getEntity(i)
-            for n in 0 ..< (entity?.getIdentityCount() ?? 0) {
-                if let identity = try? entity?.getIdentity(n) {
-                    userIDList.append(identity.name)
+    /// Exports every key entities' userIDs from keyRing.
+    /// Multiple [String] return when more than one entities in the keyRing
+    var userIDs: [[String]] {
+        var userIDList = [[String]]()
+        
+        guard let goKeyRing = goKeyRing else {
+            return userIDList
+        }
+        
+        for i in 0 ..< goKeyRing.getEntitiesCount() {
+            guard let entity = try? goKeyRing.getEntity(i) else {
+                continue
+            }
+            guard entity.getIdentityCount() > 0 else {
+                continue
+            }
+            
+            var primaryUserID: String?
+            var nonPrimaryUserIDs: [String] = []
+            for idIndex in 0 ..< entity.getIdentityCount() {
+                guard let identity = try? entity.getIdentity(idIndex) else {
+                    continue
+                }
+                
+                // TODO: export Go interface
+                // Ref: https://tools.ietf.org/html/rfc4880#section-5.2.3.19
+                // let isPrimaryUserID = identity.selfSignature.isPrimaryId
+                
+                let isPrimaryUserID = false
+                if isPrimaryUserID {
+                    primaryUserID = identity.name
+                } else {
+                    nonPrimaryUserIDs.append(identity.name)
                 }
             }
+            
+            // append entity userIDs in list. Take primary userID first
+            let userIdsForEntiry = [
+                [primaryUserID].compactMap { $0 },
+                nonPrimaryUserIDs
+            ].flatMap { $0 }
+            
+            userIDList.append(userIdsForEntiry)
         }
+        
         return userIDList
     }
     
@@ -225,4 +261,23 @@ extension TCKey {
         }
         return nil
     }
+}
+
+extension TCKey {
+    
+    var entities: [CryptoKeyEntity] {
+        guard let goKeyRing = goKeyRing else { return [] }
+        
+        var entities: [CryptoKeyEntity] = []
+        for i in 0 ..< goKeyRing.getEntitiesCount() {
+            guard let entity = try? goKeyRing.getEntity(i) else {
+                continue
+            }
+            
+            entities.append(entity)
+        }
+        
+        return entities
+    }
+    
 }

@@ -307,10 +307,16 @@ internal enum L10n {
       internal static let availability = L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Label.Availability")
       /// Contacts Added Successfully
       internal static let contactsAddedSuccessfully = L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Label.ContactsAddedSuccessfully")
+      /// Already added
+      internal static let isAdded = L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Label.IsAdded")
+      /// %d new keys can be added
+      internal static func isPartialAddedMultipleKeysNew(_ p1: Int) -> String {
+        return L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Label.IsPartialAddedMultipleKeysNew", p1)
+      }
+      /// One new key can be added
+      internal static let isPartialAddedOneKeyNew = L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Label.IsPartialAddedOneKeyNew")
       /// Not Added Yet
-      internal static let isAvailable = L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Label.IsAvailable")
-      /// Already Added
-      internal static let isUnavailable = L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Label.IsUnavailable")
+      internal static let notAdded = L10n.tr("Localizable", "ImportPublicKeyConfirmViewController.Label.notAdded")
     }
     internal enum Title {
       /// New Contact
@@ -600,6 +606,8 @@ internal enum L10n {
       internal enum Message {
         /// This keypair contains private key part. Continue importing will only import the public key part
         internal static let importAsPublicKey = L10n.tr("Localizable", "PasteKeyViewController.Alert.Message.ImportAsPublicKey")
+        /// Cannot parse public key armor.\nPlease try again
+        internal static let noPublicKey = L10n.tr("Localizable", "PasteKeyViewController.Alert.Message.noPublicKey")
       }
       internal enum Title {
         /// Notice
@@ -712,6 +720,8 @@ internal enum L10n {
       internal static let messageNotSigned = L10n.tr("Localizable", "TCError.PGPKeyErrorReason.messageNotSigned")
       /// No available secret key to decrypt this message
       internal static let noAvailableDecryptKey = L10n.tr("Localizable", "TCError.PGPKeyErrorReason.noAvailableDecryptKey")
+      /// Adding multiple private keys in one armor is not supported yet
+      internal static let notSupportAddMultiplePrivateKey = L10n.tr("Localizable", "TCError.PGPKeyErrorReason.notSupportAddMultiplePrivateKey")
     }
     internal enum UserInfoErrorType {
       /// Invalid user name without name or email: %@

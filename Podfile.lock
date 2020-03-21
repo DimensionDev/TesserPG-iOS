@@ -4,22 +4,22 @@ PODS:
   - DateToolsSwift (4.0.0)
   - DeepDiff (2.0.1)
   - DeviceKit (1.11.0)
-  - DMSGoPGP (0.0.17)
+  - DMSGoPGP (0.0.18)
   - Eureka (4.3.1)
   - FLEX (2.4.0)
   - GRDB.swift (3.7.0)
   - GRDBCipher (3.7.0):
     - SQLCipher (~> 3.4.1)
   - IQKeyboardManagerSwift (6.4.2)
-  - KeychainAccess (3.2.0)
+  - KeychainAccess (3.2.1)
   - MMWormhole (2.0.0):
     - MMWormhole/Core (= 2.0.0)
   - MMWormhole/Core (2.0.0)
-  - Realm (3.18.0):
-    - Realm/Headers (= 3.18.0)
-  - Realm/Headers (3.18.0)
-  - RealmSwift (3.18.0):
-    - Realm (= 3.18.0)
+  - Realm (4.3.2):
+    - Realm/Headers (= 4.3.2)
+  - Realm/Headers (4.3.2)
+  - RealmSwift (4.3.2):
+    - Realm (= 4.3.2)
   - RxBlocking (5.1.0):
     - RxSwift (~> 5)
   - RxCocoa (5.1.0):
@@ -64,7 +64,7 @@ DEPENDENCIES:
   - DateToolsSwift (~> 4.0.0)
   - DeepDiff (~> 2.0.1)
   - DeviceKit (~> 1.11.0)
-  - DMSGoPGP (~> 0.0.17)
+  - DMSGoPGP (from `../gopenpgp`)
   - Eureka (~> 4.3.1)
   - FLEX (~> 2.4.0)
   - GRDB.swift (~> 3.7.0)
@@ -90,7 +90,6 @@ SPEC REPOS:
     - DateToolsSwift
     - DeepDiff
     - DeviceKit
-    - DMSGoPGP
     - Eureka
     - FLEX
     - GRDB.swift
@@ -113,13 +112,15 @@ SPEC REPOS:
     - WordSuggestion
 
 EXTERNAL SOURCES:
+  DMSGoPGP:
+    :path: "../gopenpgp"
   SVProgressHUD:
     :branch: dark-mode
     :git: https://github.com/getaaron/SVProgressHUD.git
 
 CHECKOUT OPTIONS:
   SVProgressHUD:
-    :commit: e0751029e2befc68e3a0feeffbca240adde9eb08
+    :commit: d95da4a829f1c78847a2b10c3549010717fe36a7
     :git: https://github.com/getaaron/SVProgressHUD.git
 
 SPEC CHECKSUMS:
@@ -128,16 +129,16 @@ SPEC CHECKSUMS:
   DateToolsSwift: 875d97ff9e3a5d54abdd67a269b3f51c757b71ab
   DeepDiff: 1944bb2c841ab238a66b31de1faa7627f3ca84bd
   DeviceKit: a3a86f8dddbe1317a9a243cdf9646858bf135dce
-  DMSGoPGP: fd0970ab6941eb4a5b6cb2f8846ca9ab9a9151a6
+  DMSGoPGP: b183d7dce337b7aa507f3761916ceeef2a5da920
   Eureka: 28ea296f06710f6745266b71f17862048941a32d
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
   GRDB.swift: 51cc9e57ae8ff7083a9d674c97925aa1de06aac5
   GRDBCipher: a3066d2953508039ea8fb423a1ba14c7b6d888be
   IQKeyboardManagerSwift: 79a3ec200dfb41cb66a89b8575417b5378107c5d
-  KeychainAccess: 3b1bf8a77eb4c6ea1ce9404c292e48f948954c6b
+  KeychainAccess: d5470352939ced6d6f7fb51cb2e67aae51fc294f
   MMWormhole: 0cd3fd35a9118b2e2d762b499f54eeaace0be791
-  Realm: 7b3d04740facf45e958a514b466a32b04f1113d6
-  RealmSwift: c817b5f374668cf08f649afb05f55d92a787649c
+  Realm: 5e92902e2875dff4bb0fd02f67bb737c3d5db2bc
+  RealmSwift: 9a360fc7bae04fc2e308a34fbd899d5faa2d6b22
   RxBlocking: 5ef131267220f92ef68531dd6afeaf407cd6b41a
   RxCocoa: 13d2a4d7546a34b8ececae8c281e4ea1dbb94f2b
   RxRelay: a168bd6caf712d00c676ac344e9295afc93b418e
@@ -151,6 +152,6 @@ SPEC CHECKSUMS:
   "UITextView+Placeholder": c407b27599ea23cca425946fee3cf1db5d547008
   WordSuggestion: 424d96dd2cfe4259c72959f9bdcffc864f0e65d4
 
-PODFILE CHECKSUM: 655054b92f521c24d4e330d39370d0e1d5c20777
+PODFILE CHECKSUM: 4ee5740d09da4b05e3214159fa584a11206bbb04
 
 COCOAPODS: 1.8.4
