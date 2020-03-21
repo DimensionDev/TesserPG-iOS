@@ -14,8 +14,8 @@ def common_pods
   pod 'ConsolePrint', '~> 0.1.0'
   pod 'MMWormhole', '~> 2.0.0'
 
-  pod 'RxSwift', '~> 4.4.2'
-  pod 'RxCocoa', '~> 4.4.2'
+  pod 'RxSwift', '~> 5.1.0'
+  pod 'RxCocoa', '~> 5.1.0'
 
   # pod 'DMSOpenPGP', '~> 0.1.4'
   pod 'KeychainAccess', '~> 3.2.0'
@@ -51,7 +51,7 @@ target 'TesserCube' do
   target 'TesserCubeTests' do
     inherit! :search_paths
     # Pods for testing
-    pod 'RxBlocking', '~> 4.0'
+    pod 'RxBlocking', '~> 5.1.0'
   end
 
 end
