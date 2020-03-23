@@ -43,12 +43,7 @@ struct TCKey: KeychianMappable, Equatable {
                     continue
                 }
                 
-                // TODO: export Go interface
-                // Ref: https://tools.ietf.org/html/rfc4880#section-5.2.3.19
-                // let isPrimaryUserID = identity.selfSignature.isPrimaryId
-                
-                let isPrimaryUserID = false
-                if isPrimaryUserID {
+                if identity.isPrimaryId() {
                     primaryUserID = identity.name
                 } else {
                     nonPrimaryUserIDs.append(identity.name)
