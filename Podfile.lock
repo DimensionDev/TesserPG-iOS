@@ -4,7 +4,7 @@ PODS:
   - DateToolsSwift (4.0.0)
   - DeepDiff (2.0.1)
   - DeviceKit (1.11.0)
-  - DMSGoPGP (0.0.18)
+  - DMSGoPGP (0.0.19)
   - Eureka (4.3.1)
   - FLEX (2.4.0)
   - GRDB.swift (3.7.0)
@@ -64,7 +64,7 @@ DEPENDENCIES:
   - DateToolsSwift (~> 4.0.0)
   - DeepDiff (~> 2.0.1)
   - DeviceKit (~> 1.11.0)
-  - DMSGoPGP (from `../gopenpgp`)
+  - DMSGoPGP (~> 0.0.19)
   - Eureka (~> 4.3.1)
   - FLEX (~> 2.4.0)
   - GRDB.swift (~> 3.7.0)
@@ -90,6 +90,7 @@ SPEC REPOS:
     - DateToolsSwift
     - DeepDiff
     - DeviceKit
+    - DMSGoPGP
     - Eureka
     - FLEX
     - GRDB.swift
@@ -112,8 +113,6 @@ SPEC REPOS:
     - WordSuggestion
 
 EXTERNAL SOURCES:
-  DMSGoPGP:
-    :path: "../gopenpgp"
   SVProgressHUD:
     :branch: dark-mode
     :git: https://github.com/getaaron/SVProgressHUD.git
@@ -129,7 +128,7 @@ SPEC CHECKSUMS:
   DateToolsSwift: 875d97ff9e3a5d54abdd67a269b3f51c757b71ab
   DeepDiff: 1944bb2c841ab238a66b31de1faa7627f3ca84bd
   DeviceKit: a3a86f8dddbe1317a9a243cdf9646858bf135dce
-  DMSGoPGP: b183d7dce337b7aa507f3761916ceeef2a5da920
+  DMSGoPGP: e718cfffb38060f7e1265e6f0ed91f1bbf92cf16
   Eureka: 28ea296f06710f6745266b71f17862048941a32d
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
   GRDB.swift: 51cc9e57ae8ff7083a9d674c97925aa1de06aac5
@@ -152,6 +151,6 @@ SPEC CHECKSUMS:
   "UITextView+Placeholder": c407b27599ea23cca425946fee3cf1db5d547008
   WordSuggestion: 424d96dd2cfe4259c72959f9bdcffc864f0e65d4
 
-PODFILE CHECKSUM: 4ee5740d09da4b05e3214159fa584a11206bbb04
+PODFILE CHECKSUM: 21fa270129853133074aa1eff671992496aa41e6
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.1

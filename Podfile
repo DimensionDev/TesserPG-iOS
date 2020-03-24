@@ -24,8 +24,8 @@ def common_pods
   pod 'DeepDiff', '~> 2.0.1'
 
   # GoPGP 
-  pod 'DMSGoPGP', :path => '../gopenpgp'
-  # pod 'DMSGoPGP', '~> 0.0.17'
+  # pod 'DMSGoPGP', :path => '../gopenpgp'
+  pod 'DMSGoPGP', '~> 0.0.19'
 
   pod 'WordSuggestion', '~> 0.2.1'
 end
