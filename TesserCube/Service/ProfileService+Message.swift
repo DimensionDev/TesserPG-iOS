@@ -23,10 +23,6 @@ extension ProfileService {
         }
     }
     
-    // func containsMessage(_ message: Message) -> Bool {
-    //     return messages.value.contains(message)
-    // }
-    
     @discardableResult
     func addMessage(_ message: inout Message, recipientKeys: [TCKey]) throws -> Message {
         do {

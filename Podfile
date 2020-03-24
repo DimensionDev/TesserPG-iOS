@@ -14,17 +14,18 @@ def common_pods
   pod 'ConsolePrint', '~> 0.1.0'
   pod 'MMWormhole', '~> 2.0.0'
 
-  pod 'RxSwift', '~> 4.4.2'
-  pod 'RxCocoa', '~> 4.4.2'
+  pod 'RxSwift', '~> 5.1.0'
+  pod 'RxCocoa', '~> 5.1.0'
 
-  # pod 'DMSOpenPGP', '~> 0.1.4'
   pod 'KeychainAccess', '~> 3.2.0'
 
   pod 'GRDB.swift', '~> 3.7.0'
   pod 'GRDBCipher', '~> 3.7.0'
   pod 'DeepDiff', '~> 2.0.1'
 
-  pod 'DMSGoPGP', '~> 0.0.17'
+  # GoPGP 
+  # pod 'DMSGoPGP', :path => '../gopenpgp'
+  pod 'DMSGoPGP', '~> 0.0.19'
 
   pod 'WordSuggestion', '~> 0.2.1'
 end
@@ -51,7 +52,7 @@ target 'TesserCube' do
   target 'TesserCubeTests' do
     inherit! :search_paths
     # Pods for testing
-    pod 'RxBlocking', '~> 4.0'
+    pod 'RxBlocking', '~> 5.1.0'
   end
 
 end

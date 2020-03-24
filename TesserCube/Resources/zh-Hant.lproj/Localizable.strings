@@ -145,6 +145,7 @@
 "PasteKeyViewController.Placeholder.Password" = "密碼";
 "PasteKeyViewController.Alert.Title.Notice" = "提示";
 "PasteKeyViewController.Alert.Message.ImportAsPublicKey" = "該密鑰對含有私鑰部分，繼續導入則僅會導入其公鑰部分";
+"PasteKeyViewController.Alert.Message.noPublicKey" = "無法解析公鑰\n請重試";
 "PasteKeyViewController.Alert.Button.Continue" = "繼續";
 
 "MeViewController.Action.Button.Export" = "導出密鑰";
@@ -164,12 +165,14 @@
 "CreateNewKeyViewController.Alert.Title.EmailInvalid" = "電子郵箱格式不正確";
 "CreateNewKeyViewController.Alert.Title.PasswordNotMatch" = "兩次輸入的密碼需不一致";
 
-"ImportPublicKeyConfirmViewController.Title.NewContact" = "新聯絡人";
+"ImportPublicKeyConfirmViewController.Title.NewContact" = "新聯繫人";
 "ImportPublicKeyConfirmViewController.Label.Availability" = "是否已添加";
-"ImportPublicKeyConfirmViewController.Label.IsAvailable" = "未添加";
-"ImportPublicKeyConfirmViewController.Label.IsUnavailable" = "已添加";
-"ImportPublicKeyConfirmViewController.Label.ContactsAddedSuccessfully" = "聯絡人添加成功";
-"ImportPublicKeyConfirmViewController.Button.AddContact" = "添加聯絡人";
+"ImportPublicKeyConfirmViewController.Label.notAdded" = "未添加";
+"ImportPublicKeyConfirmViewController.Label.IsPartialAddedOneKeyNew" = "可添加一個新公鑰";
+"ImportPublicKeyConfirmViewController.Label.IsPartialAddedMultipleKeysNew" = "可添加 %d 個新公鑰";
+"ImportPublicKeyConfirmViewController.Label.IsAdded" = "已添加";
+"ImportPublicKeyConfirmViewController.Label.ContactsAddedSuccessfully" = "聯繫人添加成功";
+"ImportPublicKeyConfirmViewController.Button.AddContact" = "添加聯繫人";
 "ImportPublicKeyConfirmViewController.Button.Close" = "關閉";
 
 "ImportPrivateKeyConfirmViewController.Title.NewPrivateKey" = "新密鑰";
@@ -202,13 +205,13 @@
 "Keyboard.Button.Interpret" = "解密";
 "Keyboard.Button.Encrypt" = "加密";
 
+"Keyboard.Alert.NoSelectedRecipient" = "請選擇至少一位聯絡人來加密";
+"Keyboard.Alert.NoEncryptedText" = "沒有找到加密或簽名文本";
+
 "Keyboard.Label.SelectRecipients" = "選擇收件人";
 "Keyboard.Label.NoContactsFound" = "無聯絡人";
 "Keyboard.Label.OneContactFound" = "一位聯絡人";
 "Keyboard.Label.PluralContactFound" = "%lu 位聯絡人";
-
-"Keyboard.Alert.NoSelectedRecipient" = "請選擇至少一位聯絡人來加密";
-"Keyboard.Alert.NoEncryptedText" = "沒有找到加密或簽名文本";
 
 "Keyboard.Interpreted.Title.MessageInterpreted" = "消息已解密";
 "Keyboard.Interpreted.Title.NoNeccessaryPrivateKey" = "無法解密消息";
@@ -246,13 +249,14 @@
 
 "TCError.keysAlreadyExsit" = "此密鑰對已存在";
 
-"TCError.PGPKeyErrorReason.invalidPassword"       = "無效的密碼";
-"TCError.PGPKeyErrorReason.invalidKeyFormat"      = "無效的密鑰對";
-"TCError.PGPKeyErrorReason.messageNotSigned"      = "消息未被簽名";
-"TCError.PGPKeyErrorReason.failToExport"          = "導出密鑰對失敗";
-"TCError.PGPKeyErrorReason.failToSave"            = "保存密鑰對失敗";
-"TCError.PGPKeyErrorReason.failToGenerate"        = "密鑰對生成失敗，請重試";
-"TCError.PGPKeyErrorReason.noAvailableDecryptKey" = "沒有可用的密鑰來解密此消息";
+"TCError.PGPKeyErrorReason.invalidPassword"                 = "無效的密碼";
+"TCError.PGPKeyErrorReason.invalidKeyFormat"                = "無效的密鑰對";
+"TCError.PGPKeyErrorReason.messageNotSigned"                = "消息未被簽名";
+"TCError.PGPKeyErrorReason.failToExport"                    = "導出密鑰對失敗";
+"TCError.PGPKeyErrorReason.failToSave"                      = "保存密鑰對失敗";
+"TCError.PGPKeyErrorReason.failToGenerate"                  = "密鑰對生成失敗，請重試";
+"TCError.PGPKeyErrorReason.noAvailableDecryptKey"           = "沒有可用的密鑰來解密此消息";
+"TCError.PGPKeyErrorReason.notSupportAddMultiplePrivateKey" = "暫不支持通過同時導入多個私鑰";
 
 "TCError.ComposeErrorReason.internal"                 = "內部錯誤";
 "TCError.ComposeErrorReason.emptyInput"               = "消息內容不能為空";

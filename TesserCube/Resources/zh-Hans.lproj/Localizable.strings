@@ -145,6 +145,7 @@
 "PasteKeyViewController.Placeholder.Password" = "密码";
 "PasteKeyViewController.Alert.Title.Notice" = "提示";
 "PasteKeyViewController.Alert.Message.ImportAsPublicKey" = "该密钥对含有私钥部分，继续导入则仅会导入其公钥部分";
+"PasteKeyViewController.Alert.Message.noPublicKey" = "无法解析公钥\n请重试";
 "PasteKeyViewController.Alert.Button.Continue" = "继续";
 
 "MeViewController.Action.Button.Export" = "导出密钥";
@@ -166,8 +167,10 @@
 
 "ImportPublicKeyConfirmViewController.Title.NewContact" = "新联系人";
 "ImportPublicKeyConfirmViewController.Label.Availability" = "是否已添加";
-"ImportPublicKeyConfirmViewController.Label.IsAvailable" = "未添加";
-"ImportPublicKeyConfirmViewController.Label.IsUnavailable" = "已添加";
+"ImportPublicKeyConfirmViewController.Label.notAdded" = "未添加";
+"ImportPublicKeyConfirmViewController.Label.IsPartialAddedOneKeyNew" = "可添加一个新公钥";
+"ImportPublicKeyConfirmViewController.Label.IsPartialAddedMultipleKeysNew" = "可添加 %d 个新公钥";
+"ImportPublicKeyConfirmViewController.Label.IsAdded" = "已添加";
 "ImportPublicKeyConfirmViewController.Label.ContactsAddedSuccessfully" = "联系人添加成功";
 "ImportPublicKeyConfirmViewController.Button.AddContact" = "添加联系人";
 "ImportPublicKeyConfirmViewController.Button.Close" = "关闭";
@@ -202,13 +205,13 @@
 "Keyboard.Button.Interpret" = "解密";
 "Keyboard.Button.Encrypt" = "加密";
 
+"Keyboard.Alert.NoSelectedRecipient" = "请选择至少一位联系人来加密";
+"Keyboard.Alert.NoEncryptedText" = "没有找到加密或签名文本";
+
 "Keyboard.Label.SelectRecipients" = "选择收件人";
 "Keyboard.Label.NoContactsFound" = "无联系人";
 "Keyboard.Label.OneContactFound" = "一位联系人";
 "Keyboard.Label.PluralContactFound" = "%lu 位联系人";
-
-"Keyboard.Alert.NoSelectedRecipient" = "请选择至少一位联系人来加密";
-"Keyboard.Alert.NoEncryptedText" = "没有找到加密或签名文本";
 
 "Keyboard.Interpreted.Title.MessageInterpreted" = "消息已解密";
 "Keyboard.Interpreted.Title.NoNeccessaryPrivateKey" = "无法解密消息";
@@ -246,13 +249,14 @@
 
 "TCError.keysAlreadyExsit" = "此密钥对已存在";
 
-"TCError.PGPKeyErrorReason.invalidPassword"       = "无效的密码";
-"TCError.PGPKeyErrorReason.invalidKeyFormat"      = "无效的密钥对";
-"TCError.PGPKeyErrorReason.messageNotSigned"      = "消息未被签名";
-"TCError.PGPKeyErrorReason.failToExport"          = "导出密钥对失败";
-"TCError.PGPKeyErrorReason.failToSave"            = "保存密钥对失败";
-"TCError.PGPKeyErrorReason.failToGenerate"        = "密钥对生成失败，请重试";
-"TCError.PGPKeyErrorReason.noAvailableDecryptKey" = "没有可用的密钥来解密此消息";
+"TCError.PGPKeyErrorReason.invalidPassword"                 = "无效的密码";
+"TCError.PGPKeyErrorReason.invalidKeyFormat"                = "无效的密钥对";
+"TCError.PGPKeyErrorReason.messageNotSigned"                = "消息未被签名";
+"TCError.PGPKeyErrorReason.failToExport"                    = "导出密钥对失败";
+"TCError.PGPKeyErrorReason.failToSave"                      = "保存密钥对失败";
+"TCError.PGPKeyErrorReason.failToGenerate"                  = "密钥对生成失败，请重试";
+"TCError.PGPKeyErrorReason.noAvailableDecryptKey"           = "没有可用的密钥来解密此消息";
+"TCError.PGPKeyErrorReason.notSupportAddMultiplePrivateKey" = "暂不支持通过同时导入多个私钥";
 
 "TCError.ComposeErrorReason.internal"                 = "内部错误";
 "TCError.ComposeErrorReason.emptyInput"               = "消息内容不能为空";

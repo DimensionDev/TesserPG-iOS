@@ -157,7 +157,8 @@ extension Coordinator {
                 return vc
             } else {
                 let vc = ImportPublicKeyConfirmViewController()
-                vc.tcKey = key
+                let viewModel = ImportPublicKeyConfirmViewModel(tcKey: key)
+                vc.viewModel = viewModel
                 vc.hidesBottomBarWhenPushed = true
                 return vc
             }

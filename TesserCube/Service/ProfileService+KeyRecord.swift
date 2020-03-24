@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import DMSGoPGP
 
 extension ProfileService {
     
@@ -65,29 +66,81 @@ extension ProfileService {
         DispatchQueue.global().async {
             do {
                 let key = try KeyFactory.key(from: armoredKey, passphrase: passphrase)
-                completion(key, nil)
+                DispatchQueue.main.async {
+                    completion(key, nil)
+                }
             } catch let error {
-                completion(nil, error)
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
             }
         }
     }
 
+    /// Add key entities into the database from the keyRing in TCKey
+    ///
+    /// Note:
+    ///   The TCKey could contains multiple keys from other PGP clients.
+    ///   This function take every single key entity and create new contract.
+    ///
+    /// Warning:
+    ///   Not supports import multiple private key entities just now.
+    ///
+    /// - Parameters:
+    ///   - tckey: keyRing wrapper. May contains multiple entities if create from user input aromor
+    ///   - passphrase: passphrase for key tcKey. Set nil for import only public part
+    ///   - completion: error callback
     func addKey(_ tckey: TCKey, passphrase: String?, _ completion: @escaping (Error?) -> Void) {
         DispatchQueue.global().async {
             do {
-                // Only create one Contact from key's primary userID
-                let userIDs = tckey.userIDs
+                // throw error when import multiple entities
+                if passphrase != nil {
+                    guard tckey.userIDs.count == 1 else {
+                        DispatchQueue.main.async {
+                            completion(TCError.pgpKeyError(reason: TCError.PGPKeyErrorReason.notSupportAddMultiplePrivateKey))
+                        }
+                        return
+                    }
+                }
                 
-                // TODO: KeyRecord insert here. Should Refactoring here when we support sub-key feature
-                try userIDs.forEach { try self.addNewContact(keyUserID: $0, key: tckey, passphrase: passphrase) }
+                guard let keyRing = tckey.goKeyRing else {
+                    completion(TCError.pgpKeyError(reason: TCError.PGPKeyErrorReason.invalidKeyFormat))
+                    return
+                }
+                
+                for i in 0 ..< keyRing.getEntitiesCount() {
+                    guard let entity = try? keyRing.getEntity(i) else { continue }
+                    guard let newKeyRing = CryptoNewKeyRing() else { continue}
+                    
+                    do {
+                        try newKeyRing.add(entity)
+                    } catch {
+                        continue
+                    }
+                    
+                    let newTCKey = TCKey(keyRing: newKeyRing)
+                    
+                    // skip if already added
+                    guard !self.keys.value.contains(where: { $0.longIdentifier == newTCKey.longIdentifier }) else {
+                        continue
+                    }
+                    
+                    // The insert process will be terminal if throw error.
+                    let userID = newTCKey.userID
+                    try self.addNewContact(keyUserID: userID, key: newTCKey, passphrase: passphrase)
+                }
                 
                 try self.keyChain
                     .authenticationPrompt("Authenticate to update your password")
                     .set(passphrase ?? "", key: tckey.longIdentifier)
                 
-                completion(nil)
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
             } catch let error {
-                completion(error)
+                DispatchQueue.main.async {
+                    completion(error)
+                }
             }
         }
     }

@@ -145,6 +145,7 @@
 "PasteKeyViewController.Placeholder.Password" = "Password";
 "PasteKeyViewController.Alert.Title.Notice" = "Notice";
 "PasteKeyViewController.Alert.Message.ImportAsPublicKey" = "This keypair contains private key part. Continue importing will only import the public key part";
+"PasteKeyViewController.Alert.Message.noPublicKey" = "Cannot parse public key armor.\nPlease try again";
 "PasteKeyViewController.Alert.Button.Continue" = "Continue";
 
 "MeViewController.Action.Button.Export" = "Export Private Key";
@@ -166,8 +167,10 @@
 
 "ImportPublicKeyConfirmViewController.Title.NewContact" = "New Contact";
 "ImportPublicKeyConfirmViewController.Label.Availability" = "Availability";
-"ImportPublicKeyConfirmViewController.Label.IsAvailable" = "Not Added Yet";
-"ImportPublicKeyConfirmViewController.Label.IsUnavailable" = "Already Added";
+"ImportPublicKeyConfirmViewController.Label.notAdded" = "Not Added Yet";
+"ImportPublicKeyConfirmViewController.Label.IsPartialAddedOneKeyNew" = "One new key can be added";
+"ImportPublicKeyConfirmViewController.Label.IsPartialAddedMultipleKeysNew" = "%d new keys can be added";
+"ImportPublicKeyConfirmViewController.Label.IsAdded" = "Already added";
 "ImportPublicKeyConfirmViewController.Label.ContactsAddedSuccessfully" = "Contacts Added Successfully";
 "ImportPublicKeyConfirmViewController.Button.AddContact" = "Add Contact";
 "ImportPublicKeyConfirmViewController.Button.Close" = "Close";
@@ -246,13 +249,14 @@
 
 "TCError.keysAlreadyExsit" = "Keys already exist";
 
-"TCError.PGPKeyErrorReason.invalidPassword"       = "Invalid Password";
-"TCError.PGPKeyErrorReason.invalidKeyFormat"      = "Invalid Key";
-"TCError.PGPKeyErrorReason.messageNotSigned"      = "Fail to export the key";
-"TCError.PGPKeyErrorReason.failToExport"          = "The message is not signed";
-"TCError.PGPKeyErrorReason.failToSave"            = "You do not have the necessary private key to decrypt this message";
-"TCError.PGPKeyErrorReason.failToGenerate"        = "Key generate fail. Please try again";
-"TCError.PGPKeyErrorReason.noAvailableDecryptKey" = "No available secret key to decrypt this message";
+"TCError.PGPKeyErrorReason.invalidPassword"                 = "Invalid Password";
+"TCError.PGPKeyErrorReason.invalidKeyFormat"                = "Invalid Key";
+"TCError.PGPKeyErrorReason.messageNotSigned"                = "Fail to export the key";
+"TCError.PGPKeyErrorReason.failToExport"                    = "The message is not signed";
+"TCError.PGPKeyErrorReason.failToSave"                      = "You do not have the necessary private key to decrypt this message";
+"TCError.PGPKeyErrorReason.failToGenerate"                  = "Key generate fail. Please try again";
+"TCError.PGPKeyErrorReason.noAvailableDecryptKey"           = "No available secret key to decrypt this message";
+"TCError.PGPKeyErrorReason.notSupportAddMultiplePrivateKey" = "Adding multiple private keys in one armor is not supported yet";
 
 "TCError.ComposeErrorReason.internal"                 = "Internal error";
 "TCError.ComposeErrorReason.emptyInput"               = "Message should not be empty";

@@ -11,12 +11,22 @@ import ConsolePrint
 import DMSGoPGP
 
 extension KeyFactory {
-
+    
+    /// Create TCKey from key armor. Armor contains multiple key is acceptable.
+    /// Unlock check will be called if passphrase set not nil.
+    ///
+    /// Note:
+    ///   This factory method passthough armor into the underneath keyRing .
+    ///   And not guarantee the application logical correctness.
+    ///   For example, pass public block armor when public only TCKey needs.
+    ///
+    /// - Parameters:
+    ///   - armoredKey: PGP armor key
+    ///   - passphrase: key passphrase
     static func key(from armoredKey: String, passphrase: String?) throws -> TCKey {
         do {
-
             guard let key = TCKey(armored: armoredKey), try key.goKeyRing?.getEncryptionKey() != nil else {
-                throw TCError.pgpKeyError(reason: .invalidPassword)
+                throw TCError.pgpKeyError(reason: .invalidKeyFormat)
             }
             if let passphrase = passphrase {
                 try key.unlock(passphrase: passphrase)
