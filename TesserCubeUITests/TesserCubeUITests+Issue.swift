@@ -68,9 +68,8 @@ extension TesserCubeUITests_Issue {
         createKey(name: "Alice", email: "alice@tessercube.com", password: "Alice")
         createKey(name: "Bob", email: "bob@tessercube.com", password: "Bob")
         
-        let names = "abcdefgABCDEFG0123456789"
         for _ in 0..<1000 {
-            let name = String(names.shuffled())
+            let name = UUID().uuidString
             let publicKey = generateRSAPublicKey(name: name, email: "\(name)@test.com", passphrase: nil)
             print("Add:")
             print(publicKey)
