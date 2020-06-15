@@ -258,10 +258,10 @@ extension TesserCubeUITests_Issue {
         app.buttons["Import Keypair"].tap()
         
         // Add Contact
-        XCTAssert(app.buttons["Add Contact"].exists)
+        XCTAssert(app.buttons["Add Contact"].waitForExistence(timeout: 5.0))
         app.buttons["Add Contact"].tap()
         
-        XCTAssert(app.staticTexts["Contacts Added Successfully"].exists)
+        XCTAssert(app.staticTexts["Contacts Added Successfully"].waitForExistence(timeout: 5.0))
     }
 }
 
