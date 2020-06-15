@@ -248,7 +248,7 @@ extension TesserCubeUITests_Issue {
         
         // Wait 1s
         let sleep = expectation(description: "Sleep")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
             sleep.fulfill()
         }
         waitForExpectations(timeout: 5.0, handler: nil)
