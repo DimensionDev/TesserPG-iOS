@@ -64,11 +64,11 @@ extension TesserCubeUITests_Issue {
         _app.launch()
         _app.terminate()
 
-        skipWizard()
-        createKey(name: "Alice", email: "alice@tessercube.com", password: "Alice")
-        createKey(name: "Bob", email: "bob@tessercube.com", password: "Bob")
+        // skipWizard()
+        // createKey(name: "Alice", email: "alice@tessercube.com", password: "Alice")
+        // createKey(name: "Bob", email: "bob@tessercube.com", password: "Bob")
         
-        for _ in 0..<1000 {
+        for _ in 0..<3 {
             let name = UUID().uuidString
             let publicKey = generateRSAPublicKey(name: name, email: "\(name)@test.com", passphrase: nil)
             print("Add:")
@@ -236,7 +236,7 @@ extension TesserCubeUITests_Issue {
         let app = XCUIApplication()
         app.launch()
         
-        UIPasteboard.general.string = armor
+        UIPasteboard.general.string = ""
         
         // Move to "Contacts" tab
         XCTAssert(app.tabBars.buttons["Contacts"].waitForExistence(timeout: 5.0))
@@ -246,7 +246,16 @@ extension TesserCubeUITests_Issue {
         XCTAssert(app.navigationBars.buttons["Add"].exists)
         app.navigationBars.buttons["Add"].tap()
         
-        // Wait 1s
+        
+        // paste public key
+        let textView = app.textViews.firstMatch
+        XCTAssert(textView.waitForExistence(timeout: 5.0))
+        textView.tap()
+        UIPasteboard.general.string = armor
+        textView.doubleTap()
+        app.menuItems["Paste"].tap()
+        
+        // Wait 3s
         let sleep = expectation(description: "Sleep")
         DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
             sleep.fulfill()
