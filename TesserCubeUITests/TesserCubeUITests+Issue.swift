@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import DMSGoPGP
 
 class TesserCubeUITests_Issue: XCTestCase {
     
@@ -50,6 +51,32 @@ extension TesserCubeUITests_Issue {
         checkContactCount(3)
     }
     
+    // https://github.com/DimensionDev/Tessercube-iOS/issues/119
+    func testIssue119() {
+        // iOS 12 only
+        if #available(iOS 13.0, *) {
+            return
+        }
+        
+        // Reset application
+        let _app = XCUIApplication()
+        _app.launchArguments.append("ResetApplication")
+        _app.launch()
+        _app.terminate()
+
+        skipWizard()
+        createKey(name: "Alice", email: "alice@tessercube.com", password: "Alice")
+        createKey(name: "Bob", email: "bob@tessercube.com", password: "Bob")
+        
+        let names = "abcdefgABCDEFG0123456789"
+        for _ in 0..<1000 {
+            let name = String(names.shuffled())
+            let publicKey = generateRSAPublicKey(name: name, email: "\(name)@test.com", passphrase: nil)
+            print("Add:")
+            print(publicKey)
+            addPublicKey(armor: publicKey)
+        }
+    }
 }
 
 extension TesserCubeUITests_Issue {
@@ -146,6 +173,97 @@ extension TesserCubeUITests_Issue {
         XCTAssertEqual(app.tables.cells.count, count)
     }
     
+}
+
+extension TesserCubeUITests_Issue {
+    // create private key by name
+    @discardableResult
+    func createKey(name: String, email: String, password: String) -> XCUIElement? {
+        let app = XCUIApplication()
+        app.launch()
+        
+        // Move to "Me" tab
+        XCTAssert(app.navigationBars["Messages"].exists)
+        XCTAssert(app.tabBars.buttons.count == 3)
+        XCTAssert(app.tabBars.buttons["Me"].exists)
+        app.tabBars.buttons["Me"].tap()
+        
+        // Tap "+" bar button item
+        XCTAssert(app.navigationBars.buttons["Add"].exists)
+        app.navigationBars.buttons["Add"].tap()
+        
+        // Tap "Create Keypair" action
+        XCTAssert(app.sheets.buttons["Create Keypair"].exists)
+        app.sheets.buttons["Create Keypair"].tap()
+        
+        // Fill form to create key
+        XCTAssert(app.tables.textFields["Name"].waitForExistence(timeout: 3.0))
+        XCTAssert(app.tables.textFields["Name"].exists)
+        XCTAssert(app.tables.textFields["Email"].exists)
+        XCTAssert(app.tables.secureTextFields["Password"].exists)
+        XCTAssert(app.tables.secureTextFields["Confirm Password"].exists)
+        
+        app.tables.textFields["Name"].tap()
+        app.tables.textFields["Name"].typeText(name)
+        app.tables.textFields["Email"].tap()
+        app.tables.textFields["Email"].typeText(email)
+        app.tables.secureTextFields["Password"].tap()
+        app.tables.secureTextFields["Password"].typeText(password)
+        app.tables.secureTextFields["Confirm Password"].tap()
+        app.tables.secureTextFields["Confirm Password"].typeText(password)
+        
+        // Confirm create
+        XCTAssert(app.tables.buttons["Create Keypair"].exists)
+        app.tables.buttons["Create Keypair"].tap()
+        
+        if app.alerts.firstMatch.waitForExistence(timeout: 3.0) {
+            return app.alerts.firstMatch
+        } else {
+            return nil
+        }
+    }
+    
+    func generateRSAPublicKey(name: String, email: String, passphrase: String?) -> String {
+        let goKey = CryptoGetGopenPGP()!.generateKey(name, email: email, passphrase: passphrase, keyType: "rsa", bits: 3072, error: nil)
+        let goKeyRing = try! CryptoGetGopenPGP()!.buildKeyRingArmored(goKey)
+        
+        var error: NSError?
+        let publicKeyArmor = goKeyRing.getArmoredPublicKey(&error)
+        
+        return publicKeyArmor
+    }
+    
+    func addPublicKey(armor: String) {
+        let app = XCUIApplication()
+        app.launch()
+        
+        UIPasteboard.general.string = armor
+        
+        // Move to "Contacts" tab
+        XCTAssert(app.tabBars.buttons["Contacts"].waitForExistence(timeout: 5.0))
+        app.tabBars.buttons["Contacts"].tap()
+        
+        // Tap "+" bar button item
+        XCTAssert(app.navigationBars.buttons["Add"].exists)
+        app.navigationBars.buttons["Add"].tap()
+        
+        // Wait 1s
+        let sleep = expectation(description: "Sleep")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            sleep.fulfill()
+        }
+        waitForExpectations(timeout: 5.0, handler: nil)
+        
+        // Import public key
+        XCTAssert(app.buttons["Import Keypair"].exists)
+        app.buttons["Import Keypair"].tap()
+        
+        // Add Contact
+        XCTAssert(app.buttons["Add Contact"].exists)
+        app.buttons["Add Contact"].tap()
+        
+        XCTAssert(app.staticTexts["Contacts Added Successfully"].exists)
+    }
 }
 
 
