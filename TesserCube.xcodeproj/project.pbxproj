@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0925C0B9153ECFA98418EA6C /* Pods_TesserCube_TesserCubeUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 917EE6DC9AF7DC1F9556D604 /* Pods_TesserCube_TesserCubeUITests.framework */; };
 		8304E995221BF10000122637 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8304E994221BF10000122637 /* AppDelegate.swift */; };
 		8304E99A221BF10000122637 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8304E998221BF10000122637 /* Main.storyboard */; };
 		8304E99C221BF10100122637 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8304E99B221BF10100122637 /* Assets.xcassets */; };
@@ -123,7 +124,7 @@
 		83783388224CC23400F2C0BF /* ContactEditTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 83783386224CC23400F2C0BF /* ContactEditTextCell.xib */; };
 		8378338C224DFED100F2C0BF /* SubKeyCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8378338A224DFED100F2C0BF /* SubKeyCardCell.swift */; };
 		8378338D224DFED100F2C0BF /* SubKeyCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8378338B224DFED100F2C0BF /* SubKeyCardCell.xib */; };
-		839E647B23320751005C21FA /* (null) in Sources */ = {isa = PBXBuildFile; };
+		839E647B23320751005C21FA /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		83B93D1F221CE06100F556C0 /* Application.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D1E221CE06100F556C0 /* Application.swift */; };
 		83B93D22221CEB9800F556C0 /* UserDefaults+AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D21221CEB9800F556C0 /* UserDefaults+AppGroup.swift */; };
 		83B93D2D221D22FA00F556C0 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83B93D2C221D22FA00F556C0 /* KeyboardViewController.swift */; };
@@ -458,6 +459,9 @@
 
 /* Begin PBXFileReference section */
 		03698CC6E2986F14532C6D66 /* Pods-TesserCubeInterpretAction.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeInterpretAction.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeInterpretAction/Pods-TesserCubeInterpretAction.debug.xcconfig"; sourceTree = "<group>"; };
+		0BB0AABC28363D1F1584ACDD /* Pods-TesserCubeUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeUITests/Pods-TesserCubeUITests.release.xcconfig"; sourceTree = "<group>"; };
+		229B7F4942169BB3893B34FA /* Pods-TesserCube-TesserCubeUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube-TesserCubeUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube-TesserCubeUITests/Pods-TesserCube-TesserCubeUITests.release.xcconfig"; sourceTree = "<group>"; };
+		234FE2B79768DFA95A44D177 /* Pods-TesserCube-TesserCubeUITests.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube-TesserCubeUITests.xctest.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube-TesserCubeUITests/Pods-TesserCube-TesserCubeUITests.xctest.xcconfig"; sourceTree = "<group>"; };
 		23A4444BC35B6DAB5A8039E3 /* Pods-TesserCubeKeyboard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeKeyboard.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeKeyboard/Pods-TesserCubeKeyboard.release.xcconfig"; sourceTree = "<group>"; };
 		34254D2B33B9D38AA6A8B02B /* Pods-TesserCubeKeyboard.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeKeyboard.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeKeyboard/Pods-TesserCubeKeyboard.debug stub.xcconfig"; sourceTree = "<group>"; };
 		433A84EFFA67237E885331BD /* Pods-TesserCubeTests.debug pgp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.debug pgp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.debug pgp.xcconfig"; sourceTree = "<group>"; };
@@ -469,6 +473,7 @@
 		5836A11F534936E25D0543C8 /* Pods-TesserCubeKeyboard.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeKeyboard.xctest.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeKeyboard/Pods-TesserCubeKeyboard.xctest.xcconfig"; sourceTree = "<group>"; };
 		6AAD1C52FBF55BCAC977EEFC /* Pods-TesserCube.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.release.xcconfig"; sourceTree = "<group>"; };
 		6C37B876F4476EE0FA92731A /* Pods-TesserCubeInterpretAction.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeInterpretAction.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeInterpretAction/Pods-TesserCubeInterpretAction.release.xcconfig"; sourceTree = "<group>"; };
+		764E22828EDD3FA8C59332E7 /* Pods-TesserCubeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeUITests/Pods-TesserCubeUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		829EC06ABC2887E5DB724F5B /* Pods_TesserCube.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesserCube.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8304E991221BF10000122637 /* TesserCube.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TesserCube.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8304E994221BF10000122637 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -613,15 +618,18 @@
 		83FE346122B74E980077C1A5 /* MainTabbarViewController+IntroWizard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainTabbarViewController+IntroWizard.swift"; sourceTree = "<group>"; };
 		83FF06572250D9DA0003BC0D /* MessageDBAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDBAction.swift; sourceTree = "<group>"; };
 		84957C7609515FCFA95F42A3 /* Pods-TesserCubeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.release.xcconfig"; sourceTree = "<group>"; };
+		917EE6DC9AF7DC1F9556D604 /* Pods_TesserCube_TesserCubeUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesserCube_TesserCubeUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B17EDD1F3A38E5966DCBA34 /* Pods-TesserCubeTests.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeTests.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeTests/Pods-TesserCubeTests.debug stub.xcconfig"; sourceTree = "<group>"; };
 		9C1A99D94821B29F622B677D /* Pods-TesserCube.debug stub.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.debug stub.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.debug stub.xcconfig"; sourceTree = "<group>"; };
 		AC77612245CA0D2E11ECCE70 /* Pods-TesserCube.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.xctest.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.xctest.xcconfig"; sourceTree = "<group>"; };
 		B639829F9F1E75874A6F4CC4 /* Pods-TesserCubeComposeAction.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.xctest.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.xctest.xcconfig"; sourceTree = "<group>"; };
+		B67A6D4F7D53FEBFA1B8FD44 /* Pods-TesserCube-TesserCubeUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube-TesserCubeUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube-TesserCubeUITests/Pods-TesserCube-TesserCubeUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		B9140FA57B00A5B2BD89FABF /* Pods-TesserCube.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.debug.xcconfig"; sourceTree = "<group>"; };
 		BA307858963D472080CE0E2A /* Pods-TesserCubeKeyboard.debug pgp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeKeyboard.debug pgp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeKeyboard/Pods-TesserCubeKeyboard.debug pgp.xcconfig"; sourceTree = "<group>"; };
 		BEF5E8837849AFC231AC950C /* Pods-TesserCubeComposeAction.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.release.xcconfig"; sourceTree = "<group>"; };
 		C00CE558B320642C1C2EECE7 /* Pods-TesserCubeComposeAction.debug pgp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeComposeAction.debug pgp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeComposeAction/Pods-TesserCubeComposeAction.debug pgp.xcconfig"; sourceTree = "<group>"; };
 		C0A9D10AB1612B0483E24D78 /* Pods-TesserCube.debug pgp.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCube.debug pgp.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCube/Pods-TesserCube.debug pgp.xcconfig"; sourceTree = "<group>"; };
+		D51F091843E7821A493DD84C /* Pods-TesserCubeUITests.xctest.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesserCubeUITests.xctest.xcconfig"; path = "Pods/Target Support Files/Pods-TesserCubeUITests/Pods-TesserCubeUITests.xctest.xcconfig"; sourceTree = "<group>"; };
 		DB0758CF224895B40046FBFD /* MessageCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCardCell.swift; sourceTree = "<group>"; };
 		DB0BABE423504B3400F3E37E /* PreviewStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewStub.swift; sourceTree = "<group>"; };
 		DB0D9F3723152006007C293F /* FileProvider.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FileProvider.framework; path = System/Library/Frameworks/FileProvider.framework; sourceTree = SDKROOT; };
@@ -729,6 +737,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0925C0B9153ECFA98418EA6C /* Pods_TesserCube_TesserCubeUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -843,6 +852,7 @@
 				F203D9B4CDFBB0FD0E45FB6D /* Pods_TesserCubeTests.framework */,
 				F14CF0BD6C2C55A0BFF1B2B0 /* Pods_TesserCubeInterpretAction.framework */,
 				4E0EAF428FF778E8B22035F9 /* Pods_TesserCubeComposeAction.framework */,
+				917EE6DC9AF7DC1F9556D604 /* Pods_TesserCube_TesserCubeUITests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1364,6 +1374,12 @@
 				DCB938676101FF1A21579C50 /* Pods-TesserCubeInterpretAction.xctest.xcconfig */,
 				5836A11F534936E25D0543C8 /* Pods-TesserCubeKeyboard.xctest.xcconfig */,
 				F68C7284388FF0277EBF3184 /* Pods-TesserCubeTests.xctest.xcconfig */,
+				764E22828EDD3FA8C59332E7 /* Pods-TesserCubeUITests.debug.xcconfig */,
+				D51F091843E7821A493DD84C /* Pods-TesserCubeUITests.xctest.xcconfig */,
+				0BB0AABC28363D1F1584ACDD /* Pods-TesserCubeUITests.release.xcconfig */,
+				B67A6D4F7D53FEBFA1B8FD44 /* Pods-TesserCube-TesserCubeUITests.debug.xcconfig */,
+				234FE2B79768DFA95A44D177 /* Pods-TesserCube-TesserCubeUITests.xctest.xcconfig */,
+				229B7F4942169BB3893B34FA /* Pods-TesserCube-TesserCubeUITests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1568,9 +1584,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8304E9BF221BF10200122637 /* Build configuration list for PBXNativeTarget "TesserCubeUITests" */;
 			buildPhases = (
+				CB9ADD943481B6FEA511987A /* [CP] Check Pods Manifest.lock */,
 				8304E9AC221BF10200122637 /* Sources */,
 				8304E9AD221BF10200122637 /* Frameworks */,
 				8304E9AE221BF10200122637 /* Resources */,
+				07A70E08247A51C493FD4983 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1863,6 +1881,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		07A70E08247A51C493FD4983 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TesserCube-TesserCubeUITests/Pods-TesserCube-TesserCubeUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TesserCube-TesserCubeUITests/Pods-TesserCube-TesserCubeUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TesserCube-TesserCubeUITests/Pods-TesserCube-TesserCubeUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		1176E3E027CD4968C2BDB854 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1974,6 +2009,28 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-TesserCubeKeyboard-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CB9ADD943481B6FEA511987A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TesserCube-TesserCubeUITests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2119,7 +2176,7 @@
 				DB1169D722E19B100099BA25 /* MessageCardViewController.swift in Sources */,
 				83C12EE02332209D009DB359 /* DMSPGPUserIDTranslator.swift in Sources */,
 				8325E4A4222F8FDA00EE9B83 /* Fonts.swift in Sources */,
-				839E647B23320751005C21FA /* (null) in Sources */,
+				839E647B23320751005C21FA /* BuildFile in Sources */,
 				DBB81AE1225DFF7A003D63C6 /* UIScreen.swift in Sources */,
 				DB44999A228C244F000B7E8A /* MessageDigitalSignatureSettingsViewController.swift in Sources */,
 				DB616C0922A4CBB4002768B4 /* UILabel.swift in Sources */,
@@ -2760,6 +2817,7 @@
 		};
 		8304E9C0221BF10200122637 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B67A6D4F7D53FEBFA1B8FD44 /* Pods-TesserCube-TesserCubeUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;
@@ -2781,6 +2839,7 @@
 		};
 		8304E9C1221BF10200122637 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 229B7F4942169BB3893B34FA /* Pods-TesserCube-TesserCubeUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;
@@ -3181,6 +3240,7 @@
 		};
 		DBCE91E6233212D90000A9F3 /* XCTest */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 234FE2B79768DFA95A44D177 /* Pods-TesserCube-TesserCubeUITests.xctest.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;
