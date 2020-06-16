@@ -44,7 +44,7 @@ target 'TesserCube' do
   # UI
   pod 'SVProgressHUD', :git => 'https://github.com/getaaron/SVProgressHUD.git', :branch => 'dark-mode'
   pod 'IQKeyboardManagerSwift', '~> 6.4.2'
-  pod 'Eureka', '~> 4.3.1'
+  pod 'Eureka', '~> 5.2.1'
 
   # DEBUG
   pod 'FLEX', '~> 2.4.0', :configurations => ['Debug']
@@ -53,6 +53,11 @@ target 'TesserCube' do
     inherit! :search_paths
     # Pods for testing
     pod 'RxBlocking', '~> 5.1.0'
+  end
+
+  target 'TesserCubeUITests' do
+    # Pods for testing
+    common_pods
   end
 
 end

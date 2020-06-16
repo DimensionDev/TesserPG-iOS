@@ -132,7 +132,8 @@ class PasteKeyViewController: TCBaseViewController {
     }
     
     private func hasValidKeyInPasteboard() -> Bool {
-        if UIPasteboard.general.hasStrings, let pasteString = UIPasteboard.general.string, KeyFactory.isValidMessage(from: pasteString) {
+        if UIPasteboard.general.hasStrings, let pasteString = UIPasteboard.general.string, !pasteString.isEmpty,
+        KeyFactory.isValidMessage(from: pasteString) {
             return true
         }
 
