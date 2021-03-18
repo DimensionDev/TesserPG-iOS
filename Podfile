@@ -19,8 +19,7 @@ def common_pods
 
   pod 'KeychainAccess', '~> 3.2.0'
 
-  pod 'GRDB.swift', '~> 3.7.0'
-  pod 'GRDBCipher', '~> 3.7.0'
+  pod 'GRDB.swift', '~> 4.14.0'
   pod 'DeepDiff', '~> 2.0.1'
 
   # GoPGP 
@@ -44,7 +43,7 @@ target 'TesserCube' do
   # UI
   pod 'SVProgressHUD', :git => 'https://github.com/getaaron/SVProgressHUD.git', :branch => 'dark-mode'
   pod 'IQKeyboardManagerSwift', '~> 6.4.2'
-  pod 'Eureka', '~> 5.2.1'
+  pod 'Eureka', '~> 5.3.3'
 
   # DEBUG
   pod 'FLEX', '~> 2.4.0', :configurations => ['Debug']
@@ -77,14 +76,6 @@ target 'TesserCubeComposeAction' do
 end
 
 post_install do |installer|
-    installer.pods_project.targets.each do |target|
-        target.build_configurations.each do |config|
-            if ['GRDB.swift', 'GRDBCipher'].include? target.name
-                config.build_settings['SWIFT_VERSION'] = '4.2'
-            end
-        end
-    end
-
     installer.pods_project.build_configurations.each do |config|  
         if config.name == 'XCTest'
             config.build_settings['SWIFT_ACTIVE_COMPILATION_CONDITIONS'] = 'XCTEST'

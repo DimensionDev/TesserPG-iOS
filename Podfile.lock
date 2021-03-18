@@ -5,21 +5,21 @@ PODS:
   - DeepDiff (2.0.1)
   - DeviceKit (1.11.0)
   - DMSGoPGP (0.0.19)
-  - Eureka (5.2.1)
+  - Eureka (5.3.3)
   - FLEX (2.4.0)
-  - GRDB.swift (3.7.0)
-  - GRDBCipher (3.7.0):
-    - SQLCipher (~> 3.4.1)
+  - GRDB.swift (4.14.0):
+    - GRDB.swift/standard (= 4.14.0)
+  - GRDB.swift/standard (4.14.0)
   - IQKeyboardManagerSwift (6.4.2)
   - KeychainAccess (3.2.1)
   - MMWormhole (2.0.0):
     - MMWormhole/Core (= 2.0.0)
   - MMWormhole/Core (2.0.0)
-  - Realm (5.0.2):
-    - Realm/Headers (= 5.0.2)
-  - Realm/Headers (5.0.2)
-  - RealmSwift (5.0.2):
-    - Realm (= 5.0.2)
+  - Realm (10.7.2):
+    - Realm/Headers (= 10.7.2)
+  - Realm/Headers (10.7.2)
+  - RealmSwift (10.7.2):
+    - Realm (= 10.7.2)
   - RxBlocking (5.1.1):
     - RxSwift (~> 5)
   - RxCocoa (5.1.1):
@@ -27,13 +27,8 @@ PODS:
     - RxSwift (~> 5)
   - RxRelay (5.1.1):
     - RxSwift (~> 5)
-  - RxSwift (5.1.1)
+  - RxSwift (5.1.2)
   - SnapKit (4.2.0)
-  - SQLCipher (3.4.2):
-    - SQLCipher/standard (= 3.4.2)
-  - SQLCipher/common (3.4.2)
-  - SQLCipher/standard (3.4.2):
-    - SQLCipher/common
   - SVProgressHUD (2.2.6)
   - SwifterSwift (4.6.0):
     - SwifterSwift/AppKit (= 4.6.0)
@@ -53,7 +48,7 @@ PODS:
   - SwifterSwift/SwiftStdlib (4.6.0)
   - SwifterSwift/UIKit (4.6.0)
   - SwiftGen (6.1.0)
-  - SwiftLint (0.30.1)
+  - SwiftLint (0.43.1)
   - "UITextView+Placeholder (1.3.3)"
   - WordSuggestion (0.2.1):
     - RealmSwift
@@ -65,10 +60,9 @@ DEPENDENCIES:
   - DeepDiff (~> 2.0.1)
   - DeviceKit (~> 1.11.0)
   - DMSGoPGP (~> 0.0.19)
-  - Eureka (~> 5.2.1)
+  - Eureka (~> 5.3.3)
   - FLEX (~> 2.4.0)
-  - GRDB.swift (~> 3.7.0)
-  - GRDBCipher (~> 3.7.0)
+  - GRDB.swift (~> 4.14.0)
   - IQKeyboardManagerSwift (~> 6.4.2)
   - KeychainAccess (~> 3.2.0)
   - MMWormhole (~> 2.0.0)
@@ -79,7 +73,7 @@ DEPENDENCIES:
   - SVProgressHUD (from `https://github.com/getaaron/SVProgressHUD.git`, branch `dark-mode`)
   - SwifterSwift (~> 4.6.0)
   - SwiftGen (~> 6.1.0)
-  - SwiftLint (~> 0.30.1)
+  - SwiftLint (~> 0.43.1)
   - "UITextView+Placeholder (~> 1.3.1)"
   - WordSuggestion (~> 0.2.1)
 
@@ -94,7 +88,6 @@ SPEC REPOS:
     - Eureka
     - FLEX
     - GRDB.swift
-    - GRDBCipher
     - IQKeyboardManagerSwift
     - KeychainAccess
     - MMWormhole
@@ -105,7 +98,6 @@ SPEC REPOS:
     - RxRelay
     - RxSwift
     - SnapKit
-    - SQLCipher
     - SwifterSwift
     - SwiftGen
     - SwiftLint
@@ -129,28 +121,26 @@ SPEC CHECKSUMS:
   DeepDiff: 1944bb2c841ab238a66b31de1faa7627f3ca84bd
   DeviceKit: a3a86f8dddbe1317a9a243cdf9646858bf135dce
   DMSGoPGP: e718cfffb38060f7e1265e6f0ed91f1bbf92cf16
-  Eureka: c883105488e05bc65539f583246ecf9657cabbfe
+  Eureka: e6d720290c56bb23333ad1a0e020b2a98a0e9a43
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
-  GRDB.swift: 51cc9e57ae8ff7083a9d674c97925aa1de06aac5
-  GRDBCipher: a3066d2953508039ea8fb423a1ba14c7b6d888be
+  GRDB.swift: 8cc3ab7c8b8b4ac1761deb8dca4b51c1c9d429f8
   IQKeyboardManagerSwift: 79a3ec200dfb41cb66a89b8575417b5378107c5d
   KeychainAccess: d5470352939ced6d6f7fb51cb2e67aae51fc294f
   MMWormhole: 0cd3fd35a9118b2e2d762b499f54eeaace0be791
-  Realm: 6b6f096671b64b04d08974177cabb2ff9343d153
-  RealmSwift: a3db6be0488bf3e1d5314c2956cefe98a65cdd01
+  Realm: e523da9ade306c5ae87e85dc09fdef148d3e1cc1
+  RealmSwift: 4f6758c3adbdcc87f7b7777107226532a077f61c
   RxBlocking: 5f700a78cad61ce253ebd37c9a39b5ccc76477b4
   RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
   RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
-  RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
+  RxSwift: 1e2e1f9570186967f617e49128ed26ccf1bafc8e
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
-  SQLCipher: f9fcf29b2e59ced7defc2a2bdd0ebe79b40d4990
   SVProgressHUD: 6ed134667e9ebb2f33679e8273cd48fd3fa349e5
   SwifterSwift: 812ffec6f301922f5430e75be3f2939ea3a80024
   SwiftGen: f872ca75cbd17bf7103c17f13dcfa0d9a15667b0
-  SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
+  SwiftLint: 99f82d07b837b942dd563c668de129a03fc3fb52
   "UITextView+Placeholder": c407b27599ea23cca425946fee3cf1db5d547008
   WordSuggestion: 424d96dd2cfe4259c72959f9bdcffc864f0e65d4
 
-PODFILE CHECKSUM: 4883903d7efc20f4580f375c64276b1ac4f3f63c
+PODFILE CHECKSUM: e306bbaa33be737c6151ba5b91d15c2aaece4eb8
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.10.0
